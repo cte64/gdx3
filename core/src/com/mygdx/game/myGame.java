@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.HashMap;
+import gameCode.Infastructure.World;
 
 
 public class myGame extends ApplicationAdapter {
@@ -93,8 +94,10 @@ public class myGame extends ApplicationAdapter {
 				batch.draw(tileMap.get("1.1"), x*20, y*20);
 			}
 		}
-
 		 */
+
+
+
 		batch.end();
 
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
