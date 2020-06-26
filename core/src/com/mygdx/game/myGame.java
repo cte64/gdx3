@@ -56,6 +56,7 @@ public class myGame extends ApplicationAdapter {
 	public void create () {
 
 
+
 		/*
 		//do the sprites ==========================================================================
 		spriteMap = new HashMap<String, Sprite>();

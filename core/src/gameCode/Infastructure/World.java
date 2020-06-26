@@ -1,6 +1,7 @@
 package gameCode.Infastructure;
 
 import java.security.PublicKey;
+import java.util.LinkedList;
 
 public class World {
 
@@ -16,7 +17,11 @@ public class World {
     //These values change based on the size of the game ==
 
 
+    //These are the different data structures that reference the game entities
+    LinkedList<Entity> entList;
 
+
+    public LinkedList<Entity> getEntList() { return entList; }
 
     public static void init() {
 
