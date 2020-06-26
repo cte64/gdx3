@@ -2,6 +2,7 @@ package gameCode.Infastructure;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import java.util.ArrayList;
+import gameCode.Utilities.MathUtils;
 
 public class Chunk {
 
@@ -33,7 +34,12 @@ public class Chunk {
         return true;
     }
 
-
+    public void createImage(int width, int height) {
+        width = MathUtils.clamp(width, 0, 100);
+        height = MathUtils.clamp(height, 0, 100);
+        deleteImage();
+        image = new Pixmap(width, height, Pixmap.Format.RGB888);
+    }
 
     //getters
     public Pixmap getImage() { return image; }
@@ -47,4 +53,9 @@ public class Chunk {
     public void setImage(Pixmap newImage) { image = newImage; }
     public void deleteImage() { image.dispose(); }
     public void addObject(String newObj) { serializedObjects.add(newObj); }
+
+
+    //ADD THESE LATER ========================================
+    public void setPixel() {}
+    public int getPixel() {return 0;}
 }

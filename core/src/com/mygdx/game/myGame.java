@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.HashMap;
 import gameCode.Infastructure.World;
+import gameCode.Utilities.MathUtils;
 
 
 public class myGame extends ApplicationAdapter {
@@ -54,6 +55,8 @@ public class myGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 
+
+		/*
 		//do the sprites ==========================================================================
 		spriteMap = new HashMap<String, Sprite>();
 		atlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
@@ -78,34 +81,40 @@ public class myGame extends ApplicationAdapter {
 
 		//add the sprites ===============================
 		addSprite("tile");
+
+		 */
 	}
 
 	@Override
 	public void render () {
+
+		/*
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
 
 
-		/*
+
 		for(int y = 0; y < 50; y++) {
 			for(int x = 0; x < 50; x++) {
 				batch.draw(tileMap.get("1.1"), x*20, y*20);
 			}
 		}
-		 */
+
 
 
 
 		batch.end();
 
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
+
+		 */
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		atlas.dispose();
+		//batch.dispose();
+		//atlas.dispose();
 	}
 }
