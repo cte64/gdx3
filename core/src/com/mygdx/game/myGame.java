@@ -2,20 +2,17 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.HashMap;
-import java.util.ListIterator;
 
 import gameCode.Infastructure.Entity;
 import gameCode.Infastructure.World;
-import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.StringUtils;
+
 
 
 public class myGame extends ApplicationAdapter {
@@ -72,6 +69,16 @@ public class myGame extends ApplicationAdapter {
 		//DO THIS JUST FOR NOW =========================
 		World.init();
 
+
+		StringUtils data = new StringUtils("bbbbb");
+
+		StringUtils.compressString(data);
+
+		System.out.println(data.data);
+
+
+
+
 		/*
 		//do the tiles ============================================================================
 		tileMap = new HashMap<String, Sprite>();
@@ -100,12 +107,9 @@ public class myGame extends ApplicationAdapter {
 	public void render () {
 
 
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-
-
-
 
 
 		//This is where everything happens! ================================================================
