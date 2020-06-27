@@ -1,19 +1,5 @@
 package gameCode.Utilities;
 
-
-/*
-    StringOps();
-    std::string toString(int number);
-    void compressString(std::string &data);
-    std::string getField(const std::string& name, std::string field);
-    void setField(std::string& name, std::string field, std::string value);
-    void removeField(std::string& name, std::string field);
-    void addField(std::string& name, std::string field, std::string value);
-    int stringToInt(std::string s);
-    std::string getDateAndTime();
- */
-
-
 public class StringUtils {
 
 
@@ -22,8 +8,8 @@ public class StringUtils {
 
 
     public static String toString(int num) { return Integer.toString(num); }
-    public static int stringToInt(String data) { return Integer.parseInt(data); }
 
+    public static int stringToInt(String data) { return Integer.parseInt(data); }
 
     public static void compressString(StringUtils cont) {
 
@@ -43,6 +29,49 @@ public class StringUtils {
         }
     }
 
+    public static String getField(StringUtils name, String field) {
 
+        int index = name.data.indexOf(field);
+        if(index == -1) return "";
+
+        int startIndex = index;
+        int endIndex = startIndex;
+        int x = index;
+
+        while (x < name.data.length()) {
+            if (name.data.charAt(x) == ':') startIndex = x;
+            else if (name.data.charAt(x)  == ']') {
+                endIndex = x;
+                break;
+            } x++;
+        }
+
+        String retVal = name.data.substring(startIndex + 2, endIndex);
+        return retVal;
+    }
+
+    public static void setField(StringUtils name, String field, String value) {
+
+        int index = name.data.indexOf("[" + field);
+        if(index == -1) {
+            name.data += "[" + field + ": " + value + "]";
+            return;
+        }
+
+        int startIndex = index;
+        int endIndex = startIndex;
+        int x = index;
+
+        while (x < name.data.length()) {
+            if (name.data.charAt(x) == ':') startIndex = x;
+            else if (name.data.charAt(x)  == ']') {
+                endIndex = x;
+                break;
+            } x++;
+        }
+
+        String replaceThis = name.data.substring(startIndex + 2, endIndex);
+        name.data = name.data.replace(replaceThis, value);
+    }
 
 }

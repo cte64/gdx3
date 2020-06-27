@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import gameCode.Infastructure.Entity;
@@ -59,6 +61,7 @@ public class myGame extends ApplicationAdapter {
 
 
 
+
 		//do the sprites ==========================================================================
 		spriteMap = new HashMap<String, Sprite>();
 		atlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
@@ -67,15 +70,7 @@ public class myGame extends ApplicationAdapter {
 		addSprite("tile");
 
 		//DO THIS JUST FOR NOW =========================
-		World.init();
-
-
-		StringUtils data = new StringUtils("bbbbb");
-
-		StringUtils.compressString(data);
-
-		System.out.println(data.data);
-
+		//World.init();
 
 
 
@@ -101,24 +96,25 @@ public class myGame extends ApplicationAdapter {
 
 
 		 */
+
+
 	}
 
 	@Override
 	public void render () {
 
 
-		Gdx.gl.glClearColor(0, 0, 0, 0);
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
 
 		//This is where everything happens! ================================================================
 
-		for(Entity ent: World.entList) { ent.updateType("input"); }
+		for(Entity ent: World.getEntList()) { ent.updateType("input"); }
 
-		for(Entity ent: World.entList) { batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos); }
+		for(Entity ent: World.getEntList()) { batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos); }
 		//This is where everything happens! ================================================================
-
 
 
 
@@ -128,6 +124,11 @@ public class myGame extends ApplicationAdapter {
 
 
 		batch.end();
+
+
+
+
+
 
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
 
