@@ -3,18 +3,25 @@ import java.util.ArrayList;
 
 public class Entity {
 
-    float x_pos, y_pos;
+    public float x_pos, y_pos;
+    public String spriteName;
+
     ArrayList<Component> components;
 
-    void addComponent(Component newComponent) { components.add(newComponent); }
-    void updateType(String type) {
+    public Entity() {
+        components = new ArrayList<Component>();
+
+    }
+
+    public void addComponent(Component newComponent) { components.add(newComponent); }
+    public void updateType(String type) {
         for(Component comp: components) {
             if(comp.type == type)
                 comp.update(this);
         }
     }
 
-    void getComponentByName() {
+    public void getComponentByName() {
 
     }
 

@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.HashMap;
+import java.util.ListIterator;
+
+import gameCode.Infastructure.Entity;
 import gameCode.Infastructure.World;
 import gameCode.Utilities.MathUtils;
 
@@ -31,6 +34,7 @@ public class myGame extends ApplicationAdapter {
 
 	float timerCount = 0;
 	int fpsCount = 0;
+
 
 	private void fpsCounter(float time) {
 		timerCount += time;
@@ -57,12 +61,18 @@ public class myGame extends ApplicationAdapter {
 
 
 
-		/*
+
 		//do the sprites ==========================================================================
 		spriteMap = new HashMap<String, Sprite>();
 		atlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
 		batch = new SpriteBatch();
 
+		addSprite("tile");
+
+		//DO THIS JUST FOR NOW =========================
+		World.init();
+
+		/*
 		//do the tiles ============================================================================
 		tileMap = new HashMap<String, Sprite>();
 
@@ -81,7 +91,7 @@ public class myGame extends ApplicationAdapter {
 		}
 
 		//add the sprites ===============================
-		addSprite("tile");
+
 
 		 */
 	}
@@ -89,7 +99,7 @@ public class myGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 
-		/*
+
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
@@ -97,11 +107,18 @@ public class myGame extends ApplicationAdapter {
 
 
 
-		for(int y = 0; y < 50; y++) {
-			for(int x = 0; x < 50; x++) {
-				batch.draw(tileMap.get("1.1"), x*20, y*20);
-			}
-		}
+
+		//This is where everything happens! ================================================================
+
+		for(Entity ent: World.entList) { ent.updateType("input"); }
+
+		for(Entity ent: World.entList) { batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos); }
+		//This is where everything happens! ================================================================
+
+
+
+
+
 
 
 
@@ -110,7 +127,7 @@ public class myGame extends ApplicationAdapter {
 
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
 
-		 */
+
 	}
 	
 	@Override
