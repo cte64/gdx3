@@ -93,9 +93,11 @@ public class myGame extends ApplicationAdapter {
 		}
 
 		//add the sprites ===============================
-
-
 		 */
+
+		World.createWorld(10);
+
+		FileSystem.createGameDirectory("three");
 
 
 	}
