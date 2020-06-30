@@ -3,13 +3,30 @@ import java.util.ArrayList;
 
 public class Entity {
 
-    public float x_pos, y_pos;
-    public String spriteName;
-
+    public float x_pos, y_pos, angle, scaleW, scaleH, velMag, velAng, lastGoodX, lastGoodY, lastGoodAngle;
+    int bitMapX, bitMapY, z_pos, deleteRange, spriteOffsetX, spriteOffsetY;// -2 = false; -1 = delete at edge, > 0 =  delete out of range
+    public boolean moveable, drawable, markForDeletion, flip, cameraBound;
+    public String spriteName, drawMode, entityName;
     ArrayList<Component> components;
 
+
     public Entity() {
-        components = new ArrayList<Component>();
+
+        x_pos = 0.0f;
+        y_pos = 0.0f;
+
+
+        /*
+        public float x_pos, y_pos, angle, scaleW, scaleH, velMag, velAng, lastGoodX, lastGoodY, lastGoodAngle;
+        int bitMapX, bitMapY, z_pos, deleteRange, spriteOffsetX, spriteOffsetY;// -2 = false; -1 = delete at edge, > 0 =  delete out of range
+        public boolean moveable, drawable, markForDeletion, flip, cameraBound;
+        public String spriteName, drawMode, entityName;
+        ArrayList<Component> components;*/
+
+
+
+
+
 
     }
 
@@ -25,5 +42,15 @@ public class Entity {
 
     }
 
+    public int getWidth() {
+        return 10;
+    }
+
+    public int getHeight() {
+        return 10;
+    }
+
+    public float getXVelocity() { return 0.0f; }
+    public float getYVelocity() { return 0.0f; }
 
 }

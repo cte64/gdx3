@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.mygdx.game.myGame;
 import gameCode.Living.HeroInput;
 import gameCode.Utilities.StringUtils;
 
@@ -26,8 +27,8 @@ public class World {
     private static int numCells;
 
     //viewPort parameters ================================
-    public static int xViewSize;
-    public static int yViewSize;
+    public static int xViewSize = 600;
+    public static int yViewSize = 600;
 
     //These modify the game state ========================
     public static ArrayList<Entity> entitiesToBeAdded = new ArrayList<Entity>();
@@ -51,38 +52,22 @@ public class World {
     public static int getNumPixels() { return numPixels; }
     public static int getNumBlocks() { return numBlocks; }
     public static int getNumCells() { return numCells; }
+    public static int getxViewSize() { return xViewSize; }
+    public static int getyViewSize() { return yViewSize; }
 
     public static LinkedList<Entity> getEntList() { return entList; }
     public static Entity getCamera() { return camera; }
 
     public static void init() {
 
-
-
-
-
-        /*
-
-        entList =
+        //Set the viewport size and update the screen ===================
         Entity ent = new Entity();
         ent.x_pos = 100;
         ent.y_pos = 100;
         ent.spriteName = "tile";
         ent.addComponent(new HeroInput());
         entList.add(ent);
-
-        String abso = "/Users/me/Desktop/gdx3/core/saves/";
-        FileHandle[] files = Gdx.files.local("core/saves/").list();
-
-
-        for(FileHandle file: files) {
-            // do something interesting here
-            String s = file.name();
-            System.out.println("directory: " + s);
-        }
-
-         */
-
+        camera = ent;
     }
 
     public static void createWorld(int newChunks) {

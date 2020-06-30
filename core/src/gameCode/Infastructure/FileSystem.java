@@ -180,7 +180,7 @@ public class FileSystem {
 
     public static String getGameSubDirectory() { return gameSubDirectory;  }
 
-    public static void setGameSubDirectory(String newDir) { gameSubDirectory = newDir; }
+    public static void setGameSubDirectory(String newDir) { gameSubDirectory = newDir + "/"; }
 
     public static void deleteDirectory(String directory) {
         FileHandle file = Gdx.files.local(gameSaveDirectory + directory);
@@ -210,15 +210,41 @@ public class FileSystem {
         file.writeString(data.data, false);
     }
 
+    public static void getFile(StringUtils filename, StringUtils data) {
+
+        String type = StringUtils.getField(filename, "type");
+        String name = "";
+
+        if (type.equals("hero")) name = gameSaveDirectory + gameSubDirectory + "hero.txt";
+        if (type.equals("metadata")) name = gameSaveDirectory + gameSubDirectory + "metadata.txt";
+
+        if (type.equals("chunk"))  {
+            int xIndex = StringUtils.stringToInt(StringUtils.getField(filename, "xChunk"));
+            int yIndex = StringUtils.stringToInt(StringUtils.getField(filename, "yChunk"));
+            name = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
+        }
+        if (type.equals("entity")) {
+            int xIndex = StringUtils.stringToInt(StringUtils.getField(filename, "xChunk"));
+            int yIndex = StringUtils.stringToInt(StringUtils.getField(filename, "yChunk"));
+            name = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
+        }
+
+        FileHandle file = Gdx.files.local(name);
+        if(!file.exists()) {
+            System.out.println("File: " + name + " does not exist!");
+            return;
+        }
+
+        data.data = file.readString();
+    }
+
     public static void createGameDirectory(String newDir) {
 
         gameSubDirectory = newDir + "/";
-        //String rootDir = gameSaveDirectory + gameSubDirectory;
 
         //create metadata file
         StringUtils metaName = new StringUtils("[type: metadata]");
         setFile(metaName, new StringUtils("finally got it working"));
-
 
         //create the main character and put in a separate file
         StringUtils heroName = new StringUtils("[type: hero]");
@@ -243,6 +269,8 @@ public class FileSystem {
             setFile(entName, entStr);
         }}
     }
+
+
     /*
     void imageToString(sf::Image* image, std::string& dataString);
     sf::Image stringToImage(std::string& dataString);
@@ -252,8 +280,5 @@ public class FileSystem {
 
     void createGameDirectory(std::string newDir);
     void saveCurrentChunks();
-
-    void getFile(std::string filename, std::string& data);
-    void setFile(std::string filename, std::string& data);
      */
 }
