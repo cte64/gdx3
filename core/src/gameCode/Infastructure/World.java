@@ -17,6 +17,9 @@ public class World {
     //Make Sure that this cant be instantiated
     private World() {}
 
+    //Stores the gameState ===============================
+    private static String currentState;
+
     //Declare constants ==================================
     public static final int xCell = 10;
     public static final int tileSize = 60;
@@ -29,13 +32,12 @@ public class World {
     private static int numCells;
 
     //ViewPort parameters ================================
-    public static int xViewSize = 400;
-    public static int yViewSize = 600;
+    public static int viewPortWidth = 400;
+    public static int viewPortHeight = 600;
 
     //Add and delete entities =====================================================================
     public static ArrayList<Entity> entitiesToBeAdded = new ArrayList<Entity>();
     public static ArrayList<Entity> entitiesToBeDeleted = new ArrayList<Entity>();
-
 
     //These are the different data structures that reference the game entities
     private static LinkedList<Entity> entList = new LinkedList<Entity>();
@@ -55,8 +57,8 @@ public class World {
     public static int getNumPixels() { return numPixels; }
     public static int getNumBlocks() { return numBlocks; }
     public static int getNumCells() { return numCells; }
-    public static int getxViewSize() { return xViewSize; }
-    public static int getyViewSize() { return yViewSize; }
+    public static int getViewPortWidth() { return viewPortWidth; }
+    public static int getViewPortHeight() { return viewPortHeight; }
     public static LinkedList<Entity> getEntList() { return entList; }
     public static Entity getCamera() { return camera; }
     public static ArrayList<Entity> getLocatorCell(int x, int y) {
@@ -76,8 +78,7 @@ public class World {
         if(chunks.size() == 0 || index < 0 || index > chunks.size() - 1) return null;
         else return chunks.get(index);
     }
-
-
+    public static String getCurrentState() { return currentState; }
 
     //Setters ==============================================================================================
     public static void setMoveable(int y, int x, boolean newBool) {
@@ -86,16 +87,13 @@ public class World {
         index = MathUtils.clamp(index, 0, containsMoveables.size() - 1);
         containsMoveables.set(index, newBool);
     }
+    public static void setCurrentState(String newState) { currentState = newState; }
 
 
-
-
-
-
-
-    //Modify State ===========================================================================================
-
+    //Modify World State ===========================================================================================
     public static void init() {
+
+        currentState = "init";
 
         //Set the viewport size and update the screen ===================
         Entity ent = new Entity();
@@ -106,7 +104,6 @@ public class World {
         entList.add(ent);
         camera = ent;
     }
-
     public static void createWorld(int newChunks) {
 
         numChunks = newChunks;
@@ -141,7 +138,6 @@ public class World {
 
         FileSystem.init();
     }
-
     public static void deleteWorld() {
 
         for(Entity ent: entList) { entitiesToBeDeleted.add(ent); }
@@ -159,5 +155,4 @@ public class World {
 
         FileSystem.init();
     }
-
 }
