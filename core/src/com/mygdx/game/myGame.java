@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -156,7 +157,9 @@ public class myGame extends ApplicationAdapter {
 			int x = -World.getxViewSize()/2 + (int)hero.x_pos + hero.getWidth()/2;
 			int y = -World.getyViewSize()/2 + (int)hero.y_pos + hero.getHeight()/2;
 
-			viewport.setScreenPosition(-x, -y);
+
+			camera.position.set(x, y, 0.0f);
+			//viewport.setScreenPosition(-x, -y);
 
 
 
@@ -182,10 +185,13 @@ public class myGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		camera = new OrthographicCamera();
-		viewport = new FitViewport(600, 600, camera);
-		shapeRenderer = new ShapeRenderer();
 
+
+		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+
+		camera = new OrthographicCamera(World.getxViewSize(), World.getyViewSize());
+		viewport = new FitViewport(World.getxViewSize(), World.getyViewSize(), camera);
+		shapeRenderer = new ShapeRenderer();
 
 		//do the sprites ==========================================================================
 		spriteMap = new HashMap<String, Sprite>();

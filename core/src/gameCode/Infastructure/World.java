@@ -29,7 +29,7 @@ public class World {
     private static int numCells;
 
     //ViewPort parameters ================================
-    public static int xViewSize = 600;
+    public static int xViewSize = 400;
     public static int yViewSize = 600;
 
     //Add and delete entities =====================================================================
