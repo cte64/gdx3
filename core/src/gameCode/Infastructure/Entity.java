@@ -66,6 +66,8 @@ public class Entity {
 
     public void deleteComponents() { components.clear(); }
 
+
+    /*
     public float getXVelocity() {
         return velMag * Math.cos( toRad(velAng) );
     }
@@ -73,6 +75,8 @@ public class Entity {
     public float getYVelocity() {
         return -velMag * sin( toRad(velAng) );
     }
+
+     */
 
 
     /*

@@ -2,6 +2,7 @@ package gameCode.Infastructure;
 
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.mygdx.game.myGame;
 import gameCode.Living.HeroInput;
 import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.MathUtils;
 
 public class World {
 
@@ -26,37 +28,72 @@ public class World {
     private static int numPixels;
     private static int numCells;
 
-    //viewPort parameters ================================
+    //ViewPort parameters ================================
     public static int xViewSize = 600;
     public static int yViewSize = 600;
 
-    //These modify the game state ========================
+    //Add and delete entities =====================================================================
     public static ArrayList<Entity> entitiesToBeAdded = new ArrayList<Entity>();
     public static ArrayList<Entity> entitiesToBeDeleted = new ArrayList<Entity>();
 
 
-
     //These are the different data structures that reference the game entities
     private static LinkedList<Entity> entList = new LinkedList<Entity>();
+    private static HashMap<String, Entity> entByName = new HashMap<String, Entity>();
     private static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
     private static ArrayList<Boolean> containsMoveables = new ArrayList<Boolean>();
     private static ArrayList< ArrayList<Entity> > locatorCells = new ArrayList<  ArrayList<Entity> >();
     private static ArrayList<Entity> entitiesOrderedByLayer = new ArrayList<Entity>();
+    private static class FrameStruct { int width, height, left, right, top, bottom; };
+    private static HashMap<String, FrameStruct> frameMap = new HashMap<String, FrameStruct>();
 
     //Entity that controls the viewport ========================================================================
     private static Entity camera = null;
 
-
-    //Basic getters and setters ================================================================================
+    //Getters  =============================================================================================
     public static int getNumChunks() { return numChunks; }
     public static int getNumPixels() { return numPixels; }
     public static int getNumBlocks() { return numBlocks; }
     public static int getNumCells() { return numCells; }
     public static int getxViewSize() { return xViewSize; }
     public static int getyViewSize() { return yViewSize; }
-
     public static LinkedList<Entity> getEntList() { return entList; }
     public static Entity getCamera() { return camera; }
+    public static ArrayList<Entity> getLocatorCell(int x, int y) {
+        if(locatorCells.size() == 0) return null;
+        int index = (y * numCells) + x;
+        index = MathUtils.clamp(index, 0, locatorCells.size() - 1);
+        return locatorCells.get(index);
+    }
+    public static Boolean getMoveable(int y, int x) {
+        if(containsMoveables.size() == 0) return false;
+        int index = (y * numCells) + x;
+        index = MathUtils.clamp(index, 0, containsMoveables.size() - 1);
+        return containsMoveables.get(index);
+    }
+    public static Chunk getChunk(int x, int y) {
+        int index = (numBlocks * y) + x;
+        if(chunks.size() == 0 || index < 0 || index > chunks.size() - 1) return null;
+        else return chunks.get(index);
+    }
+
+
+
+    //Setters ==============================================================================================
+    public static void setMoveable(int y, int x, boolean newBool) {
+        if (containsMoveables.size() == 0) return;
+        int index = (y * numCells) + x;
+        index = MathUtils.clamp(index, 0, containsMoveables.size() - 1);
+        containsMoveables.set(index, newBool);
+    }
+
+
+
+
+
+
+
+    //Modify State ===========================================================================================
 
     public static void init() {
 
@@ -101,6 +138,24 @@ public class World {
             t.setActive(false);
             chunks.add(t);
         }}
+
+        FileSystem.init();
+    }
+
+    public static void deleteWorld() {
+
+        for(Entity ent: entList) { entitiesToBeDeleted.add(ent); }
+        chunks.clear();
+        containsMoveables.clear();
+        entByName.clear();
+        locatorCells.clear();
+        frameMap.clear();
+
+        numChunks = 0;
+        numBlocks = 0;
+        numPixels = 0;
+        numCells =  0;
+        camera = null;
 
         FileSystem.init();
     }
