@@ -18,13 +18,26 @@ public class Graphics implements Disposable {
 
     private TextureAtlas spriteAtlas;
     private SpriteBatch batch;
-    private Camera camera;
-
-    private int a = 0;
-
+    private OrthographicCamera camera;
+    public CameraHelper cameraHelper;
+    
     private static HashMap<String, Sprite> spriteMap;
 
+
+    private void setCamera1() {
+        Entity hero = World.getCamera();
+        if(hero == null) return;
+        float xPos = hero.x_pos;
+        float yPos = hero.y_pos;
+        cameraHelper.setPosition(xPos, yPos);
+    }
+
     public Graphics()  {
+
+
+        cameraHelper = new CameraHelper();
+
+
 
         //Set up the camera ======================================================================
         camera = new OrthographicCamera(World.getViewPortWidth(), World.getViewPortHeight());
@@ -36,6 +49,9 @@ public class Graphics implements Disposable {
         spriteMap = new HashMap<String, Sprite>();
         spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
         addSprite("tile");
+
+
+        //cameraHelper.setTarget(spriteMap.get("tile"));
     }
 
     private void addSprite(String filename) {
@@ -44,15 +60,17 @@ public class Graphics implements Disposable {
         Sprite put = spriteMap.put(filename, sprite);
     }
 
-    public void update() {
+    public void update(float deltaTime) {
+
+        setCamera1();
+        cameraHelper.update(deltaTime);
+        cameraHelper.applyTo(camera);
+        batch.setProjectionMatrix(camera.combined);
+
+
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
-        camera.position.set(a, 0, 0);
-        a++;
-        camera.update();
 
         batch.begin();
         for(Entity ent: World.getEntList()) { batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos); }

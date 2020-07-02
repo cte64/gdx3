@@ -64,10 +64,7 @@ public class myGame extends ApplicationAdapter {
 	public void render () {
 		for(Entity ent: World.getEntList()) { ent.updateType("input"); }
 		Collision.update();
-
-
-
-		graphics.update();
+		graphics.update(Gdx.graphics.getDeltaTime());
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
 	}
 	
