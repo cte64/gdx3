@@ -27,12 +27,12 @@ public class MathUtils {
         return ang;
     }
 
-    float toRad(float degree) {
+    public static float toRad(float degree) {
         float rad = (degree*PI)/180.0f;
         return rad;
     }
 
-    float toDeg(float radian) {
+    public static float toDeg(float radian) {
         float degree = (radian*180.0f)/PI;
         return degree;
     }
@@ -42,5 +42,4 @@ public class MathUtils {
         if (val.compareTo(max) > 0) val = max;
         return val;
     }
-
 }

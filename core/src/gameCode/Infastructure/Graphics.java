@@ -20,9 +20,8 @@ public class Graphics implements Disposable {
     private SpriteBatch batch;
     private OrthographicCamera camera;
     public CameraHelper cameraHelper;
-    
+    private ShapeRenderer shapeRenderer;
     private static HashMap<String, Sprite> spriteMap;
-
 
     private void setCamera1() {
         Entity hero = World.getCamera();
@@ -32,11 +31,54 @@ public class Graphics implements Disposable {
         cameraHelper.setPosition(xPos, yPos);
     }
 
+    private void drawOutlines() {
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+
+        //center ==============================================================================
+        int cLeft = FileSystem.centerLeft * World.tilesPerChunk * World.tileSize;
+        int cRight = FileSystem.centerRight * World.tilesPerChunk * World.tileSize;
+        int cTop = FileSystem.centerTop * World.tilesPerChunk * World.tileSize;
+        int cBottom = FileSystem.centerBottom * World.tilesPerChunk * World.tileSize;
+
+        shapeRenderer.setColor(0, 0, 1, 1);
+        shapeRenderer.line(cLeft, cTop, cLeft, cBottom);
+        shapeRenderer.line(cRight, cTop, cRight, cBottom);
+        shapeRenderer.line(cLeft, cTop, cRight, cTop);
+        shapeRenderer.line(cLeft, cBottom, cRight, cBottom);
+
+		//middle =================================================================================
+		int mLeft = FileSystem.middleLeft * World.tilesPerChunk * World.tileSize;
+		int mRight = FileSystem.middleRight * World.tilesPerChunk * World.tileSize;
+		int mTop = FileSystem.middleTop * World.tilesPerChunk * World.tileSize;
+		int mBottom = FileSystem.middleBottom * World.tilesPerChunk * World.tileSize;
+
+        shapeRenderer.setColor(1, 0, 0.5f, 1);
+        shapeRenderer.line(mLeft, mTop, mLeft, mBottom);
+        shapeRenderer.line(mRight, mTop, mRight, mBottom);
+        shapeRenderer.line(mLeft, mTop, mRight, mTop);
+        shapeRenderer.line(mLeft, mBottom, mRight, mBottom);
+
+        //outer =================================================================================
+        int oLeft = FileSystem.outerLeft * World.tilesPerChunk * World.tileSize;
+        int oRight = FileSystem.outerRight * World.tilesPerChunk * World.tileSize;
+        int oTop = FileSystem.outerTop * World.tilesPerChunk * World.tileSize;
+        int oBottom = FileSystem.outerBottom * World.tilesPerChunk * World.tileSize;
+
+        shapeRenderer.setColor(1, 0, 0, 1);
+        shapeRenderer.line(oLeft, oTop, oLeft, oBottom);
+        shapeRenderer.line(oRight, oTop, oRight, oBottom);
+        shapeRenderer.line(oLeft, oTop, oRight, oTop);
+        shapeRenderer.line(oLeft, oBottom, oRight, oBottom);
+
+        shapeRenderer.end();
+    }
+
     public Graphics()  {
 
 
         cameraHelper = new CameraHelper();
-
+        shapeRenderer = new ShapeRenderer();
 
 
         //Set up the camera ======================================================================
@@ -51,7 +93,7 @@ public class Graphics implements Disposable {
         addSprite("tile");
 
 
-        //cameraHelper.setTarget(spriteMap.get("tile"));
+
     }
 
     private void addSprite(String filename) {
@@ -63,11 +105,11 @@ public class Graphics implements Disposable {
     public void update(float deltaTime) {
 
         setCamera1();
+
         cameraHelper.update(deltaTime);
         cameraHelper.applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
-
-
+        shapeRenderer.setProjectionMatrix(camera.combined);
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -75,6 +117,8 @@ public class Graphics implements Disposable {
         batch.begin();
         for(Entity ent: World.getEntList()) { batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos); }
         batch.end();
+
+        drawOutlines();
     }
 
     public void resize(int width, int height) {

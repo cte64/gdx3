@@ -46,8 +46,8 @@ public class World {
     private static ArrayList<Boolean> containsMoveables = new ArrayList<Boolean>();
     private static ArrayList< ArrayList<Entity> > locatorCells = new ArrayList<  ArrayList<Entity> >();
     private static ArrayList<Entity> entitiesOrderedByLayer = new ArrayList<Entity>();
-    private static class FrameStruct { int width, height, left, right, top, bottom; };
-    private static HashMap<String, FrameStruct> frameMap = new HashMap<String, FrameStruct>();
+    private static class FrameStruct { int width, height, left, right, top, bottom; Entity ent; };
+    private static ArrayList<FrameStruct> frames = new ArrayList<FrameStruct>();
 
     //Entity that controls the viewport ========================================================================
     private static Entity camera = null;
@@ -89,7 +89,6 @@ public class World {
     }
     public static void setCurrentState(String newState) { currentState = newState; }
 
-
     //Modify World State ===========================================================================================
     public static void init() {
 
@@ -103,6 +102,16 @@ public class World {
         ent.addComponent(new HeroInput());
         entList.add(ent);
         camera = ent;
+
+        Entity ent1 = new Entity();
+        ent1.x_pos = 200;
+        ent1.y_pos = 100;
+        ent1.spriteName = "tile";
+        entList.add(ent1);
+
+
+
+
     }
     public static void createWorld(int newChunks) {
 
@@ -145,7 +154,7 @@ public class World {
         containsMoveables.clear();
         entByName.clear();
         locatorCells.clear();
-        frameMap.clear();
+        frames.clear();
 
         numChunks = 0;
         numBlocks = 0;
@@ -154,5 +163,48 @@ public class World {
         camera = null;
 
         FileSystem.init();
+    }
+
+    //Loading and Unloading ========================================================================
+    public static void setEdge() {
+
+        for(FrameStruct frame: frames) {
+            if(frame.ent != null) {
+                int width, height;
+                if(frame.width == 0 && frame.height == 0) {
+                    width = (int)Math.ceil((viewPortWidth/tileSize)/2.0);
+                    height = (int)Math.ceil((viewPortHeight / tileSize)/2.0);
+                }
+                else {
+                    width = frame.width;
+                    height = frame.height;
+                }
+
+                int left = ((int)frame.ent.x_pos / tileSize) - width - 1;
+                if(left < 0) left = 0;
+                int right = left + 2 * width + 4;
+                int top = ((int)frame.ent.y_pos) / tileSize - height - 1;
+                if(top < 0) top = 0;
+                int bottom = top + 2 * height + 4;
+
+                frame.left = left;
+                frame.right = right;
+                frame.bottom = bottom;
+                frame.top = top;
+            }
+        }
+
+    }
+    public static void cleanUp() {}
+    public static void loadEntities() {}
+    public static void update() {}
+
+    //Sifting Frame ===============================================================
+    public static void addSiftingFrame(Entity ent, int newWidth, int newHeight) {
+        FrameStruct newFrame = new FrameStruct();
+        newFrame.width = newWidth;
+        newFrame.height = newHeight;
+        newFrame.ent = ent;
+        frames.add(newFrame);
     }
 }

@@ -20,6 +20,16 @@ public class FileSystem {
     public static int middleLeft, middleRight, middleTop, middleBottom;  //middle ring
     public static int centerLeft, centerRight, centerTop, centerBottom;  //center ring
 
+    private static int cter = 0;
+
+    private static void print(String message) {
+        cter++;
+        if(cter > 10) {
+            System.out.println(message);
+            cter = 0;
+        }
+    }
+
 
     private FileSystem() {}
 
@@ -164,8 +174,8 @@ public class FileSystem {
         Entity hero = World.getCamera();
         if(hero == null) return;
 
-        int xIndex = (int)(hero.x_pos / World.getNumPixels()) * World.getNumChunks();
-        int yIndex = (int)(hero.y_pos / World.getNumPixels()) * World.getNumChunks();
+        int xIndex = (int)(hero.x_pos * World.getNumChunks()) / World.getNumPixels();
+        int yIndex = (int)(hero.y_pos * World.getNumChunks()) / World.getNumPixels();
 
         xIndex = MathUtils.clamp(xIndex, 0, World.getNumChunks() - 1);
         yIndex = MathUtils.clamp(yIndex, 0, World.getNumChunks() - 1);
@@ -269,7 +279,6 @@ public class FileSystem {
             setFile(entName, entStr);
         }}
     }
-
 
     /*
     void imageToString(sf::Image* image, std::string& dataString);
