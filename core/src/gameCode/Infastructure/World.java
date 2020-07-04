@@ -5,12 +5,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import com.badlogic.gdx.math.Vector2;
+import jdk.internal.net.http.common.Pair;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mygdx.game.myGame;
 import gameCode.Living.HeroInput;
+import gameCode.Utilities.Coordinates;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.MathUtils;
+import jdk.internal.net.http.common.Pair;
 
 public class World {
 
@@ -93,6 +98,7 @@ public class World {
     public static void init() {
 
         currentState = "init";
+        createWorld(10);
 
         //Set the viewport size and update the screen ===================
         Entity ent = new Entity();
@@ -109,9 +115,21 @@ public class World {
         ent1.spriteName = "tile";
         entList.add(ent1);
 
+        Entity test = new Entity();
+        test.height = 40;
+        test.width = 20;
+        test.x_pos = 100;
+        test.y_pos = 100;
+        test.angle = 0;
 
-
-
+        for(int x = 0; x < 100; x++) {
+            test.x_pos += 12;
+            ArrayList<Vector2> coords = Coordinates.getLocatorCellCoord(test);
+            for(Vector2 a: coords) {
+                System.out.println(x + " )_) " + a.x + " : " + a.y);
+            }
+            System.out.println();
+        }
     }
     public static void createWorld(int newChunks) {
 

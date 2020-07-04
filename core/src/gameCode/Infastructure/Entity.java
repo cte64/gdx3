@@ -10,6 +10,9 @@ public class Entity {
     public String spriteName, drawMode, entityName;
     ArrayList<Component> components;
 
+    public float width;
+    public float height;
+
     public Entity() {
         x_pos = 0.0f;
         y_pos = 0.0f;
@@ -55,12 +58,12 @@ public class Entity {
         return null;
     }
 
-    public int getWidth() {
-        return 10;
+    public float getWidth() {
+        return width;
     }
 
-    public int getHeight() {
-        return 10;
+    public float getHeight() {
+        return height;
     }
 
 
