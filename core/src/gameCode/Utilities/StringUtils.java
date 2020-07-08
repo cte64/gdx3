@@ -50,6 +50,11 @@ public class StringUtils {
         return retVal;
     }
 
+    public static String getField(String name, String field) {
+        StringUtils str = new StringUtils(name);
+        return getField(str, field);
+    }
+
     public static void setField(StringUtils name, String field, String value) {
 
         int index = name.data.indexOf("[" + field);

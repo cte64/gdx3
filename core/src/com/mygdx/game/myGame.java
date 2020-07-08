@@ -34,7 +34,7 @@ public class myGame extends ApplicationAdapter {
 
 	private float timerCount = 0;
 	private int fpsCount = 0;
-	Graphics graphics;
+
 
 	private void fpsCounter(float time) {
 		timerCount += time;
@@ -53,7 +53,7 @@ public class myGame extends ApplicationAdapter {
 		World.setCurrentState("play");
 
 		//Initialize Game Objects
-		graphics = new Graphics();
+		Graphics.init();
 
 		//DO THIS JUST FOR NOW =========================
 		World.init();
@@ -62,9 +62,9 @@ public class myGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		//for(Entity ent: World.getEntList()) { ent.updateType("input"); }
-		//Collision.update();
-		//graphics.update(Gdx.graphics.getDeltaTime());
+		for(Entity ent: World.getEntList()) { ent.updateType("input"); }
+		Collision.update();
+		Graphics.update(Gdx.graphics.getDeltaTime());
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
 	}
 	

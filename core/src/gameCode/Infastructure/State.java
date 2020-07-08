@@ -14,5 +14,7 @@ public class State {
     public static void loadState() {}
     public void deleteMenuItems() {}
 
-    public String state;
+    private static String state;
+    public static String getState() { return state; }
+    public static void setState(String newState) { state = newState; }
 }

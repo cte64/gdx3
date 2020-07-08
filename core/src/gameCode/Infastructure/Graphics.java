@@ -16,14 +16,18 @@ import java.util.HashMap;
 
 public class Graphics implements Disposable {
 
-    private TextureAtlas spriteAtlas;
-    private SpriteBatch batch;
-    private OrthographicCamera camera;
-    public CameraHelper cameraHelper;
-    private ShapeRenderer shapeRenderer;
+    private static TextureAtlas spriteAtlas;
+    private static SpriteBatch batch;
+    private static OrthographicCamera camera;
+    public static CameraHelper cameraHelper;
+    private static ShapeRenderer shapeRenderer;
     private static HashMap<String, Sprite> spriteMap;
 
-    private void setCamera1() {
+    public static void availCoords() {
+
+    }
+
+    private static void setCamera1() {
         Entity hero = World.getCamera();
         if(hero == null) return;
         float xPos = hero.x_pos;
@@ -31,7 +35,7 @@ public class Graphics implements Disposable {
         cameraHelper.setPosition(xPos, yPos);
     }
 
-    private void drawOutlines() {
+    private static void drawOutlines() {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
@@ -74,8 +78,7 @@ public class Graphics implements Disposable {
         shapeRenderer.end();
     }
 
-    public Graphics()  {
-
+    public static void init() {
 
         cameraHelper = new CameraHelper();
         shapeRenderer = new ShapeRenderer();
@@ -91,18 +94,18 @@ public class Graphics implements Disposable {
         spriteMap = new HashMap<String, Sprite>();
         spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
         addSprite("tile");
-
-
-
     }
 
-    private void addSprite(String filename) {
+    public Graphics()  {
+    }
+
+    private static void addSprite(String filename) {
         TextureRegion region = spriteAtlas.findRegion(filename);
         Sprite sprite = new Sprite(region);
         Sprite put = spriteMap.put(filename, sprite);
     }
 
-    public void update(float deltaTime) {
+    public static void update(float deltaTime) {
 
         setCamera1();
 
@@ -121,7 +124,7 @@ public class Graphics implements Disposable {
         drawOutlines();
     }
 
-    public void resize(int width, int height) {
+    public static void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
     }
@@ -130,7 +133,4 @@ public class Graphics implements Disposable {
     public void dispose() {
         batch.dispose();
     }
-
-
-
 }
