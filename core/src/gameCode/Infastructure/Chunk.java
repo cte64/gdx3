@@ -52,7 +52,7 @@ public class Chunk {
     public void setActive(boolean newActive) { active = newActive; }
     public void setImage(Pixmap newImage) { image = newImage; }
     public void deleteImage() { image.dispose(); }
-    public void addObject(String newObj) { serializedObjects.add(newObj); }
+    public void addObject(String newObj) { /*serializedObjects.add(newObj); */ }
 
 
     //ADD THESE LATER ========================================

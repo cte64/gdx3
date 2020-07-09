@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 import jdk.internal.net.http.common.Pair;
 
@@ -144,40 +145,8 @@ public class World {
 
     //Modify World State ===========================================================================
     public static void init() {
-
-        currentState = "init";
+        currentState = "testGame";
         createWorld(10);
-
-        //Set the viewport size and update the screen ===================
-        Entity ent = new Entity();
-        ent.x_pos = 100;
-        ent.y_pos = 100;
-        ent.spriteName = "tile";
-        ent.addComponent(new HeroInput());
-        entList.add(ent);
-        camera = ent;
-
-        Entity ent1 = new Entity();
-        ent1.x_pos = 200;
-        ent1.y_pos = 100;
-        ent1.spriteName = "tile";
-        entList.add(ent1);
-
-        Entity test = new Entity();
-        test.height = 40;
-        test.width = 20;
-        test.x_pos = 100;
-        test.y_pos = 100;
-        test.angle = 0;
-
-        for(int x = 0; x < 100; x++) {
-            test.x_pos += 12;
-            ArrayList<Vector2> coords = Coordinates.getLocatorCellCoord(test);
-            for(Vector2 a: coords) {
-                System.out.println(x + " )_) " + a.x + " : " + a.y);
-            }
-            System.out.println();
-        }
     }
     public static void createWorld(int newChunks) {
 
@@ -234,7 +203,9 @@ public class World {
     public static void setEdge() {
 
         for(FrameStruct frame: frames) {
+
             if(frame.ent != null) {
+
                 int width, height;
                 if(frame.width == 0 && frame.height == 0) {
                     width = (int)Math.ceil((viewPortWidth/tileSize)/2.0);
@@ -256,9 +227,10 @@ public class World {
                 frame.right = right;
                 frame.bottom = bottom;
                 frame.top = top;
+
+                System.out.println(frame.top + " : " + frame.bottom);
             }
         }
-
     }
     public static void update() {
 
@@ -293,9 +265,10 @@ public class World {
         }
         entitiesToBeAdded.clear();
     }
-    private static void cleanUp() {
+    public static void cleanUp() {
 
         if (camera == null) return;
+
         for (FrameStruct frame : frames) {
 
             int a = 3;
@@ -319,7 +292,8 @@ public class World {
                 else if (ent.deleteRange == -1) {
                     if (aX < left_edge * tileSize || aX > right_edge * tileSize || aY < top_edge * tileSize || aY > bottom_edge * tileSize)
                         mark = true;
-                } else if (ent.deleteRange >= 0) {
+                }
+                else if (ent.deleteRange >= 0) {
 
                     int dist = (int) MathUtils.mag(ent.x_pos + ent.getWidth() / 2,
                             ent.y_pos + ent.getHeight() / 2,
@@ -338,89 +312,78 @@ public class World {
 
                 if (mark) {
                     Chunk chunkPtr2 = getChunk((int) (ent.x_pos / tileSize), (int) (ent.y_pos / tileSize));
-                    if (chunkPtr2 != null) chunkPtr2.setActive(false);
+                    if(chunkPtr2 == null) continue;
+
+                    chunkPtr2.setActive(false);
                     entitiesToBeDeleted.add(ent);
                     if (StringUtils.getField(ent.entityName, "type") != "terrain") chunkPtr2.addObject(ent.entityName);
+
                 }
             }
         }
+
+
     }
-
     public static void loadEntities() {
-
 
 
         for(FrameStruct frame: frames) {
             if(frame.ent == null) continue;
 
-
             for(int y = frame.top; y < frame.bottom; y++) {
             for (int x = frame.left; x < frame.right; x++) {
 
+                Vector2 tPoint = Coordinates.getPoint2(x*tileSize, y*tileSize, frame.ent);
+                int tX = (int)(tPoint.x/tileSize);
+                int tY = (int)(tPoint.y/tileSize);
 
-                //ArrayList<Vector2> tPoint = Coordinates.getPoint2(x*tileSize, y*tileSize, frame.ent);
+                tX = MathUtils.clamp(tX, 0, numBlocks - 1);
+                tY = MathUtils.clamp(tY, 0, numBlocks - 1);
 
+                Chunk chunkPtr = getChunk(tX, tY);
+                if(chunkPtr == null) continue;
+
+                if(chunkPtr.getActive()) {
+
+                    if(!chunkPtr.isImageEmpty() || chunkPtr.getObjects().size() > 0) {
+                        String ent_name = chunkPtr.getName();
+
+                        //do the terrain thing =================================
+                        if(getEntByName(ent_name) == null) {
+                            Entity ent = MakeEntity.getEntity(ent_name, chunkPtr.getImage());
+                            ent.x_pos = tX*tileSize;
+                            ent.y_pos = tY*tileSize;
+                            ent.bitMapX = tX;
+                            ent.bitMapY = tY;
+                            entitiesToBeAdded.add(ent);
+                        }
+
+                        //do the entities ====================================================
+                        while (chunkPtr.getObjects().size() > 0) {
+
+                            String entName = chunkPtr.getObjects().get( chunkPtr.getObjects().size() - 1 );
+
+                            String xStr = StringUtils.getField(entName, "xPos");
+                            String yStr = StringUtils.getField(entName, "yPos");
+
+                            int xPos = StringUtils.stringToInt(xStr);
+                            int yPos = StringUtils.stringToInt(yStr);
+
+                            xPos = MathUtils.clamp(xPos, 0, numPixels - 1);
+                            yPos = MathUtils.clamp(yPos, 0, numPixels - 1);
+
+                            Entity ent = MakeEntity.getEntity(entName, new Pixmap(0, 0, Pixmap.Format.RGB888) );
+                            ent.x_pos = xPos;
+                            ent.y_pos = yPos;
+                            entitiesToBeAdded.add(ent);
+
+                            chunkPtr.getObjects().remove( chunkPtr.getObjects().size() - 1 );
+                        }
+
+                        chunkPtr.setActive(true);
+                    }
+                }
             }}
         }
-
-
-        /*
-        Coordinates c;
-        std::pair<float, float> tPoint = c.getPoint2(x*tileSize, y*tileSize, thisEnt);
-        int tX = tPoint.first/tileSize;
-        int tY = tPoint.second/tileSize;
-
-        clamp(tX, 0, numBlocks - 1);
-        clamp(tY, 0, numBlocks - 1);
-
-        eryThang* thangPtr = getThang(tX, tY);
-        if (thangPtr == nullptr) continue;
-
-        if(!thangPtr->getActive()) {
-
-            if (!thangPtr->isImageEmpty() || thangPtr->getObjectVec()->size() > 0) {
-                std::string ent_name = thangPtr->getName();
-
-                //do the terrain thing ===============================================
-                if(getEntByName(ent_name) == nullptr) {
-                    Entity ent = makeIt.getEntity(ent_name, *thangPtr->getImage());
-                    ent.x_pos = tX*tileSize;
-                    ent.y_pos = tY*tileSize;
-                    ent.bitMapX = tX;
-                    ent.bitMapY = tY;
-                    entitiesToBeAdded.push_back(ent);
-                }
-
-                //do the entities ====================================================
-                while (thangPtr->getObjectVec()->size() > 0) {
-
-                    std::string entName = thangPtr->getObjectVec()->back();
-
-                    std::string xStr = st.getField(entName, "xPos");
-                    std::string yStr = st.getField(entName, "yPos");
-
-                    int xPos = st.stringToInt(xStr);
-                    int yPos = st.stringToInt(yStr);
-
-                    clamp(xPos, 0, numPixels - 1);
-                    clamp(yPos, 0, numPixels - 1);
-
-                    Entity ent = makeIt.getEntity(entName, sf::Image());
-                    ent.x_pos = xPos;
-                    ent.y_pos = yPos;
-                    entitiesToBeAdded.push_back(ent);
-
-                    thangPtr->getObjectVec()->pop_back();
-                }
-
-                thangPtr->setActive(true);
-            }
-        }
-
-         */
     }
-
-    /*
-    void loadEntities();
-     */
 }

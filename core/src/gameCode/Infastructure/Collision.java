@@ -38,11 +38,11 @@ public class Collision {
 
             FileSystem.update();
 
+            World.setEdge();
+            //World.cleanUp();
+            //World.loadEntities();
+            World.update();
             /*
-            world.setEdge();
-            world.cleanUp();
-            world.loadEntities();
-            world.update();
 
             if (world.currentState == "paused") continue;
 
