@@ -6,28 +6,35 @@ filter: Nearest,Nearest
 repeat: none
 badlogic
   rotate: false
-  xy: 2, 126
+  xy: 2, 166
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 one
   rotate: false
-  xy: 2, 24
+  xy: 2, 64
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
-tile
+thing
   rotate: false
   xy: 2, 2
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+tile
+  rotate: false
+  xy: 104, 144
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 two
   rotate: false
-  xy: 260, 282
+  xy: 260, 322
   size: 100, 100
   orig: 100, 100
   offset: 0, 0

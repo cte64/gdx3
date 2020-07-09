@@ -94,6 +94,7 @@ public class Graphics implements Disposable {
         spriteMap = new HashMap<String, Sprite>();
         spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
         addSprite("tile");
+        addSprite("thing");
     }
 
     public Graphics()  {

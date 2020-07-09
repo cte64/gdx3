@@ -2,6 +2,7 @@ package gameCode.Infastructure;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 import gameCode.Utilities.StringUtils;
 
 
@@ -35,7 +36,7 @@ public class FileSystem {
 
     public static void init() {
 
-        gameSubDirectory = "";
+        gameSubDirectory = "cube";
 
         //outer ring
         outerLeft = 0;
@@ -136,9 +137,47 @@ public class FileSystem {
         return false;
     }
 
-    public static void writeChunk(int xIndex, int yIndex, boolean deleteCurrent) {}
+    public static void writeChunk(int xIndex, int yIndex, boolean deleteCurrent) {
 
-    public static void readChunk(int xIndex, int yIndex) {}
+    }
+
+    public static void readChunk(int xIndex, int yIndex) {
+
+
+        //this is just a test
+        
+        if(xIndex % 2 == 0) return;
+
+        int leftEdge = xIndex * World.tilesPerChunk;
+        int rightEdge = leftEdge + World.tilesPerChunk;
+        int topEdge = yIndex * World.tilesPerChunk;
+        int bottomEdge = topEdge + World.tilesPerChunk;
+
+        for(int y = topEdge; y < bottomEdge; y++) {
+        for(int x = leftEdge; x < rightEdge; x++) {
+
+            Chunk chunkPtr = World.getChunk(x, y);
+            if(chunkPtr == null) continue;
+
+            StringUtils newName = new StringUtils("[type: terrain][subType: terrainBlock][xPos: ][yPos: ]");
+            StringUtils.setField(newName, "xPos", StringUtils.toString(x));
+            StringUtils.setField(newName, "yPos", StringUtils.toString(y));
+            chunkPtr.setName(newName.data);
+
+            Pixmap image = new Pixmap(60, 60, Pixmap.Format.RGB888);
+
+            for(int j = 0; j < 60; j++) {
+                for(int i = 0; i < 60; i++) {
+                    image.drawPixel(j, i, 1345);
+                }
+            }
+
+
+            chunkPtr.setImage(image);
+
+        }}
+
+    }
 
     public static void updateChunks() {
 
@@ -154,8 +193,11 @@ public class FileSystem {
             }
         }
 
+
         for(int y = 0; y < World.getNumChunks(); y++) {
         for(int x = 0; x < World.getNumChunks(); x++) {
+
+
 
             if(getUpdate(x, y, 1) && !getUpdate(x, y, 2)) {
                 setUpdate(x, y, 2, true);

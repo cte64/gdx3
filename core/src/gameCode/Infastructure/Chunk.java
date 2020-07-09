@@ -15,6 +15,7 @@ public class Chunk {
         name = "";
         active = false;
         image = new Pixmap(0, 0, Pixmap.Format.RGB888);
+        serializedObjects = new ArrayList<String>();
     }
 
     public boolean isImageEmpty() {
@@ -52,7 +53,7 @@ public class Chunk {
     public void setActive(boolean newActive) { active = newActive; }
     public void setImage(Pixmap newImage) { image = newImage; }
     public void deleteImage() { image.dispose(); }
-    public void addObject(String newObj) { /*serializedObjects.add(newObj); */ }
+    public void addObject(String newObj) { serializedObjects.add(newObj); }
 
 
     //ADD THESE LATER ========================================

@@ -36,12 +36,21 @@ public class Collision {
         for(int t = 0; t<numMoveTicks; t++) {
 
 
+
+
             FileSystem.update();
 
+            //System.out.println("file");
             World.setEdge();
+
+            //System.out.println("edge");
             //World.cleanUp();
-            //World.loadEntities();
+            World.loadEntities();
+
+            //System.out.println("clean");
             World.update();
+
+            //System.out.println("update");
             /*
 
             if (world.currentState == "paused") continue;
