@@ -21,22 +21,11 @@ public class FileSystem {
     public static int middleLeft, middleRight, middleTop, middleBottom;  //middle ring
     public static int centerLeft, centerRight, centerTop, centerBottom;  //center ring
 
-    private static int cter = 0;
-
-    private static void print(String message) {
-        cter++;
-        if(cter > 10) {
-            System.out.println(message);
-            cter = 0;
-        }
-    }
-
-
     private FileSystem() {}
 
     public static void init() {
 
-        gameSubDirectory = "cube";
+        gameSubDirectory = "cube/";
 
         //outer ring
         outerLeft = 0;
@@ -66,7 +55,6 @@ public class FileSystem {
             chunkUpdate2.add(false);
         }}
     }
-
     public static void center(int xIndex, int yIndex) {
 
         //center ======================================================================
@@ -102,7 +90,6 @@ public class FileSystem {
         outerTop = MathUtils.clamp(outerTop, 0, World.getNumCells() - 5);
         outerBottom = MathUtils.clamp(outerBottom, 5, World.getNumCells());
     }
-
     public static void setUpdate(int x, int y, int select, boolean newVal) {
         if (select == 1) {
             if (chunkUpdate1.size() == 0) return;
@@ -117,7 +104,6 @@ public class FileSystem {
             chunkUpdate2.set(index, newVal);
         }
     }
-
     public static boolean getUpdate(int x, int y, int select) {
 
         if (select == 1) {
@@ -136,17 +122,26 @@ public class FileSystem {
 
         return false;
     }
-
     public static void writeChunk(int xIndex, int yIndex, boolean deleteCurrent) {
 
     }
-
     public static void readChunk(int xIndex, int yIndex) {
 
 
-        //this is just a test
+        String chunkFileName = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
+        String entFileName = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
         
-        if(xIndex % 2 == 0) return;
+        FileHandle chunkFile = Gdx.files.local(chunkFileName);
+        FileHandle entFile = Gdx.files.local(entFileName);
+
+        if(!chunkFile.exists()) { System.out.println("File: " + chunkFileName + " does not exist!"); return; }
+        if(!entFile.exists()) { System.out.println("File: " + entFileName + " does not exist!"); return; }
+
+        String tileStr = chunkFile.readString();
+        String entStr = entFile.readString();
+
+        String tileStrArr[] = tileStr.split("\n");
+        String entStrArr[] = entStr.split("\n");
 
         int leftEdge = xIndex * World.tilesPerChunk;
         int rightEdge = leftEdge + World.tilesPerChunk;
@@ -164,21 +159,53 @@ public class FileSystem {
             StringUtils.setField(newName, "yPos", StringUtils.toString(y));
             chunkPtr.setName(newName.data);
 
-            Pixmap image = new Pixmap(60, 60, Pixmap.Format.RGB888);
-
-            for(int j = 0; j < 60; j++) {
-                for(int i = 0; i < 60; i++) {
-                    image.drawPixel(j, i, 1345);
-                }
+            int index = (y - topEdge) * World.tilesPerChunk + (x - leftEdge);
+            if(index < tileStrArr.length) {
+                System.out.println(newName.data);
+                Pixmap image = stringToImage( tileStrArr[index] );
+                chunkPtr.setImage( image );
+                chunkPtr.setActive(false);
             }
-
-
-            chunkPtr.setImage(image);
-
         }}
 
-    }
+        for(String str: entStrArr) {
+            if(str.length() < 5) continue;
 
+            String xStr = StringUtils.getField(str, "xPos");
+            String yStr = StringUtils.getField(str, "yPos");
+
+            int xPos = StringUtils.stringToInt(xStr) / World.tileSize;
+            int yPos = StringUtils.stringToInt(yStr) / World.tileSize;
+
+            xPos = MathUtils.clamp(xPos, 0, World.getNumBlocks());
+            yPos = MathUtils.clamp(yPos, 0, World.getNumBlocks());
+
+            Chunk chunkPtr = World.getChunk(xPos, yPos);
+            if(chunkPtr != null) chunkPtr.addObject(str);
+        }
+    }
+    private static Pixmap stringToImage(String str) {
+
+
+
+        Pixmap pix = new Pixmap(60, 60, Pixmap.Format.RGB888);
+        for(int j = 0; j < 60; j++) {
+            for(int i = 0; i < 60; i++) {
+
+                if(i == j)
+                    pix.drawPixel(j, i, 16711935);
+                else
+                    pix.drawPixel(j, i, 11711935);
+            }
+        }
+
+        return pix;
+
+
+
+
+
+    }
     public static void updateChunks() {
 
         //first set all the first one to false
@@ -210,7 +237,6 @@ public class FileSystem {
             }
         }}
     }
-
     public static void update() {
 
         Entity hero = World.getCamera();
@@ -227,18 +253,13 @@ public class FileSystem {
             updateChunks();
         }
     }
-
     public static String getGameSaveDirectory() { return gameSaveDirectory; }
-
     public static String getGameSubDirectory() { return gameSubDirectory;  }
-
     public static void setGameSubDirectory(String newDir) { gameSubDirectory = newDir + "/"; }
-
     public static void deleteDirectory(String directory) {
         FileHandle file = Gdx.files.local(gameSaveDirectory + directory);
         if(file.exists() && file.isDirectory()) file.deleteDirectory();
     }
-
     public static void setFile(StringUtils filename, StringUtils data) {
 
         String type = StringUtils.getField(filename, "type");
@@ -261,7 +282,6 @@ public class FileSystem {
         FileHandle file = Gdx.files.local(name);
         file.writeString(data.data, false);
     }
-
     public static void getFile(StringUtils filename, StringUtils data) {
 
         String type = StringUtils.getField(filename, "type");
@@ -289,7 +309,6 @@ public class FileSystem {
 
         data.data = file.readString();
     }
-
     public static void createGameDirectory(String newDir) {
 
         gameSubDirectory = newDir + "/";
@@ -325,11 +344,7 @@ public class FileSystem {
     /*
     void imageToString(sf::Image* image, std::string& dataString);
     sf::Image stringToImage(std::string& dataString);
-
     void writeChunk(int xIndex, int yIndex, bool deleteCurrent);
-    void readChunk(int xIndex, int yIndex);
-
-    void createGameDirectory(std::string newDir);
     void saveCurrentChunks();
      */
 }

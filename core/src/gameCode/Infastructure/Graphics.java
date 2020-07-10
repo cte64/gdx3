@@ -1,9 +1,7 @@
 package gameCode.Infastructure;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -11,20 +9,32 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import gameCode.Infastructure.World;
+import gameCode.Utilities.StringUtils;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Graphics implements Disposable {
 
     private static TextureAtlas spriteAtlas;
+    private static TextureAtlas tileAtlas;
+    private static ArrayList<String> tileIDs;
     private static SpriteBatch batch;
     private static OrthographicCamera camera;
     public static CameraHelper cameraHelper;
     private static ShapeRenderer shapeRenderer;
     private static HashMap<String, Sprite> spriteMap;
 
-    public static void availCoords() {
+    public static void returnCoord(String coord) {
+        tileIDs.add(coord);
+    }
 
+    public static String getCoord() {
+        if(tileIDs.size() == 0) return "";
+        String retVal = tileIDs.get(0);
+        tileIDs.remove(0);
+        return retVal;
     }
 
     private static void setCamera1() {
@@ -82,6 +92,7 @@ public class Graphics implements Disposable {
 
         cameraHelper = new CameraHelper();
         shapeRenderer = new ShapeRenderer();
+        tileIDs = new ArrayList<String>();
 
 
         //Set up the camera ======================================================================
@@ -93,8 +104,33 @@ public class Graphics implements Disposable {
         batch = new SpriteBatch();
         spriteMap = new HashMap<String, Sprite>();
         spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
+        tileAtlas = new TextureAtlas();
         addSprite("tile");
         addSprite("thing");
+
+        //set up the tile atlas ==================================================================
+        int numTiles = 50;
+        int padding = 1;
+        for(int y = 0; y < numTiles; y++) {
+        for(int x = 0; x < numTiles; x++) {
+            int xPos = padding + x*(padding + World.tileSize);
+            int yPos = padding + y*(padding + World.tileSize);
+            String name = "tileId: " + StringUtils.toString(x) + "." + StringUtils.toString(y);
+            Texture newTexture = new Texture(World.tileSize, World.tileSize, Pixmap.Format.RGB888);
+            tileAtlas.addRegion(name, newTexture, xPos, yPos, World.tileSize, World.tileSize);
+            TextureRegion region = tileAtlas.findRegion(name);
+            Sprite sprite = new Sprite(region);
+            spriteMap.put(name, sprite);
+            tileIDs.add(name);
+        }}
+    }
+
+    public static void updateSprite(String name, Pixmap image) {
+        TextureRegion region = tileAtlas.findRegion(name);
+        Texture newTexture = new Texture(image);
+        region.setTexture(newTexture);
+        Sprite newSprite = new Sprite( tileAtlas.findRegion(name));
+        spriteMap.get(name).set(newSprite);
     }
 
     public Graphics()  {
@@ -103,7 +139,7 @@ public class Graphics implements Disposable {
     private static void addSprite(String filename) {
         TextureRegion region = spriteAtlas.findRegion(filename);
         Sprite sprite = new Sprite(region);
-        Sprite put = spriteMap.put(filename, sprite);
+        spriteMap.put(filename, sprite);
     }
 
     public static void update(float deltaTime) {

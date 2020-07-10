@@ -40,8 +40,8 @@ public class World {
     private static int numCells;
 
     //ViewPort parameters =========================================================================
-    private static int viewPortWidth = 1200;
-    private static int viewPortHeight = 800;
+    private static int viewPortWidth = 1000;
+    private static int viewPortHeight = 600;
 
     //Time between frame ==========================================================================
     private static float deltaTime = 0.0f;
@@ -242,7 +242,7 @@ public class World {
         for(Entity ent: entitiesToBeDeleted) {
             if(ent == null) continue;
 
-            if( StringUtils.getField(ent.entityName, "type") == "terrain") Graphics.availCoords();
+            if( StringUtils.getField(ent.entityName, "type") == "terrain") Graphics.returnCoord(ent.spriteName);
             ent.markForDeletion = true;
 
             entByName.remove(ent);
@@ -323,12 +323,9 @@ public class World {
     }
     public static void loadEntities() {
 
-
         for(FrameStruct frame: frames) {
 
             if(frame.ent == null) continue;
-
-
 
             for (int y = frame.top; y < frame.bottom; y++) {
             for (int x = frame.left; x < frame.right; x++) {
@@ -343,35 +340,22 @@ public class World {
                 Chunk chunkPtr = getChunk(tX, tY);
                 if(chunkPtr == null) continue;
 
-
                 if(!chunkPtr.getActive()) {
-
-
-
-
 
                     if(!chunkPtr.isImageEmpty() || chunkPtr.getObjects().size() > 0) {
                         String ent_name = chunkPtr.getName();
 
-
-
                         //do the terrain thing =================================
                         if(getEntByName(ent_name) == null) {
-                            Entity ent = new Entity();//MakeEntity.getEntity(ent_name, chunkPtr.getImage());
+                            Entity ent = MakeEntity.getEntity(ent_name, chunkPtr.getImage());
                             ent.entityName = ent_name;
                             ent.x_pos = tX*tileSize;
                             ent.y_pos = tY*tileSize;
                             ent.bitMapX = tX;
                             ent.bitMapY = tY;
-                            ent.spriteName = "thing";
                             entitiesToBeAdded.add(ent);
-                            System.out.println(ent.x_pos + " [] " + ent.y_pos);
                         }
 
-
-
-
-                    /*
                         //do the entities ====================================================
                         while (chunkPtr.getObjects().size() > 0) {
 
@@ -394,7 +378,6 @@ public class World {
                             chunkPtr.getObjects().remove( chunkPtr.getObjects().size() - 1 );
                         }
 
-                    */
                         chunkPtr.setActive(true);
                     }
                 }
