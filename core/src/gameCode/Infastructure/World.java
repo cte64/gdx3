@@ -345,7 +345,7 @@ public class World {
                     if(!chunkPtr.isImageEmpty() || chunkPtr.getObjects().size() > 0) {
                         String ent_name = chunkPtr.getName();
 
-                        //do the terrain thing =================================
+                        //do the terrain thing ==================================================
                         if(getEntByName(ent_name) == null) {
                             Entity ent = MakeEntity.getEntity(ent_name, chunkPtr.getImage());
                             ent.entityName = ent_name;
@@ -356,7 +356,7 @@ public class World {
                             entitiesToBeAdded.add(ent);
                         }
 
-                        //do the entities ====================================================
+                        //do the entities =======================================================
                         while (chunkPtr.getObjects().size() > 0) {
 
                             String entName = chunkPtr.getObjects().get( chunkPtr.getObjects().size() - 1 );
@@ -370,7 +370,7 @@ public class World {
                             xPos = MathUtils.clamp(xPos, 0, numPixels - 1);
                             yPos = MathUtils.clamp(yPos, 0, numPixels - 1);
 
-                            Entity ent = MakeEntity.getEntity(entName, new Pixmap(0, 0, Pixmap.Format.RGB888) );
+                            Entity ent = MakeEntity.getEntity(entName);
                             ent.x_pos = xPos;
                             ent.y_pos = yPos;
                             entitiesToBeAdded.add(ent);

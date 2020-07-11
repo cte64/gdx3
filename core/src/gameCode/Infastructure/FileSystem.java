@@ -3,8 +3,9 @@ package gameCode.Infastructure;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
+import gameCode.Utilities.Pixel;
 import gameCode.Utilities.StringUtils;
-
+import gameCode.Utilities.Byte;
 
 import gameCode.Utilities.MathUtils;
 
@@ -143,6 +144,9 @@ public class FileSystem {
         String tileStrArr[] = tileStr.split("\n");
         String entStrArr[] = entStr.split("\n");
 
+        Byte tileByteArr[] = new Byte[tileStrArr.length];
+        for(int x = 0; x < tileStrArr.length; x++) { tileByteArr[x] = new Byte( tileStrArr[x] ); }
+
         int leftEdge = xIndex * World.tilesPerChunk;
         int rightEdge = leftEdge + World.tilesPerChunk;
         int topEdge = yIndex * World.tilesPerChunk;
@@ -161,8 +165,7 @@ public class FileSystem {
 
             int index = (y - topEdge) * World.tilesPerChunk + (x - leftEdge);
             if(index < tileStrArr.length) {
-                System.out.println(newName.data);
-                Pixmap image = stringToImage( tileStrArr[index] );
+                Pixmap image = Pixel.stringToImage(tileByteArr[index]);
                 chunkPtr.setImage( image );
                 chunkPtr.setActive(false);
             }
@@ -183,6 +186,7 @@ public class FileSystem {
             Chunk chunkPtr = World.getChunk(xPos, yPos);
             if(chunkPtr != null) chunkPtr.addObject(str);
         }
+
     }
     private static Pixmap stringToImage(String str) {
 
@@ -340,6 +344,9 @@ public class FileSystem {
             setFile(entName, entStr);
         }}
     }
+
+
+
 
     /*
     void imageToString(sf::Image* image, std::string& dataString);

@@ -26,29 +26,12 @@ public class State {
         Entity ent = new Entity();
         ent.x_pos = 100;
         ent.y_pos = 100;
-        ent.spriteName = "tileId: 0.0";
+        ent.spriteName = "tile";
         ent.entityName = "hero";
         ent.addComponent(new HeroInput());
         World.entitiesToBeAdded.add(ent);
         World.setCamera(ent);
         World.addSiftingFrame(ent, 0, 0);
-
-
-        Pixmap pix = new Pixmap(60, 60, Pixmap.Format.RGB888);
-        for(int j = 0; j < 60; j++) {
-            for(int i = 0; i < 60; i++) {
-
-                if(i == j)
-                    pix.drawPixel(j, i, 16711935);
-                else
-                    pix.drawPixel(j, i, 11711935);
-            }
-        }
-
-
-
-
-        Graphics.updateSprite("tileId: 0.0", pix);
     }
 
     private State() {}

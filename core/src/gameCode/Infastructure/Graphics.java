@@ -94,7 +94,6 @@ public class Graphics implements Disposable {
         shapeRenderer = new ShapeRenderer();
         tileIDs = new ArrayList<String>();
 
-
         //Set up the camera ======================================================================
         camera = new OrthographicCamera(World.getViewPortWidth(), World.getViewPortHeight());
         camera.position.set(0, 0, 0);
