@@ -1,11 +1,20 @@
 package gameCode.Utilities;
 
+import java.util.ArrayList;
+
 public class StringUtils {
 
 
     public String data;
-    public StringUtils(String newData) { data = newData; }
+    public String[] dataArr;
 
+    public StringUtils(String newData) {
+        data = newData;
+    }
+
+    public StringUtils(String newData, String splitChar) {
+        dataArr = newData.split(splitChar);
+    }
 
     public static String toString(int num) { return Integer.toString(num); }
 
@@ -79,6 +88,11 @@ public class StringUtils {
         name.data = name.data.replace(replaceThis, value);
     }
 
+    public static String setField(String name, String field, String value) {
+        StringUtils newString = new StringUtils(name);
+        setField(newString, field, value);
+        return newString.data;
+    }
 
 
 }

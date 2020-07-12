@@ -25,6 +25,7 @@ import gameCode.Infastructure.Collision;
 import gameCode.Infastructure.Entity;
 import gameCode.Infastructure.FileSystem;
 import gameCode.Infastructure.World;
+import gameCode.Utilities.Pixel;
 import gameCode.Utilities.StringUtils;
 
 
@@ -53,6 +54,9 @@ public class myGame extends ApplicationAdapter {
 
 		//Initialize Game Objects
 		Graphics.init();
+
+		//Initialize the pixel class
+		Pixel.init();
 
 		//DO THIS JUST FOR NOW =========================
 		World.init();

@@ -39,3 +39,16 @@ two
   orig: 100, 100
   offset: 0, 0
   index: -1
+
+atlas2.png
+size: 64,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+terrainTextures/clayTexture
+  rotate: false
+  xy: 2, 2
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1

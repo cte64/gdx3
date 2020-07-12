@@ -26,6 +26,8 @@ public class Graphics implements Disposable {
     private static ShapeRenderer shapeRenderer;
     private static HashMap<String, Sprite> spriteMap;
 
+
+
     public static void returnCoord(String coord) {
         tileIDs.add(coord);
     }

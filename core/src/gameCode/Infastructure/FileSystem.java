@@ -128,7 +128,6 @@ public class FileSystem {
     }
     public static void readChunk(int xIndex, int yIndex) {
 
-
         String chunkFileName = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
         String entFileName = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
         
@@ -141,11 +140,11 @@ public class FileSystem {
         String tileStr = chunkFile.readString();
         String entStr = entFile.readString();
 
-        String tileStrArr[] = tileStr.split("\n");
-        String entStrArr[] = entStr.split("\n");
+        StringUtils tileStrArr = new StringUtils(tileStr, "\n");
+        StringUtils entStrArr = new StringUtils(entStr, "\n");
 
-        Byte tileByteArr[] = new Byte[tileStrArr.length];
-        for(int x = 0; x < tileStrArr.length; x++) { tileByteArr[x] = new Byte( tileStrArr[x] ); }
+        Byte tileByteArr[] = new Byte[tileStrArr.dataArr.length];
+        for(int x = 0; x < tileStrArr.dataArr.length; x++) { tileByteArr[x] = new Byte( tileStrArr.dataArr[x] ); }
 
         int leftEdge = xIndex * World.tilesPerChunk;
         int rightEdge = leftEdge + World.tilesPerChunk;
@@ -164,14 +163,15 @@ public class FileSystem {
             chunkPtr.setName(newName.data);
 
             int index = (y - topEdge) * World.tilesPerChunk + (x - leftEdge);
-            if(index < tileStrArr.length) {
+            if(index < tileStrArr.dataArr.length) {
                 Pixmap image = Pixel.stringToImage(tileByteArr[index]);
                 chunkPtr.setImage( image );
                 chunkPtr.setActive(false);
             }
         }}
 
-        for(String str: entStrArr) {
+        for(String str: entStrArr.dataArr) {
+
             if(str.length() < 5) continue;
 
             String xStr = StringUtils.getField(str, "xPos");
@@ -186,7 +186,6 @@ public class FileSystem {
             Chunk chunkPtr = World.getChunk(xPos, yPos);
             if(chunkPtr != null) chunkPtr.addObject(str);
         }
-
     }
     private static Pixmap stringToImage(String str) {
 

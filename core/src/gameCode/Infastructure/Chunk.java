@@ -10,14 +10,12 @@ public class Chunk {
     private boolean active;
     private Pixmap image;
     private ArrayList<String> serializedObjects;
-    private Byte terrainData;
 
     public Chunk() {
         name = "";
         active = false;
         image = new Pixmap(0, 0, Pixmap.Format.RGB888);
         serializedObjects = new ArrayList<String>();
-        terrainData = new Byte("");
     }
 
     public boolean isImageEmpty() {
