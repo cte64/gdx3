@@ -17,7 +17,7 @@ public class MathUtils {
         return mag;
     }
 
-    public float angleBetweenCells(float x1, float y1, float x2, float y2) {
+    public static float angleBetweenCells(float x1, float y1, float x2, float y2) {
         //remember that y increases in the downward direction and decreases in the up direction
         y1 *= -1.0;
         y2 *= -1.0;

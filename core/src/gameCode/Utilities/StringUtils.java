@@ -4,16 +4,33 @@ import java.util.ArrayList;
 
 public class StringUtils {
 
-
     public String data;
-    public String[] dataArr;
 
     public StringUtils(String newData) {
         data = newData;
     }
 
-    public StringUtils(String newData, String splitChar) {
-        dataArr = newData.split(splitChar);
+
+    public static ArrayList<StringUtils> splitToArr(String data, String splitChar) {
+        ArrayList<StringUtils> retVal = new ArrayList<StringUtils>();
+        String[] dataArr = data.split(splitChar);
+        for(String str: dataArr) { retVal.add(new StringUtils(str)); }
+        return retVal;
+    }
+
+
+    public static ArrayList<StringUtils> getBeforeChar(String data, char splitChar) {
+        ArrayList<StringUtils> retVal = new ArrayList<StringUtils>();
+        String newStr = "";
+        for(int x = 0; x < data.length(); x++) {
+            char c = data.charAt(x);
+            if(c == splitChar) {
+                retVal.add(new StringUtils(newStr));
+                newStr = "";
+            }
+            else newStr += c;
+        }
+        return retVal;
     }
 
     public static String toString(int num) { return Integer.toString(num); }
@@ -72,9 +89,14 @@ public class StringUtils {
             return;
         }
 
+
+
+
         int startIndex = index;
         int endIndex = startIndex;
         int x = index;
+
+
 
         while (x < name.data.length()) {
             if (name.data.charAt(x) == ':') startIndex = x;
@@ -84,8 +106,9 @@ public class StringUtils {
             } x++;
         }
 
-        String replaceThis = name.data.substring(startIndex + 2, endIndex);
-        name.data = name.data.replace(replaceThis, value);
+        String left = name.data.substring(0, startIndex + 2);
+        String right = name.data.substring(endIndex, name.data.length());
+        name.data = left + value + right;
     }
 
     public static String setField(String name, String field, String value) {

@@ -6,6 +6,7 @@ import gameCode.Infastructure.World;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Pixel;
 import gameCode.Utilities.StringUtils;
+import gameCode.Terrain.Perlin;
 
 import java.security.KeyStore;
 import java.util.ArrayList;
@@ -13,8 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MakeWorld {
-
-
 
     private int lowestPoint;
     private int layerC;
@@ -29,7 +28,7 @@ public class MakeWorld {
 
     private void cleanUpRims() {
 
-        byte emptyChar = Pixel.getCharFromType("empty");
+        char emptyChar = Pixel.getCharFromType("empty");
 
         //ASSIGN EACH COORDINATE TO ITS APPROPRIATE CHUNKGRID INDEX ============
         for (Map.Entry<String, ArrayList<Vector2>> rim: rims.entrySet()) {
@@ -90,8 +89,8 @@ public class MakeWorld {
 
     private void addPixelsToGame(ArrayList<Vector2> coords, String type) {
 
-        byte terrainChar = Pixel.getCharFromType(type);
-        byte emptyChar = Pixel.getCharFromType("empty");
+        char terrainChar = Pixel.getCharFromType(type);
+        char emptyChar = Pixel.getCharFromType("empty");
 
         //CREATE A CHUNKGRID ===================================================
         ArrayList< ArrayList<Vector2> > chunkGrid = new ArrayList< ArrayList<Vector2> >();
@@ -123,8 +122,7 @@ public class MakeWorld {
             StringUtils.setField(fileName, "yChunk", StringUtils.toString(yChunk));
 
             FileSystem.getFile(fileName, data);
-
-            String[] tiles = data.data.split("\n");
+            ArrayList<StringUtils> tiles = StringUtils.splitToArr(data.data, "\n");
 
             int index = yChunk * World.getNumChunks() + xChunk;
             index = MathUtils.clamp(index, 0, chunkGrid.size() - 1);
@@ -141,44 +139,127 @@ public class MakeWorld {
                 int yPixel = yPosPixel % World.tileSize;
 
                 int tileIndex = (yTile * World.tilesPerChunk) + xTile;
-                tileIndex = MathUtils.clamp(tileIndex, 0, tiles.length - 1);
+                tileIndex = MathUtils.clamp(tileIndex, 0, tiles.size() - 1);
 
-                if (tiles[tileIndex].length() > 0) {
+                if (tiles.get(tileIndex).data.length() > 0) {
 
                     int pixIndex = yPixel * World.tileSize + xPixel;
 
-        /*
-                    if ((tiles[tileIndex].length() == 1 && tiles[tileIndex].charAt(0) != emptyChar))
-                        Pixel.insertPixel(tiles[tileIndex], xPixel, yPixel, terrainChar);
+                    if ((tiles.get(tileIndex).data.length() == 1 && tiles.get(tileIndex).data.charAt(0) != emptyChar))
+                        Pixel.insertPixel(tiles.get(tileIndex), xPixel, yPixel, terrainChar);
 
-
-
-                    else if (pixIndex < tiles[tileIndex].size())
-                        pix.insertPixel(tiles[tileIndex], xPixel, yPixel, terrainChar);
-         */
+                    else if (pixIndex < tiles.get(tileIndex).data.length())
+                        Pixel.insertPixel(tiles.get(tileIndex), xPixel, yPixel, terrainChar);
                 }
-
             }
 
+            StringUtils updatedChunk = new StringUtils("");
 
-            /*
-            std::string updatedChunk = "";
-            for (int x = 0; x < tiles.size(); x++) updatedChunk += tiles[x] + "\n";
-
-            std::string name = "[type: chunk][xChunk: " + st.toString(xChunk) + "][yChunk: " + st.toString(yChunk) + "]";
-            world.fileThing.setFile(name, updatedChunk);
-         */
+            for (int x = 0; x < tiles.size(); x++) updatedChunk.data += tiles.get(x).data + "\n";
+            StringUtils name = new StringUtils( "[type: chunk][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
+            FileSystem.setFile(name, updatedChunk);
         }}
 
     }
 
-    public MakeWorld() {
-        rims = new HashMap< String, ArrayList<Vector2> >();
+    private void fillTerrain(ArrayList<Float> newTotal, String rimName) {
+
+        if(rimName != "") rims.put(rimName, new ArrayList<Vector2>());
+
+        int centerX = World.getNumPixels()/2;
+        int centerY = World.getNumPixels()/2;
+
+        for(int yChunk = 0; yChunk < World.getNumChunks(); yChunk++) {
+        for(int xChunk = 0; xChunk < World.getNumChunks(); xChunk++) {
+
+            StringUtils data = new StringUtils("");
+            StringUtils fileName = new StringUtils("[type: chunk][xChunk: ][yChunk: ]");
+            StringUtils.setField(fileName, "xChunk", StringUtils.toString(xChunk));
+            StringUtils.setField(fileName, "yChunk", StringUtils.toString(yChunk));
+            FileSystem.getFile(fileName, data);
+
+            ArrayList<StringUtils> tiles = StringUtils.getBeforeChar(data.data, '\n');
+
+            for(int yTile = 0; yTile < World.tilesPerChunk; yTile++) {
+            for(int xTile = 0; xTile < World.tilesPerChunk; xTile++) {
+
+                int yPos = (yChunk * World.tilesPerChunk * World.tileSize) + (yTile * World.tileSize);
+                int xPos = (xChunk * World.tilesPerChunk * World.tileSize) + (xTile * World.tileSize);
+
+                int mTL = (int)MathUtils.mag(centerX, centerY, xPos, yPos);
+                int mTR = (int)MathUtils.mag(centerX, centerY, xPos + World.tileSize, yPos);
+                int mBL = (int)MathUtils.mag(centerX, centerY, xPos, yPos + World.tileSize);
+                int mBR = (int)MathUtils.mag(centerX, centerY, xPos + World.tileSize, yPos + World.tileSize);
+
+                int tileIndex = (yTile * World.tilesPerChunk) + xTile;
+                tileIndex = MathUtils.clamp(tileIndex, 0, tiles.size() - 1);
+
+                int highestPoint = lowestPoint + stretch;
+                int chunkPoint = lowestPoint - 60;
+
+                if( mTL < chunkPoint && mTR < chunkPoint && mBL < chunkPoint && mBR < chunkPoint ) {
+                    tiles.set(tileIndex, new StringUtils("" + terrainType));
+                }
+
+                if( (mTL <= highestPoint && mTL >= chunkPoint) || (mTR <= highestPoint && mTR >= chunkPoint) ||
+                         (mBL <= highestPoint && mBL >= chunkPoint) || (mBR <= highestPoint && mBR >= chunkPoint)) {
+
+                    for(int yPixel = 0; yPixel < World.tileSize; yPixel++) {
+                    for(int xPixel = 0; xPixel < World.tileSize; xPixel++) {
+
+                        int yPix = (yChunk * World.tilesPerChunk * World.tileSize) + (yTile * World.tileSize) + yPixel;
+                        int xPix = (xChunk * World.tilesPerChunk * World.tileSize) + (xTile * World.tileSize) + xPixel;
+                        int pixelIndex = yPixel * World.tileSize + xPixel;
+
+                        int pixMag = (int)MathUtils.mag(centerX, centerY, xPix, yPix);
+                        float angle = MathUtils.angleBetweenCells(centerX, centerY, xPix, yPix);
+                        int adjX = (int)((angle / 360.0)*layerC);
+
+                        //capture the outermost pixel =======================================================================
+                        if (rims.containsKey(rimName) && pixMag == newTotal.get(adjX).intValue())
+                            rims.get(rimName).add(new Vector2(xPix, yPix));
+
+                        char pix = (char)0;
+                        if(pixMag < lowestPoint) pix = terrainType;
+                        else if( pixMag < newTotal.get(adjX)) pix = terrainType;
+                        else {
+                            if(tiles.get(tileIndex).data.length() == 1) pix = tiles.get(tileIndex).data.charAt(0);
+                            if(tiles.get(tileIndex).data.length() == World.tileSize * World.tileSize) pix = tiles.get(tileIndex).data.charAt(pixelIndex);
+                        }
+                        Pixel.insertPixel(tiles.get(tileIndex), xPixel, yPixel, pix);
+                    }}
+
+                }
+                tiles.get(tileIndex).data += "\n";
+            }}
+
+            StringUtils updatedChunk = new StringUtils("");
+            for(int x = 0; x < tiles.size(); x++) updatedChunk.data += tiles.get(x).data;
+            StringUtils name = new StringUtils("[type: chunk][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
+            FileSystem.setFile(name, updatedChunk);
+        }}
     }
 
+    public MakeWorld(int tRadius) {
+        rims = new HashMap< String, ArrayList<Vector2> >();
 
-    void fillTerrain(ArrayList<Float> newTotal, String rimName){}
-    void makeLayer(int newLowest, int newStretch, int newOctaves, String newType, boolean newFillIt, String rimName){}
+        //MAKE THE SOLID LAYERS =====================================
+        makeLayer(tRadius, 100, 10, "dirt", true, "[name: outer]");
+    }
+
+    void makeLayer(int newLowest, int newStretch, int newOctaves, String newType, boolean newFillIt, String rimName){
+
+        lowestPoint = newLowest;
+        stretch = newStretch;
+        fillIt = newFillIt;
+        layerC = (int)((lowestPoint + stretch) * 2.0f * MathUtils.PI);
+        terrainType = Pixel.getCharFromType(newType);
+
+        ArrayList<Float> newTotal = new ArrayList<Float>();
+        Perlin perlin = new Perlin(newLowest, layerC, newOctaves, newStretch, newTotal);
+        fillTerrain(newTotal, rimName);
+    }
+
     void makeMap(String directory, int numChunks, int tRadius, StringUtils message, StringUtils loadingBar) {}
     int getMinDepth() { return minDepth; }
 }

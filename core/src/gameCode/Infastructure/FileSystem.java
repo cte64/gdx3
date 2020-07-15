@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import gameCode.Utilities.Pixel;
 import gameCode.Utilities.StringUtils;
-import gameCode.Utilities.Byte;
 
 import gameCode.Utilities.MathUtils;
 
@@ -25,8 +24,6 @@ public class FileSystem {
     private FileSystem() {}
 
     public static void init() {
-
-        gameSubDirectory = "cube/";
 
         //outer ring
         outerLeft = 0;
@@ -140,11 +137,8 @@ public class FileSystem {
         String tileStr = chunkFile.readString();
         String entStr = entFile.readString();
 
-        StringUtils tileStrArr = new StringUtils(tileStr, "\n");
-        StringUtils entStrArr = new StringUtils(entStr, "\n");
-
-        Byte tileByteArr[] = new Byte[tileStrArr.dataArr.length];
-        for(int x = 0; x < tileStrArr.dataArr.length; x++) { tileByteArr[x] = new Byte( tileStrArr.dataArr[x] ); }
+        ArrayList<StringUtils> tileStrArr = StringUtils.splitToArr(tileStr, "\n");
+        ArrayList<StringUtils> entStrArr =  StringUtils.splitToArr(entStr, "\n");
 
         int leftEdge = xIndex * World.tilesPerChunk;
         int rightEdge = leftEdge + World.tilesPerChunk;
@@ -163,19 +157,19 @@ public class FileSystem {
             chunkPtr.setName(newName.data);
 
             int index = (y - topEdge) * World.tilesPerChunk + (x - leftEdge);
-            if(index < tileStrArr.dataArr.length) {
-                Pixmap image = Pixel.stringToImage(tileByteArr[index]);
+            if(index < tileStrArr.size()) {
+                Pixmap image = Pixel.stringToImage( tileStrArr.get(index) );
                 chunkPtr.setImage( image );
                 chunkPtr.setActive(false);
             }
         }}
 
-        for(String str: entStrArr.dataArr) {
+        for(StringUtils strUtil: entStrArr) {
 
-            if(str.length() < 5) continue;
+            if(strUtil.data.length() < 5) continue;
 
-            String xStr = StringUtils.getField(str, "xPos");
-            String yStr = StringUtils.getField(str, "yPos");
+            String xStr = StringUtils.getField(strUtil, "xPos");
+            String yStr = StringUtils.getField(strUtil, "yPos");
 
             int xPos = StringUtils.stringToInt(xStr) / World.tileSize;
             int yPos = StringUtils.stringToInt(yStr) / World.tileSize;
@@ -184,7 +178,7 @@ public class FileSystem {
             yPos = MathUtils.clamp(yPos, 0, World.getNumBlocks());
 
             Chunk chunkPtr = World.getChunk(xPos, yPos);
-            if(chunkPtr != null) chunkPtr.addObject(str);
+            if(chunkPtr != null) chunkPtr.addObject(strUtil.data);
         }
     }
     private static Pixmap stringToImage(String str) {

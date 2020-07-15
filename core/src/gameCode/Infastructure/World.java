@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
+import gameCode.Terrain.MakeWorld;
 import jdk.internal.net.http.common.Pair;
 
 import com.badlogic.gdx.Gdx;
@@ -147,6 +148,8 @@ public class World {
     public static void init() {
         currentState = "testGame";
         createWorld(10);
+        FileSystem.createGameDirectory("core");
+        MakeWorld makeWorld = new MakeWorld((int)(World.getNumChunks() * World.tileSize * 0.5 * 0.75));
     }
     public static void createWorld(int newChunks) {
 
