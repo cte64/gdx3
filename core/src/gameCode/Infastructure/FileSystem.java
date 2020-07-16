@@ -137,8 +137,8 @@ public class FileSystem {
         String tileStr = chunkFile.readString();
         String entStr = entFile.readString();
 
-        ArrayList<StringUtils> tileStrArr = StringUtils.splitToArr(tileStr, "\n");
-        ArrayList<StringUtils> entStrArr =  StringUtils.splitToArr(entStr, "\n");
+        ArrayList<StringUtils> tileStrArr = StringUtils.getBeforeChar(tileStr, '\n');
+        ArrayList<StringUtils> entStrArr =  StringUtils.getBeforeChar(entStr, '\n');
 
         int leftEdge = xIndex * World.tilesPerChunk;
         int rightEdge = leftEdge + World.tilesPerChunk;
@@ -157,7 +157,7 @@ public class FileSystem {
             chunkPtr.setName(newName.data);
 
             int index = (y - topEdge) * World.tilesPerChunk + (x - leftEdge);
-            if(index < tileStrArr.size()) {
+            if(index < tileStrArr.size() && tileStrArr.get(index).data.length() > 0) {
                 Pixmap image = Pixel.stringToImage( tileStrArr.get(index) );
                 chunkPtr.setImage( image );
                 chunkPtr.setActive(false);
@@ -181,28 +181,7 @@ public class FileSystem {
             if(chunkPtr != null) chunkPtr.addObject(strUtil.data);
         }
     }
-    private static Pixmap stringToImage(String str) {
 
-
-
-        Pixmap pix = new Pixmap(60, 60, Pixmap.Format.RGB888);
-        for(int j = 0; j < 60; j++) {
-            for(int i = 0; i < 60; i++) {
-
-                if(i == j)
-                    pix.drawPixel(j, i, 16711935);
-                else
-                    pix.drawPixel(j, i, 11711935);
-            }
-        }
-
-        return pix;
-
-
-
-
-
-    }
     public static void updateChunks() {
 
         //first set all the first one to false

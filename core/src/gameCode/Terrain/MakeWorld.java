@@ -87,6 +87,8 @@ public class MakeWorld {
         }
     }
 
+
+    /*
     private void addPixelsToGame(ArrayList<Vector2> coords, String type) {
 
         char terrainChar = Pixel.getCharFromType(type);
@@ -162,12 +164,18 @@ public class MakeWorld {
 
     }
 
+     */
+
     private void fillTerrain(ArrayList<Float> newTotal, String rimName) {
+
+
 
         if(rimName != "") rims.put(rimName, new ArrayList<Vector2>());
 
         int centerX = World.getNumPixels()/2;
         int centerY = World.getNumPixels()/2;
+
+        System.out.println(World.getNumPixels()/2);
 
         for(int yChunk = 0; yChunk < World.getNumChunks(); yChunk++) {
         for(int xChunk = 0; xChunk < World.getNumChunks(); xChunk++) {
@@ -197,29 +205,36 @@ public class MakeWorld {
                 int highestPoint = lowestPoint + stretch;
                 int chunkPoint = lowestPoint - 60;
 
+
+                /*
                 if( mTL < chunkPoint && mTR < chunkPoint && mBL < chunkPoint && mBR < chunkPoint ) {
                     tiles.set(tileIndex, new StringUtils("" + terrainType));
                 }
 
+
                 if( (mTL <= highestPoint && mTL >= chunkPoint) || (mTR <= highestPoint && mTR >= chunkPoint) ||
                          (mBL <= highestPoint && mBL >= chunkPoint) || (mBR <= highestPoint && mBR >= chunkPoint)) {
+
 
                     for(int yPixel = 0; yPixel < World.tileSize; yPixel++) {
                     for(int xPixel = 0; xPixel < World.tileSize; xPixel++) {
 
                         int yPix = (yChunk * World.tilesPerChunk * World.tileSize) + (yTile * World.tileSize) + yPixel;
                         int xPix = (xChunk * World.tilesPerChunk * World.tileSize) + (xTile * World.tileSize) + xPixel;
-                        int pixelIndex = yPixel * World.tileSize + xPixel;
+                        int pixelIndex = (yPixel * World.tileSize) + xPixel;
 
                         int pixMag = (int)MathUtils.mag(centerX, centerY, xPix, yPix);
                         float angle = MathUtils.angleBetweenCells(centerX, centerY, xPix, yPix);
                         int adjX = (int)((angle / 360.0)*layerC);
 
+
                         //capture the outermost pixel =======================================================================
                         if (rims.containsKey(rimName) && pixMag == newTotal.get(adjX).intValue())
                             rims.get(rimName).add(new Vector2(xPix, yPix));
 
-                        char pix = (char)0;
+                        char pix = Pixel.getCharFromType("empty");
+
+                        if(pixMag < 1000) pix = terrainType;
                         if(pixMag < lowestPoint) pix = terrainType;
                         else if( pixMag < newTotal.get(adjX)) pix = terrainType;
                         else {
@@ -230,21 +245,71 @@ public class MakeWorld {
                     }}
 
                 }
+
+                */
+
+
+                if( xChunk > 4  && xChunk < 6 && yChunk > 4 && yChunk < 6) {
+
+
+                    for (int yPixel = 0; yPixel < World.tileSize; yPixel++) {
+                        for (int xPixel = 0; xPixel < World.tileSize; xPixel++) {
+
+                            int yPix = (yChunk * World.tilesPerChunk * World.tileSize) + (yTile * World.tileSize) + yPixel;
+                            int xPix = (xChunk * World.tilesPerChunk * World.tileSize) + (xTile * World.tileSize) + xPixel;
+                            int pixelIndex = (yPixel * World.tileSize) + xPixel;
+
+                            int pixMag = (int) MathUtils.mag(centerX, centerY, xPix, yPix);
+                            float angle = MathUtils.angleBetweenCells(centerX, centerY, xPix, yPix);
+                            int adjX = (int) ((angle / 360.0) * layerC);
+
+                            //capture the outermost pixel =======================================================================
+                            if (rims.containsKey(rimName) && pixMag == newTotal.get(adjX).intValue())
+                                rims.get(rimName).add(new Vector2(xPix, yPix));
+
+                            char pix = Pixel.getCharFromType("empty");
+
+                            if (pixMag < 100)  pix = terrainType;
+
+
+
+                            /*
+                            if (pixMag < lowestPoint) pix = terrainType;
+                            else if (pixMag < newTotal.get(adjX)) pix = terrainType;
+                            else {
+                                if (tiles.get(tileIndex).data.length() == 1) pix = tiles.get(tileIndex).data.charAt(0);
+                                if (tiles.get(tileIndex).data.length() == World.tileSize * World.tileSize)
+                                    pix = tiles.get(tileIndex).data.charAt(pixelIndex);
+                            }
+
+                             */
+                            Pixel.insertPixel(tiles.get(tileIndex), xPixel, yPixel, pix);
+                        }
+                    }
+                }
+
+
+
                 tiles.get(tileIndex).data += "\n";
             }}
 
             StringUtils updatedChunk = new StringUtils("");
-            for(int x = 0; x < tiles.size(); x++) updatedChunk.data += tiles.get(x).data;
+            for(int x = 0; x < tiles.size(); x++) { updatedChunk.data += tiles.get(x).data; }
             StringUtils name = new StringUtils("[type: chunk][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
             FileSystem.setFile(name, updatedChunk);
         }}
     }
 
     public MakeWorld(int tRadius) {
+
+        System.out.println(tRadius);
+
         rims = new HashMap< String, ArrayList<Vector2> >();
 
         //MAKE THE SOLID LAYERS =====================================
         makeLayer(tRadius, 100, 10, "dirt", true, "[name: outer]");
+
+
     }
 
     void makeLayer(int newLowest, int newStretch, int newOctaves, String newType, boolean newFillIt, String rimName){
@@ -255,8 +320,10 @@ public class MakeWorld {
         layerC = (int)((lowestPoint + stretch) * 2.0f * MathUtils.PI);
         terrainType = Pixel.getCharFromType(newType);
 
+
         ArrayList<Float> newTotal = new ArrayList<Float>();
         Perlin perlin = new Perlin(newLowest, layerC, newOctaves, newStretch, newTotal);
+
         fillTerrain(newTotal, rimName);
     }
 

@@ -10,7 +10,7 @@ public class StringUtils {
         data = newData;
     }
 
-
+    /*
     public static ArrayList<StringUtils> splitToArr(String data, String splitChar) {
         ArrayList<StringUtils> retVal = new ArrayList<StringUtils>();
         String[] dataArr = data.split(splitChar);
@@ -18,6 +18,7 @@ public class StringUtils {
         return retVal;
     }
 
+     */
 
     public static ArrayList<StringUtils> getBeforeChar(String data, char splitChar) {
         ArrayList<StringUtils> retVal = new ArrayList<StringUtils>();
@@ -117,5 +118,10 @@ public class StringUtils {
         return newString.data;
     }
 
+    public void replaceIndex(int index, char newChar) {
+        if(index >= 0 && index < data.length()) {
+            data = data.substring(0, index) + newChar + data.substring(index + 1, data.length());
+        }
+    }
 
 }

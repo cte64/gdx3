@@ -24,14 +24,17 @@ public class State {
 
         //Set the viewport size and update the screen ===================
         Entity ent = new Entity();
-        ent.x_pos = 100;
-        ent.y_pos = 100;
+        ent.x_pos = World.getNumPixels() / 2;
+        ent.y_pos = World.getNumPixels() / 2;
         ent.spriteName = "tile";
         ent.entityName = "hero";
         ent.addComponent(new HeroInput());
         World.entitiesToBeAdded.add(ent);
         World.setCamera(ent);
         World.addSiftingFrame(ent, 0, 0);
+
+
+        System.out.println(World.getNumPixels()/2);
     }
 
     private State() {}
