@@ -66,7 +66,6 @@ public class Entity {
         return height;
     }
 
-
     public void deleteComponents() { components.clear(); }
 
 

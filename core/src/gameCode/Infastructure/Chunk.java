@@ -17,12 +17,10 @@ public class Chunk {
         image = new Pixmap(0, 0, Pixmap.Format.RGB888);
         serializedObjects = new ArrayList<String>();
     }
-
     public boolean isImageEmpty() {
         if(image.getWidth() == 0 && image.getHeight() == 0) return true;
         else return false;
     }
-
     public boolean isImageBlank() {
 
         for(int y = 0; y < image.getHeight(); y++) {
@@ -34,7 +32,6 @@ public class Chunk {
 
         return true;
     }
-
     public void createImage(int width, int height) {
         width = MathUtils.clamp(width, 0, 100);
         height = MathUtils.clamp(height, 0, 100);
@@ -54,7 +51,6 @@ public class Chunk {
     public void setImage(Pixmap newImage) { image = newImage; }
     public void deleteImage() { image.dispose(); }
     public void addObject(String newObj) { serializedObjects.add(newObj); }
-
 
     //ADD THESE LATER ========================================
     public void setPixel() {}

@@ -1,6 +1,7 @@
 package gameCode.Infastructure;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -149,7 +150,7 @@ public class World {
         currentState = "testGame";
         createWorld(11);
         FileSystem.createGameDirectory("core");
-        MakeWorld makeWorld = new MakeWorld((int)(100));
+        MakeWorld makeWorld = new MakeWorld((int)(800));
     }
     public static void createWorld(int newChunks) {
 
@@ -241,14 +242,18 @@ public class World {
             State.setState( currentState);
         }
 
+        //print stuff =============================================================
+        //for(Entity ent: entitiesToBeAdded) { System.out.println("Added: " + ent.entityName); }
+        //for(Entity ent: entitiesToBeDeleted) { System.out.println("Deleted: " + ent.entityName); }
+
         //delete stuff ============================================================
         for(Entity ent: entitiesToBeDeleted) {
             if(ent == null) continue;
-
-            if( StringUtils.getField(ent.entityName, "type") == "terrain") Graphics.returnCoord(ent.spriteName);
+            if( StringUtils.getField(ent.entityName, "type").equals( "terrain") ) { Graphics.returnCoord(ent.spriteName); }
             ent.markForDeletion = true;
 
-            entByName.remove(ent);
+            entByName.remove(ent.entityName);
+
             ArrayList<Vector2> corner_coords = Coordinates.getLocatorCellCoord(ent);
             for(Vector2 coord: corner_coords) {
                 ArrayList<Entity> cellPtr = getLocatorCell((int)coord.x, (int)coord.y);
@@ -265,11 +270,11 @@ public class World {
             positionEntity(ent);
         }
         entitiesToBeAdded.clear();
+
     }
     public static void cleanUp() {
 
         if (camera == null) return;
-
         for (FrameStruct frame : frames) {
 
             int a = 3;
@@ -284,14 +289,19 @@ public class World {
             bottom_edge = MathUtils.clamp(bottom_edge, 0, numBlocks - 1);
 
             for (Entity ent : entList) {
+
                 Vector2 aXY = Coordinates.getPoint2(ent.x_pos + ent.getWidth() / 2, ent.y_pos + ent.getHeight() / 2, frame.ent);
                 int aX = (int) aXY.x;
                 int aY = (int) aXY.y;
+                int left = left_edge * tileSize;
+                int right = right_edge * tileSize;
+                int top = top_edge * tileSize;
+                int bottom = bottom_edge * tileSize;
                 boolean mark = false;
 
                 if (ent.deleteRange == -2) continue;
                 else if (ent.deleteRange == -1) {
-                    if (aX < left_edge * tileSize || aX > right_edge * tileSize || aY < top_edge * tileSize || aY > bottom_edge * tileSize)
+                    if (aX < left || aX > right || aY < top || aY > bottom)
                         mark = true;
                 }
                 else if (ent.deleteRange >= 0) {
@@ -316,8 +326,8 @@ public class World {
                     if(chunkPtr2 == null) continue;
 
                     chunkPtr2.setActive(false);
+                    //if (StringUtils.getField(ent.entityName, "type") != "terrain") chunkPtr2.addObject(ent.entityName);
                     entitiesToBeDeleted.add(ent);
-                    if (StringUtils.getField(ent.entityName, "type") != "terrain") chunkPtr2.addObject(ent.entityName);
                 }
             }
         }
@@ -359,6 +369,8 @@ public class World {
                             entitiesToBeAdded.add(ent);
                         }
 
+
+                        /*
                         //do the entities =======================================================
                         while (chunkPtr.getObjects().size() > 0) {
 
@@ -380,6 +392,7 @@ public class World {
 
                             chunkPtr.getObjects().remove( chunkPtr.getObjects().size() - 1 );
                         }
+                         */
 
                         chunkPtr.setActive(true);
                     }

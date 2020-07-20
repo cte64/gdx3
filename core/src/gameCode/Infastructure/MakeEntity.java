@@ -7,6 +7,7 @@ public class MakeEntity {
 
     public static Entity getEntity(String name, Pixmap image) {
         Entity ent = getEntity(name);
+        ent.deleteRange = -1;
         ent.spriteName = Graphics.getCoord();
         Graphics.updateSprite(ent.spriteName, image);
         return ent;

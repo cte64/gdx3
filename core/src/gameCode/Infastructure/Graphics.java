@@ -25,16 +25,13 @@ public class Graphics implements Disposable {
     public static CameraHelper cameraHelper;
     private static ShapeRenderer shapeRenderer;
     private static HashMap<String, Sprite> spriteMap;
+    private static HashMap<String, String> seen = new HashMap<String, String>();
 
-
-
-    public static void returnCoord(String coord) {
-        tileIDs.add(coord);
-    }
+    public static void returnCoord(String coord) { tileIDs.add(coord);  }
 
     public static String getCoord() {
         if(tileIDs.size() == 0) return "";
-        String retVal = tileIDs.get(0);
+        String retVal = new String ( tileIDs.get(0)) ;
         tileIDs.remove(0);
         return retVal;
     }
@@ -110,7 +107,7 @@ public class Graphics implements Disposable {
         addSprite("thing");
 
         //set up the tile atlas ==================================================================
-        int numTiles = 50;
+        int numTiles = 40;
         int padding = 1;
         for(int y = 0; y < numTiles; y++) {
         for(int x = 0; x < numTiles; x++) {
@@ -130,8 +127,7 @@ public class Graphics implements Disposable {
         TextureRegion region = tileAtlas.findRegion(name);
         Texture newTexture = new Texture(image);
         region.setTexture(newTexture);
-        Sprite newSprite = new Sprite( tileAtlas.findRegion(name));
-        spriteMap.get(name).set(newSprite);
+        spriteMap.put(name, new Sprite(newTexture));
     }
 
     public Graphics()  {
@@ -141,6 +137,29 @@ public class Graphics implements Disposable {
         TextureRegion region = spriteAtlas.findRegion(filename);
         Sprite sprite = new Sprite(region);
         spriteMap.put(filename, sprite);
+    }
+
+    private static void printColors(String name) {
+
+        Texture texture = spriteMap.get(name).getTexture();
+        TextureData td = texture.getTextureData();
+        Pixmap img = td.consumePixmap();
+
+        System.out.print(name + " : ");
+
+        HashMap<Integer, Integer> stuff = new HashMap<Integer, Integer>();
+        for (int j = 0; j < 60; j++) {
+            for (int i = 0; i < 60; i++) {
+                int pix = img.getPixel(i, j);
+                if (!stuff.containsKey(pix)) stuff.put(pix, 1);
+                else stuff.put(pix, stuff.get(pix) + 1);
+            }
+        }
+        for (int i : stuff.keySet()) {
+            System.out.print(i + "." + stuff.get(i) + "  ");
+        }
+        System.out.println("");
+
     }
 
     public static void update(float deltaTime) {

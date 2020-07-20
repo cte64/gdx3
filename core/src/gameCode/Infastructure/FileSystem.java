@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class FileSystem {
 
-    private  final static String gameSaveDirectory = "core/saves/";
+    private final static String gameSaveDirectory = "core/saves/";
     private static String gameSubDirectory;
     private static ArrayList<Boolean> chunkUpdate1 = new ArrayList<Boolean>();
     private static ArrayList<Boolean> chunkUpdate2 = new ArrayList<Boolean>();
@@ -196,11 +196,8 @@ public class FileSystem {
             }
         }
 
-
         for(int y = 0; y < World.getNumChunks(); y++) {
         for(int x = 0; x < World.getNumChunks(); x++) {
-
-
 
             if(getUpdate(x, y, 1) && !getUpdate(x, y, 2)) {
                 setUpdate(x, y, 2, true);
@@ -316,8 +313,6 @@ public class FileSystem {
             setFile(entName, entStr);
         }}
     }
-
-
 
 
     /*

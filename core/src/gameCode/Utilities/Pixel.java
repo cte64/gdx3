@@ -1,13 +1,13 @@
 package gameCode.Utilities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import gameCode.Infastructure.World;
 import gameCode.Utilities.StringUtils;
 
 public class Pixel {
-
 
     private static class Colors {
         public String type;
@@ -35,14 +35,28 @@ public class Pixel {
         for(int x = 0; x < 256; x++) { colors[x] = new Colors("", 0, ""); }
 
         //now add stuff
-        colors[105] = new Colors("empty", 16777215, "");
-        colors[100] = new Colors("dirt", 13711935, "clayTexture.png");
+        colors[0] = new Colors("empty", 0, "emptyTexture.png");
+        colors[1] = new Colors("dirt", 0, "dirtTexture.png");
+        colors[2] = new Colors("clay", 0, "clayTexture.png");
+        colors[3] = new Colors("coal", 0, "coalTexture.png");
+        colors[4] = new Colors("stone", 0, "stoneTexture.png");
     }
 
     public static int charToColor(char b) {
         int index = (int)b;
         index = MathUtils.clamp(index, 0, 255);
         return colors[index].defaultColor;
+    }
+
+    public static int charToColor(char b, int x, int y) {
+
+        int index = (int)b;
+        index = MathUtils.clamp(index, 0, 255);
+        if(colors[index].image == null) return colors[index].defaultColor;
+
+        x = MathUtils.clamp(x, 0, colors[index].image.getWidth());
+        y = MathUtils.clamp(y, 0, colors[index].image.getHeight());
+        return colors[index].image.getPixel(x, y);
     }
 
     public static char getCharFromType(String type) {
@@ -58,7 +72,7 @@ public class Pixel {
 
         int tSize = World.tileSize * World.tileSize;
 
-        yPixel = 59 - yPixel;
+        //yPixel = 59 - yPixel;
 
         if(tiles.data.length() == tSize) tiles.replaceIndex(yPixel*World.tileSize + xPixel, terrainChar);
 
@@ -82,19 +96,19 @@ public class Pixel {
         int pixPerTile = World.tileSize * World.tileSize;
         Pixmap image = new Pixmap(World.tileSize, World.tileSize, Pixmap.Format.RGB888);
 
-
         if(data.data.length() == 0) {
             int color = 16777215;
             for(int y = 0; y < World.tileSize; y++) {
-                for(int x = 0; x < World.tileSize; x++) {
-                    image.drawPixel(x, y, color);
-                }}
+            for(int x = 0; x < World.tileSize; x++) {
+                image.drawPixel(x, y, color);
+            }}
         }
 
         else if(data.data.length() == 1) {
-            int color = charToColor(data.data.charAt(0));
+
             for(int y = 0; y < World.tileSize; y++) {
             for(int x = 0; x < World.tileSize; x++) {
+                int color = charToColor(data.data.charAt(0), x, y);
                 image.drawPixel(x, y, color);
             }}
         }
@@ -104,14 +118,11 @@ public class Pixel {
             for(int x = 0; x < World.tileSize; x++) {
                 int index = (y * World.tileSize) + x;
                 index = MathUtils.clamp(index, 0, pixPerTile);
-                int color = charToColor( data.data.charAt(index) );
+                int color = charToColor( data.data.charAt(index), x, y);
                 image.drawPixel(x, y, color);
             }}
-
         }
-
 
         return image;
     }
-
 }
