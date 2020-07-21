@@ -71,8 +71,7 @@ public class Pixel {
     public static void insertPixel(StringUtils tiles, int xPixel, int yPixel, char terrainChar) {
 
         int tSize = World.tileSize * World.tileSize;
-
-        //yPixel = 59 - yPixel;
+        yPixel = 59 - yPixel;
 
         if(tiles.data.length() == tSize) tiles.replaceIndex(yPixel*World.tileSize + xPixel, terrainChar);
 

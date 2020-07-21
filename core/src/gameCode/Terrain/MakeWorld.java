@@ -208,9 +208,10 @@ public class MakeWorld {
                     for(int yPixel = 0; yPixel < World.tileSize; yPixel++) {
                     for(int xPixel = 0; xPixel < World.tileSize; xPixel++) {
 
+
                         int yPix = (yChunk * World.tilesPerChunk * World.tileSize) + (yTile * World.tileSize) + yPixel;
                         int xPix = (xChunk * World.tilesPerChunk * World.tileSize) + (xTile * World.tileSize) + xPixel;
-                        int pixelIndex = (yPixel * World.tileSize) + xPixel;
+                        int pixelIndex = ((59 - yPixel ) * World.tileSize) + xPixel;
 
                         int pixMag = (int)MathUtils.mag(centerX, centerY, xPix, yPix);
                         float angle = MathUtils.angleBetweenCells(centerX, centerY, xPix, yPix);
@@ -248,7 +249,8 @@ public class MakeWorld {
         rims = new HashMap< String, ArrayList<Vector2> >();
 
         //MAKE THE SOLID LAYERS =====================================
-        makeLayer(tRadius, 100, 10, "dirt", true, "[name: outer]");
+        makeLayer(1000, 100, 10, "dirt", true, "[name: outer]");
+        makeLayer(500, 100, 10, "stone", true, "[name: one]");
     }
 
     void makeLayer(int newLowest, int newStretch, int newOctaves, String newType, boolean newFillIt, String rimName){
