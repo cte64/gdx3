@@ -6,12 +6,14 @@ import gameCode.Infastructure.World;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Pixel;
 import gameCode.Utilities.StringUtils;
+import gameCode.Terrain.ScatterTerrain;
 import gameCode.Terrain.Perlin;
 
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class MakeWorld {
 
@@ -244,13 +246,36 @@ public class MakeWorld {
         }}
     }
 
-    public MakeWorld(int tRadius) {
+    public MakeWorld(String newDirectory, int numChunks, int tRadius) {
 
+
+        //INITIALIZE WORLD ==========================================
+        worldRadius = tRadius;
+        World.createWorld(numChunks);
+        FileSystem.createGameDirectory(newDirectory);
+
+        //INITIALIZE RIMS ============================================
         rims = new HashMap< String, ArrayList<Vector2> >();
 
+        //FILL METADATA FILE ========================================
+        StringUtils data = new StringUtils("[numChunks: ][dateCreated: ]");
+        data.setField(data, "numChunks", StringUtils.toString(numChunks));
+        //StringUtils.setField(data, "dateCreated", StringUtils.getDateAndTime());
+        FileSystem.setFile(new StringUtils("[type: metadata]"), data);
+
+        //CREATE THE MAIN CHARACTER =================================
+        StringUtils heroData = new StringUtils("[type: living][subType: testHero][details: ][xPos: 6000][yPos: 1500][inven0.0: woodenAxe.1][inven0.1: woodenPickaxe.1]");
+        FileSystem.setFile(new StringUtils("[type: hero]"), heroData);
+
         //MAKE THE SOLID LAYERS =====================================
-        makeLayer(1000, 100, 10, "dirt", true, "[name: outer]");
-        makeLayer(500, 100, 10, "stone", true, "[name: one]");
+        makeLayer((int)(tRadius * 1.00), 400, 10, "dirt", true, "[name: outer]");
+        makeLayer((int)(tRadius * 0.85), 200, 10, "clay", true, "");
+        makeLayer((int)(tRadius * 0.82), 150, 10, "sand", true, "");
+        makeLayer((int)(tRadius * 0.78), 400, 10, "stone", true, "");
+        makeLayer((int)(tRadius * 0.30), 200, 10, "coal", true, "");
+
+
+
     }
 
     void makeLayer(int newLowest, int newStretch, int newOctaves, String newType, boolean newFillIt, String rimName){
@@ -269,5 +294,5 @@ public class MakeWorld {
     }
 
     void makeMap(String directory, int numChunks, int tRadius, StringUtils message, StringUtils loadingBar) {}
-    int getMinDepth() { return minDepth; }
+
 }

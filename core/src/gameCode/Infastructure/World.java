@@ -148,9 +148,6 @@ public class World {
     //Modify World State ===========================================================================
     public static void init() {
         currentState = "testGame";
-        createWorld(11);
-        FileSystem.createGameDirectory("core");
-        MakeWorld makeWorld = new MakeWorld((int)(800));
     }
     public static void createWorld(int newChunks) {
 

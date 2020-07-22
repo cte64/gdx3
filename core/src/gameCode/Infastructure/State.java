@@ -3,8 +3,10 @@ package gameCode.Infastructure;
 import com.badlogic.gdx.graphics.Pixmap;
 import gameCode.Living.HeroInput;
 import gameCode.Terrain.MakeWorld;
+import gameCode.Utilities.StringUtils;
 
 public class State {
+
 
     private static void roundEarth() {}
     private static void loadGame() {}
@@ -17,10 +19,7 @@ public class State {
 
     private static void testGame() {
 
-
-
-        //MakeWorld.testCube();
-
+        MakeWorld makeWorld = new MakeWorld("newOne", 10, 700);
 
         //Set the viewport size and update the screen ===================
         Entity ent = new Entity();
@@ -32,17 +31,12 @@ public class State {
         World.entitiesToBeAdded.add(ent);
         World.setCamera(ent);
         World.addSiftingFrame(ent, 0, 0);
-
-
-        System.out.println(World.getNumPixels()/2);
     }
-
     private State() {}
     public void deleteMenuItems() {}
     private static String state;
     public static String getState() { return state; }
     public static void setState(String newState) { state = newState; }
-
     public static void loadState() {
         if(World.getCurrentState() == "testGame") testGame();
     }

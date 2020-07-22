@@ -40,6 +40,13 @@ public class Pixel {
         colors[2] = new Colors("clay", 0, "clayTexture.png");
         colors[3] = new Colors("coal", 0, "coalTexture.png");
         colors[4] = new Colors("stone", 0, "stoneTexture.png");
+        colors[5] = new Colors("ruby", 0, "rubyTexture.png");
+        colors[6] = new Colors("emerald", 0, "emeraldTexture.png");
+        colors[7] = new Colors("sulfur", 0, "sulfurTexture.png");
+        colors[8] = new Colors("lava", 0, "lavaTexture.png");
+        colors[9] = new Colors("sand", 0, "sandTexture.png");
+        colors[10] = new Colors("bloodstone", 0, "bloodstoneTexture.png");
+
     }
 
     public static int charToColor(char b) {
@@ -54,8 +61,8 @@ public class Pixel {
         index = MathUtils.clamp(index, 0, 255);
         if(colors[index].image == null) return colors[index].defaultColor;
 
-        x = MathUtils.clamp(x, 0, colors[index].image.getWidth());
-        y = MathUtils.clamp(y, 0, colors[index].image.getHeight());
+        x = MathUtils.clamp(x, 0, colors[index].image.getWidth() - 1);
+        y = MathUtils.clamp(y, 0, colors[index].image.getHeight() - 1);
         return colors[index].image.getPixel(x, y);
     }
 

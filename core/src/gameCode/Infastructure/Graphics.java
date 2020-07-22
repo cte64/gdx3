@@ -104,7 +104,6 @@ public class Graphics implements Disposable {
         spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
         tileAtlas = new TextureAtlas();
         addSprite("tile");
-        addSprite("thing");
 
         //set up the tile atlas ==================================================================
         int numTiles = 40;

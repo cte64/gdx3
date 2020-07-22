@@ -1,42 +1,14 @@
 
 atlas.png
-size: 512,512
+size: 32,32
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-badlogic
-  rotate: false
-  xy: 2, 166
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
-one
-  rotate: false
-  xy: 2, 64
-  size: 100, 100
-  orig: 100, 100
-  offset: 0, 0
-  index: -1
-thing
-  rotate: false
-  xy: 2, 2
-  size: 60, 60
-  orig: 60, 60
-  offset: 0, 0
-  index: -1
 tile
   rotate: false
-  xy: 104, 144
+  xy: 2, 2
   size: 20, 20
   orig: 20, 20
-  offset: 0, 0
-  index: -1
-two
-  rotate: false
-  xy: 260, 322
-  size: 100, 100
-  orig: 100, 100
   offset: 0, 0
   index: -1
 
@@ -45,65 +17,86 @@ size: 1024,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-terrainTextures/clayTexture
+terrainTextures/bloodstoneTexture
   rotate: false
   xy: 2, 2
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
   index: -1
-terrainTextures/coalTexture
+terrainTextures/clayTexture
   rotate: false
   xy: 64, 2
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
   index: -1
-terrainTextures/dirtTexture
+terrainTextures/coalTexture
   rotate: false
   xy: 126, 2
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
   index: -1
-terrainTextures/emeraldTexture
+terrainTextures/dirtTexture
   rotate: false
   xy: 188, 2
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
   index: -1
-terrainTextures/emptyTexture
+terrainTextures/emeraldTexture
   rotate: false
   xy: 250, 2
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
   index: -1
-terrainTextures/lapisLazuliTexture
+terrainTextures/emptyTexture
   rotate: false
   xy: 312, 2
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
   index: -1
-terrainTextures/rubyTexture
+terrainTextures/lapisLazuliTexture
   rotate: false
   xy: 374, 2
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
   index: -1
-terrainTextures/stoneTexture
+terrainTextures/lavaTexture
   rotate: false
   xy: 436, 2
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
   index: -1
-terrainTextures/sulfurTexture
+terrainTextures/rubyTexture
   rotate: false
   xy: 498, 2
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+terrainTextures/sandTexture
+  rotate: false
+  xy: 560, 2
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+terrainTextures/stoneTexture
+  rotate: false
+  xy: 622, 2
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+terrainTextures/sulfurTexture
+  rotate: false
+  xy: 684, 2
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
