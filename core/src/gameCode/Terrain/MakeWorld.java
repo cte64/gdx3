@@ -273,9 +273,6 @@ public class MakeWorld {
         makeLayer((int)(tRadius * 0.82), 150, 10, "sand", true, "");
         makeLayer((int)(tRadius * 0.78), 400, 10, "stone", true, "");
         makeLayer((int)(tRadius * 0.30), 200, 10, "coal", true, "");
-
-
-
     }
 
     void makeLayer(int newLowest, int newStretch, int newOctaves, String newType, boolean newFillIt, String rimName){
