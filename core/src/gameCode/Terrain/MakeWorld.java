@@ -283,7 +283,6 @@ public class MakeWorld {
         layerC = (int)((lowestPoint + stretch) * 2.0f * MathUtils.PI);
         terrainType = Pixel.getCharFromType(newType);
 
-
         ArrayList<Float> newTotal = new ArrayList<Float>();
         Perlin perlin = new Perlin(newLowest, layerC, newOctaves, newStretch, newTotal);
 

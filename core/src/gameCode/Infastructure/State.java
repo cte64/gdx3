@@ -7,7 +7,6 @@ import gameCode.Utilities.StringUtils;
 
 public class State {
 
-
     private static void roundEarth() {}
     private static void loadGame() {}
     private static void paused() {}
@@ -16,14 +15,13 @@ public class State {
     private static void newGame() {}
     private static void loading() {}
 
-
     private static void testGame() {
 
-        MakeWorld makeWorld = new MakeWorld("newOne", 10, 700);
+        //MakeWorld makeWorld = new MakeWorld("newOne", 10, 700);
 
         //Set the viewport size and update the screen ===================
         Entity ent = new Entity();
-        ent.x_pos = World.getNumPixels() / 2;
+        ent.x_pos = 0;//World.getNumPixels() / 2;
         ent.y_pos = World.getNumPixels() / 2;
         ent.spriteName = "tile";
         ent.entityName = "hero";
@@ -31,6 +29,15 @@ public class State {
         World.entitiesToBeAdded.add(ent);
         World.setCamera(ent);
         World.addSiftingFrame(ent, 0, 0);
+
+        Entity hud = new Entity();
+        hud.x_pos = 100;
+        hud.y_pos = 100;
+        hud.spriteName = "menuBack";
+        hud.entityName = "hud";
+        hud.drawMode = "hud";
+        hud.text = "Clarence";
+        World.entitiesToBeAdded.add(hud);
     }
     private State() {}
     public void deleteMenuItems() {}
