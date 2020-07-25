@@ -26,6 +26,28 @@ public class Graphics implements Disposable {
     private static HashMap<String, String> seen = new HashMap<String, String>();
     private static BitmapFont font;
 
+
+
+    //For text ==============================================================
+    private static class textStruct {
+        public String message;
+        public int fontSize;
+        public int xPos;
+        public int yPos;
+        public textStruct(){}
+    }
+
+    private static ArrayList<textStruct> textArr = new ArrayList<textStruct>();
+
+    public static void addText(String msg, int fontSz, int newX, int newY) {
+        textStruct newTs = new textStruct();
+        newTs.fontSize = fontSz;
+        newTs.message = msg;
+        newTs.xPos = newX;
+        newTs.yPos = newY;
+        textArr.add(newTs);
+    }
+
     public static void returnCoord(String coord) { tileIDs.add(coord);  }
 
     public static String getCoord() {
@@ -178,15 +200,32 @@ public class Graphics implements Disposable {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        for(Entity ent: World.getEntList()) { if(ent.drawMode == "normal") batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos); }
+            for(Entity ent: World.getEntList()) {
+                if(ent.drawMode == "normal" && spriteMap.containsKey(ent.spriteName)) {
+                    batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);
+                }
+            }
         batch.end();
+
 
         hudBatch.begin();
             for(Entity ent: World.getEntList()) {
-                if(ent.drawMode != "hud") continue;
-                hudBatch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);
+                if(ent.drawMode == "hud" && spriteMap.containsKey(ent.spriteName)) {
+                    hudBatch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);
+                }
             }
+
+            // draw the text ========================================
+            for(textStruct ts: textArr) {
+                font.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                font.draw(hudBatch, ts.message, ts.xPos, ts.yPos);
+            }
+
+            textArr.clear();
         hudBatch.end();
+
+
+
 
         drawOutlines();
     }
