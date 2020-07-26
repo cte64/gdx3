@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import gameCode.Infastructure.World;
 import gameCode.Utilities.StringUtils;
@@ -25,28 +26,7 @@ public class Graphics implements Disposable {
     private static HashMap<String, Sprite> spriteMap;
     private static HashMap<String, String> seen = new HashMap<String, String>();
     private static BitmapFont font;
-
-
-
-    //For text ==============================================================
-    private static class textStruct {
-        public String message;
-        public int fontSize;
-        public int xPos;
-        public int yPos;
-        public textStruct(){}
-    }
-
-    private static ArrayList<textStruct> textArr = new ArrayList<textStruct>();
-
-    public static void addText(String msg, int fontSz, int newX, int newY) {
-        textStruct newTs = new textStruct();
-        newTs.fontSize = fontSz;
-        newTs.message = msg;
-        newTs.xPos = newX;
-        newTs.yPos = newY;
-        textArr.add(newTs);
-    }
+    private static GlyphLayout layout;
 
     public static void returnCoord(String coord) { tileIDs.add(coord);  }
 
@@ -112,6 +92,7 @@ public class Graphics implements Disposable {
 
         //Fonts ==================================================================================
         font = new BitmapFont();
+        layout = new GlyphLayout();
 
         cameraHelper = new CameraHelper();
         shapeRenderer = new ShapeRenderer();
@@ -187,6 +168,13 @@ public class Graphics implements Disposable {
 
     }
 
+    public static Vector2 getTextBounds(String text, int fontSize) {
+        layout.setText(font, text);
+        float width = layout.width;
+        float height = layout.height;
+        return new Vector2(width, height);
+    }
+
     public static void update(float deltaTime) {
 
         setCamera1();
@@ -210,18 +198,17 @@ public class Graphics implements Disposable {
 
         hudBatch.begin();
             for(Entity ent: World.getEntList()) {
-                if(ent.drawMode == "hud" && spriteMap.containsKey(ent.spriteName)) {
-                    hudBatch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);
+
+                if(ent.drawMode != "hud") continue;
+                if(spriteMap.containsKey(ent.spriteName)) hudBatch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);
+
+                //Draw the Text =====================
+                TextComponent text = (TextComponent)ent.getComponent("text");
+                if(text != null) {
+                    font.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                    font.draw(hudBatch, text.getText(), text.getXPos(), text.getYPos());
                 }
             }
-
-            // draw the text ========================================
-            for(textStruct ts: textArr) {
-                font.setColor(0.0f, 0.0f, 0.0f, 1.0f);
-                font.draw(hudBatch, ts.message, ts.xPos, ts.yPos);
-            }
-
-            textArr.clear();
         hudBatch.end();
 
 

@@ -2,30 +2,23 @@ package gameCode.Menus;
 
 import gameCode.Infastructure.Component;
 import gameCode.Infastructure.Entity;
+import gameCode.Infastructure.TextComponent;
 
 import java.awt.*;
 import java.util.HashMap;
 
 public class MainMenu extends Component {
 
-    //public MenuItem(String newID, String newMsg, String sprNm, int newFs, int x, int y)
-    MenuItem background;
-    MenuItem title;
 
-
-    private void regItem(String name) {
-
-    }
+    private MenuItem one;
 
 
     public MainMenu() {
         type = "logic";
-        background = new MenuItem("id1", "stuff is cool", "menuBack", 10, 100, 100);
+        one = new MenuItem("oneid", "menuBack", 100, 100, 500, 0, new TextComponent("New Game", 10, "center", 0, 0));
     }
 
     public void update(Entity entity) {
-        for(MenuItem m: menuItems.values()) {
-            m.update();
-        }
+
     }
 }
