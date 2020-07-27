@@ -2,6 +2,7 @@ package gameCode.Infastructure;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import gameCode.Living.HeroInput;
+import gameCode.Menus.MainMenu;
 import gameCode.Terrain.MakeWorld;
 import gameCode.Utilities.StringUtils;
 
@@ -33,10 +34,8 @@ public class State {
         Entity hud = new Entity();
         hud.x_pos = 100;
         hud.y_pos = 100;
-        hud.spriteName = "menuBack";
         hud.entityName = "hud";
-        hud.drawMode = "hud";
-        hud.text = "Clarence";
+        hud.addComponent(new MainMenu());
         World.entitiesToBeAdded.add(hud);
     }
     private State() {}

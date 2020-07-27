@@ -36,7 +36,7 @@ public class Collision {
         for(int t = 0; t<numMoveTicks; t++) {
 
 
-            FileSystem.update();
+            //FileSystem.update();
             //System.out.println("file thing");
 
             World.setEdge();

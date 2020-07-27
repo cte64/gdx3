@@ -74,6 +74,8 @@ public class myGame extends ApplicationAdapter {
 		Collision.update();
 		//System.out.println("collision");
 
+		for(Entity ent: World.getEntList()) { ent.updateType("logic"); }
+
 		Graphics.update(Gdx.graphics.getDeltaTime());
 		//System.out.println("graphics");
 
