@@ -42,7 +42,7 @@ public class Collision {
             World.setEdge();
             //System.out.println("edge");
 
-            World.cleanUp();
+            //World.cleanUp();
             //System.out.println("clean up");
 
             World.loadEntities();

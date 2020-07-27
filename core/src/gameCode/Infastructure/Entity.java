@@ -7,7 +7,8 @@ public class Entity {
     public float x_pos, y_pos, angle, scaleW, scaleH, velMag, velAng, lastGoodX, lastGoodY, lastGoodAngle;
     public int bitMapX, bitMapY, z_pos, deleteRange, spriteOffsetX, spriteOffsetY;// -2 = false; -1 = delete at edge, > 0 =  delete out of range
     public boolean moveable, drawable, markForDeletion, flip, cameraBound;
-    public String spriteName, drawMode, entityName;
+    public String spriteName, drawMode, entityName, text;
+
     ArrayList<Component> components;
 
     public float width;
@@ -36,7 +37,8 @@ public class Entity {
         flip = false;
         cameraBound = false;
         spriteName = "";
-        drawMode = "";
+        text = "";
+        drawMode = "normal";
         entityName = "";
         components = new ArrayList<Component>();
     }

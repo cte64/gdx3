@@ -2,10 +2,7 @@ package gameCode.Infastructure;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import gameCode.Infastructure.World;
@@ -21,11 +18,13 @@ public class Graphics implements Disposable {
     private static TextureAtlas tileAtlas;
     private static ArrayList<String> tileIDs;
     private static SpriteBatch batch;
+    private static SpriteBatch hudBatch;
     private static OrthographicCamera camera;
     public static CameraHelper cameraHelper;
     private static ShapeRenderer shapeRenderer;
     private static HashMap<String, Sprite> spriteMap;
     private static HashMap<String, String> seen = new HashMap<String, String>();
+    private static BitmapFont font;
 
     public static void returnCoord(String coord) { tileIDs.add(coord);  }
 
@@ -89,6 +88,9 @@ public class Graphics implements Disposable {
 
     public static void init() {
 
+        //Fonts ==================================================================================
+        font = new BitmapFont();
+
         cameraHelper = new CameraHelper();
         shapeRenderer = new ShapeRenderer();
         tileIDs = new ArrayList<String>();
@@ -100,10 +102,12 @@ public class Graphics implements Disposable {
 
         //Set up the sprites =====================================================================
         batch = new SpriteBatch();
+        hudBatch = new SpriteBatch();
         spriteMap = new HashMap<String, Sprite>();
         spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
         tileAtlas = new TextureAtlas();
         addSprite("tile");
+        addSprite("menuBack");
 
         //set up the tile atlas ==================================================================
         int numTiles = 40;
@@ -129,7 +133,7 @@ public class Graphics implements Disposable {
         spriteMap.put(name, new Sprite(newTexture));
     }
 
-    public Graphics()  {
+    public Graphics() {
     }
 
     private static void addSprite(String filename) {
@@ -174,8 +178,15 @@ public class Graphics implements Disposable {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        for(Entity ent: World.getEntList()) { batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos); }
+        for(Entity ent: World.getEntList()) { if(ent.drawMode == "normal") batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos); }
         batch.end();
+
+        hudBatch.begin();
+            for(Entity ent: World.getEntList()) {
+                if(ent.drawMode != "hud") continue;
+                hudBatch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);
+            }
+        hudBatch.end();
 
         drawOutlines();
     }
