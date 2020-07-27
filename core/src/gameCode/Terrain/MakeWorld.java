@@ -264,7 +264,7 @@ public class MakeWorld {
         FileSystem.setFile(new StringUtils("[type: metadata]"), data);
 
         //CREATE THE MAIN CHARACTER =================================
-        StringUtils heroData = new StringUtils("[type: living][subType: testHero][details: ][xPos: 6000][yPos: 1500][inven0.0: woodenAxe.1][inven0.1: woodenPickaxe.1]");
+        StringUtils heroData = new StringUtils("[type: living][subType: testHero][details: ][xPos: 6000][yPos: 1500][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]");
         FileSystem.setFile(new StringUtils("[type: hero]"), heroData);
 
         //MAKE THE SOLID LAYERS =====================================
