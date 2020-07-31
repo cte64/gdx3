@@ -24,18 +24,18 @@ public class TextComponent extends Component {
     public void update(Entity ent) {
         //this is just temporary
         if(justify == "center") {
-            xPos = (int)(ent.x_pos + ent.getWidth() / 2 - Graphics.getTextBounds(text, fontSize).x / 2  );
-            yPos = (int)ent.y_pos;
+            xPos = (int)(ent.x_pos + ent.getWidth()/2 - Graphics.getTextBounds(text, fontSize).x/2  );
+            yPos = (int)(ent.y_pos + ent.getHeight()/2 + Graphics.getTextBounds(text, fontSize).y/2  );
         }
     }
 
-    //getters ====================================================
+    //getters ====================================================================
     public String getText() { return text; }
     public int getFontSize() { return fontSize; }
     public int getXPos() { return xPos; }
     public int getYPos() { return yPos; }
 
-    //setters ====================================================
+    //setters ====================================================================
     public void setText(String newText) { text = newText; }
     public void setFontSize(int newFontSize) { fontSize = newFontSize; }
     public void setXPos(int newX) { xPos = newX; }

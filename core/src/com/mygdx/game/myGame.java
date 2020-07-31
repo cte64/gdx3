@@ -1,9 +1,6 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -21,15 +18,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import gameCode.Infastructure.Collision;
-import gameCode.Infastructure.Entity;
-import gameCode.Infastructure.FileSystem;
-import gameCode.Infastructure.World;
+import gameCode.Infastructure.*;
+import gameCode.Infastructure.Graphics;
 import gameCode.Utilities.Pixel;
 import gameCode.Utilities.StringUtils;
-
-
-import gameCode.Infastructure.Graphics;
 
 public class myGame extends ApplicationAdapter {
 
@@ -54,6 +46,9 @@ public class myGame extends ApplicationAdapter {
 
 		//Initialize Game Objects
 		Graphics.init();
+
+		//Initialize the Input abstraction class =======
+		InputAL.init();
 
 		//Initialize the pixel class
 		Pixel.init();

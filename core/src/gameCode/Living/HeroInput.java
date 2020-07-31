@@ -15,6 +15,7 @@ public class HeroInput extends Component {
     }
 
     public void update(Entity entity) {
+
         if(Gdx.input.isKeyPressed(Input.Keys.A)) { entity.x_pos -= deltaX; }
         if(Gdx.input.isKeyPressed(Input.Keys.D)) { entity.x_pos += deltaX; }
         if(Gdx.input.isKeyPressed(Input.Keys.W)) { entity.y_pos += deltaX; }

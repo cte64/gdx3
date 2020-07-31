@@ -31,9 +31,6 @@ public class State {
         World.setCamera(ent);
         World.addSiftingFrame(ent, 0, 0);
 
-
-        /*
-         */
         Entity hud = new Entity();
         hud.x_pos = 100;
         hud.y_pos = 100;
@@ -41,7 +38,6 @@ public class State {
         hud.drawMode = "hud";
         hud.addComponent(new MainMenu());
         World.entitiesToBeAdded.add(hud);
-
     }
     private State() {}
     public void deleteMenuItems() {}

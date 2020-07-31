@@ -111,6 +111,7 @@ public class Graphics implements Disposable {
         tileAtlas = new TextureAtlas();
         addSprite("tile");
         addSprite("menuBack");
+        addSprite("background");
 
         //set up the tile atlas ==================================================================
         int numTiles = 40;
