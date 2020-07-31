@@ -5,15 +5,18 @@ import com.badlogic.gdx.Input;
 import gameCode.Infastructure.*;
 import gameCode.Utilities.StringUtils;
 
+import java.util.ArrayList;
+
 public class MenuItem {
 
     private int clickStateL;
     private int clickStateR;
     private boolean hoverState;
     Entity ent;
-    MenuItem parent;
     String justify;
     int xOffset, yOffset;
+    MenuItem parent;
+    ArrayList<MenuItem> children;
 
     private void positionItem() {
 
@@ -46,7 +49,14 @@ public class MenuItem {
         if(horizontal.equals("right")) ent.x_pos = parentX + parentW - ent.getWidth() + xOffset;
     }
 
-    public MenuItem(String newID, String sprNm, MenuItem parent, String justify, int x, int y, int w, int h, TextComponent tc) {
+
+
+    public void addChild(MenuItem item) {
+        children.add(item);
+    }
+    public void addText(Component textComp) { ent.addComponent(textComp); }
+
+    public MenuItem(String newID, String sprNm, MenuItem parent, String justify, int x, int y, int w, int h) {
 
         clickStateL = 0;
         clickStateR = 0;
@@ -55,6 +65,8 @@ public class MenuItem {
         this.justify = justify;
         xOffset = x;
         yOffset = y;
+        children = new ArrayList<MenuItem>();
+        if(parent != null) parent.addChild(this);
 
         ent = MakeEntity.getEntity(newID);
         ent.entityName = newID;
@@ -63,7 +75,6 @@ public class MenuItem {
         ent.width = w;
         ent.height = h;
         positionItem();
-        if(tc != null) ent.addComponent(tc);
         World.entitiesToBeAdded.add(ent);
     }
 
@@ -91,7 +102,12 @@ public class MenuItem {
     }
 
     public void update() {
+    }
 
+    public int getXOffset() { return xOffset; }
+    public void setXOffset(int newXOffset) {
+        xOffset = newXOffset;
+        positionItem();
     }
 
 

@@ -1,6 +1,6 @@
 
 atlas.png
-size: 1024,512
+size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -18,9 +18,23 @@ menuBack
   orig: 400, 50
   offset: 0, 0
   index: -1
+scrollBackground
+  rotate: false
+  xy: 2, 456
+  size: 486, 548
+  orig: 486, 548
+  offset: 0, 0
+  index: -1
+scrollItem
+  rotate: false
+  xy: 490, 931
+  size: 361, 73
+  orig: 361, 73
+  offset: 0, 0
+  index: -1
 tile
   rotate: false
-  xy: 604, 434
+  xy: 404, 32
   size: 20, 20
   orig: 20, 20
   offset: 0, 0

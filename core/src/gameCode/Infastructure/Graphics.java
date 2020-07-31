@@ -112,6 +112,9 @@ public class Graphics implements Disposable {
         addSprite("tile");
         addSprite("menuBack");
         addSprite("background");
+        addSprite("scrollBackground");
+        addSprite("scrollItem");
+
 
         //set up the tile atlas ==================================================================
         int numTiles = 40;
