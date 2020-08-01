@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import gameCode.Infastructure.*;
 import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.Tree;
 
 import java.util.ArrayList;
 
@@ -12,11 +13,10 @@ public class MenuItem {
     private int clickStateL;
     private int clickStateR;
     private boolean hoverState;
-    Entity ent;
+    public Entity ent;
     String justify;
     int xOffset, yOffset;
-    MenuItem parent;
-    ArrayList<MenuItem> children;
+    Tree<MenuItem> treeNode;
 
     private void positionItem() {
 
@@ -29,11 +29,23 @@ public class MenuItem {
         int parentW = World.getViewPortWidth();
         int parentH = World.getViewPortHeight();
 
-        if(parent != null) {
-            parentX = (int)parent.ent.x_pos;
-            parentY = (int)parent.ent.y_pos;
-            parentW = (int)parent.ent.getWidth();
-            parentH = (int)parent.ent.getHeight();
+
+        Entity parentEnt = null;
+        if(treeNode.parent != null) parentEnt = ((MenuItem)(treeNode.parent.value)).ent;
+        /*
+
+        MenuItem stuff = null;
+        if(treeNode.parent.value != null) stuff = (MenuItem)treeNode.parent.value;
+
+        MenuItem stuff = treeNode.parent.value;
+
+        Entity parentEnt = ((MenuItem)treeNode.parent.value).ent;
+
+        if(parentEnt != null) {
+            parentX = (int)parentEnt.x_pos;
+            parentY = (int)parentEnt.y_pos;
+            parentW = (int)parentEnt.getWidth();
+            parentH = (int)parentEnt.getHeight();
         }
 
         //vertical ===================================================================================
@@ -47,26 +59,21 @@ public class MenuItem {
         if(horizontal.equals("center")) ent.x_pos = parentX + (parentW / 2) - ent.getWidth() / 2 + xOffset;
         if(horizontal.equals("left")) ent.x_pos = parentX + xOffset;
         if(horizontal.equals("right")) ent.x_pos = parentX + parentW - ent.getWidth() + xOffset;
+
+         */
     }
 
-
-
-    public void addChild(MenuItem item) {
-        children.add(item);
-    }
     public void addText(Component textComp) { ent.addComponent(textComp); }
 
-    public MenuItem(String newID, String sprNm, MenuItem parent, String justify, int x, int y, int w, int h) {
+    public MenuItem(String newID, String sprNm, Tree<MenuItem> parent, String newJustify, int x, int y, int w, int h) {
 
         clickStateL = 0;
         clickStateR = 0;
         hoverState = false;
-        this.parent = parent;
-        this.justify = justify;
+        treeNode = new Tree(this, parent);
+        justify = newJustify;
         xOffset = x;
         yOffset = y;
-        children = new ArrayList<MenuItem>();
-        if(parent != null) parent.addChild(this);
 
         ent = MakeEntity.getEntity(newID);
         ent.entityName = newID;
@@ -105,9 +112,13 @@ public class MenuItem {
     }
 
     public int getXOffset() { return xOffset; }
+
     public void setXOffset(int newXOffset) {
         xOffset = newXOffset;
         positionItem();
+
+        //now do it for all the children
+
     }
 
 
