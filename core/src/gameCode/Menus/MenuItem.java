@@ -20,6 +20,7 @@ public class MenuItem {
 
     private void positionItem() {
 
+        /*
         String vertical = StringUtils.getField(justify, "vertical");
         String horizontal = StringUtils.getField(justify, "horizontal");
 
@@ -32,7 +33,6 @@ public class MenuItem {
 
         Entity parentEnt = null;
         if(treeNode.parent != null) parentEnt = ((MenuItem)(treeNode.parent.value)).ent;
-        /*
 
         MenuItem stuff = null;
         if(treeNode.parent.value != null) stuff = (MenuItem)treeNode.parent.value;

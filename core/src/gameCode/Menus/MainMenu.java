@@ -17,8 +17,7 @@ public class MainMenu extends Component {
 
 
 
-    private MenuItem background;
-    private MenuItem newGame;
+    private Tree<MenuItem> background;
 
 
     public MainMenu() {
@@ -29,7 +28,8 @@ public class MainMenu extends Component {
         int yOff = padding + 50;
 
         //background
-        background = new MenuItem("[type: menu][name: background]", "background", null, "[vertical: center][horizontal: center]", 0, 0, 600, 400);
+        MenuItem backgroundMenu = new MenuItem("[type: menu][name: background]", "background", null, "[vertical: center][horizontal: center]", 0, 0, 600, 400);
+        background = new Tree(backgroundMenu, null);
 
 
         /*
