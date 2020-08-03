@@ -17,36 +17,26 @@ public class MainMenu extends Component {
 
 
 
-    private Tree<MenuItem> background;
+    private MenuItem background;
+    private MenuItem newGame;
 
 
     public MainMenu() {
         type = "logic";
 
-
         int padding = 5;
         int yOff = padding + 50;
 
+
         //background
-        MenuItem backgroundMenu = new MenuItem("[type: menu][name: background]", "background", null, "[vertical: center][horizontal: center]", 0, 0, 600, 400);
-        background = new Tree(backgroundMenu, null);
-
-
-        /*
+        background = new MenuItem("[type: menu][name: background]", "background", null, "[vertical: center][horizontal: center]", 0, 0, 600, 400);
 
         //newGame
         newGame = new MenuItem("[type: menu][name: newGame]", "menuBack", background.treeNode, "[vertical: top][horizontal: center]", 0, padding, 400, 50);
         newGame.addText(new TextComponent("New Game", 10, "center", 0, 0));
 
-         */
-
-
-
-
 
         /*
-
-
 
         test = new MenuItem("[type: menu][name: test]", "tile", background, "[vertical: center][horizontal: center]", 0, 0, 20, 20);
 
@@ -61,7 +51,7 @@ public class MainMenu extends Component {
         //update everything ==============================================
         //if(newGame.isLeftClicked()) { State.deleteMenuItems(); World.setCurrentState("newGame"); }
 
-        //newGame.value.setXOffset( newGame.getXOffset() + 1);
+       background.setXOffset( background.getXOffset() + 1);
         //MenuItem bc = (MenuItem)background.value;
         //bc.setXOffset( bc.getXOffset() + 1);
 

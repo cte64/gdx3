@@ -15,12 +15,11 @@ public class MenuItem {
     private boolean hoverState;
     public Entity ent;
     String justify;
-    int xOffset, yOffset;
-    Tree<MenuItem> treeNode;
+    public int xOffset, yOffset;
+    public Tree<MenuItem> treeNode;
 
     private void positionItem() {
 
-        /*
         String vertical = StringUtils.getField(justify, "vertical");
         String horizontal = StringUtils.getField(justify, "horizontal");
 
@@ -30,16 +29,8 @@ public class MenuItem {
         int parentW = World.getViewPortWidth();
         int parentH = World.getViewPortHeight();
 
-
         Entity parentEnt = null;
         if(treeNode.parent != null) parentEnt = ((MenuItem)(treeNode.parent.value)).ent;
-
-        MenuItem stuff = null;
-        if(treeNode.parent.value != null) stuff = (MenuItem)treeNode.parent.value;
-
-        MenuItem stuff = treeNode.parent.value;
-
-        Entity parentEnt = ((MenuItem)treeNode.parent.value).ent;
 
         if(parentEnt != null) {
             parentX = (int)parentEnt.x_pos;
@@ -59,8 +50,6 @@ public class MenuItem {
         if(horizontal.equals("center")) ent.x_pos = parentX + (parentW / 2) - ent.getWidth() / 2 + xOffset;
         if(horizontal.equals("left")) ent.x_pos = parentX + xOffset;
         if(horizontal.equals("right")) ent.x_pos = parentX + parentW - ent.getWidth() + xOffset;
-
-         */
     }
 
     public void addText(Component textComp) { ent.addComponent(textComp); }
@@ -70,7 +59,7 @@ public class MenuItem {
         clickStateL = 0;
         clickStateR = 0;
         hoverState = false;
-        treeNode = new Tree(this, parent);
+        treeNode = new Tree<MenuItem>(this, parent);
         justify = newJustify;
         xOffset = x;
         yOffset = y;
@@ -109,16 +98,22 @@ public class MenuItem {
     }
 
     public void update() {
+
     }
 
     public int getXOffset() { return xOffset; }
 
     public void setXOffset(int newXOffset) {
+
         xOffset = newXOffset;
         positionItem();
 
         //now do it for all the children
+        for(Tree tree: treeNode.getTraverseArr()) {
 
+            ((MenuItem)tree.value).positionItem();
+
+        }
     }
 
 
