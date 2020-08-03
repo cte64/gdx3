@@ -55,6 +55,7 @@ public class World {
     //These are the different data structures that reference the game entities =====================
     private static LinkedList<Entity> entList = new LinkedList<Entity>();
     private static HashMap<String, Entity> entByName = new HashMap<String, Entity>();
+    private static ArrayList<Entity> entByZIndex = new ArrayList<Entity>();
     private static ArrayList< ArrayList<Entity> > locatorCells = new ArrayList<  ArrayList<Entity> >();
     private static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
     private static ArrayList<Boolean> containsMoveables = new ArrayList<Boolean>();
@@ -112,6 +113,7 @@ public class World {
         }
         return null;
     }
+    public static ArrayList<Entity> getEntByZIndex() { return entByZIndex; }
 
     //SETTERS ======================================================================================
     public static void setMoveable(int x, int y, boolean newBool) {
@@ -143,6 +145,21 @@ public class World {
                 if(ent.moveable) setMoveable(x, y, true);
             }
         }
+    }
+    private static void positionByZIndex(Entity ent) {
+
+        if(entByZIndex.size() == 0) {
+            entByZIndex.add(ent);
+            return;
+        }
+
+        int index = 0;
+        for(int x = 0; x <entByZIndex.size(); x++) {
+            if(ent.z_pos < entByZIndex.get(x).z_pos) break;
+            index = x + 1;
+        }
+
+        entByZIndex.add(index, ent);
     }
 
     //Modify World State ===========================================================================
@@ -265,6 +282,7 @@ public class World {
             entList.add(ent);
             entByName.put(ent.entityName, ent);
             positionEntity(ent);
+            positionByZIndex(ent);
         }
         entitiesToBeAdded.clear();
 

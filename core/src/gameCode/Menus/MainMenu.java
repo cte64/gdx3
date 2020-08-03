@@ -51,7 +51,6 @@ public class MainMenu extends Component {
         //update everything ==============================================
         //if(newGame.isLeftClicked()) { State.deleteMenuItems(); World.setCurrentState("newGame"); }
 
-       background.setXOffset( background.getXOffset() + 1);
         //MenuItem bc = (MenuItem)background.value;
         //bc.setXOffset( bc.getXOffset() + 1);
 

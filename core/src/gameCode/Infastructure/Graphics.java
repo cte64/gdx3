@@ -192,7 +192,7 @@ public class Graphics implements Disposable {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-            for(Entity ent: World.getEntList()) {
+            for(Entity ent: World.getEntByZIndex()) {
                 if(ent.drawMode == "normal" && spriteMap.containsKey(ent.spriteName)) {
                     batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);
                 }
@@ -201,7 +201,7 @@ public class Graphics implements Disposable {
 
 
         hudBatch.begin();
-            for(Entity ent: World.getEntList()) {
+            for(Entity ent: World.getEntByZIndex()) {
 
                 if(ent.drawMode != "hud") continue;
                 if(spriteMap.containsKey(ent.spriteName)) hudBatch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);

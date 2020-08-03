@@ -7,6 +7,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import gameCode.Infastructure.Entity;
 import gameCode.Utilities.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -15,7 +16,12 @@ public class DesktopLauncher {
 
 	private static final boolean rebuildAtlas = true;
 
-	public static void main (String[] arg) {
+
+
+
+	public static void main(String[] arg) {
+
+
 
 		if(rebuildAtlas) {
 			Settings settings = new Settings();
@@ -33,5 +39,11 @@ public class DesktopLauncher {
 		config.backgroundFPS = 60; // Setting to 0 disables background fps throttling
 		new LwjglApplication(new myGame(), config);
 	}
+
+
+
+
+
+
 
 }
