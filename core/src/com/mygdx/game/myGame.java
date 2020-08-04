@@ -76,6 +76,8 @@ public class myGame extends ApplicationAdapter {
 		//System.out.println("graphics");
 
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
+
+
 	}
 	
 	@Override

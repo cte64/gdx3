@@ -18,7 +18,7 @@ public class MenuItem {
     public int xOffset, yOffset;
     public Tree<MenuItem> treeNode;
 
-    private void positionItem() {
+    public void positionItem() {
 
         String vertical = StringUtils.getField(justify, "vertical");
         String horizontal = StringUtils.getField(justify, "horizontal");
@@ -26,7 +26,6 @@ public class MenuItem {
         //get the coordinates of the parent element====================================================
         int parentX = 0;
         int parentY = 0;
-        int parentZ = 0;
         int parentW = World.getViewPortWidth();
         int parentH = World.getViewPortHeight();
 
@@ -36,7 +35,6 @@ public class MenuItem {
         if(parentEnt != null) {
             parentX = (int)parentEnt.x_pos;
             parentY = (int)parentEnt.y_pos;
-            parentZ = parentEnt.z_pos;
             parentW = (int)parentEnt.getWidth();
             parentH = (int)parentEnt.getHeight();
         }
@@ -52,14 +50,11 @@ public class MenuItem {
         if(horizontal.equals("center")) ent.x_pos = parentX + (parentW / 2) - ent.getWidth() / 2 + xOffset;
         if(horizontal.equals("left")) ent.x_pos = parentX + xOffset;
         if(horizontal.equals("right")) ent.x_pos = parentX + parentW - ent.getWidth() + xOffset;
-
-        //zIndex
-        ent.z_pos = parentZ + 1;
     }
 
     public void addText(Component textComp) { ent.addComponent(textComp); }
 
-    public MenuItem(String newID, String sprNm, Tree<MenuItem> parent, String newJustify, int x, int y, int w, int h) {
+    public MenuItem(String newID, String sprNm, Tree<MenuItem> parent, String newJustify, int x, int y, int z, int w, int h) {
 
         clickStateL = 0;
         clickStateR = 0;
@@ -75,6 +70,7 @@ public class MenuItem {
         ent.drawMode = "hud";
         ent.width = w;
         ent.height = h;
+        ent.z_pos = z;
         World.entitiesToBeAdded.add(ent);
 
         //position new item and all its children

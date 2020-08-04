@@ -24,6 +24,9 @@ public class MainMenu extends Component {
     public MainMenu() {
         type = "logic";
 
+
+
+        /*
         int padding = 5;
         int yOff = padding + 50;
 
@@ -34,6 +37,8 @@ public class MainMenu extends Component {
         //newGame
         newGame = new MenuItem("[type: menu][name: newGame]", "menuBack", background.treeNode, "[vertical: top][horizontal: center]", 0, padding, 400, 50);
         newGame.addText(new TextComponent("New Game", 10, "center", 0, 0));
+
+         */
 
 
         /*

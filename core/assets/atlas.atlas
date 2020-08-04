@@ -1,46 +1,87 @@
 
 atlas.png
-size: 1024,1024
+size: 2048,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 background
   rotate: false
-  xy: 2, 54
+  xy: 1334, 2
   size: 600, 400
   orig: 600, 400
   offset: 0, 0
   index: -1
+loadGameBackground
+  rotate: false
+  xy: 2, 318
+  size: 664, 634
+  orig: 664, 634
+  offset: 0, 0
+  index: -1
+loadGameListItem
+  rotate: false
+  xy: 2, 242
+  size: 500, 74
+  orig: 500, 74
+  offset: 0, 0
+  index: -1
+loadGameOverlay
+  rotate: false
+  xy: 668, 318
+  size: 664, 634
+  orig: 664, 634
+  offset: 0, 0
+  index: -1
 menuBack
   rotate: false
-  xy: 2, 2
+  xy: 2, 190
   size: 400, 50
   orig: 400, 50
   offset: 0, 0
   index: -1
 scrollBackground
   rotate: false
-  xy: 2, 456
+  xy: 1334, 404
   size: 486, 548
   orig: 486, 548
   offset: 0, 0
   index: -1
 scrollItem
   rotate: false
-  xy: 490, 931
+  xy: 504, 243
   size: 361, 73
   orig: 361, 73
   offset: 0, 0
   index: -1
 tile
   rotate: false
-  xy: 404, 32
+  xy: 1822, 932
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 
 atlas2.png
+size: 2048,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+menus/loadGameBackground
+  rotate: false
+  xy: 2, 2
+  size: 664, 634
+  orig: 664, 634
+  offset: 0, 0
+  index: -1
+menus/loadGameOverlay
+  rotate: false
+  xy: 668, 2
+  size: 664, 634
+  orig: 664, 634
+  offset: 0, 0
+  index: -1
+
+atlas3.png
 size: 1024,64
 format: RGBA8888
 filter: Nearest,Nearest

@@ -22,7 +22,7 @@ public class InputAL {
 
 
         //Add all the special keys here ==================
-
+        keys.put("left", Input.Keys.M);
 
         //Add all the mouse buttons here =================
         keys.put("mouse left", Input.Buttons.LEFT);

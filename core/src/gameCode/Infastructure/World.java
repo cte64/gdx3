@@ -42,8 +42,8 @@ public class World {
     private static int numCells;
 
     //ViewPort parameters =========================================================================
-    private static int viewPortWidth = 1000;
-    private static int viewPortHeight = 600;
+    private static int viewPortWidth = 1200;
+    private static int viewPortHeight = 800;
 
     //Time between frame ==========================================================================
     private static float deltaTime = 0.0f;
@@ -164,7 +164,7 @@ public class World {
 
     //Modify World State ===========================================================================
     public static void init() {
-        currentState = "mainMenu";
+        currentState = "loadGame";
     }
     public static void createWorld(int newChunks) {
 
