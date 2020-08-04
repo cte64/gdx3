@@ -22,7 +22,6 @@ public class LoadGame extends Component {
     private float scrollIndex;
     private float scrollPerFrame = 6.0f;
     private int itemHeight = 75;
-
     private int menuTop = 125;
     private int menuBottom = 552;
 
@@ -47,7 +46,7 @@ public class LoadGame extends Component {
             String name = "[type: menu][name: ]";
             name = StringUtils.setField(name, "name", StringUtils.toString(x));
             MenuItem gameItem = new MenuItem(name, "loadGameListItem", background.treeNode, "[vertical: top][horizontal: center]", -35, 0, 1, 500, 74);
-            gameItem.addText(new TextComponent("world whatever", 10, "center", 0, 0)); 
+            gameItem.addText(new TextComponent("this is the hook", 10, "center", 0, 0));
             gameItems.add(gameItem);
         }
 
@@ -94,6 +93,16 @@ public class LoadGame extends Component {
         if(InputAL.isKeyPressed("up")) {
             scrollIndex += scrollPerFrame;
             positionItems();
+        }
+
+
+
+        if(scrollBar.hover() && InputAL.isMousePressed("mouse left")) {
+
+
+            int y = InputAL.getMouseY();
+
+
 
         }
 

@@ -77,7 +77,7 @@ public class MenuItem {
         for(Tree tree: treeNode.getTraverseArr()) { ((MenuItem)tree.value).positionItem(); }
     }
 
-    private boolean hover() {
+    public boolean hover() {
 
         int xPos = InputAL.getMouseX();
         int yPos = InputAL.getMouseY();

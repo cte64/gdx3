@@ -28,6 +28,7 @@ public class InputAL {
 
         //Add all the mouse buttons here =================
         keys.put("mouse left", Input.Buttons.LEFT);
+        keys.put("mouse right", Input.Buttons.RIGHT);
     }
 
     public static int getMouseX() {
@@ -49,4 +50,9 @@ public class InputAL {
         else return false;
     }
 
+    public static boolean isMousePressed(String val) {
+        if(!keys.containsKey(val)) return false;
+        if(Gdx.input.isButtonPressed(keys.get(val)) ) return true;
+        else return false;
+    }
 }
