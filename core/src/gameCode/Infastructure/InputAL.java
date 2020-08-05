@@ -20,9 +20,11 @@ public class InputAL {
 
         //Add all the numerical keys here ================
 
-
         //Add all the special keys here ==================
-        keys.put("left", Input.Keys.M);
+        keys.put("left", Input.Keys.LEFT);
+        keys.put("right", Input.Keys.RIGHT);
+        keys.put("up", Input.Keys.UP);
+        keys.put("down", Input.Keys.DOWN);
 
         //Add all the mouse buttons here =================
         keys.put("mouse left", Input.Buttons.LEFT);
@@ -41,9 +43,9 @@ public class InputAL {
         return mouseY;
     }
 
-    public static boolean isPressed(String val) {
+    public static boolean isKeyPressed(String val) {
         if(!keys.containsKey(val)) return false;
-        if(Gdx.input.isButtonPressed(keys.get(val)) ) return true;
+        if(Gdx.input.isKeyPressed(keys.get(val)) ) return true;
         else return false;
     }
 

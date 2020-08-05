@@ -90,6 +90,8 @@ public class MenuItem {
     }
 
     public boolean isLeftClicked() {
+
+        /*
         if (!hover() && !InputAL.isPressed("mouse left")) clickStateL = 0;
         if (clickStateL == 0 && hover() && !InputAL.isPressed("mouse left")) clickStateL = 1;
         if (clickStateL == 1 && hover() && InputAL.isPressed("mouse left")) clickStateL = 2;
@@ -97,6 +99,8 @@ public class MenuItem {
             clickStateL = 0;
             return true;
         }
+
+         */
         return false;
     }
 
