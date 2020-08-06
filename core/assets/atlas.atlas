@@ -1,68 +1,89 @@
 
 atlas.png
-size: 2048,1024
+size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 background
   rotate: false
-  xy: 1334, 2
+  xy: 2, 77
   size: 600, 400
   orig: 600, 400
   offset: 0, 0
   index: -1
+delete-comments-delete-icon-black-11563177686kfv8sa8gps
+  rotate: false
+  xy: 2, 1115
+  size: 840, 859
+  orig: 840, 859
+  offset: 0, 0
+  index: -1
 loadGameBackground
   rotate: false
-  xy: 2, 318
+  xy: 2, 479
   size: 664, 634
   orig: 664, 634
   offset: 0, 0
   index: -1
+loadGameDelete
+  rotate: false
+  xy: 668, 1048
+  size: 65, 65
+  orig: 65, 65
+  offset: 0, 0
+  index: -1
 loadGameListItem
   rotate: false
-  xy: 2, 242
+  xy: 844, 1264
   size: 500, 74
   orig: 500, 74
   offset: 0, 0
   index: -1
 loadGameOverlay
   rotate: false
-  xy: 668, 318
+  xy: 844, 1340
   size: 664, 634
   orig: 664, 634
   offset: 0, 0
   index: -1
+loadGamePlay
+  rotate: false
+  xy: 844, 1197
+  size: 65, 65
+  orig: 65, 65
+  offset: 0, 0
+  index: -1
 menuBack
   rotate: false
-  xy: 2, 190
+  xy: 1510, 1374
   size: 400, 50
   orig: 400, 50
   offset: 0, 0
   index: -1
 scrollBackground
   rotate: false
-  xy: 1334, 404
+  xy: 1510, 1426
   size: 486, 548
   orig: 486, 548
   offset: 0, 0
   index: -1
 scrollBar
   rotate: false
-  xy: 1822, 884
+  xy: 604, 409
   size: 60, 68
   orig: 60, 68
   offset: 0, 0
   index: -1
 scrollItem
   rotate: false
-  xy: 504, 243
+  xy: 2, 2
   size: 361, 73
   orig: 361, 73
   offset: 0, 0
   index: -1
 tile
   rotate: false
-  xy: 2, 168
+  xy: 1998, 1954
   size: 20, 20
   orig: 20, 20
   offset: 0, 0

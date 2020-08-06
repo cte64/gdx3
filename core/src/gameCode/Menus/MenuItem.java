@@ -105,17 +105,51 @@ public class MenuItem {
     }
 
     public void update() {
+        for(Tree<MenuItem> tree: treeNode.getTraverseArr()) {
+            tree.value.positionItem();
+        }
+    }
+
+    public void updateDrawMode(String newDrawMode) {
+
+
+        //update this one
+        ent.drawMode = newDrawMode;
+
+        /*
+        ArrayList< Tree > trees = treeNode.getTraverseArr();
+        for(int x = 1; x < trees.size(); x++) {
+            if(trees.get(x) == null) continue;
+            Tree<MenuItem> tree = trees.get(x);
+            tree.value.ent.drawMode = ((MenuItem)(treeNode.parent.value)).ent.drawMode;
+        }
+         */
+
+
+
+
+
+
+        for(Tree<MenuItem> tree: treeNode.getChildren()) {
+            if(tree.parent == null) continue;
+
+
+            tree.value.ent.drawMode = newDrawMode;
+
+            //System.out.println(tree.value.ent.entityName);
+
+        }
+
+
+
 
     }
 
     public int getXOffset() { return xOffset; }
 
     public void setXOffset(int newXOffset) {
-
         xOffset = newXOffset;
         positionItem();
-
-
     }
 
 

@@ -118,6 +118,8 @@ public class Graphics implements Disposable {
         addSprite("loadGameOverlay");
         addSprite("loadGameListItem");
         addSprite("scrollBar");
+        addSprite("loadGamePlay");
+        addSprite("loadGameDelete");
 
 
         //set up the tile atlas ==================================================================

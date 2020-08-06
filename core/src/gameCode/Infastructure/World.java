@@ -42,7 +42,7 @@ public class World {
     private static int numCells;
 
     //ViewPort parameters =========================================================================
-    private static int viewPortWidth = 1000;
+    private static int viewPortWidth = 700;
     private static int viewPortHeight = 700;
 
     //Time between frame ==========================================================================
