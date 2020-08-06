@@ -59,6 +59,15 @@ public class Entity {
         return null;
     }
 
+    public ArrayList<Component> getComponents(String type) {
+        ArrayList<Component> retVal = new ArrayList<Component>();
+        for(Component comp: components) {
+            if(comp.type == type)
+                retVal.add(comp);
+        }
+        return retVal;
+    }
+
     public float getWidth() {
         return width;
     }

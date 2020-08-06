@@ -4,6 +4,13 @@ size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+areYouSureBackground
+  rotate: false
+  xy: 668, 827
+  size: 300, 286
+  orig: 300, 286
+  offset: 0, 0
+  index: -1
 background
   rotate: false
   xy: 2, 77
@@ -27,7 +34,7 @@ loadGameBackground
   index: -1
 loadGameDelete
   rotate: false
-  xy: 668, 1048
+  xy: 1346, 1273
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
@@ -48,7 +55,7 @@ loadGameOverlay
   index: -1
 loadGamePlay
   rotate: false
-  xy: 844, 1197
+  xy: 668, 760
   size: 65, 65
   orig: 65, 65
   offset: 0, 0

@@ -313,6 +313,23 @@ public class FileSystem {
             setFile(entName, entStr);
         }}
     }
+    public static ArrayList<String> getSaveNames() {
+
+        ArrayList<String> retVal = new ArrayList<String>();
+        FileHandle dir = Gdx.files.internal("core/saves/");
+        for(FileHandle file: dir.list()) {
+            String fileName = file.toString() + "/metadata.txt";
+            FileHandle gameFile = Gdx.files.local(fileName);
+            if(!gameFile.exists()) {
+                System.out.println("File: " + fileName + " does not exist!");
+                return retVal;
+            }
+            String metaData = gameFile.readString();
+            retVal.add(metaData);
+        }
+
+        return retVal;
+    }
 
 
     /*

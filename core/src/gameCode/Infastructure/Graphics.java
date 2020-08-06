@@ -120,6 +120,7 @@ public class Graphics implements Disposable {
         addSprite("scrollBar");
         addSprite("loadGamePlay");
         addSprite("loadGameDelete");
+        addSprite("areYouSureBackground");
 
 
         //set up the tile atlas ==================================================================
@@ -212,11 +213,13 @@ public class Graphics implements Disposable {
                 if(ent.drawMode != "hud") continue;
                 if(spriteMap.containsKey(ent.spriteName)) hudBatch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);
 
-                //Draw the Text =====================
-                TextComponent text = (TextComponent)ent.getComponent("text");
-                if(text != null) {
-                    font.setColor(0.0f, 0.0f, 0.0f, 1.0f);
-                    font.draw(hudBatch, text.getText(), text.getXPos(), text.getYPos());
+                ArrayList<Component> textComps = ent.getComponents("text");
+                for(Component comp: textComps) {
+                    TextComponent text = (TextComponent)comp;
+                    if(text != null) {
+                        font.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                        font.draw(hudBatch, text.getText(), text.getXPos(), text.getYPos());
+                    }
                 }
             }
         hudBatch.end();

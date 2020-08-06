@@ -90,17 +90,13 @@ public class MenuItem {
     }
 
     public boolean isLeftClicked() {
-
-        /*
-        if (!hover() && !InputAL.isPressed("mouse left")) clickStateL = 0;
-        if (clickStateL == 0 && hover() && !InputAL.isPressed("mouse left")) clickStateL = 1;
-        if (clickStateL == 1 && hover() && InputAL.isPressed("mouse left")) clickStateL = 2;
-        if (clickStateL == 2 && hover() && !InputAL.isPressed("mouse left")) {
+        if (!hover() && !InputAL.isMousePressed("mouse left")) clickStateL = 0;
+        if (clickStateL == 0 && hover() && !InputAL.isMousePressed("mouse left")) clickStateL = 1;
+        if (clickStateL == 1 && hover() && InputAL.isMousePressed("mouse left")) clickStateL = 2;
+        if (clickStateL == 2 && hover() && !InputAL.isMousePressed("mouse left")) {
             clickStateL = 0;
             return true;
         }
-
-         */
         return false;
     }
 
@@ -111,38 +107,11 @@ public class MenuItem {
     }
 
     public void updateDrawMode(String newDrawMode) {
-
-
-        //update this one
         ent.drawMode = newDrawMode;
-
-        /*
-        ArrayList< Tree > trees = treeNode.getTraverseArr();
-        for(int x = 1; x < trees.size(); x++) {
-            if(trees.get(x) == null) continue;
-            Tree<MenuItem> tree = trees.get(x);
-            tree.value.ent.drawMode = ((MenuItem)(treeNode.parent.value)).ent.drawMode;
-        }
-         */
-
-
-
-
-
-
         for(Tree<MenuItem> tree: treeNode.getChildren()) {
             if(tree.parent == null) continue;
-
-
             tree.value.ent.drawMode = newDrawMode;
-
-            //System.out.println(tree.value.ent.entityName);
-
         }
-
-
-
-
     }
 
     public int getXOffset() { return xOffset; }

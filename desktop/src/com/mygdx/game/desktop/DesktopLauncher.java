@@ -5,6 +5,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.mygdx.game.myGame;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import gameCode.Infastructure.Entity;
+import gameCode.Infastructure.FileSystem;
 import gameCode.Infastructure.InputAL;
 import gameCode.Utilities.StringUtils;
 
@@ -22,6 +23,9 @@ public class DesktopLauncher {
 
 	public static void main(String[] arg) {
 
+
+
+
 		if(rebuildAtlas) {
 			Settings settings = new Settings();
 			settings.maxWidth = 2048;
@@ -37,6 +41,12 @@ public class DesktopLauncher {
 		config.foregroundFPS = 60; // Setting to 0 disables foreground fps throttling
 		config.backgroundFPS = 60; // Setting to 0 disables background fps throttling
 		new LwjglApplication(new myGame(), config);
+
+
+
+
+
+
 
 	}
 
