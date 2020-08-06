@@ -164,7 +164,7 @@ public class World {
 
     //Modify World State ===========================================================================
     public static void init() {
-        currentState = "loadGame";
+        currentState = "newGame";
     }
     public static void createWorld(int newChunks) {
 

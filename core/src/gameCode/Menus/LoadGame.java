@@ -154,8 +154,6 @@ public class LoadGame extends Component {
             positionItems();
         }
 
-
-
         if(scrollBar.hover() && InputAL.isMousePressed("mouse left")) {
 
             int y = InputAL.getMouseY();
@@ -183,7 +181,6 @@ public class LoadGame extends Component {
 
                 //flash a screen that asks them if the are sure they want to delete the world
                 toggleDeleteCheck(true);
-
             }
         }
 
