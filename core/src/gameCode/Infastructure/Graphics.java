@@ -109,6 +109,7 @@ public class Graphics implements Disposable {
         spriteMap = new HashMap<String, Sprite>();
         spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
         tileAtlas = new TextureAtlas();
+
         addSprite("tile");
         addSprite("menuBack");
         addSprite("background");
@@ -123,6 +124,7 @@ public class Graphics implements Disposable {
         addSprite("areYouSureBackground");
         addSprite("mainMenuBack");
         addSprite("menuItem");
+        addSprite("halfMenuItem");
         addSprite("createGameBack");
         addSprite("minus");
         addSprite("plus");

@@ -24,6 +24,7 @@ public class State {
     private static void paused() {}
     private static void play() {}
     private static void mainMenu() {
+        deleteMenuItems();
         Entity hud = new Entity();
         hud.entityName = "[type: menu][name: mainMenu]";
         hud.drawMode = "hud";
@@ -31,6 +32,7 @@ public class State {
         World.entitiesToBeAdded.add(hud);
     }
     private static void newGame() {
+        deleteMenuItems();
         Entity hud = new Entity();
         hud.entityName = "[type: menu][name: newGame]";
         hud.drawMode = "hud";

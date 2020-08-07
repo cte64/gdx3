@@ -164,7 +164,7 @@ public class World {
 
     //Modify World State ===========================================================================
     public static void init() {
-        currentState = "newGame";
+        currentState = "mainMenu";
     }
     public static void createWorld(int newChunks) {
 
@@ -267,6 +267,7 @@ public class World {
             ent.markForDeletion = true;
 
             entByName.remove(ent.entityName);
+            entByZIndex.remove(ent);
 
             ArrayList<Vector2> corner_coords = Coordinates.getLocatorCellCoord(ent);
             for(Vector2 coord: corner_coords) {
@@ -285,7 +286,6 @@ public class World {
             positionByZIndex(ent);
         }
         entitiesToBeAdded.clear();
-
     }
     public static void cleanUp() {
 

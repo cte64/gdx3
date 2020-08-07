@@ -32,6 +32,13 @@ delete-comments-delete-icon-black-11563177686kfv8sa8gps
   orig: 840, 859
   offset: 0, 0
   index: -1
+halfMenuItem
+  rotate: false
+  xy: 364, 102
+  size: 173, 40
+  orig: 173, 40
+  offset: 0, 0
+  index: -1
 loadGameBackground
   rotate: false
   xy: 2, 546
@@ -62,7 +69,7 @@ loadGameOverlay
   index: -1
 loadGamePlay
   rotate: false
-  xy: 364, 77
+  xy: 1346, 1340
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
@@ -238,5 +245,106 @@ terrainTextures/sulfurTexture
   xy: 684, 2
   size: 60, 60
   orig: 60, 60
+  offset: 0, 0
+  index: -1
+
+atlas4.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+menu stuff/loadGame/358064-alpha-texture-light-grey-wallpaper-2
+  rotate: false
+  xy: 2, 2
+  size: 975, 975
+  orig: 975, 975
+  offset: 0, 0
+  index: -1
+menu stuff/loadGame/dark textures desktop wallpaper download dark textures wallpaper in hd
+  rotate: false
+  xy: 2, 979
+  size: 1680, 1050
+  orig: 1680, 1050
+  offset: 0, 0
+  index: -1
+menu stuff/loadGame/loadGameBackground
+  rotate: false
+  xy: 979, 377
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: -1
+
+atlas5.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+menu stuff/loadGame/res
+  rotate: false
+  xy: 2, 2
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: -1
+
+atlas6.png
+size: 512,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+menu stuff/createGame/createGameBack
+  rotate: false
+  xy: 2, 86
+  size: 360, 140
+  orig: 360, 140
+  offset: 0, 0
+  index: -1
+menu stuff/createGame/halfMenuItem
+  rotate: false
+  xy: 2, 2
+  size: 173, 40
+  orig: 173, 40
+  offset: 0, 0
+  index: -1
+menu stuff/createGame/menuItem
+  rotate: false
+  xy: 2, 44
+  size: 350, 40
+  orig: 350, 40
+  offset: 0, 0
+  index: -1
+
+atlas7.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+menu stuff/mainMenu/358064-alpha-texture-light-grey-wallpaper-2
+  rotate: false
+  xy: 2, 2
+  size: 975, 975
+  orig: 975, 975
+  offset: 0, 0
+  index: -1
+menu stuff/mainMenu/dark textures desktop wallpaper download dark textures wallpaper in hd
+  rotate: false
+  xy: 2, 979
+  size: 1680, 1050
+  orig: 1680, 1050
+  offset: 0, 0
+  index: -1
+menu stuff/mainMenu/mainMenuBack
+  rotate: false
+  xy: 1684, 1849
+  size: 360, 180
+  orig: 360, 180
+  offset: 0, 0
+  index: -1
+menu stuff/mainMenu/menuItem
+  rotate: false
+  xy: 979, 937
+  size: 350, 40
+  orig: 350, 40
   offset: 0, 0
   index: -1

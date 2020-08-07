@@ -16,7 +16,6 @@ import java.util.HashMap;
 public class MainMenu extends Component {
 
 
-
     private MenuItem background;
     private MenuItem createGame;
     private MenuItem loadGame;
@@ -27,7 +26,7 @@ public class MainMenu extends Component {
         type = "logic";
 
         int height = 43;
-        int start = 5;
+        int start = 6;
 
         background = new MenuItem("[type: menu][name: background]", "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 0, 360, 180);
         background.addText(new TextComponent("Main Menu", 10, "[vertical: top][horizontal: center]", 0, 0));
@@ -43,6 +42,8 @@ public class MainMenu extends Component {
     }
 
     public void update(Entity entity) {
+
+        if(createGame.isLeftClicked()) World.setCurrentState("newGame");
 
 
 
