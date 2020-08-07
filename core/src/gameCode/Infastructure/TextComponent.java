@@ -9,9 +9,9 @@ public class TextComponent extends Component {
 
 
     public String text;
-    private int fontSize;
-    private int xPos, yPos;
-    private String justify;
+    public int fontSize;
+    public int xPos, yPos;
+    public String justify;
 
     public TextComponent(String newText, int newFontSize, String newJustify, int newX, int newY) {
         type = "text";

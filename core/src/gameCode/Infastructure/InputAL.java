@@ -4,11 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import gameCode.Utilities.MathUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InputAL {
 
     private static HashMap<String, Integer> keys;
+    public static ArrayList<Character>  charsQueue = new ArrayList<Character>();
 
     public static void init() {
 

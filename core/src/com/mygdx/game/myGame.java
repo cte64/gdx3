@@ -56,6 +56,52 @@ public class myGame extends ApplicationAdapter {
 		//DO THIS JUST FOR NOW =========================
 		World.init();
 		World.createWorld(10);
+
+
+		//set the input processor ======================
+		InputProcessor ip = new InputProcessor() {
+			@Override
+			public boolean keyDown(int keycode) {
+				return false;
+			}
+
+			@Override
+			public boolean keyUp(int keycode) {
+				return false;
+			}
+
+			@Override
+			public boolean keyTyped(char character) {
+				InputAL.charsQueue.add(character);
+				return false;
+			}
+
+			@Override
+			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+				return false;
+			}
+
+			@Override
+			public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+				return false;
+			}
+
+			@Override
+			public boolean touchDragged(int screenX, int screenY, int pointer) {
+				return false;
+			}
+
+			@Override
+			public boolean mouseMoved(int screenX, int screenY) {
+				return false;
+			}
+
+			@Override
+			public boolean scrolled(int amount) {
+				return false;
+			}
+		};
+		Gdx.input.setInputProcessor(ip);
 	}
 
 	@Override
@@ -76,8 +122,8 @@ public class myGame extends ApplicationAdapter {
 		//System.out.println("graphics");
 
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
-
-
+		World.setDeltaTime(Gdx.graphics.getRawDeltaTime());
+		InputAL.charsQueue.clear();
 	}
 	
 	@Override
