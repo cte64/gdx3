@@ -121,6 +121,11 @@ public class Graphics implements Disposable {
         addSprite("loadGamePlay");
         addSprite("loadGameDelete");
         addSprite("areYouSureBackground");
+        addSprite("mainMenuBack");
+        addSprite("menuItem");
+        addSprite("createGameBack");
+        addSprite("minus");
+        addSprite("plus");
 
 
         //set up the tile atlas ==================================================================
@@ -217,7 +222,8 @@ public class Graphics implements Disposable {
                 for(Component comp: textComps) {
                     TextComponent text = (TextComponent)comp;
                     if(text != null) {
-                        font.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+                        font.setColor(1.0f, 1.0f, 0.0f, 1.0f);
                         font.draw(hudBatch, text.getText(), text.getXPos(), text.getYPos());
                     }
                 }

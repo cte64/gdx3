@@ -18,46 +18,32 @@ public class MainMenu extends Component {
 
 
     private MenuItem background;
-    private MenuItem newGame;
-
+    private MenuItem createGame;
+    private MenuItem loadGame;
+    private MenuItem options;
 
     public MainMenu() {
+
         type = "logic";
 
+        int height = 43;
+        int start = 5;
 
+        background = new MenuItem("[type: menu][name: background]", "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 0, 360, 180);
+        background.addText(new TextComponent("Main Menu", 10, "[vertical: top][horizontal: center]", 0, 0));
 
-        /*
-        int padding = 5;
-        int yOff = padding + 50;
+        createGame = new MenuItem("[type: menu][name: createGame]", "menuItem", background.treeNode, "[vertical: top][horizontal: center]", 0, start + 1*height, 1, 350, 40);
+        createGame.addText(new TextComponent("Create New World", 10, "[vertical: center][horizontal: center]", 0, 0));
 
+        loadGame = new MenuItem("[type: menu][name: loadGame]", "menuItem", background.treeNode, "[vertical: top][horizontal: center]", 0, start + 2*height, 1, 350, 40);
+        loadGame.addText(new TextComponent("Load World", 10, "[vertical: center][horizontal: center]", 0, 0));
 
-        //background
-        background = new MenuItem("[type: menu][name: background]", "background", null, "[vertical: center][horizontal: center]", 0, 0, 600, 400);
-
-        //newGame
-        newGame = new MenuItem("[type: menu][name: newGame]", "menuBack", background.treeNode, "[vertical: top][horizontal: center]", 0, padding, 400, 50);
-        newGame.addText(new TextComponent("New Game", 10, "center", 0, 0));
-
-         */
-
-
-        /*
-
-        test = new MenuItem("[type: menu][name: test]", "tile", background, "[vertical: center][horizontal: center]", 0, 0, 20, 20);
-
-        loadGame = new MenuItem("[type: menu][name: loadGame]", "menuBack", background, "[vertical: top][horizontal: center]", 0, padding + yOff, 400, 50, new TextComponent("Load Game", 10, "center", 0, 0));
-        options = new MenuItem("[type: menu][name: options]", "menuBack", background, "[vertical: top][horizontal: center]", 0, padding + 2*yOff, 400, 50, new TextComponent("Options", 10, "center", 0, 0));
-
-         */
+        options = new MenuItem("[type: menu][name: options]", "menuItem", background.treeNode, "[vertical: top][horizontal: center]", 0, start + 3*height, 1, 350, 40);
+        options.addText(new TextComponent("Options", 10, "[vertical: center][horizontal: center]", 0, 0));
     }
 
     public void update(Entity entity) {
 
-        //update everything ==============================================
-        //if(newGame.isLeftClicked()) { State.deleteMenuItems(); World.setCurrentState("newGame"); }
-
-        //MenuItem bc = (MenuItem)background.value;
-        //bc.setXOffset( bc.getXOffset() + 1);
 
 
     }

@@ -10,7 +10,7 @@ public class TextComponent extends Component {
 
     public String text;
     public int fontSize;
-    public int xPos, yPos;
+    public int yPos, xPos, xOffset, yOffset;
     public String justify;
 
     public TextComponent(String newText, int newFontSize, String newJustify, int newX, int newY) {
@@ -18,8 +18,8 @@ public class TextComponent extends Component {
         text = newText;
         fontSize = newFontSize;
         justify = newJustify;
-        xPos = newX;
-        yPos = newY;
+        xOffset = newX;
+        yOffset = newY;
     }
 
     public void update(Entity ent) {
@@ -28,14 +28,14 @@ public class TextComponent extends Component {
         String horizontal = StringUtils.getField(justify, "horizontal");
 
         //vertical
-        if(vertical.equals("center")) yPos = (int)(ent.y_pos + ent.getHeight()/2 + Graphics.getTextBounds(text, fontSize).y/2  );
-        if(vertical.equals("bottom")) yPos = (int)(ent.y_pos + Graphics.getTextBounds(text, fontSize).y);
-        if(vertical.equals("top")) yPos = (int)(ent.y_pos + ent.getHeight() - Graphics.getTextBounds(text, fontSize).y);
+        if(vertical.equals("center")) yPos = (int)(ent.y_pos + ent.getHeight()/2 + Graphics.getTextBounds(text, fontSize).y/2  ) + yOffset;
+        if(vertical.equals("bottom")) yPos = (int)(ent.y_pos + Graphics.getTextBounds(text, fontSize).y)+ yOffset;
+        if(vertical.equals("top")) yPos = (int)(ent.y_pos + ent.getHeight() - Graphics.getTextBounds(text, fontSize).y)+ yOffset;
 
         //horizontal
-        if(horizontal.equals("center")) xPos = (int)(ent.x_pos + ent.getWidth()/2 - Graphics.getTextBounds(text, fontSize).x/2  );
-        if(horizontal.equals("left")) xPos = (int)(ent.x_pos);
-        if(horizontal.equals("right")) xPos = (int)(ent.x_pos + ent.getWidth() - Graphics.getTextBounds(text, fontSize).x);
+        if(horizontal.equals("center")) xPos = (int)(ent.x_pos + ent.getWidth()/2 - Graphics.getTextBounds(text, fontSize).x/2  ) + xOffset;
+        if(horizontal.equals("left")) xPos = (int)(ent.x_pos) + xOffset;
+        if(horizontal.equals("right")) xPos = (int)(ent.x_pos + ent.getWidth() - Graphics.getTextBounds(text, fontSize).x) + xOffset;
     }
 
     //getters ====================================================================
