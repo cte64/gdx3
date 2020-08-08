@@ -128,6 +128,8 @@ public class Graphics implements Disposable {
         addSprite("createGameBack");
         addSprite("minus");
         addSprite("plus");
+        addSprite("loadGameBack");
+        addSprite("loadGameFront");
 
 
         //set up the tile atlas ==================================================================

@@ -6,133 +6,147 @@ filter: Nearest,Nearest
 repeat: none
 areYouSureBackground
   rotate: false
-  xy: 668, 861
+  xy: 1392, 443
   size: 300, 286
   orig: 300, 286
   offset: 0, 0
   index: -1
 background
   rotate: false
-  xy: 2, 144
+  xy: 2, 120
   size: 600, 400
   orig: 600, 400
   offset: 0, 0
   index: -1
 createGameBack
   rotate: false
-  xy: 2, 2
+  xy: 1030, 589
   size: 360, 140
   orig: 360, 140
   offset: 0, 0
   index: -1
 delete-comments-delete-icon-black-11563177686kfv8sa8gps
   rotate: false
-  xy: 2, 1182
+  xy: 2, 1158
   size: 840, 859
   orig: 840, 859
   offset: 0, 0
   index: -1
 halfMenuItem
   rotate: false
-  xy: 364, 102
+  xy: 668, 1116
   size: 173, 40
   orig: 173, 40
   offset: 0, 0
   index: -1
+loadGameBack
+  rotate: false
+  xy: 844, 731
+  size: 592, 650
+  orig: 592, 650
+  offset: 0, 0
+  index: -1
 loadGameBackground
   rotate: false
-  xy: 2, 546
+  xy: 2, 522
   size: 664, 634
   orig: 664, 634
   offset: 0, 0
   index: -1
 loadGameDelete
   rotate: false
-  xy: 1206, 1264
+  xy: 504, 53
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
   index: -1
+loadGameFront
+  rotate: false
+  xy: 1438, 731
+  size: 592, 650
+  orig: 592, 650
+  offset: 0, 0
+  index: -1
 loadGameListItem
   rotate: false
-  xy: 844, 1331
+  xy: 2, 44
   size: 500, 74
   orig: 500, 74
   offset: 0, 0
   index: -1
 loadGameOverlay
   rotate: false
-  xy: 844, 1407
+  xy: 844, 1383
   size: 664, 634
   orig: 664, 634
   offset: 0, 0
   index: -1
 loadGamePlay
   rotate: false
-  xy: 1346, 1340
+  xy: 1694, 664
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
   index: -1
 mainMenuBack
   rotate: false
-  xy: 844, 1149
+  xy: 668, 549
   size: 360, 180
   orig: 360, 180
   offset: 0, 0
   index: -1
 menuBack
   rotate: false
-  xy: 1510, 1441
+  xy: 1510, 1417
   size: 400, 50
   orig: 400, 50
   offset: 0, 0
   index: -1
 menuItem
   rotate: false
-  xy: 668, 819
+  xy: 2, 2
   size: 350, 40
   orig: 350, 40
   offset: 0, 0
   index: -1
 minus
   rotate: false
-  xy: 1998, 2009
+  xy: 1510, 1383
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 plus
   rotate: false
-  xy: 1912, 1459
+  xy: 1544, 1383
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 scrollBackground
   rotate: false
-  xy: 1510, 1493
+  xy: 1510, 1469
   size: 486, 548
   orig: 486, 548
   offset: 0, 0
   index: -1
 scrollBar
   rotate: false
-  xy: 604, 476
+  xy: 604, 452
   size: 60, 68
   orig: 60, 68
   offset: 0, 0
   index: -1
 scrollItem
   rotate: false
-  xy: 1510, 1366
+  xy: 668, 474
   size: 361, 73
   orig: 361, 73
   offset: 0, 0
   index: -1
 tile
   rotate: false
-  xy: 668, 1160
+  xy: 1998, 1997
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
@@ -260,6 +274,13 @@ menu stuff/loadGame/358064-alpha-texture-light-grey-wallpaper-2
   orig: 975, 975
   offset: 0, 0
   index: -1
+menu stuff/loadGame/back
+  rotate: false
+  xy: 979, 327
+  size: 592, 650
+  orig: 592, 650
+  offset: 0, 0
+  index: -1
 menu stuff/loadGame/dark textures desktop wallpaper download dark textures wallpaper in hd
   rotate: false
   xy: 2, 979
@@ -267,22 +288,43 @@ menu stuff/loadGame/dark textures desktop wallpaper download dark textures wallp
   orig: 1680, 1050
   offset: 0, 0
   index: -1
-menu stuff/loadGame/loadGameBackground
+menu stuff/loadGame/listItem
   rotate: false
-  xy: 979, 377
-  size: 600, 600
-  orig: 600, 600
+  xy: 979, 255
+  size: 425, 70
+  orig: 425, 70
   offset: 0, 0
   index: -1
 
 atlas5.png
-size: 1024,1024
+size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-menu stuff/loadGame/res
+menu stuff/loadGame/border
   rotate: false
   xy: 2, 2
+  size: 542, 498
+  orig: 542, 498
+  offset: 0, 0
+  index: -1
+menu stuff/loadGame/front
+  rotate: false
+  xy: 2, 502
+  size: 592, 650
+  orig: 592, 650
+  offset: 0, 0
+  index: -1
+menu stuff/loadGame/loadGameBackground
+  rotate: false
+  xy: 596, 552
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: -1
+menu stuff/loadGame/res
+  rotate: false
+  xy: 1198, 552
   size: 600, 600
   orig: 600, 600
   offset: 0, 0
