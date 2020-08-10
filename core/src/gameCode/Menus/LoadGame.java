@@ -22,7 +22,7 @@ public class LoadGame extends Component {
     private float scrollPerFrame = 6.0f;
     private int itemHeight = 70;
     private int menuTop = 105;
-    private int menuBottom = 552;
+    private int menuBottom = 526;
 
 
     private class listItem {
@@ -35,6 +35,7 @@ public class LoadGame extends Component {
 
     private class areYouSure {
         public MenuItem background;
+        public MenuItem input;
         public MenuItem yes;
         public MenuItem no;
         public areYouSure() {}
@@ -57,9 +58,11 @@ public class LoadGame extends Component {
         overlay = new MenuItem("[type: menu][name: overlay]", "loadGameFront", background.treeNode, "[vertical: center][horizontal: center]", 0, 0, 3, 479, 600);
         overlay.addText( new TextComponent("Load Game", 10, "[vertical: top][horizontal: center]", 0, 0));
 
-        back = new MenuItem("[type: menu][name: back]", "halfMenuItem", background.treeNode, "[vertical: bottom][horizontal: left]", 15, 15, 4, 173, 40);
         scrollBar = new MenuItem("[type: menu][name: scrollBar]", "scrollBar", background.treeNode, "[vertical: top][horizontal: right]", -60, 0, 4, 51, 52);
 
+        //bottom buttons
+        back = new MenuItem("[type: menu][name: back]", "halfMenuItem", background.treeNode, "[vertical: bottom][horizontal: left]", 15, 15, 4, 173, 40);
+        back.addText( new TextComponent("Back", 10, "[vertical: center][horizontal: center]", 0, 0));
 
         //load game files
         ArrayList<String> files = FileSystem.getSaveNames();
@@ -98,8 +101,7 @@ public class LoadGame extends Component {
 
 
         //deleteCheck
-        //deleteCheck = null;
-
+        deleteCheck = null;
        positionItems();
     }
 
@@ -130,28 +132,39 @@ public class LoadGame extends Component {
             int barBot = menuBottom - itemHeight + 6;
             float adjPs = menuTop + (barBot - menuTop) * (scrollIndex / upperBound);
 
-            scrollBar.xOffset = -40;
+            scrollBar.xOffset = -32;
             scrollBar.yOffset = (int)adjPs;
             scrollBar.positionItem();
         }
     }
 
-    private void toggleDeleteCheck(boolean onOff) {
-
+    private void toggleDeleteCheck(String name, boolean onOff) {
 
         if(onOff) {
-
             deleteCheck = new areYouSure();
-            deleteCheck.background = new MenuItem("[type: menu][name: areYouSure][id: back]", "areYouSureBackground", background.treeNode, "[vertical: center][horizontal: center]", 0, 0, 5, 300, 286);
+            deleteCheck.background = new MenuItem("[type: menu][name: areYouSure][id: back]", "createGameBack", background.treeNode, "[vertical: center][horizontal: center]", 0, 0, 5, 360, 140);
+            deleteCheck.background.addText(new TextComponent("Type " + name + " to delete", 10, "[vertical: top][horizontal: center]", 0, -10));
+
+            deleteCheck.input = new MenuItem("[type: menu][name: input]", "menuItem", deleteCheck.background.treeNode, "[vertical: top][horizontal: center]", 0, 50, 6, 350, 40);
+            TextComponent textDisplay = new TextComponent("", 10, "[vertical: center][horizontal: left]", 60, 0);
+            TextInput textInput = new TextInput(textDisplay, 30);
+            deleteCheck.input.addText(new TextComponent("Name: ", 10, "[vertical: center][horizontal: left]", 10, 0));
+            deleteCheck.input.addText(textDisplay);
+            deleteCheck.input.ent.addComponent(textInput);
+
+            deleteCheck.no = new MenuItem("[type: menu][name: no]", "halfMenuItem", deleteCheck.background.treeNode, "[vertical: bottom][horizontal: left]", 5, 10, 6, 173, 40);
+            deleteCheck.no.addText(new TextComponent("Go Back", 10, "[vertical: center][horizontal: center]", 0, 0));
+
+            deleteCheck.yes = new MenuItem("[type: menu][name: yes]", "halfMenuItem", deleteCheck.background.treeNode, "[vertical: bottom][horizontal: right]", -5, 10, 6, 173, 40);
+            deleteCheck.yes.addText(new TextComponent("Delete", 10, "[vertical: center][horizontal: center]", 0, 0));
         }
 
         else deleteCheck = null;
-
     }
 
-    public void update(Entity entity) {
+    private void updateBackground() {
 
-
+        //update the scrolling ========================================
         if(InputAL.isKeyPressed("down")) {
             scrollIndex -= scrollPerFrame;
             positionItems();
@@ -161,6 +174,33 @@ public class LoadGame extends Component {
             scrollIndex += scrollPerFrame;
             positionItems();
         }
+
+        //update the play and delete button ============================
+        int mouseY = InputAL.getMouseY();
+        for(listItem item: listItems) {
+            if(mouseY > menuTop && mouseY < menuBottom && item.play.isLeftClicked()) { }
+            if(mouseY > menuTop && mouseY < menuBottom && item.delete.isLeftClicked()) { toggleDeleteCheck(item.name,true); }
+        }
+
+
+        //back button
+        if(back.isLeftClicked()) World.setCurrentState("mainMenu");
+    }
+
+    private void updateDeleteMenu() {
+
+
+
+    }
+
+    public void update(Entity entity) {
+
+
+
+        if(deleteCheck == null) updateBackground();
+        else updateDeleteMenu();
+
+
 
         /*
         if(scrollBar.hover() && InputAL.isMousePressed("mouse left")) {
@@ -175,25 +215,14 @@ public class LoadGame extends Component {
 
         }
 
-
-        //ignore mouse clicks outside of the active region
-        int mouseY = InputAL.getMouseY();
-
-        for(listItem item: listItems) {
-
-
-            if(mouseY > menuTop && mouseY < menuBottom && item.play.isLeftClicked()) {
-
-            }
-
-            if(mouseY > menuTop && mouseY < menuBottom && item.delete.isLeftClicked()) {
-
-                //flash a screen that asks them if the are sure they want to delete the world
-                toggleDeleteCheck(true);
-            }
-        }
-
          */
+
+
+
+
+
+
+
 
 
     }

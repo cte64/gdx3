@@ -1,0 +1,1 @@
+[type: living][subType: testHero][details: ][xPos: 6000][yPos: 1500][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]
