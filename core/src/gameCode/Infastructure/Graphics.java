@@ -110,26 +110,27 @@ public class Graphics implements Disposable {
         spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
         tileAtlas = new TextureAtlas();
 
-        addSprite("tile");
-        addSprite("menuBack");
-        addSprite("background");
-        addSprite("scrollBackground");
-        addSprite("scrollItem");
-        addSprite("loadGameBackground");
-        addSprite("loadGameOverlay");
-        addSprite("loadGameListItem");
-        addSprite("scrollBar");
-        addSprite("loadGamePlay");
-        addSprite("loadGameDelete");
-        addSprite("areYouSureBackground");
+
+
+        //Menus stuff
         addSprite("mainMenuBack");
-        addSprite("menuItem");
-        addSprite("halfMenuItem");
         addSprite("createGameBack");
-        addSprite("minus");
-        addSprite("plus");
         addSprite("loadGameBack");
         addSprite("loadGameFront");
+        addSprite("minus");
+        addSprite("plus");
+        addSprite("play");
+        addSprite("loadGameDelete");
+        addSprite("halfMenuItem");
+        addSprite("menuItem");
+        addSprite("listItem");
+        addSprite("scrollBar");
+
+        /*
+        addSprite("tile");
+
+
+         */
 
 
         //set up the tile atlas ==================================================================

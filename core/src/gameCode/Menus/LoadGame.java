@@ -14,13 +14,14 @@ public class LoadGame extends Component {
 
     private MenuItem background;
     private MenuItem overlay;
-    private MenuItem title;
+    private MenuItem back;
     private MenuItem scrollBar;
+    private MenuItem loadGame;
 
     private float scrollIndex;
     private float scrollPerFrame = 6.0f;
-    private int itemHeight = 75;
-    private int menuTop = 125;
+    private int itemHeight = 70;
+    private int menuTop = 105;
     private int menuBottom = 552;
 
 
@@ -52,13 +53,17 @@ public class LoadGame extends Component {
         scrollIndex = 0;
 
         //background
-        background = new MenuItem("[type: menu][name: background]", "loadGameBackground", null, "[vertical: center][horizontal: center]", 0, 0, 0, 664, 634);
-        overlay = new MenuItem("[type: menu][name: overlay]", "loadGameOverlay", background.treeNode, "[vertical: center][horizontal: center]", 0, 0, 3, 664, 634);
+        background = new MenuItem("[type: menu][name: background]", "loadGameBack", null, "[vertical: center][horizontal: center]", 0, 0, 0, 479, 600);
+        overlay = new MenuItem("[type: menu][name: overlay]", "loadGameFront", background.treeNode, "[vertical: center][horizontal: center]", 0, 0, 3, 479, 600);
         overlay.addText( new TextComponent("Load Game", 10, "[vertical: top][horizontal: center]", 0, 0));
-        scrollBar = new MenuItem("[type: menu][name: scrollBar]", "scrollBar", background.treeNode, "[vertical: top][horizontal: right]", -60, 0, 4, 60, 68);
+
+        back = new MenuItem("[type: menu][name: back]", "halfMenuItem", background.treeNode, "[vertical: bottom][horizontal: left]", 15, 15, 4, 173, 40);
+        scrollBar = new MenuItem("[type: menu][name: scrollBar]", "scrollBar", background.treeNode, "[vertical: top][horizontal: right]", -60, 0, 4, 51, 52);
+
 
         //load game files
         ArrayList<String> files = FileSystem.getSaveNames();
+
         for(int x = 0; x < files.size(); x++) {
 
             //parse out the data from the metadata files
@@ -79,21 +84,23 @@ public class LoadGame extends Component {
             //create a new list item with the following items and add it to the list
             listItem newItem = new listItem();
             newItem.name = worldName;
-            newItem.list = new MenuItem(itemName, "loadGameListItem", background.treeNode, "[vertical: top][horizontal: center]", -35, 0, 1, 500, 74);
-            newItem.play = new MenuItem(playName, "loadGamePlay", newItem.list.treeNode, "[vertical: center][horizontal: right]", -65, 0, 2, 65, 65);
-            newItem.delete = new MenuItem(deleteName, "loadGameDelete", newItem.list.treeNode, "[vertical: center][horizontal: right]", 0, 0, 2, 65, 65);
+            newItem.list = new MenuItem(itemName, "listItem", background.treeNode, "[vertical: top][horizontal: left]", 30, 0, 2, 353, 71);
+            newItem.play = new MenuItem(playName, "play", newItem.list.treeNode, "[vertical: center][horizontal: right]", -55, 0, 2, 40, 40);
+            newItem.delete = new MenuItem(deleteName, "loadGameDelete", newItem.list.treeNode, "[vertical: center][horizontal: right]", -7, 0, 2, 40, 40);
 
-            newItem.list.addText(new TextComponent(worldName, 10, "[vertical: top][horizontal: left]", 0, 0));
-            newItem.list.addText(new TextComponent("Date Created: " + dateCreated, 10, "[vertical: bottom][horizontal: left]", 0, 0));
-            newItem.list.addText(new TextComponent("Size: " + numChunks, 10, "[vertical: center][horizontal: left]", 0, 0));
+            //add the text
+            newItem.list.addText(new TextComponent(worldName, 10, "[vertical: top][horizontal: left]", 8, 7));
+            newItem.list.addText(new TextComponent("Size: " + numChunks, 10, "[vertical: center][horizontal: left]", 8, 0));
+            newItem.list.addText(new TextComponent("Date Created: " + dateCreated, 10, "[vertical: bottom][horizontal: left]", 8, 8));
 
             listItems.add(newItem);
         }
 
-        //deleteCheck
-        deleteCheck = null;
 
-        positionItems();
+        //deleteCheck
+        //deleteCheck = null;
+
+       positionItems();
     }
 
     private void positionItems() {
@@ -117,13 +124,16 @@ public class LoadGame extends Component {
         }
 
         //Position the scroll bar =======================================================
-        int barTop = menuTop;
-        int barBot = menuBottom - itemHeight + 6;
-        float adjPs = menuTop + (barBot - menuTop) * (scrollIndex / upperBound);
+        if(scrollBar != null) {
 
-        scrollBar.xOffset = -43;
-        scrollBar.yOffset = (int)adjPs;
-        scrollBar.positionItem();
+            int barTop = menuTop;
+            int barBot = menuBottom - itemHeight + 6;
+            float adjPs = menuTop + (barBot - menuTop) * (scrollIndex / upperBound);
+
+            scrollBar.xOffset = -40;
+            scrollBar.yOffset = (int)adjPs;
+            scrollBar.positionItem();
+        }
     }
 
     private void toggleDeleteCheck(boolean onOff) {
@@ -133,8 +143,6 @@ public class LoadGame extends Component {
 
             deleteCheck = new areYouSure();
             deleteCheck.background = new MenuItem("[type: menu][name: areYouSure][id: back]", "areYouSureBackground", background.treeNode, "[vertical: center][horizontal: center]", 0, 0, 5, 300, 286);
-
-
         }
 
         else deleteCheck = null;
@@ -154,6 +162,7 @@ public class LoadGame extends Component {
             positionItems();
         }
 
+        /*
         if(scrollBar.hover() && InputAL.isMousePressed("mouse left")) {
 
             int y = InputAL.getMouseY();
@@ -183,6 +192,8 @@ public class LoadGame extends Component {
                 toggleDeleteCheck(true);
             }
         }
+
+         */
 
 
     }

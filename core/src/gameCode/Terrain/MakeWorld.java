@@ -248,7 +248,6 @@ public class MakeWorld {
 
     public MakeWorld(String newDirectory, int numChunks, int tRadius) {
 
-
         //INITIALIZE WORLD ==========================================
         worldRadius = tRadius;
         World.createWorld(numChunks);

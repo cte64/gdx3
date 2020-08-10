@@ -319,6 +319,7 @@ public class FileSystem {
         FileHandle dir = Gdx.files.internal("core/saves/");
         for(FileHandle file: dir.list()) {
             String fileName = file.toString() + "/metadata.txt";
+
             FileHandle gameFile = Gdx.files.local(fileName);
             if(!gameFile.exists()) {
                 System.out.println("File: " + fileName + " does not exist!");

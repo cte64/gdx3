@@ -4,6 +4,7 @@ package gameCode.Menus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import gameCode.Infastructure.*;
+import gameCode.Terrain.MakeWorld;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
 
@@ -76,6 +77,10 @@ public class NewGame extends Component {
 
         //createWorld =============================================
         if(createWorld.isLeftClicked()) {
+
+            MakeWorld makeworld = new MakeWorld("one", 5, 800);
+
+            System.out.println("world made");
 
         }
     }

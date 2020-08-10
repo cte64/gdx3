@@ -15,6 +15,7 @@ public class State {
 
     private static void roundEarth() {}
     private static void loadGame() {
+        deleteMenuItems();
         Entity hud = new Entity();
         hud.entityName = "[type: menu][name: loadGame]";
         hud.drawMode = "hud";
