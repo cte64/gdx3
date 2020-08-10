@@ -142,24 +142,27 @@ public class LoadGame extends Component {
 
         if(onOff) {
             deleteCheck = new areYouSure();
-            deleteCheck.background = new MenuItem("[type: menu][name: areYouSure][id: back]", "createGameBack", background.treeNode, "[vertical: center][horizontal: center]", 0, 0, 5, 360, 140);
-            deleteCheck.background.addText(new TextComponent("Type " + name + " to delete", 10, "[vertical: top][horizontal: center]", 0, -10));
+            deleteCheck.background = new MenuItem("[type: menu][subType: areYouSure][id: back]", "createGameBack", background.treeNode, "[vertical: center][horizontal: center]", 0, 0, 5, 360, 140);
+            deleteCheck.background.addText(new TextComponent("Type \"" + name + "\" to delete", 10, "[vertical: top][horizontal: center]", 0, -10));
 
-            deleteCheck.input = new MenuItem("[type: menu][name: input]", "menuItem", deleteCheck.background.treeNode, "[vertical: top][horizontal: center]", 0, 50, 6, 350, 40);
+            deleteCheck.input = new MenuItem("[type: menu][subType: areYouSure][id: input]", "menuItem", deleteCheck.background.treeNode, "[vertical: top][horizontal: center]", 0, 50, 6, 350, 40);
             TextComponent textDisplay = new TextComponent("", 10, "[vertical: center][horizontal: left]", 60, 0);
             TextInput textInput = new TextInput(textDisplay, 30);
             deleteCheck.input.addText(new TextComponent("Name: ", 10, "[vertical: center][horizontal: left]", 10, 0));
             deleteCheck.input.addText(textDisplay);
             deleteCheck.input.ent.addComponent(textInput);
 
-            deleteCheck.no = new MenuItem("[type: menu][name: no]", "halfMenuItem", deleteCheck.background.treeNode, "[vertical: bottom][horizontal: left]", 5, 10, 6, 173, 40);
+            deleteCheck.no = new MenuItem("[type: menu][subType: areYouSure][id: no]", "halfMenuItem", deleteCheck.background.treeNode, "[vertical: bottom][horizontal: left]", 5, 10, 6, 173, 40);
             deleteCheck.no.addText(new TextComponent("Go Back", 10, "[vertical: center][horizontal: center]", 0, 0));
 
-            deleteCheck.yes = new MenuItem("[type: menu][name: yes]", "halfMenuItem", deleteCheck.background.treeNode, "[vertical: bottom][horizontal: right]", -5, 10, 6, 173, 40);
+            deleteCheck.yes = new MenuItem("[type: menu][subType: areYouSure][id: yes]", "halfMenuItem", deleteCheck.background.treeNode, "[vertical: bottom][horizontal: right]", -5, 10, 6, 173, 40);
             deleteCheck.yes.addText(new TextComponent("Delete", 10, "[vertical: center][horizontal: center]", 0, 0));
         }
 
-        else deleteCheck = null;
+        else {
+            State.deleteType("subType", "areYouSure");
+            deleteCheck = null;
+        }
     }
 
     private void updateBackground() {
@@ -189,6 +192,16 @@ public class LoadGame extends Component {
 
     private void updateDeleteMenu() {
 
+        if(deleteCheck == null) return;
+
+        //back
+        if(deleteCheck.no.isLeftClicked()) toggleDeleteCheck("", false);
+
+
+        //delete
+
+
+
 
 
     }
@@ -214,14 +227,7 @@ public class LoadGame extends Component {
             System.out.println( percent );
 
         }
-
          */
-
-
-
-
-
-
 
 
 

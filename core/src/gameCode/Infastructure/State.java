@@ -40,6 +40,12 @@ public class State {
         hud.addComponent(new NewGame());
         World.entitiesToBeAdded.add(hud);
     }
+    public static void deleteType(String field, String type) {
+        for(Entity ent: World.getEntList()) {
+            String thisType = StringUtils.getField(ent.entityName, field);
+            if(thisType.equals(type)) World.entitiesToBeDeleted.add(ent);
+        }
+    }
     private static void loading() {}
 
     private static void testGame() {
