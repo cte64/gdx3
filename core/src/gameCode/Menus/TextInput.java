@@ -29,7 +29,8 @@ public class TextInput extends Component {
         if(!toggle) return;
         int sizeBefore = text.length();
         for(char c: InputAL.charsQueue) {
-            if(sizeBefore < charLimit) text += c;
+            if(text.length() > 0 && (int)c == 8) text = text.substring(0, text.length() - 1);
+            else if(sizeBefore < charLimit) text += c;
         }
         if(text.length() != sizeBefore) {
             textComp.text = text;

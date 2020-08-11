@@ -34,9 +34,30 @@ loadGameBack
   index: -1
 loadGameDelete
   rotate: false
-  xy: 964, 982
+  xy: 539, 307
   size: 40, 40
   orig: 40, 40
+  offset: 0, 0
+  index: -1
+loadGameDeleteClosed
+  rotate: false
+  xy: 964, 976
+  size: 36, 46
+  orig: 36, 46
+  offset: 0, 0
+  index: -1
+loadGameDeleteClosed1
+  rotate: false
+  xy: 719, 374
+  size: 36, 46
+  orig: 36, 46
+  offset: 0, 0
+  index: -1
+loadGameDeleteOpen
+  rotate: false
+  xy: 364, 259
+  size: 36, 46
+  orig: 36, 46
   offset: 0, 0
   index: -1
 loadGameFront
@@ -62,21 +83,28 @@ menuItem
   index: -1
 minus
   rotate: false
-  xy: 364, 273
+  xy: 964, 942
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 play
   rotate: false
-  xy: 719, 380
+  xy: 55, 14
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+playHover
+  rotate: false
+  xy: 757, 380
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
 plus
   rotate: false
-  xy: 539, 315
+  xy: 364, 225
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -90,7 +118,7 @@ scrollBar
   index: -1
 tile
   rotate: false
-  xy: 55, 34
+  xy: 1002, 1002
   size: 20, 20
   orig: 20, 20
   offset: 0, 0

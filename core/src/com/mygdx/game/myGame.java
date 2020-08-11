@@ -98,6 +98,7 @@ public class myGame extends ApplicationAdapter {
 
 			@Override
 			public boolean scrolled(int amount) {
+				InputAL.scrollQueue.add(amount);
 				return false;
 			}
 		};
@@ -123,7 +124,8 @@ public class myGame extends ApplicationAdapter {
 
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
 		World.setDeltaTime(Gdx.graphics.getRawDeltaTime());
-		InputAL.charsQueue.clear();
+		InputAL.reset();
+
 	}
 	
 	@Override

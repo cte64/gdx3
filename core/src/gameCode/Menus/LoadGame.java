@@ -19,7 +19,7 @@ public class LoadGame extends Component {
     private MenuItem loadGame;
 
     private float scrollIndex;
-    private float scrollPerFrame = 6.0f;
+    private float scrollPerFrame = 0.01f;
     private int itemHeight = 70;
     private int menuTop = 105;
     private int menuBottom = 526;
@@ -31,6 +31,11 @@ public class LoadGame extends Component {
         public MenuItem delete;
         public String name;
         public listItem() {}
+        public void delete() {
+            World.entitiesToBeDeleted.add(list.ent);
+            World.entitiesToBeDeleted.add(play.ent);
+            World.entitiesToBeDeleted.add(delete.ent);
+        }
     }
 
     private class areYouSure {
@@ -59,7 +64,7 @@ public class LoadGame extends Component {
 
         int padding = 5;
         int yOff = padding + 50;
-        scrollIndex = 0;
+        scrollIndex = 0.0f;
 
         //background
         background = new MenuItem("[type: menu][name: background]", "loadGameBack", null, "[vertical: center][horizontal: center]", 0, 0, 0, 479, 600);
@@ -97,7 +102,7 @@ public class LoadGame extends Component {
             newItem.name = worldName;
             newItem.list = new MenuItem(itemName, "listItem", background.treeNode, "[vertical: top][horizontal: left]", 30, 0, 2, 353, 71);
             newItem.play = new MenuItem(playName, "play", newItem.list.treeNode, "[vertical: center][horizontal: right]", -55, 0, 2, 40, 40);
-            newItem.delete = new MenuItem(deleteName, "loadGameDelete", newItem.list.treeNode, "[vertical: center][horizontal: right]", -7, 0, 2, 40, 40);
+            newItem.delete = new MenuItem(deleteName, "loadGameDeleteClosed1", newItem.list.treeNode, "[vertical: center][horizontal: right]", -7, 0, 2, 40, 40);
 
             //add the text
             newItem.list.addText(new TextComponent(worldName, 10, "[vertical: top][horizontal: left]", 8, 7));
@@ -115,13 +120,15 @@ public class LoadGame extends Component {
 
     private void positionItems() {
 
-        float upperBound = (listItems.size() - 1) * itemHeight * -1;
-        scrollIndex = MathUtils.clamp(scrollIndex, upperBound, 0.0f);
+        scrollIndex = MathUtils.clamp(scrollIndex, 0.0f, 1.0f);
+        int totalAmount = (listItems.size() - 1) * itemHeight * -1;
+        int scrollOffset = (int)(totalAmount * scrollIndex);
+        scrollOffset = MathUtils.clamp(scrollOffset, totalAmount, 0);
 
         //Position the game files in a list order =====================================
         for(int x = 0; x < listItems.size(); x++)  {
 
-            int yPos = (int) (menuTop + scrollIndex + (x * itemHeight));
+            int yPos = (int) (menuTop + scrollOffset + (x * itemHeight));
             String newDrawMode = "hud";
 
             //if the yPos is out of bounds hide it
@@ -135,10 +142,10 @@ public class LoadGame extends Component {
 
         //Position the scroll bar =======================================================
         if(scrollBar != null) {
-
             int barTop = menuTop;
             int barBot = menuBottom - itemHeight + 6;
-            float adjPs = menuTop + (barBot - menuTop) * (scrollIndex / upperBound);
+            int adjPs = (int)(menuTop + (barBot - menuTop) * scrollIndex);
+            adjPs = MathUtils.clamp(adjPs, menuTop, menuBottom - itemHeight + 6);
 
             scrollBar.xOffset = -32;
             scrollBar.yOffset = (int)adjPs;
@@ -176,21 +183,41 @@ public class LoadGame extends Component {
 
         //update the scrolling ========================================
         if(InputAL.isKeyPressed("down")) {
-            scrollIndex -= scrollPerFrame;
-            positionItems();
-        }
-
-        if(InputAL.isKeyPressed("up")) {
             scrollIndex += scrollPerFrame;
             positionItems();
         }
 
+        if(InputAL.isKeyPressed("up")) {
+            scrollIndex -= scrollPerFrame;
+            positionItems();
+        }
+
+        for(Integer i: InputAL.scrollQueue) {
+            if(i == -1) scrollIndex -= scrollPerFrame;
+            if(i == 1) scrollIndex += scrollPerFrame;
+            positionItems();
+        }
+
+
         //update the play and delete button ============================
         int mouseY = InputAL.getMouseY();
         for(listItem item: listItems) {
-            if(mouseY > menuTop && mouseY < menuBottom && item.play.isLeftClicked()) { }
-            if(mouseY > menuTop && mouseY < menuBottom && item.delete.isLeftClicked()) { toggleDeleteCheck(item.name,true); }
+
+            //load game hover action
+            if(item.delete.hover()) item.delete.ent.spriteName = "loadGameDeleteOpen";
+            else item.delete.ent.spriteName = "loadGameDeleteClosed1";
+
+            //play game hover action
+            if(item.play.hover()) item.play.ent.spriteName = "playHover";
+            else item.play.ent.spriteName = "play";
+
+            //click action update
+            if(mouseY > menuTop && mouseY < menuBottom) {
+                if(item.play.isLeftClicked()) { }
+                if(item.delete.isLeftClicked()) { toggleDeleteCheck(item.name,true); }
+            }
         }
+
 
 
         //back button
@@ -210,45 +237,29 @@ public class LoadGame extends Component {
 
         else if (!text.equals(deleteCheck.name) && deleteCheck.yes != null) {
             World.entitiesToBeDeleted.add(deleteCheck.yes.ent);
+            deleteCheck.yes = null;
         }
 
-        //back
-        if(deleteCheck.no.isLeftClicked()) {
-            toggleDeleteCheck("", false);
+        //bottom buttons
+        if(deleteCheck.yes != null && deleteCheck.yes.isLeftClicked()) {
+            for(listItem item: listItems) {
+                if(item.name.equals(deleteCheck.name)) {
+                    FileSystem.deleteDirectory(item.name);
+                    item.delete();
+                    listItems.remove(item);
+                    toggleDeleteCheck("", false);
+                    positionItems();
+                    break;
+                }
+            }
         }
 
-
-
-
-
-
+        if(deleteCheck.no.isLeftClicked()) { toggleDeleteCheck("", false); }
     }
 
     public void update(Entity entity) {
-
-
-
         if(deleteCheck == null) updateBackground();
         else updateDeleteMenu();
-
-
-
-        /*
-        if(scrollBar.hover() && InputAL.isMousePressed("mouse left")) {
-
-            int y = InputAL.getMouseY();
-
-            float total = (float)(menuBottom - menuTop);
-            float slider = (float)(y - menuTop);
-            float percent = slider / total;
-
-            System.out.println( percent );
-
-        }
-         */
-
-
-
     }
 
 }

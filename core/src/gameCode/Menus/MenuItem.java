@@ -121,5 +121,12 @@ public class MenuItem {
         positionItem();
     }
 
+    public void delete() {
+        World.entitiesToBeDeleted.add(ent);
+        for(Tree<MenuItem> tree: treeNode.getChildren()) {
+            World.entitiesToBeDeleted.add(tree.value.ent);
+        }
+    }
+
 
 }

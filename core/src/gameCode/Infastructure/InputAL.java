@@ -11,6 +11,7 @@ public class InputAL {
 
     private static HashMap<String, Integer> keys;
     public static ArrayList<Character>  charsQueue = new ArrayList<Character>();
+    public static ArrayList<Integer> scrollQueue = new ArrayList<Integer>();
 
     public static void init() {
 
@@ -56,5 +57,10 @@ public class InputAL {
         if(!keys.containsKey(val)) return false;
         if(Gdx.input.isButtonPressed(keys.get(val)) ) return true;
         else return false;
+    }
+
+    public static void reset() {
+        charsQueue.clear();
+        scrollQueue.clear();
     }
 }

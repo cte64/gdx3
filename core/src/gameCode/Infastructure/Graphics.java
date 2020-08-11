@@ -120,7 +120,10 @@ public class Graphics implements Disposable {
         addSprite("minus");
         addSprite("plus");
         addSprite("play");
-        addSprite("loadGameDelete");
+        addSprite("playHover");
+        addSprite("loadGameDeleteOpen");
+        addSprite("loadGameDeleteClosed");
+        addSprite("loadGameDeleteClosed1");
         addSprite("halfMenuItem");
         addSprite("menuItem");
         addSprite("listItem");
