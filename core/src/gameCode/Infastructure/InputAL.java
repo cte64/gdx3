@@ -16,7 +16,6 @@ public class InputAL {
 
         keys = new HashMap<String, Integer>();
 
-
         //Add all the alphabetical keys here =============
         keys.put("w", Input.Keys.W);
 
@@ -27,6 +26,7 @@ public class InputAL {
         keys.put("right", Input.Keys.RIGHT);
         keys.put("up", Input.Keys.UP);
         keys.put("down", Input.Keys.DOWN);
+        keys.put("backspace", Input.Keys.BACKSPACE);
 
         //Add all the mouse buttons here =================
         keys.put("mouse left", Input.Buttons.LEFT);

@@ -28,7 +28,9 @@ public class TextInput extends Component {
     public void update(Entity entity) {
         if(!toggle) return;
         int sizeBefore = text.length();
-        for(char c: InputAL.charsQueue) { if(sizeBefore < charLimit) text += c; }
+        for(char c: InputAL.charsQueue) {
+            if(sizeBefore < charLimit) text += c;
+        }
         if(text.length() != sizeBefore) {
             textComp.text = text;
         }
@@ -44,4 +46,6 @@ public class TextInput extends Component {
     }
 
     public void toggle(boolean onOff) { toggle = onOff; }
+
+    public String getText() { return text; }
 }

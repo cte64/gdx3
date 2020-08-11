@@ -34,11 +34,19 @@ public class LoadGame extends Component {
     }
 
     private class areYouSure {
+        public String name;
         public MenuItem background;
         public MenuItem input;
         public MenuItem yes;
         public MenuItem no;
-        public areYouSure() {}
+        public TextInput input_text;
+        public areYouSure() {
+            background = null;
+            input = null;
+            yes = null;
+            no = null;
+            input_text = null;
+        }
     }
 
 
@@ -151,12 +159,11 @@ public class LoadGame extends Component {
             deleteCheck.input.addText(new TextComponent("Name: ", 10, "[vertical: center][horizontal: left]", 10, 0));
             deleteCheck.input.addText(textDisplay);
             deleteCheck.input.ent.addComponent(textInput);
+            deleteCheck.input_text = textInput;
+            deleteCheck.name = name;
 
             deleteCheck.no = new MenuItem("[type: menu][subType: areYouSure][id: no]", "halfMenuItem", deleteCheck.background.treeNode, "[vertical: bottom][horizontal: left]", 5, 10, 6, 173, 40);
             deleteCheck.no.addText(new TextComponent("Go Back", 10, "[vertical: center][horizontal: center]", 0, 0));
-
-            deleteCheck.yes = new MenuItem("[type: menu][subType: areYouSure][id: yes]", "halfMenuItem", deleteCheck.background.treeNode, "[vertical: bottom][horizontal: right]", -5, 10, 6, 173, 40);
-            deleteCheck.yes.addText(new TextComponent("Delete", 10, "[vertical: center][horizontal: center]", 0, 0));
         }
 
         else {
@@ -194,11 +201,22 @@ public class LoadGame extends Component {
 
         if(deleteCheck == null) return;
 
-        //back
-        if(deleteCheck.no.isLeftClicked()) toggleDeleteCheck("", false);
-
-
         //delete
+        String text = deleteCheck.input_text.getText();
+        if(text.equals(deleteCheck.name) && deleteCheck.yes == null) {
+            deleteCheck.yes = new MenuItem("[type: menu][subType: areYouSure][id: yes]", "halfMenuItem", deleteCheck.background.treeNode, "[vertical: bottom][horizontal: right]", -5, 10, 6, 173, 40);
+            deleteCheck.yes.addText(new TextComponent("Delete", 10, "[vertical: center][horizontal: center]", 0, 0));
+        }
+
+        else if (!text.equals(deleteCheck.name) && deleteCheck.yes != null) {
+            World.entitiesToBeDeleted.add(deleteCheck.yes.ent);
+        }
+
+        //back
+        if(deleteCheck.no.isLeftClicked()) {
+            toggleDeleteCheck("", false);
+        }
+
 
 
 
