@@ -2,12 +2,14 @@ package gameCode.Terrain;
 
 import com.badlogic.gdx.math.Vector2;
 import gameCode.Infastructure.FileSystem;
+import gameCode.Infastructure.InputAL;
 import gameCode.Infastructure.World;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Pixel;
 import gameCode.Utilities.StringUtils;
 import gameCode.Terrain.ScatterTerrain;
 import gameCode.Terrain.Perlin;
+import gameCode.Utilities.Timer;
 
 import java.security.KeyStore;
 import java.util.ArrayList;
@@ -26,6 +28,10 @@ public class MakeWorld {
     private int minDepth = 1000;
     private int worldRadius;
     private Map< String, ArrayList<Vector2> > rims;
+
+    String directory;
+    int numChunks;
+    ArrayList<StringUtils> messages;
 
 
     private void cleanUpRims() {
@@ -246,32 +252,63 @@ public class MakeWorld {
         }}
     }
 
-    public MakeWorld(String newDirectory, int numChunks, int tRadius) {
-
-        //INITIALIZE WORLD ==========================================
+    public MakeWorld(String newDirectory, int numChunks, int tRadius, ArrayList<StringUtils> loadingMessages) {
+        directory = newDirectory;
+        this.numChunks = numChunks;
         worldRadius = tRadius;
+        this.messages = loadingMessages;
+    }
+
+    public void start() {
+
+
+
+        int index = 0;
+        boolean state = false;
+
+        while(true) {
+
+            if(InputAL.isKeyPressed("w") && !state) {
+                index++;
+                messages.add(new StringUtils("yeeha"));
+
+                state = true;
+            }
+
+            if(!InputAL.isKeyPressed("w")) {
+                state = false;
+            }
+        }
+
+        /*
+        //INITIALIZE WORLD ==========================================
         World.createWorld(numChunks);
-        FileSystem.createGameDirectory(newDirectory);
+        FileSystem.createGameDirectory(directory);
+        loadingMessage.data = "World Initialized";
 
         //INITIALIZE RIMS ============================================
         rims = new HashMap< String, ArrayList<Vector2> >();
+        loadingMessage.data = "Rims Initialized";
 
         //FILL METADATA FILE ========================================
         StringUtils data = new StringUtils("[numChunks: ][dateCreated: ]");
         data.setField(data, "numChunks", StringUtils.toString(numChunks));
         //StringUtils.setField(data, "dateCreated", StringUtils.getDateAndTime());
         FileSystem.setFile(new StringUtils("[type: metadata]"), data);
+        loadingMessage.data = "MetaData File Created";
 
         //CREATE THE MAIN CHARACTER =================================
         StringUtils heroData = new StringUtils("[type: living][subType: testHero][details: ][xPos: 6000][yPos: 1500][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]");
         FileSystem.setFile(new StringUtils("[type: hero]"), heroData);
 
         //MAKE THE SOLID LAYERS =====================================
-        makeLayer((int)(tRadius * 1.00), 400, 10, "dirt", true, "[name: outer]");
-        makeLayer((int)(tRadius * 0.85), 200, 10, "clay", true, "");
-        makeLayer((int)(tRadius * 0.82), 150, 10, "sand", true, "");
-        makeLayer((int)(tRadius * 0.78), 400, 10, "stone", true, "");
-        makeLayer((int)(tRadius * 0.30), 200, 10, "coal", true, "");
+        makeLayer((int)(worldRadius * 1.00), 400, 10, "dirt", true, "[name: outer]");
+        makeLayer((int)(worldRadius * 0.85), 200, 10, "clay", true, "");
+        makeLayer((int)(worldRadius * 0.82), 150, 10, "sand", true, "");
+        makeLayer((int)(worldRadius * 0.78), 400, 10, "stone", true, "");
+        makeLayer((int)(worldRadius * 0.30), 200, 10, "coal", true, "");
+
+         */
     }
 
     void makeLayer(int newLowest, int newStretch, int newOctaves, String newType, boolean newFillIt, String rimName){

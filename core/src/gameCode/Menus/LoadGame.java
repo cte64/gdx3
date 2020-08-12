@@ -213,7 +213,10 @@ public class LoadGame extends Component {
 
             //click action update
             if(mouseY > menuTop && mouseY < menuBottom) {
-                if(item.play.isLeftClicked()) { }
+                if(item.play.isLeftClicked()) {
+                    FileSystem.setGameSubDirectory(item.name);
+                    World.setCurrentState("[action: play]");
+                }
                 if(item.delete.isLeftClicked()) { toggleDeleteCheck(item.name,true); }
             }
         }

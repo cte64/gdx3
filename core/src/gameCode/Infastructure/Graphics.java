@@ -113,6 +113,7 @@ public class Graphics implements Disposable {
 
 
         //Menus stuff
+        addSprite("tile");
         addSprite("mainMenuBack");
         addSprite("createGameBack");
         addSprite("loadGameBack");

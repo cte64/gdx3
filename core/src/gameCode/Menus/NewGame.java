@@ -18,6 +18,7 @@ public class NewGame extends Component {
     private MenuItem back;
     private MenuItem createWorld;
     private TextComponent sizeText;
+    private TextInput textInput;
     private int numChunks;
     private int min, max;
 
@@ -38,7 +39,8 @@ public class NewGame extends Component {
 
         newName = new MenuItem("[type: menu][name: newName]", "menuItem", background.treeNode, "[vertical: top][horizontal: center]", 0, start + 1*height, 1, 350, 40);
         TextComponent textDisplay = new TextComponent("", 10, "[vertical: center][horizontal: left]", 60, 0);
-        TextInput textInput = new TextInput(textDisplay, 30);
+        textInput = new TextInput(textDisplay, 30);
+
         newName.addText(new TextComponent("Name: ", 10, "[vertical: center][horizontal: left]", 10, 0));
         newName.addText(textDisplay);
         newName.ent.addComponent(textInput);
@@ -77,11 +79,10 @@ public class NewGame extends Component {
 
         //createWorld =============================================
         if(createWorld.isLeftClicked()) {
-
-            MakeWorld makeworld = new MakeWorld("one", 5, 800);
-
-            System.out.println("world made");
-
+            StringUtils newState = new StringUtils("[action: createNewWorld][name: ][numChunks: ]");
+            StringUtils.setField(newState, "name", textInput.getText());
+            StringUtils.setField(newState, "numChunks", StringUtils.toString(numChunks));
+            World.setCurrentState(newState.data);
         }
     }
 
