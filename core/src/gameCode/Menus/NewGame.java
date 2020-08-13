@@ -31,7 +31,7 @@ public class NewGame extends Component {
         int height = 43;
         int start = 6;
         numChunks = 10;
-        min = 10;
+        min = 4;
         max = 30;
 
         background = new MenuItem("[type: menu][name: background]", "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 0, 360, 180);

@@ -9,39 +9,48 @@ import gameCode.Menus.NewGame;
 import gameCode.Terrain.MakeWorld;
 import gameCode.Utilities.StringUtils;
 
+import java.io.File;
+
 public class State {
 
 
 
 
-    private static void roundEarth() {}
     private static void loadGame() {
-        deleteMenuItems();
+        deleteType("type", "menu");
         Entity hud = new Entity();
         hud.entityName = "[type: menu][name: loadGame]";
         hud.drawMode = "hud";
         hud.addComponent(new LoadGame());
         World.entitiesToBeAdded.add(hud);
     }
+
+
     private static void paused() {}
     private static void play() {
 
         deleteType("type", "menu");
 
-        World.createWorld(5);
+        String directory = StringUtils.getField(World.getCurrentState(), "directory");
+        FileSystem.setGameSubDirectory(directory);
 
-        Entity ent = new Entity();
-        ent.x_pos = World.getNumPixels() / 2;
-        ent.y_pos = World.getNumPixels() / 2;
-        ent.spriteName = "tile";
-        ent.entityName = "hero";
-        ent.addComponent(new HeroInput());
-        World.entitiesToBeAdded.add(ent);
-        World.setCamera(ent);
-        World.addSiftingFrame(ent, 0, 0);
+
+        //MetaData and Create World =========================================================
+        StringUtils metaData = new StringUtils("");
+        FileSystem.getFile(new StringUtils("[type: metadata]"), metaData);
+        String numChunksStr = StringUtils.getField(metaData, "numChunks");
+        int numChunks = StringUtils.stringToInt(numChunksStr);
+        World.createWorld(numChunks);
+
+        //Hero ==============================================================================
+        StringUtils heroData = new StringUtils("");
+        FileSystem.getFile(new StringUtils("[type: hero]"), heroData);
+        Entity hero = MakeEntity.getEntity(heroData.data);
+        World.entitiesToBeAdded.add(hero);
+
     }
     private static void mainMenu() {
-        deleteMenuItems();
+        deleteType("type", "menu");
         Entity hud = new Entity();
         hud.entityName = "[type: menu][name: mainMenu]";
         hud.drawMode = "hud";
@@ -49,7 +58,7 @@ public class State {
         World.entitiesToBeAdded.add(hud);
     }
     private static void newGame() {
-        deleteMenuItems();
+        deleteType("type", "menu");
         Entity hud = new Entity();
         hud.entityName = "[type: menu][name: newGame]";
         hud.drawMode = "hud";
@@ -58,7 +67,7 @@ public class State {
     }
 
     private static void creatingGame() {
-        deleteMenuItems();
+        deleteType("type", "menu");
         Entity hud = new Entity();
         hud.entityName = "[type: menu][name: createGameLoadingScreen]";
         hud.drawMode = "hud";
@@ -71,17 +80,22 @@ public class State {
             if(thisType.equals(type)) World.entitiesToBeDeleted.add(ent);
         }
     }
-    private static void loading() {}
 
-    private static void testGame() {
-    }
+
     private State() {}
+
+
+    /*
     public static void deleteMenuItems() {
         for(Entity ent: World.getEntList()) {
             String type = StringUtils.getField(ent.entityName, "type");
             if(type.equals("menu")) World.entitiesToBeDeleted.add(ent);
         }
     }
+
+     */
+
+
     private static String state;
     public static String getState() { return state; }
     public static void setState(String newState) { state = newState; }
@@ -90,7 +104,6 @@ public class State {
 
         String action = StringUtils.getField(World.getCurrentState(), "action");
 
-        if(World.getCurrentState() == "testGame") testGame();
         if(World.getCurrentState() == "mainMenu") mainMenu();
         if(World.getCurrentState() == "newGame") newGame();
         if(World.getCurrentState() == "loadGame") loadGame();

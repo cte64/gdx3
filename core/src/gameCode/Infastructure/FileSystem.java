@@ -22,7 +22,6 @@ public class FileSystem {
     public static int centerLeft, centerRight, centerTop, centerBottom;  //center ring
 
     private FileSystem() {}
-
     public static void init() {
 
         //outer ring
@@ -262,8 +261,7 @@ public class FileSystem {
 
         if (type.equals("hero")) name = gameSaveDirectory + gameSubDirectory + "hero.txt";
         if (type.equals("metadata")) name = gameSaveDirectory + gameSubDirectory + "metadata.txt";
-
-        if (type.equals("chunk"))  {
+        if (type.equals("chunk")) {
             int xIndex = StringUtils.stringToInt(StringUtils.getField(filename, "xChunk"));
             int yIndex = StringUtils.stringToInt(StringUtils.getField(filename, "yChunk"));
             name = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
@@ -332,11 +330,4 @@ public class FileSystem {
         return retVal;
     }
 
-
-    /*
-    void imageToString(sf::Image* image, std::string& dataString);
-    sf::Image stringToImage(std::string& dataString);
-    void writeChunk(int xIndex, int yIndex, bool deleteCurrent);
-    void saveCurrentChunks();
-     */
 }

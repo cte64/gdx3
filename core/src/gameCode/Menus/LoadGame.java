@@ -214,8 +214,9 @@ public class LoadGame extends Component {
             //click action update
             if(mouseY > menuTop && mouseY < menuBottom) {
                 if(item.play.isLeftClicked()) {
-                    FileSystem.setGameSubDirectory(item.name);
-                    World.setCurrentState("[action: play]");
+                    StringUtils newState = new StringUtils("[action: play][directory: ]");
+                    StringUtils.setField(newState, "directory", item.name);
+                    World.setCurrentState(newState.data);
                 }
                 if(item.delete.isLeftClicked()) { toggleDeleteCheck(item.name,true); }
             }

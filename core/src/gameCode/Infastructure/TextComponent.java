@@ -12,6 +12,7 @@ public class TextComponent extends Component {
     public int fontSize;
     public int yPos, xPos, xOffset, yOffset;
     public String justify;
+    public boolean show;
 
     public TextComponent(String newText, int newFontSize, String newJustify, int newX, int newY) {
         type = "text";
@@ -20,6 +21,7 @@ public class TextComponent extends Component {
         justify = newJustify;
         xOffset = newX;
         yOffset = newY;
+        show = true;
     }
 
     public void update(Entity ent) {

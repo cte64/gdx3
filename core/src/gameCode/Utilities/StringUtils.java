@@ -10,16 +10,6 @@ public class StringUtils {
         data = newData;
     }
 
-    /*
-    public static ArrayList<StringUtils> splitToArr(String data, String splitChar) {
-        ArrayList<StringUtils> retVal = new ArrayList<StringUtils>();
-        String[] dataArr = data.split(splitChar);
-        for(String str: dataArr) { retVal.add(new StringUtils(str)); }
-        return retVal;
-    }
-
-     */
-
     public static ArrayList<StringUtils> getBeforeChar(String data, char splitChar) {
         ArrayList<StringUtils> retVal = new ArrayList<StringUtils>();
         String newStr = "";

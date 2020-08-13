@@ -261,17 +261,28 @@ public class MakeWorld {
 
     public void start() {
 
-
+        /*
+        boolean state = false;
+        String[] temp = {
+                "one",
+                "two",
+                "three",
+                "four",
+                "five",
+                "six",
+                "seven",
+                "eight",
+                "nine"
+        };
 
         int index = 0;
-        boolean state = false;
 
         while(true) {
 
             if(InputAL.isKeyPressed("w") && !state) {
+                messages.add(new StringUtils(temp[index]));
                 index++;
-                messages.add(new StringUtils("yeeha"));
-
+                if(index > 8) index = 0;
                 state = true;
             }
 
@@ -279,36 +290,46 @@ public class MakeWorld {
                 state = false;
             }
         }
+         */
 
-        /*
+
         //INITIALIZE WORLD ==========================================
         World.createWorld(numChunks);
         FileSystem.createGameDirectory(directory);
-        loadingMessage.data = "World Initialized";
+        messages.add( new StringUtils("World Initialized"));
+
 
         //INITIALIZE RIMS ============================================
         rims = new HashMap< String, ArrayList<Vector2> >();
-        loadingMessage.data = "Rims Initialized";
+        messages.add( new StringUtils("Rims Initialized"));
 
         //FILL METADATA FILE ========================================
         StringUtils data = new StringUtils("[numChunks: ][dateCreated: ]");
         data.setField(data, "numChunks", StringUtils.toString(numChunks));
         //StringUtils.setField(data, "dateCreated", StringUtils.getDateAndTime());
         FileSystem.setFile(new StringUtils("[type: metadata]"), data);
-        loadingMessage.data = "MetaData File Created";
+        messages.add( new StringUtils("MetaData File Created"));
 
         //CREATE THE MAIN CHARACTER =================================
-        StringUtils heroData = new StringUtils("[type: living][subType: testHero][details: ][xPos: 6000][yPos: 1500][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]");
+        StringUtils heroData = new StringUtils("[type: hero][subType: testHero][details: ][xPos: 2400][yPos: 2400][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]");
         FileSystem.setFile(new StringUtils("[type: hero]"), heroData);
+        messages.add( new StringUtils("Created Hero"));
 
         //MAKE THE SOLID LAYERS =====================================
         makeLayer((int)(worldRadius * 1.00), 400, 10, "dirt", true, "[name: outer]");
-        makeLayer((int)(worldRadius * 0.85), 200, 10, "clay", true, "");
-        makeLayer((int)(worldRadius * 0.82), 150, 10, "sand", true, "");
-        makeLayer((int)(worldRadius * 0.78), 400, 10, "stone", true, "");
-        makeLayer((int)(worldRadius * 0.30), 200, 10, "coal", true, "");
+        messages.add( new StringUtils("Dirt Created"));
 
-         */
+        makeLayer((int)(worldRadius * 0.85), 200, 10, "clay", true, "");
+        messages.add( new StringUtils("Clay Created"));
+
+        makeLayer((int)(worldRadius * 0.82), 150, 10, "sand", true, "");
+        messages.add( new StringUtils("Sand Created"));
+
+        makeLayer((int)(worldRadius * 0.78), 400, 10, "stone", true, "");
+        messages.add( new StringUtils("Stone Created"));
+
+        makeLayer((int)(worldRadius * 0.30), 200, 10, "coal", true, "");
+        messages.add( new StringUtils("Coal Created"));
     }
 
     void makeLayer(int newLowest, int newStretch, int newOctaves, String newType, boolean newFillIt, String rimName){

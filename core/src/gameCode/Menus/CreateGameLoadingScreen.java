@@ -1,9 +1,6 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.Component;
-import gameCode.Infastructure.Entity;
-import gameCode.Infastructure.TextComponent;
-import gameCode.Infastructure.World;
+import gameCode.Infastructure.*;
 import gameCode.Terrain.MakeWorld;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
@@ -15,13 +12,15 @@ public class CreateGameLoadingScreen extends Component {
     private MenuItem background;
     MakeWorld makeWorld;
 
-
     ArrayList<StringUtils> loadingMessages;
-    int sizeBefore;
-    int textIndex;
-    int maxListSize;
-
     private ArrayList<TextComponent> textComponents;
+
+    int maxListSize;
+    int topOffset = -30;
+    int itemHeight = 18;
+
+    Thread t;
+    String directory;
 
     public class MyRunnable implements Runnable {
         private MakeWorld makeWorld;
@@ -38,66 +37,51 @@ public class CreateGameLoadingScreen extends Component {
 
         type = "logic";
 
-        background = new MenuItem("[type: menu][name: background]", "loadGameBack", null, "[vertical: center][horizontal: center]", 0, 0, 0, 479, 600);
+        background = new MenuItem("[type: menu][name: background]", "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 0, 360, 180);
         background.addText(new TextComponent("Creating New World", 10, "[vertical: top][horizontal: center]", 0, 0));
 
         String name = StringUtils.getField(World.getCurrentState(), "name");
         String numChunks = StringUtils.getField(World.getCurrentState(), "numChunks");
         int numChunksInt = StringUtils.stringToInt(numChunks);
 
-
+        directory = name;
         textComponents = new ArrayList<TextComponent>();
-
-        sizeBefore = 0;
-        textIndex = 0;
-        maxListSize = 10;
+        maxListSize = 7;
 
         loadingMessages = new ArrayList<StringUtils>();
-        makeWorld = new MakeWorld(name, numChunksInt, 800, loadingMessages);
+        int radius = (int)((numChunksInt * World.tilesPerChunk * World.tileSize) * 0.3f);
+        makeWorld = new MakeWorld(name, numChunksInt, radius, loadingMessages);
 
-        Thread t = new Thread(new MyRunnable(makeWorld));
+        t = new Thread(new MyRunnable(makeWorld));
         t.start();
-    }
-
-    private void postionTextComponents() {
-
-        if(textComponents.size() > maxListSize) {
-            textIndex = textComponents.size() - maxListSize;
-            textIndex = MathUtils.clamp(textIndex, 0, textComponents.size() - 1);
-        }
-
-        for(int y = textIndex; y < textComponents.size(); y++) {
-
-            int yPos = 30 * y;
-            
-
-        }
-
-
     }
 
     public void update(Entity entity) {
 
-
-        if(sizeBefore != loadingMessages.size()) {
-
-            int numComponents = loadingMessages.size() - sizeBefore;
-            int startIndex = textComponents.size();
-            startIndex = MathUtils.clamp(startIndex, 0, loadingMessages.size() - 1);
-
-            for(int x = 0; x < numComponents; x++) {
-                int index = startIndex + x;
-                index = MathUtils.clamp(index, 0, loadingMessages.size() - 1);
-
-                TextComponent newComp = new TextComponent("stuff", 10, "[vertical: top][horizontal: center]", 0, -100);
+        if(textComponents.size() != loadingMessages.size()) {
+            for(int x = textComponents.size(); x < loadingMessages.size(); x++) {
+                int yPos = topOffset - x*itemHeight;
+                TextComponent newComp = new TextComponent(loadingMessages.get(x).data, 10, "[vertical: top][horizontal: center]", 0, yPos);
                 textComponents.add(newComp);
                 background.addText(newComp);
             }
-            sizeBefore += numComponents;
-            postionTextComponents();
+
+            //position only the last "maxListSize" items
+            if(textComponents.size() > maxListSize) {
+                background.ent.deleteComponent(textComponents.get(0));
+                textComponents.remove(0);
+                loadingMessages.remove(0);
+                for(int x = 0; x < textComponents.size(); x++) {
+                    int yPos = topOffset - x*itemHeight;
+                    textComponents.get(x).yOffset = yPos;
+                }
+            }
         }
 
-
+        if(!t.isAlive()) {
+            StringUtils newState = new StringUtils("[action: play][directory: ]");
+            StringUtils.setField(newState, "directory", directory);
+            World.setCurrentState(newState.data);
+        }
     }
-
 }

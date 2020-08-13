@@ -28,6 +28,70 @@ public class Graphics implements Disposable {
     private static BitmapFont font;
     private static GlyphLayout layout;
 
+    public static void init() {
+
+        //Fonts ==================================================================================
+        font = new BitmapFont();
+        layout = new GlyphLayout();
+
+        cameraHelper = new CameraHelper();
+        shapeRenderer = new ShapeRenderer();
+        tileIDs = new ArrayList<String>();
+
+        //Set up the camera ======================================================================
+        camera = new OrthographicCamera(World.getViewPortWidth(), World.getViewPortHeight());
+        camera.position.set(0, 0, 0);
+        camera.update();
+
+        //Set up the sprites =====================================================================
+        batch = new SpriteBatch();
+        hudBatch = new SpriteBatch();
+        spriteMap = new HashMap<String, Sprite>();
+        spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
+        tileAtlas = new TextureAtlas();
+
+        //Menus stuff
+        addSprite("tile");
+        addSprite("mainMenuBack");
+        addSprite("createGameBack");
+        addSprite("loadGameBack");
+        addSprite("loadGameFront");
+        addSprite("minus");
+        addSprite("plus");
+        addSprite("play");
+        addSprite("playHover");
+        addSprite("loadGameDeleteOpen");
+        addSprite("loadGameDeleteClosed");
+        addSprite("loadGameDeleteClosed1");
+        addSprite("halfMenuItem");
+        addSprite("menuItem");
+        addSprite("listItem");
+        addSprite("scrollBar");
+
+        /*
+        addSprite("tile");
+
+
+         */
+
+
+        //set up the tile atlas ==================================================================
+        int numTiles = 40;
+        int padding = 1;
+        for(int y = 0; y < numTiles; y++) {
+        for(int x = 0; x < numTiles; x++) {
+            int xPos = padding + x*(padding + World.tileSize);
+            int yPos = padding + y*(padding + World.tileSize);
+            String name = "tileId: " + StringUtils.toString(x) + "." + StringUtils.toString(y);
+            Texture newTexture = new Texture(World.tileSize, World.tileSize, Pixmap.Format.RGB888);
+            tileAtlas.addRegion(name, newTexture, xPos, yPos, World.tileSize, World.tileSize);
+            TextureRegion region = tileAtlas.findRegion(name);
+            Sprite sprite = new Sprite(region);
+            spriteMap.put(name, sprite);
+            tileIDs.add(name);
+        }}
+    }
+
     public static void returnCoord(String coord) { tileIDs.add(coord);  }
 
     public static String getCoord() {
@@ -88,71 +152,6 @@ public class Graphics implements Disposable {
         shapeRenderer.end();
     }
 
-    public static void init() {
-
-        //Fonts ==================================================================================
-        font = new BitmapFont();
-        layout = new GlyphLayout();
-
-        cameraHelper = new CameraHelper();
-        shapeRenderer = new ShapeRenderer();
-        tileIDs = new ArrayList<String>();
-
-        //Set up the camera ======================================================================
-        camera = new OrthographicCamera(World.getViewPortWidth(), World.getViewPortHeight());
-        camera.position.set(0, 0, 0);
-        camera.update();
-
-        //Set up the sprites =====================================================================
-        batch = new SpriteBatch();
-        hudBatch = new SpriteBatch();
-        spriteMap = new HashMap<String, Sprite>();
-        spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
-        tileAtlas = new TextureAtlas();
-
-
-
-        //Menus stuff
-        addSprite("tile");
-        addSprite("mainMenuBack");
-        addSprite("createGameBack");
-        addSprite("loadGameBack");
-        addSprite("loadGameFront");
-        addSprite("minus");
-        addSprite("plus");
-        addSprite("play");
-        addSprite("playHover");
-        addSprite("loadGameDeleteOpen");
-        addSprite("loadGameDeleteClosed");
-        addSprite("loadGameDeleteClosed1");
-        addSprite("halfMenuItem");
-        addSprite("menuItem");
-        addSprite("listItem");
-        addSprite("scrollBar");
-
-        /*
-        addSprite("tile");
-
-
-         */
-
-
-        //set up the tile atlas ==================================================================
-        int numTiles = 40;
-        int padding = 1;
-        for(int y = 0; y < numTiles; y++) {
-        for(int x = 0; x < numTiles; x++) {
-            int xPos = padding + x*(padding + World.tileSize);
-            int yPos = padding + y*(padding + World.tileSize);
-            String name = "tileId: " + StringUtils.toString(x) + "." + StringUtils.toString(y);
-            Texture newTexture = new Texture(World.tileSize, World.tileSize, Pixmap.Format.RGB888);
-            tileAtlas.addRegion(name, newTexture, xPos, yPos, World.tileSize, World.tileSize);
-            TextureRegion region = tileAtlas.findRegion(name);
-            Sprite sprite = new Sprite(region);
-            spriteMap.put(name, sprite);
-            tileIDs.add(name);
-        }}
-    }
 
     public static void updateSprite(String name, Pixmap image) {
         TextureRegion region = tileAtlas.findRegion(name);
@@ -230,8 +229,7 @@ public class Graphics implements Disposable {
                 ArrayList<Component> textComps = ent.getComponents("text");
                 for(Component comp: textComps) {
                     TextComponent text = (TextComponent)comp;
-                    if(text != null) {
-
+                    if(text != null && text.show) {
                         font.setColor(1.0f, 1.0f, 0.0f, 1.0f);
                         font.draw(hudBatch, text.getText(), text.getXPos(), text.getYPos());
                     }

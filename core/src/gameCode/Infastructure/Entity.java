@@ -78,6 +78,10 @@ public class Entity {
 
     public void deleteComponents() { components.clear(); }
 
+    public void deleteComponent(Component component) {
+        components.remove(component);
+    }
+
 
     /*
     public float getXVelocity() {
