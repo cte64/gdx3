@@ -28,6 +28,7 @@ public class InputAL {
         keys.put("up", Input.Keys.UP);
         keys.put("down", Input.Keys.DOWN);
         keys.put("backspace", Input.Keys.BACKSPACE);
+        keys.put("esc", Input.Keys.ESCAPE);
 
         //Add all the mouse buttons here =================
         keys.put("mouse left", Input.Buttons.LEFT);

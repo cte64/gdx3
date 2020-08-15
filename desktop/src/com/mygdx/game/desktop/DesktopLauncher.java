@@ -7,10 +7,11 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import gameCode.Infastructure.Entity;
 import gameCode.Infastructure.FileSystem;
 import gameCode.Infastructure.InputAL;
+import gameCode.Utilities.Misc;
 import gameCode.Utilities.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Random;
+;
+import java.util.*;
 
 
 public class DesktopLauncher {
@@ -24,8 +25,6 @@ public class DesktopLauncher {
 	public static void main(String[] arg) {
 
 
-
-
 		if(rebuildAtlas) {
 			Settings settings = new Settings();
 			settings.maxWidth = 2048;
@@ -35,18 +34,12 @@ public class DesktopLauncher {
 		}
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 700;
+		config.width = 1000;
 		config.height = 700;
 		config.vSyncEnabled = true; // Setting to false disables vertical sync
 		config.foregroundFPS = 60; // Setting to 0 disables foreground fps throttling
 		config.backgroundFPS = 60; // Setting to 0 disables background fps throttling
 		new LwjglApplication(new myGame(), config);
-
-
-
-
-
-
 
 	}
 

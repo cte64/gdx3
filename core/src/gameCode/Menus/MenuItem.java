@@ -71,6 +71,7 @@ public class MenuItem {
         ent.width = w;
         ent.height = h;
         ent.z_pos = z;
+        ent.deleteRange = -2;
         World.entitiesToBeAdded.add(ent);
 
         //position new item and all its children

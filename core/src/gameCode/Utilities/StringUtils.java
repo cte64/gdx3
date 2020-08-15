@@ -113,5 +113,4 @@ public class StringUtils {
             data = data.substring(0, index) + newChar + data.substring(index + 1, data.length());
         }
     }
-
 }

@@ -4,12 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 import gameCode.Infastructure.FileSystem;
 import gameCode.Infastructure.InputAL;
 import gameCode.Infastructure.World;
-import gameCode.Utilities.MathUtils;
-import gameCode.Utilities.Pixel;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.*;
 import gameCode.Terrain.ScatterTerrain;
 import gameCode.Terrain.Perlin;
-import gameCode.Utilities.Timer;
 
 import java.security.KeyStore;
 import java.util.ArrayList;
@@ -304,9 +301,10 @@ public class MakeWorld {
         messages.add( new StringUtils("Rims Initialized"));
 
         //FILL METADATA FILE ========================================
-        StringUtils data = new StringUtils("[numChunks: ][dateCreated: ]");
+        StringUtils data = new StringUtils("[worldName: ][numChunks: ][dateCreated: ]");
         data.setField(data, "numChunks", StringUtils.toString(numChunks));
-        //StringUtils.setField(data, "dateCreated", StringUtils.getDateAndTime());
+        data.setField(data, "worldName", directory);
+        data.setField(data, "dateCreated", Misc.getDate());
         FileSystem.setFile(new StringUtils("[type: metadata]"), data);
         messages.add( new StringUtils("MetaData File Created"));
 
@@ -319,6 +317,9 @@ public class MakeWorld {
         makeLayer((int)(worldRadius * 1.00), 400, 10, "dirt", true, "[name: outer]");
         messages.add( new StringUtils("Dirt Created"));
 
+
+        /*
+
         makeLayer((int)(worldRadius * 0.85), 200, 10, "clay", true, "");
         messages.add( new StringUtils("Clay Created"));
 
@@ -330,6 +331,8 @@ public class MakeWorld {
 
         makeLayer((int)(worldRadius * 0.30), 200, 10, "coal", true, "");
         messages.add( new StringUtils("Coal Created"));
+
+         */
     }
 
     void makeLayer(int newLowest, int newStretch, int newOctaves, String newType, boolean newFillIt, String rimName){

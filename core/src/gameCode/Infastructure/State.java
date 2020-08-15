@@ -2,19 +2,13 @@ package gameCode.Infastructure;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import gameCode.Living.HeroInput;
-import gameCode.Menus.CreateGameLoadingScreen;
-import gameCode.Menus.LoadGame;
-import gameCode.Menus.MainMenu;
-import gameCode.Menus.NewGame;
+import gameCode.Menus.*;
 import gameCode.Terrain.MakeWorld;
 import gameCode.Utilities.StringUtils;
 
 import java.io.File;
 
 public class State {
-
-
-
 
     private static void loadGame() {
         deleteType("type", "menu");
@@ -25,15 +19,14 @@ public class State {
         World.entitiesToBeAdded.add(hud);
     }
 
-
-    private static void paused() {}
     private static void play() {
 
+        //delete menu stuff =================================================================
         deleteType("type", "menu");
 
+        //set Directory =====================================================================
         String directory = StringUtils.getField(World.getCurrentState(), "directory");
         FileSystem.setGameSubDirectory(directory);
-
 
         //MetaData and Create World =========================================================
         StringUtils metaData = new StringUtils("");
@@ -48,57 +41,39 @@ public class State {
         Entity hero = MakeEntity.getEntity(heroData.data);
         World.entitiesToBeAdded.add(hero);
 
+        //Add the pause item ================================================================
+        Entity pause = MakeEntity.getEntity("[type: menu][subType: pause]");
+        World.entitiesToBeAdded.add(pause);
     }
+
     private static void mainMenu() {
         deleteType("type", "menu");
-        Entity hud = new Entity();
-        hud.entityName = "[type: menu][name: mainMenu]";
-        hud.drawMode = "hud";
-        hud.addComponent(new MainMenu());
-        World.entitiesToBeAdded.add(hud);
+        Entity ent = MakeEntity.getEntity("[type: menu][subType: mainMenu]");
+        World.entitiesToBeAdded.add(ent);
     }
+
     private static void newGame() {
         deleteType("type", "menu");
-        Entity hud = new Entity();
-        hud.entityName = "[type: menu][name: newGame]";
-        hud.drawMode = "hud";
-        hud.addComponent(new NewGame());
-        World.entitiesToBeAdded.add(hud);
+        Entity ent = MakeEntity.getEntity("[type: menu][subType: newGame]");
+        World.entitiesToBeAdded.add(ent);
     }
 
     private static void creatingGame() {
         deleteType("type", "menu");
-        Entity hud = new Entity();
-        hud.entityName = "[type: menu][name: createGameLoadingScreen]";
-        hud.drawMode = "hud";
-        hud.addComponent(new CreateGameLoadingScreen());
-        World.entitiesToBeAdded.add(hud);
-    }
-    public static void deleteType(String field, String type) {
-        for(Entity ent: World.getEntList()) {
-            String thisType = StringUtils.getField(ent.entityName, field);
-            if(thisType.equals(type)) World.entitiesToBeDeleted.add(ent);
-        }
+        Entity ent = MakeEntity.getEntity("[type: menu][subType: createGameLoadingScreen]");
+        World.entitiesToBeAdded.add(ent);
     }
 
 
-    private State() {}
-
-
-    /*
-    public static void deleteMenuItems() {
-        for(Entity ent: World.getEntList()) {
-            String type = StringUtils.getField(ent.entityName, "type");
-            if(type.equals("menu")) World.entitiesToBeDeleted.add(ent);
-        }
-    }
-
-     */
-
-
+    //State stuff ==========================================================
     private static String state;
+
     public static String getState() { return state; }
+
     public static void setState(String newState) { state = newState; }
+
+    //Modifiers ==================================================================
+    private State() {}
 
     public static void loadState() {
 
@@ -109,5 +84,12 @@ public class State {
         if(World.getCurrentState() == "loadGame") loadGame();
         if(action.equals("play")) play();
         if(action.equals("createNewWorld")) creatingGame();
+    }
+
+    public static void deleteType(String field, String type) {
+        for(Entity ent: World.getEntList()) {
+            String thisType = StringUtils.getField(ent.entityName, field);
+            if(thisType.equals(type)) World.entitiesToBeDeleted.add(ent);
+        }
     }
 }
