@@ -3,6 +3,7 @@ package gameCode.Infastructure;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.math.Vector2;
 import gameCode.Utilities.Pixel;
 import gameCode.Utilities.StringUtils;
 
@@ -123,74 +124,52 @@ public class FileSystem {
 
 
 
-        /*
-        StringOps st;
-        int leftEdge = xIndex * world.tilesPerChunk;
-        int rightEdge = leftEdge + world.tilesPerChunk;
-        int topEdge = yIndex * world.tilesPerChunk;
-        int bottomEdge = topEdge + world.tilesPerChunk;
 
-        std::string chunkData = "";
-        std::string entData = "";
+        //create a new key from the xIndex and yIndex
+        Vector2 key = new Vector2(xIndex, yIndex);
+        Chunk chunkPtr = World.getChunk(key);
+        if(chunkPtr == null) {
+            System.out.println("Write chunk failed because chunk " + xIndex + "." + yIndex + " does not exist");
+            return;
+        }
 
-        for(int y = topEdge; y < bottomEdge; y++) {
-            for(int x = leftEdge; x < rightEdge; x++) {
+        World.deleteChunk(key);
 
-                eryThang* thangPtr = world.getThang(x, y);
-                if (thangPtr == nullptr) continue;
 
-                //CHUNKS ============================================================
-                std::string chunkString = "";
-                if(thangPtr->isImageEmpty()) chunkString = "\n";
-                else {
-                    imageToString(thangPtr->getImage(), chunkString);
-                    st.compressString(chunkString);
-                    chunkString += "\n";
-                }
 
-                chunkData += chunkString;
-                if (deleteCurrent) thangPtr->deleteImage();
 
-                //SERIALIZED ENTITIES ==============================================
-                for(auto currentObj: *thangPtr->getObjectVec()) {
-                    entData += currentObj + "\n";
-                }
-                if (deleteCurrent) thangPtr->getObjectVec()->clear();
 
-                //ACTIVE ENTITIES (I don't really care that this is inefficient) ==================================================
-                for (auto iter = world.getEntList().begin(); iter != world.getEntList().end(); iter++) {
 
-                    int xPos = (iter->x_pos) / world.tileSize;
-                    int yPos = (iter->y_pos) / world.tileSize;
-
-                    if (st.getField(iter->entityName, "type") == "item" && xPos == x && yPos == y) {
-                        entData += iter->getSerializedEntity() + "\n";
-                    }
-                }
-            }}
-
-        std::string chunkName = "[type: chunk][xChunk: " + st.toString(xIndex) + "][yChunk: " + st.toString(yIndex) + "]";
-        world.fileThing.setFile(chunkName, chunkData);
-
-        std::string entName = "[type: entity][xChunk: " + st.toString(xIndex) + "][yChunk: " + st.toString(yIndex) + "]";
-        world.fileThing.setFile(entName, entData);
-
-         */
     }
     public static void readChunk(int xIndex, int yIndex) {
 
+        //create a new key from the xIndex and yIndex
+        Vector2 key = new Vector2(xIndex, yIndex);
+
+        Chunk chunkPtr = World.getChunk(key);
+        if(chunkPtr == null) {
+            Chunk newChunk = new Chunk(key);
+            chunkPtr = newChunk;
+            World.insertChunk(key, newChunk);
+        }
+
+
         String chunkFileName = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
-        String entFileName = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
-        
+        //String entFileName = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
+
         FileHandle chunkFile = Gdx.files.local(chunkFileName);
-        FileHandle entFile = Gdx.files.local(entFileName);
+        //FileHandle entFile = Gdx.files.local(entFileName);
 
         if(!chunkFile.exists()) { System.out.println("File: " + chunkFileName + " does not exist!"); return; }
-        if(!entFile.exists()) { System.out.println("File: " + entFileName + " does not exist!"); return; }
+        //if(!entFile.exists()) { System.out.println("File: " + entFileName + " does not exist!"); return; }
 
-        String tileStr = chunkFile.readString();
-        String entStr = entFile.readString();
+        StringUtils terrainStr = new StringUtils(chunkFile.readString());
+        //StringUtils objectStr = new StringUtils(entFile.readString());
 
+        chunkPtr.setTerrain(terrainStr);
+        //chunkPtr.setObjects(objectStr);
+
+        /*
         ArrayList<StringUtils> tileStrArr = StringUtils.getBeforeChar(tileStr, '\n');
         ArrayList<StringUtils> entStrArr =  StringUtils.getBeforeChar(entStr, '\n');
 
@@ -234,8 +213,9 @@ public class FileSystem {
             Chunk chunkPtr = World.getChunk(xPos, yPos);
             if(chunkPtr != null) chunkPtr.addObject(strUtil.data);
         }
-    }
 
+         */
+    }
     public static void updateChunks() {
 
         //first set all the first one to false

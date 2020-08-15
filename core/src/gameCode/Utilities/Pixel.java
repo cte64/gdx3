@@ -102,6 +102,9 @@ public class Pixel {
         int pixPerTile = World.tileSize * World.tileSize;
         Pixmap image = new Pixmap(World.tileSize, World.tileSize, Pixmap.Format.RGB888);
 
+
+        //System.out.println(data.data.length());
+
         if(data.data.length() == 0) {
             int color = 16777215;
             for(int y = 0; y < World.tileSize; y++) {

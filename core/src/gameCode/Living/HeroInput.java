@@ -8,7 +8,7 @@ import gameCode.Infastructure.Entity;
 public class HeroInput extends Component {
 
 
-    float deltaX = 4.6f;
+    float deltaX = 10.6f;
 
     public HeroInput() {
         type = "input";

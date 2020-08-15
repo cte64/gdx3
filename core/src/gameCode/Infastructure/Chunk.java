@@ -2,14 +2,93 @@ package gameCode.Infastructure;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import java.util.ArrayList;
+
+import com.badlogic.gdx.math.Vector2;
 import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.Pixel;
+import gameCode.Utilities.StringUtils;
 
 public class Chunk {
+
+
+    private String chunkName;
+
+
+    private class Tile {
+        public Pixmap image;
+        public StringUtils terrainData;
+        public boolean active;
+        public String tileName;
+        public Tile(int index) {
+            image = new Pixmap(World.tileSize, World.tileSize, Pixmap.Format.RGB888);
+            terrainData = new StringUtils("");
+            active = false;
+
+            StringUtils newName = new StringUtils("[type: tile][chunkX: ][chunkY: ][tileX: ][tileY: ]");
+            StringUtils.setField(newName, "chunkX", StringUtils.getField(chunkName, "chunkX"));
+            StringUtils.setField(newName, "chunkY", StringUtils.getField(chunkName, "chunkY"));
+            StringUtils.setField(newName, "tileX", StringUtils.toString(index % World.tilesPerChunk));
+            StringUtils.setField(newName, "tileY", StringUtils.toString(index / World.tilesPerChunk));
+            tileName = newName.data;
+        }
+    }
+
+    private ArrayList<Tile> tiles;
+
+    public Chunk(Vector2 key) {
+        chunkName = "[type: chunk][chunkX: " + StringUtils.toString((int)key.x) + "][chunkY: " + StringUtils.toString((int)key.y) + "]";
+        tiles = new ArrayList<Tile>();
+    }
+
+    //Setters ==============   ============================================================================
+    public void setTerrain(StringUtils terrainData) {
+        ArrayList<StringUtils> tileStrArr = StringUtils.getBeforeChar(terrainData.data, '\n');
+        for(int index = 0; index < tileStrArr.size(); index++) {
+            Tile newTile = new Tile(index);
+            newTile.terrainData = tileStrArr.get(index);
+            newTile.image = Pixel.stringToImage(tileStrArr.get(index));
+            tiles.add(newTile);
+        }
+    }
+    public void setActive(int x, int y, boolean newActive) {
+        int index = (World.tilesPerChunk * y) + x;
+        index = MathUtils.clamp(index, 0, tiles.size() - 1);
+        tiles.get(index).active = newActive;
+    }
+
+    //Getters =============================================================================================
+
+    public String getChunkName() { return chunkName; }
+    public Pixmap getImage(int x, int y) {
+        int index = (World.tilesPerChunk * y) + x;
+        index = MathUtils.clamp(index, 0, tiles.size() - 1);
+        return tiles.get(index).image;
+    }
+    public boolean getActive(int x, int y) {
+        int index = (World.tilesPerChunk * y) + x;
+        index = MathUtils.clamp(index, 0, tiles.size() - 1);
+        return tiles.get(index).active;
+    }
+    public boolean isImageBlank(int xIndex, int yIndex) {
+        int index = (World.tilesPerChunk * yIndex) + xIndex;
+        index = MathUtils.clamp(index, 0, tiles.size() - 1);
+        if(tiles.get(index).terrainData.data.length() == 0) return true;
+        else return false;
+    }
+    public String getTileName(int x, int y) {
+        int index = (World.tilesPerChunk * y) + x;
+        index = MathUtils.clamp(index, 0, tiles.size() - 1);
+        return tiles.get(index).tileName;
+    }
+
+
+    /*
 
     private String name;
     private boolean active;
     private Pixmap image;
     private ArrayList<String> serializedObjects;
+
 
     public Chunk() {
         name = "";
@@ -55,4 +134,6 @@ public class Chunk {
     //ADD THESE LATER ========================================
     public void setPixel() {}
     public int getPixel() {return 0;}
+
+     */
 }

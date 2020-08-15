@@ -56,9 +56,7 @@ public class World {
     private static LinkedList<Entity> entList = new LinkedList<Entity>();
     private static HashMap<String, Entity> entByName = new HashMap<String, Entity>();
     private static ArrayList<Entity> entByZIndex = new ArrayList<Entity>();
-    private static ArrayList< ArrayList<Entity> > locatorCells = new ArrayList<  ArrayList<Entity> >();
-    private static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
-    private static ArrayList<Boolean> containsMoveables = new ArrayList<Boolean>();
+    private static HashMap<Vector2, Chunk> chunks = new HashMap<Vector2, Chunk>();
     private static class FrameStruct { int width, height, left, right, top, bottom; Entity ent; };
     private static ArrayList<FrameStruct> frames = new ArrayList<FrameStruct>();
 
@@ -75,53 +73,21 @@ public class World {
     public static float getDeltaTime() { return deltaTime; }
     public static LinkedList<Entity> getEntList() { return entList; }
     public static Entity getCamera() { return camera; }
-    public static ArrayList<Entity> getLocatorCell(int x, int y) {
-        if(locatorCells.size() == 0) return null;
-        int index = (y * numCells) + x;
-        index = MathUtils.clamp(index, 0, locatorCells.size() - 1);
-        return locatorCells.get(index);
-    }
-    public static Boolean getMoveable(int y, int x) {
-        if(containsMoveables.size() == 0) return false;
-        int index = (y * numCells) + x;
-        index = MathUtils.clamp(index, 0, containsMoveables.size() - 1);
-        return containsMoveables.get(index);
-    }
-    public static Chunk getChunk(int x, int y) {
-        int index = (numBlocks * y) + x;
-        if(chunks.size() == 0 || index < 0 || index > chunks.size() - 1) return null;
-        else return chunks.get(index);
+    public static Chunk getChunk(Vector2 key) {
+        if(chunks.containsKey(key)) return chunks.get(key);
+        else return null;
     }
     public static String getCurrentState() { return currentState; }
     public static Entity getEntByName(String name) {
         if(entByName.containsKey(name)) return entByName.get(name);
         else return null;
     }
-    public static Entity getEntByLocation(int x, int y) {
 
-        int newX = ((x * numCells) / numPixels);
-        int newY = ((y * numCells) / numPixels);
-
-        ArrayList<Entity> cellPtr = getLocatorCell(newX, newY);
-        if(cellPtr == null) return null;
-
-        for(Entity ent: cellPtr) {
-            Vector2 c = Coordinates.getPoint2(x, y, ent);
-            if (c.x >= ent.x_pos && c.x < ent.x_pos + ent.getWidth() && c.y >= ent.y_pos && c.y < ent.y_pos + ent.getHeight()) {
-                return ent;
-            }
-        }
-        return null;
-    }
     public static ArrayList<Entity> getEntByZIndex() { return entByZIndex; }
 
+    public static HashMap<Vector2, Chunk> getChunkMap() { return chunks; }
+
     //SETTERS ======================================================================================
-    public static void setMoveable(int x, int y, boolean newBool) {
-        if (containsMoveables.size() == 0) return;
-        int index = (y * numCells) + x;
-        index = MathUtils.clamp(index, 0, containsMoveables.size() - 1);
-        containsMoveables.set(index, newBool);
-    }
     public static void setCurrentState(String newState) { currentState = newState; }
     public static void setDeltaTime(float newDelta) { deltaTime = newDelta; }
     public static void setViewPortWidth(int newWidth) { viewPortWidth = newWidth; }
@@ -134,18 +100,9 @@ public class World {
         frames.add(newFrame);
     }
     public static void setCamera(Entity newCamera) { camera = newCamera; }
-    public static void positionEntity(Entity ent) {
-        ArrayList<Vector2> corner_coords = Coordinates.getLocatorCellCoord(ent);
-        for(Vector2 coord: corner_coords) {
-            int x = (int)coord.x;
-            int y = (int)coord.y;
-            ArrayList<Entity> cellPtr = getLocatorCell(x, y);
-            if(cellPtr != null) {
-                cellPtr.add(ent);
-                if(ent.moveable) setMoveable(x, y, true);
-            }
-        }
-    }
+    public static void insertChunk(Vector2 key, Chunk newChunk) { chunks.put(key, newChunk); }
+    public static void deleteChunk(Vector2 key) { chunks.remove(key); }
+
     private static void positionByZIndex(Entity ent) {
 
         if(entByZIndex.size() == 0) {
@@ -174,38 +131,13 @@ public class World {
         numCells = numBlocks / xCell;
 
         chunks.clear();
-        containsMoveables.clear();
-        locatorCells.clear();
-
-
-        for (int y = 0; y < numCells; y++) {
-        for (int x = 0; x < numCells; x++) {
-            locatorCells.add(new ArrayList<Entity>());
-            containsMoveables.add(false);
-        }}
-
-        for (int y = 0; y < numBlocks; y++) {
-        for (int x = 0; x < numBlocks; x++) {
-
-            StringUtils name = new StringUtils("[type: terrain][subType: terrainBlock][xPos: ][yPos: ]");
-            StringUtils.setField(name, "xPos", StringUtils.toString(x));
-            StringUtils.setField(name, "yPos", StringUtils.toString(y));
-
-            Chunk t = new Chunk();
-            t.setName(name.data);
-            t.setActive(false);
-            chunks.add(t);
-        }}
-
         FileSystem.init();
     }
     public static void deleteWorld() {
 
         for(Entity ent: entList) { entitiesToBeDeleted.add(ent); }
         chunks.clear();
-        containsMoveables.clear();
         entByName.clear();
-        locatorCells.clear();
         frames.clear();
 
         numChunks = 0;
@@ -268,12 +200,6 @@ public class World {
 
             entByName.remove(ent.entityName);
             entByZIndex.remove(ent);
-
-            ArrayList<Vector2> corner_coords = Coordinates.getLocatorCellCoord(ent);
-            for(Vector2 coord: corner_coords) {
-                ArrayList<Entity> cellPtr = getLocatorCell((int)coord.x, (int)coord.y);
-                if(cellPtr != null) cellPtr.remove(ent);
-            }
             entList.remove(ent);
         }
         entitiesToBeDeleted.clear();
@@ -282,7 +208,6 @@ public class World {
         for(Entity ent: entitiesToBeAdded) {
             entList.add(ent);
             entByName.put(ent.entityName, ent);
-            positionEntity(ent);
             positionByZIndex(ent);
         }
         entitiesToBeAdded.clear();
@@ -331,18 +256,25 @@ public class World {
                     }
                 }
 
-                Chunk chunkPtr = getChunk(ent.bitMapX, ent.bitMapY);
+
+                Vector2 key = new Vector2(ent.bitMapX, ent.bitMapY);
+                Chunk chunkPtr = getChunk(key);
                 if (chunkPtr == null) continue;
-                if (!mark && StringUtils.getField(ent.entityName, "type") == "terrain" && chunkPtr.isImageEmpty())
+
+                if (!mark && StringUtils.getField(ent.entityName, "type") == "terrain" && chunkPtr.isImageBlank(ent.bitMapX, ent.bitMapY))
                     mark = true;
 
                 if (mark) {
+
+                    /*
                     Chunk chunkPtr2 = getChunk((int) (ent.x_pos / tileSize), (int) (ent.y_pos / tileSize));
                     if(chunkPtr2 == null) continue;
 
                     chunkPtr2.setActive(false);
                     //if (StringUtils.getField(ent.entityName, "type") != "terrain") chunkPtr2.addObject(ent.entityName);
                     entitiesToBeDeleted.add(ent);
+
+                     */
                 }
             }
         }
@@ -351,41 +283,8 @@ public class World {
     }
     public static void loadEntities() {
 
-        for(FrameStruct frame: frames) {
 
-            if(frame.ent == null) continue;
-
-            for (int y = frame.top; y < frame.bottom; y++) {
-            for (int x = frame.left; x < frame.right; x++) {
-
-                Vector2 tPoint = Coordinates.getPoint2(x*tileSize, y*tileSize, frame.ent);
-                int tX = (int)(tPoint.x/tileSize);
-                int tY = (int)(tPoint.y/tileSize);
-
-                tX = MathUtils.clamp(tX, 0, numBlocks - 1);
-                tY = MathUtils.clamp(tY, 0, numBlocks - 1);
-
-                Chunk chunkPtr = getChunk(tX, tY);
-                if(chunkPtr == null) continue;
-
-                if(!chunkPtr.getActive()) {
-
-                    if(!chunkPtr.isImageEmpty() || chunkPtr.getObjects().size() > 0) {
-                        String ent_name = chunkPtr.getName();
-
-                        //do the terrain thing ==================================================
-                        if(getEntByName(ent_name) == null) {
-                            Entity ent = MakeEntity.getEntity(ent_name, chunkPtr.getImage());
-                            ent.entityName = ent_name;
-                            ent.x_pos = tX*tileSize;
-                            ent.y_pos = tY*tileSize;
-                            ent.bitMapX = tX;
-                            ent.bitMapY = tY;
-                            entitiesToBeAdded.add(ent);
-                        }
-
-
-                        /*
+              /*
                         //do the entities =======================================================
                         while (chunkPtr.getObjects().size() > 0) {
 
@@ -409,8 +308,49 @@ public class World {
                         }
                          */
 
-                        chunkPtr.setActive(true);
+        for(FrameStruct frame: frames) {
+
+            if(frame.ent == null) continue;
+
+            for (int y = frame.top; y < frame.bottom; y++) {
+            for (int x = frame.left; x < frame.right; x++) {
+
+                Vector2 tPoint = Coordinates.getPoint2(x*tileSize, y*tileSize, frame.ent);
+
+                int tileXAbs = (int)(tPoint.x/tileSize);
+                int tileYAbs = (int)(tPoint.y/tileSize);
+
+                int tileXRel = tileXAbs % tilesPerChunk;
+                int tileYRel = tileYAbs % tilesPerChunk;
+
+                int chunkX = (int)(tPoint.x / (tileSize * tilesPerChunk));
+                int chunkY = (int)(tPoint.y / (tileSize * tilesPerChunk));
+
+                Vector2 key = new Vector2(chunkX, chunkY);
+                Chunk chunkPtr = getChunk(key);
+                if(chunkPtr == null) continue;
+
+
+                if(!chunkPtr.getActive(tileXRel, tileYRel) && !chunkPtr.isImageBlank(tileXRel, tileYRel)) {
+
+                    String ent_name = chunkPtr.getTileName(tileXRel, tileYRel);
+
+                    //do the terrain thing ==================================================
+                    if(getEntByName(ent_name) == null) {
+
+
+
+
+                        Entity ent = MakeEntity.getEntity(ent_name, chunkPtr.getImage(tileXRel, tileYRel));
+                        ent.entityName = ent_name;
+                        ent.x_pos = tileXAbs*tileSize;
+                        ent.y_pos = tileYAbs*tileSize;
+                        ent.bitMapX = tileXAbs;
+                        ent.bitMapY = tileYAbs;
+                        entitiesToBeAdded.add(ent);
                     }
+
+                    chunkPtr.setActive(tileXRel, tileYRel, true);
                 }
             }}
         }

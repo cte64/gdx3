@@ -30,8 +30,8 @@ public class MakeEntity {
         if(type.equals("hero")) {
             String x_posStr = StringUtils.getField(name, "xPos");
             String y_posStr = StringUtils.getField(name, "yPos");
-            ent.x_pos = StringUtils.stringToInt(x_posStr);
-            ent.y_pos = StringUtils.stringToInt(y_posStr);
+            ent.x_pos = World.getNumPixels()/2;//StringUtils.stringToInt(x_posStr);
+            ent.y_pos = ent.x_pos;//StringUtils.stringToInt(y_posStr);
             ent.spriteName = "tile";
             ent.entityName = "hero";
             ent.z_pos = 3;

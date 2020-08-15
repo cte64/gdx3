@@ -1,1 +1,1 @@
-[type: hero][subType: testHero][details: ][xPos: 2400][yPos: 2400][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]
+[type: hero][subType: testHero][details: ][xPos: 6000][yPos: 6900][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]
