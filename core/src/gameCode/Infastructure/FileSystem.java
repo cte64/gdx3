@@ -122,7 +122,60 @@ public class FileSystem {
     public static void writeChunk(int xIndex, int yIndex, boolean deleteCurrent) {
 
 
-        
+
+        /*
+        StringOps st;
+        int leftEdge = xIndex * world.tilesPerChunk;
+        int rightEdge = leftEdge + world.tilesPerChunk;
+        int topEdge = yIndex * world.tilesPerChunk;
+        int bottomEdge = topEdge + world.tilesPerChunk;
+
+        std::string chunkData = "";
+        std::string entData = "";
+
+        for(int y = topEdge; y < bottomEdge; y++) {
+            for(int x = leftEdge; x < rightEdge; x++) {
+
+                eryThang* thangPtr = world.getThang(x, y);
+                if (thangPtr == nullptr) continue;
+
+                //CHUNKS ============================================================
+                std::string chunkString = "";
+                if(thangPtr->isImageEmpty()) chunkString = "\n";
+                else {
+                    imageToString(thangPtr->getImage(), chunkString);
+                    st.compressString(chunkString);
+                    chunkString += "\n";
+                }
+
+                chunkData += chunkString;
+                if (deleteCurrent) thangPtr->deleteImage();
+
+                //SERIALIZED ENTITIES ==============================================
+                for(auto currentObj: *thangPtr->getObjectVec()) {
+                    entData += currentObj + "\n";
+                }
+                if (deleteCurrent) thangPtr->getObjectVec()->clear();
+
+                //ACTIVE ENTITIES (I don't really care that this is inefficient) ==================================================
+                for (auto iter = world.getEntList().begin(); iter != world.getEntList().end(); iter++) {
+
+                    int xPos = (iter->x_pos) / world.tileSize;
+                    int yPos = (iter->y_pos) / world.tileSize;
+
+                    if (st.getField(iter->entityName, "type") == "item" && xPos == x && yPos == y) {
+                        entData += iter->getSerializedEntity() + "\n";
+                    }
+                }
+            }}
+
+        std::string chunkName = "[type: chunk][xChunk: " + st.toString(xIndex) + "][yChunk: " + st.toString(yIndex) + "]";
+        world.fileThing.setFile(chunkName, chunkData);
+
+        std::string entName = "[type: entity][xChunk: " + st.toString(xIndex) + "][yChunk: " + st.toString(yIndex) + "]";
+        world.fileThing.setFile(entName, entData);
+
+         */
     }
     public static void readChunk(int xIndex, int yIndex) {
 
