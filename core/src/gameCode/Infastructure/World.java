@@ -240,42 +240,65 @@ public class World {
                 boolean mark = false;
 
                 if (ent.deleteRange == -2) continue;
-                else if (ent.deleteRange == -1) {
-                    if (aX < left || aX > right || aY < top || aY > bottom)
-                        mark = true;
-                }
-                else if (ent.deleteRange >= 0) {
+                if (ent.deleteRange == -1 && (aX < left || aX > right || aY < top || aY > bottom) )  {
+                    mark = true;
+                    //System.out.println("we got here and a 134");
 
+                }
+
+
+                if (ent.deleteRange >= 0) {
                     int dist = (int) MathUtils.mag(ent.x_pos + ent.getWidth() / 2,
                             ent.y_pos + ent.getHeight() / 2,
                             camera.x_pos + camera.getWidth() / 2,
                             camera.y_pos + camera.getHeight() / 2);
-
-                    if (dist > ent.deleteRange) {
-                        mark = true;
-                    }
+                    if (dist > ent.deleteRange) mark = true;
                 }
 
 
                 Vector2 key = new Vector2(ent.bitMapX, ent.bitMapY);
                 Chunk chunkPtr = getChunk(key);
                 if (chunkPtr == null) continue;
+                /*
 
-                if (!mark && StringUtils.getField(ent.entityName, "type") == "terrain" && chunkPtr.isImageBlank(ent.bitMapX, ent.bitMapY))
-                    mark = true;
+                 */
 
+
+
+
+
+
+
+                //if it is a terrain item and it is empty delete it
+                //if (!mark && StringUtils.getField(ent.entityName, "type") == "chunk" && chunkPtr.isImageBlank(ent.bitMapX, ent.bitMapY)) mark = true;
+
+                /*
+
+                 */
                 if (mark) {
 
-                    /*
-                    Chunk chunkPtr2 = getChunk((int) (ent.x_pos / tileSize), (int) (ent.y_pos / tileSize));
-                    if(chunkPtr2 == null) continue;
 
-                    chunkPtr2.setActive(false);
-                    //if (StringUtils.getField(ent.entityName, "type") != "terrain") chunkPtr2.addObject(ent.entityName);
+
+
+
+                    Vector2 key2 = new Vector2( (int)(ent.x_pos / tileSize), (int)(ent.y_pos / tileSize));
+                    Chunk chunkPtr2 = getChunk(key2);
+
+
+
+                    System.out.println("FERRY CORSTEN 222 ");
+                    /*
+
+
+
+                    if(chunkPtr2 == null) continue;
+                    chunkPtr2.setActive((int)key.x, (int)key.y, false);
                     entitiesToBeDeleted.add(ent);
 
                      */
+
                 }
+
             }
         }
 
@@ -337,16 +360,13 @@ public class World {
 
                     //do the terrain thing ==================================================
                     if(getEntByName(ent_name) == null) {
-
-
-
-
                         Entity ent = MakeEntity.getEntity(ent_name, chunkPtr.getImage(tileXRel, tileYRel));
                         ent.entityName = ent_name;
                         ent.x_pos = tileXAbs*tileSize;
                         ent.y_pos = tileYAbs*tileSize;
                         ent.bitMapX = tileXAbs;
                         ent.bitMapY = tileYAbs;
+                        ent.deleteRange = -1;
                         entitiesToBeAdded.add(ent);
                     }
 

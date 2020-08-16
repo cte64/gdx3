@@ -40,7 +40,7 @@ public class Chunk {
         tiles = new ArrayList<Tile>();
     }
 
-    //Setters ==============   ============================================================================
+    //Setters =============================================================================================
     public void setTerrain(StringUtils terrainData) {
         ArrayList<StringUtils> tileStrArr = StringUtils.getBeforeChar(terrainData.data, '\n');
         for(int index = 0; index < tileStrArr.size(); index++) {
