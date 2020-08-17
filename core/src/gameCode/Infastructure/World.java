@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 import gameCode.Terrain.MakeWorld;
+import gameCode.Utilities.myPair;
 import jdk.internal.net.http.common.Pair;
 
 import com.badlogic.gdx.Gdx;
@@ -56,7 +57,7 @@ public class World {
     private static LinkedList<Entity> entList = new LinkedList<Entity>();
     private static HashMap<String, Entity> entByName = new HashMap<String, Entity>();
     private static ArrayList<Entity> entByZIndex = new ArrayList<Entity>();
-    private static HashMap<Vector2, Chunk> chunks = new HashMap<Vector2, Chunk>();
+    private static HashMap<myPair<Integer, Integer>, Chunk> chunks = new HashMap<myPair<Integer, Integer>, Chunk>();
     private static class FrameStruct { int width, height, left, right, top, bottom; Entity ent; };
     private static ArrayList<FrameStruct> frames = new ArrayList<FrameStruct>();
 
@@ -73,7 +74,7 @@ public class World {
     public static float getDeltaTime() { return deltaTime; }
     public static LinkedList<Entity> getEntList() { return entList; }
     public static Entity getCamera() { return camera; }
-    public static Chunk getChunk(Vector2 key) {
+    public static Chunk getChunk(myPair<Integer, Integer> key) {
         if(chunks.containsKey(key)) return chunks.get(key);
         else return null;
     }
@@ -83,7 +84,20 @@ public class World {
         else return null;
     }
     public static ArrayList<Entity> getEntByZIndex() { return entByZIndex; }
-    public static HashMap<Vector2, Chunk> getChunkMap() { return chunks; }
+    public static HashMap<myPair<Integer, Integer>, Chunk> getChunkMap() { return chunks; }
+    public static ArrayList<Entity> getEntByLocation(int x, int y) {
+
+        //will rewrite this later
+        ArrayList<Entity> ents = new ArrayList<Entity>();
+
+        for(Entity ent: entList) {
+            if(x > ent.x_pos && x < ent.x_pos + ent.getWidth() &&
+               y > ent.y_pos && y < ent.y_pos + ent.getHeight())
+                ents.add(ent);
+        }
+
+        return ents;
+    }
 
     //SETTERS ======================================================================================
     public static void setCurrentState(String newState) { currentState = newState; }
@@ -98,8 +112,10 @@ public class World {
         frames.add(newFrame);
     }
     public static void setCamera(Entity newCamera) { camera = newCamera; }
-    public static void insertChunk(Vector2 key, Chunk newChunk) { chunks.put(key, newChunk); }
-    public static void deleteChunk(Vector2 key) { chunks.remove(key); }
+    public static void insertChunk(myPair<Integer, Integer> key, Chunk newChunk) {
+        chunks.put(key, newChunk);
+    }
+    public static void deleteChunk(myPair<Integer, Integer> key) { chunks.remove(key); }
     private static void positionByZIndex(Entity ent) {
 
         if(entByZIndex.size() == 0) {
@@ -251,7 +267,7 @@ public class World {
                 int tileX = (int) (ent.x_pos / tileSize) % tilesPerChunk;
                 int tileY = (int) (ent.y_pos / tileSize) % tilesPerChunk;
 
-                Vector2 key = new Vector2(chunkX, chunkY);
+                myPair<Integer, Integer> key = new myPair(chunkX, chunkY);
                 Chunk chunkPtr = getChunk(key);
 
                 if(chunkPtr != null) {
@@ -308,10 +324,9 @@ public class World {
                 int chunkX = (int)(tPoint.x / (tileSize * tilesPerChunk));
                 int chunkY = (int)(tPoint.y / (tileSize * tilesPerChunk));
 
-                Vector2 key = new Vector2(chunkX, chunkY);
+                myPair<Integer, Integer> key = new myPair(chunkX, chunkY);
                 Chunk chunkPtr = getChunk(key);
                 if(chunkPtr == null) continue;
-
 
                 if(!chunkPtr.getActive(tileXRel, tileYRel) && !chunkPtr.isImageBlank(tileXRel, tileYRel)) {
 
@@ -323,6 +338,8 @@ public class World {
                         ent.entityName = ent_name;
                         ent.x_pos = tileXAbs*tileSize;
                         ent.y_pos = tileYAbs*tileSize;
+                        ent.width = tileSize;
+                        ent.height = tileSize;
                         ent.bitMapX = tileXAbs;
                         ent.bitMapY = tileYAbs;
                         ent.deleteRange = -1;

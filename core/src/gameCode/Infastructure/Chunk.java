@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Pixel;
 import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myPair;
 
 public class Chunk {
 
@@ -35,8 +36,8 @@ public class Chunk {
 
     private ArrayList<Tile> tiles;
 
-    public Chunk(Vector2 key) {
-        chunkName = "[type: chunk][chunkX: " + StringUtils.toString((int)key.x) + "][chunkY: " + StringUtils.toString((int)key.y) + "]";
+    public Chunk(myPair<Integer, Integer> key) {
+        chunkName = "[type: chunk][chunkX: " + StringUtils.toString(key.first) + "][chunkY: " + StringUtils.toString(key.second) + "]";
         tiles = new ArrayList<Tile>();
     }
 
@@ -57,7 +58,6 @@ public class Chunk {
     }
 
     //Getters =============================================================================================
-
     public String getChunkName() { return chunkName; }
     public Pixmap getImage(int x, int y) {
         int index = (World.tilesPerChunk * y) + x;
@@ -83,6 +83,29 @@ public class Chunk {
 
 
     //These are utility functions for mapping coordinates =================================================
+    public static myPair<Integer, Integer> makeKeyFromPixel(int x, int y) {
+        int chunkX = x / (World.tileSize * World.tilesPerChunk);
+        int chunkY = y / (World.tileSize * World.tilesPerChunk);
+        return new myPair(chunkX, chunkY);
+    }
+
+
+    public void setPixel(int x, int y, String color) {
+
+        int tileX = (x / World.tileSize) % World.tilesPerChunk;
+        int tileY = (y / World.tileSize) % World.tilesPerChunk;
+        int pixelX = x % World.tileSize;
+        int pixelY = World.tileSize - 1 - y % World.tileSize;
+
+        int index = (tileY * World.tilesPerChunk) + tileX;
+        if(index < 0 || index > tiles.size() - 1) return;
+
+        char colorC = Pixel.getCharFromType(color);
+        int colorI = Pixel.charToColor(colorC, pixelX, pixelY);
+
+        Pixel.insertPixel(tiles.get(index).terrainData, pixelX, pixelY, colorC);
+        tiles.get(index).image.drawPixel(pixelX, pixelY, colorI);
+    }
 
 
     //this is only sfasnfsdfasdfsadf

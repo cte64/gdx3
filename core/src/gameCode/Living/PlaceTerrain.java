@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import gameCode.Infastructure.*;
 import gameCode.Terrain.ModifyTerrain;
+import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Timer;
 import gameCode.Utilities.myPair;
 import jdk.internal.net.http.common.Pair;
@@ -26,50 +27,33 @@ public class PlaceTerrain extends Component {
     public void update(Entity entity) {
 
 
-
-
-
-
         if(InputAL.isMousePressed("mouse left")) {
             timer.update(World.getDeltaTime());
-            if(timer.getTime("place") > 1.0f) {
+            if(timer.getTime("place") > 0.6f) {
                 timer.resetTimer("place");
 
-
                 //delete a square
-
-                int width = 10;
+                int width = 20;
                 myPair<Integer, Integer> val = InputAL.getMouseAbs();
                 ArrayList<myPair<Integer, Integer>> pixels = new ArrayList<myPair<Integer, Integer>>();
 
-
                 for(int y = -width; y < width; y++) {
                 for(int x = -width; x < width; x++) {
-                    int xPos = val.first + x;
-                    int yPos = val.second + y;
-                    pixels.add(new myPair(xPos, yPos));
+                    float mag = MathUtils.mag(x, y, 0, 0);
+                    if(mag < width) {
+                        int xPos = val.first + x;
+                        int yPos = val.second + y;
+                        pixels.add(new myPair(xPos, yPos));
+                    }
                 }}
 
                 ModifyTerrain.addPixels(pixels);
             }
-
-            /*
-             */
-
-
-
-            //System.out.println("yee: " + val.first);
         }
 
         else {
             timer.resetTimer("place");
         }
-
-
-
-
-        //ModifyTerrain.addPixels();
-
 
     }
 }

@@ -8,6 +8,7 @@ import gameCode.Utilities.Pixel;
 import gameCode.Utilities.StringUtils;
 
 import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
 
@@ -122,11 +123,8 @@ public class FileSystem {
     }
     public static void writeChunk(int xIndex, int yIndex, boolean deleteCurrent) {
 
-
-
-
         //create a new key from the xIndex and yIndex
-        Vector2 key = new Vector2(xIndex, yIndex);
+        myPair<Integer, Integer> key = new myPair(xIndex, yIndex);
         Chunk chunkPtr = World.getChunk(key);
         if(chunkPtr == null) {
             System.out.println("Write chunk failed because chunk " + xIndex + "." + yIndex + " does not exist");
@@ -134,17 +132,11 @@ public class FileSystem {
         }
 
         World.deleteChunk(key);
-
-
-
-
-
-
     }
     public static void readChunk(int xIndex, int yIndex) {
 
         //create a new key from the xIndex and yIndex
-        Vector2 key = new Vector2(xIndex, yIndex);
+        myPair<Integer, Integer> key = new myPair(xIndex, yIndex);
 
         Chunk chunkPtr = World.getChunk(key);
         if(chunkPtr == null) {
