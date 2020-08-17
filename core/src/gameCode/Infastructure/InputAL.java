@@ -2,7 +2,10 @@ package gameCode.Infastructure;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector3;
 import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myPair;
+import jdk.internal.net.http.common.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +49,14 @@ public class InputAL {
         mouseY = World.getViewPortHeight() - mouseY;
         mouseY = MathUtils.clamp(mouseY, 0, World.getViewPortHeight() - 1);
         return mouseY;
+    }
+
+    public static myPair<Integer, Integer> getMouseAbs() {
+        Vector3 coord = Graphics.getMouse();
+        int x = (int)coord.x;
+        int y = (int)coord.y;
+        myPair<Integer, Integer> retVal = new myPair(x, y);
+        return retVal;
     }
 
     public static boolean isKeyPressed(String val) {

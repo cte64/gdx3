@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import gameCode.Infastructure.World;
 import gameCode.Utilities.StringUtils;
@@ -161,6 +162,10 @@ public class Graphics implements Disposable {
     }
 
     public Graphics() {
+    }
+
+    public static Vector3 getMouse() {
+        return camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
     }
 
     private static void addSprite(String filename) {

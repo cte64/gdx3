@@ -2,6 +2,7 @@ package gameCode.Infastructure;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import gameCode.Living.HeroInput;
+import gameCode.Living.PlaceTerrain;
 import gameCode.Menus.CreateGameLoadingScreen;
 import gameCode.Menus.MainMenu;
 import gameCode.Menus.NewGame;
@@ -36,6 +37,7 @@ public class MakeEntity {
             ent.entityName = "hero";
             ent.z_pos = 3;
             ent.addComponent(new HeroInput());
+            ent.addComponent(new PlaceTerrain());
             World.setCamera(ent);
             World.addSiftingFrame(ent, 0, 0);
         }

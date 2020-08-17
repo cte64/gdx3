@@ -82,9 +82,7 @@ public class World {
         if(entByName.containsKey(name)) return entByName.get(name);
         else return null;
     }
-
     public static ArrayList<Entity> getEntByZIndex() { return entByZIndex; }
-
     public static HashMap<Vector2, Chunk> getChunkMap() { return chunks; }
 
     //SETTERS ======================================================================================
@@ -102,7 +100,6 @@ public class World {
     public static void setCamera(Entity newCamera) { camera = newCamera; }
     public static void insertChunk(Vector2 key, Chunk newChunk) { chunks.put(key, newChunk); }
     public static void deleteChunk(Vector2 key) { chunks.remove(key); }
-
     private static void positionByZIndex(Entity ent) {
 
         if(entByZIndex.size() == 0) {
@@ -121,7 +118,7 @@ public class World {
 
     //Modify World State ===========================================================================
     public static void init() {
-        currentState = "mainMenu";
+        currentState = "[action: mainMenu]";
     }
     public static void createWorld(int newChunks) {
 
@@ -195,7 +192,7 @@ public class World {
         //delete stuff ============================================================
         for(Entity ent: entitiesToBeDeleted) {
             if(ent == null) continue;
-            if( StringUtils.getField(ent.entityName, "type").equals( "terrain") ) { Graphics.returnCoord(ent.spriteName); }
+            if( StringUtils.getField(ent.entityName, "type").equals( "tile") ) { Graphics.returnCoord(ent.spriteName); }
             ent.markForDeletion = true;
 
             entByName.remove(ent.entityName);
@@ -240,13 +237,7 @@ public class World {
                 boolean mark = false;
 
                 if (ent.deleteRange == -2) continue;
-                if (ent.deleteRange == -1 && (aX < left || aX > right || aY < top || aY > bottom) )  {
-                    mark = true;
-                    //System.out.println("we got here and a 134");
-
-                }
-
-
+                if (ent.deleteRange == -1 && (aX < left || aX > right || aY < top || aY > bottom)) mark = true;
                 if (ent.deleteRange >= 0) {
                     int dist = (int) MathUtils.mag(ent.x_pos + ent.getWidth() / 2,
                             ent.y_pos + ent.getHeight() / 2,
@@ -255,54 +246,22 @@ public class World {
                     if (dist > ent.deleteRange) mark = true;
                 }
 
+                int chunkX = (int) (ent.x_pos / (tileSize * tilesPerChunk));
+                int chunkY = (int) (ent.y_pos / (tileSize * tilesPerChunk));
+                int tileX = (int) (ent.x_pos / tileSize) % tilesPerChunk;
+                int tileY = (int) (ent.y_pos / tileSize) % tilesPerChunk;
 
-                Vector2 key = new Vector2(ent.bitMapX, ent.bitMapY);
+                Vector2 key = new Vector2(chunkX, chunkY);
                 Chunk chunkPtr = getChunk(key);
-                if (chunkPtr == null) continue;
-                /*
 
-                 */
-
-
-
-
-
-
-
-                //if it is a terrain item and it is empty delete it
-                //if (!mark && StringUtils.getField(ent.entityName, "type") == "chunk" && chunkPtr.isImageBlank(ent.bitMapX, ent.bitMapY)) mark = true;
-
-                /*
-
-                 */
-                if (mark) {
-
-
-
-
-
-                    Vector2 key2 = new Vector2( (int)(ent.x_pos / tileSize), (int)(ent.y_pos / tileSize));
-                    Chunk chunkPtr2 = getChunk(key2);
-
-
-
-                    System.out.println("FERRY CORSTEN 222 ");
-                    /*
-
-
-
-                    if(chunkPtr2 == null) continue;
-                    chunkPtr2.setActive((int)key.x, (int)key.y, false);
-                    entitiesToBeDeleted.add(ent);
-
-                     */
-
+                if(chunkPtr != null) {
+                    if(StringUtils.getField(ent.entityName, "type") == "tile" && chunkPtr.isImageBlank(tileX, tileY)) mark = true;
+                    chunkPtr.setActive(tileX, tileY, false);
                 }
 
+                if(mark) entitiesToBeDeleted.add(ent);
             }
         }
-
-
     }
     public static void loadEntities() {
 

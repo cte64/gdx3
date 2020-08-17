@@ -79,9 +79,9 @@ public class State {
 
         String action = StringUtils.getField(World.getCurrentState(), "action");
 
-        if(World.getCurrentState() == "mainMenu") mainMenu();
         if(World.getCurrentState() == "newGame") newGame();
         if(World.getCurrentState() == "loadGame") loadGame();
+        if(action.equals("mainMenu")) mainMenu();
         if(action.equals("play")) play();
         if(action.equals("createNewWorld")) creatingGame();
     }
