@@ -100,7 +100,7 @@ public class Chunk {
         int tileX = (x / World.tileSize) % World.tilesPerChunk;
         int tileY = (y / World.tileSize) % World.tilesPerChunk;
         int pixelX = x % World.tileSize;
-        int pixelY = World.tileSize - 1 - y % World.tileSize;
+        int pixelY = y % World.tileSize;
 
         int index = (tileY * World.tilesPerChunk) + tileX;
         if(index < 0 || index > tiles.size() - 1) return;
@@ -109,11 +109,8 @@ public class Chunk {
         int colorI = Pixel.charToColor(colorC, pixelX, pixelY);
 
         Pixel.insertPixel(tiles.get(index).terrainData, pixelX, pixelY, colorC);
-        tiles.get(index).image.drawPixel(pixelX, pixelY, colorI);
+        tiles.get(index).image.drawPixel(pixelX, 59 - pixelY, colorI);
     }
-
-
-    //this is only sfasnfsdfasdfsadf
 
     /*
 
