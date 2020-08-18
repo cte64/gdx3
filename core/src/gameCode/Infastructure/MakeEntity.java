@@ -3,10 +3,7 @@ package gameCode.Infastructure;
 import com.badlogic.gdx.graphics.Pixmap;
 import gameCode.Living.HeroInput;
 import gameCode.Living.PlaceTerrain;
-import gameCode.Menus.CreateGameLoadingScreen;
-import gameCode.Menus.MainMenu;
-import gameCode.Menus.NewGame;
-import gameCode.Menus.PauseGame;
+import gameCode.Menus.*;
 import gameCode.Utilities.StringUtils;
 
 public class MakeEntity {
@@ -59,7 +56,8 @@ public class MakeEntity {
             ent.deleteRange = -2;
             ent.addComponent(new CreateGameLoadingScreen());
         }
-        
+
+
         if(subType.equals("pause")) {
             ent.drawMode = "hud";
             ent.deleteRange = -2;

@@ -75,7 +75,7 @@ public class NewGame extends Component {
         }
 
         //back ====================================================
-        if(back.isLeftClicked()) World.setCurrentState("mainMenu");
+        if(back.isLeftClicked()) World.setCurrentState("[action: mainMenu]");
 
         //createWorld =============================================
         if(createWorld.isLeftClicked()) {

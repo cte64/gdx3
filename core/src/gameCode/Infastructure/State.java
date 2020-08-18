@@ -64,7 +64,6 @@ public class State {
         World.entitiesToBeAdded.add(ent);
     }
 
-
     //State stuff ==========================================================
     private static String state;
 
@@ -79,8 +78,8 @@ public class State {
 
         String action = StringUtils.getField(World.getCurrentState(), "action");
 
-        if(World.getCurrentState() == "newGame") newGame();
-        if(World.getCurrentState() == "loadGame") loadGame();
+        if(action.equals("newGame")) newGame();
+        if(action.equals("loadGame")) loadGame();
         if(action.equals("mainMenu")) mainMenu();
         if(action.equals("play")) play();
         if(action.equals("createNewWorld")) creatingGame();

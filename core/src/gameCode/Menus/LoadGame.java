@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class LoadGame extends Component {
 
 
-    private MenuItem background;
+    public MenuItem background;
     private MenuItem overlay;
     private MenuItem back;
     private MenuItem scrollBar;
@@ -24,8 +24,10 @@ public class LoadGame extends Component {
     private int menuTop = 105;
     private int menuBottom = 526;
 
+    boolean pause;
 
-    private class listItem {
+
+    public class listItem {
         public MenuItem list;
         public MenuItem play;
         public MenuItem delete;
@@ -38,24 +40,6 @@ public class LoadGame extends Component {
         }
     }
 
-    private class areYouSure {
-        public String name;
-        public MenuItem background;
-        public MenuItem input;
-        public MenuItem yes;
-        public MenuItem no;
-        public TextInput input_text;
-        public areYouSure() {
-            background = null;
-            input = null;
-            yes = null;
-            no = null;
-            input_text = null;
-        }
-    }
-
-
-    areYouSure deleteCheck;
     ArrayList<listItem> listItems = new ArrayList<listItem>();
 
     public LoadGame() {
@@ -65,6 +49,7 @@ public class LoadGame extends Component {
         int padding = 5;
         int yOff = padding + 50;
         scrollIndex = 0.0f;
+        pause = false;
 
         //background
         background = new MenuItem("[type: menu][name: background]", "loadGameBack", null, "[vertical: center][horizontal: center]", 0, 0, 0, 479, 600);
@@ -112,9 +97,6 @@ public class LoadGame extends Component {
             listItems.add(newItem);
         }
 
-
-        //deleteCheck
-        deleteCheck = null;
        positionItems();
     }
 
@@ -150,32 +132,6 @@ public class LoadGame extends Component {
             scrollBar.xOffset = -32;
             scrollBar.yOffset = (int)adjPs;
             scrollBar.positionItem();
-        }
-    }
-
-    private void toggleDeleteCheck(String name, boolean onOff) {
-
-        if(onOff) {
-            deleteCheck = new areYouSure();
-            deleteCheck.background = new MenuItem("[type: menu][subType: areYouSure][id: back]", "createGameBack", background.treeNode, "[vertical: center][horizontal: center]", 0, 0, 5, 360, 140);
-            deleteCheck.background.addText(new TextComponent("Type \"" + name + "\" to delete", 10, "[vertical: top][horizontal: center]", 0, -10));
-
-            deleteCheck.input = new MenuItem("[type: menu][subType: areYouSure][id: input]", "menuItem", deleteCheck.background.treeNode, "[vertical: top][horizontal: center]", 0, 50, 6, 350, 40);
-            TextComponent textDisplay = new TextComponent("", 10, "[vertical: center][horizontal: left]", 60, 0);
-            TextInput textInput = new TextInput(textDisplay, 30);
-            deleteCheck.input.addText(new TextComponent("Name: ", 10, "[vertical: center][horizontal: left]", 10, 0));
-            deleteCheck.input.addText(textDisplay);
-            deleteCheck.input.ent.addComponent(textInput);
-            deleteCheck.input_text = textInput;
-            deleteCheck.name = name;
-
-            deleteCheck.no = new MenuItem("[type: menu][subType: areYouSure][id: no]", "halfMenuItem", deleteCheck.background.treeNode, "[vertical: bottom][horizontal: left]", 5, 10, 6, 173, 40);
-            deleteCheck.no.addText(new TextComponent("Go Back", 10, "[vertical: center][horizontal: center]", 0, 0));
-        }
-
-        else {
-            State.deleteType("subType", "areYouSure");
-            deleteCheck = null;
         }
     }
 
@@ -218,52 +174,34 @@ public class LoadGame extends Component {
                     StringUtils.setField(newState, "directory", item.name);
                     World.setCurrentState(newState.data);
                 }
-                if(item.delete.isLeftClicked()) { toggleDeleteCheck(item.name,true); }
+                if(item.delete.isLeftClicked()) {
+                    toggleDeleteOn(item.name);
+                }
             }
         }
 
 
 
         //back button
-        if(back.isLeftClicked()) World.setCurrentState("mainMenu");
+        if(back.isLeftClicked()) World.setCurrentState("[action: mainMenu]");
     }
 
-    private void updateDeleteMenu() {
+    private void toggleDeleteOn(String directory) {
+        Entity ent = new Entity();
+        ent.entityName = "[type: menu][subType: deleteGame][id: manager]";
+        ent.drawMode = "hud";
+        ent.deleteRange = -2;
+        ent.addComponent(new DeleteGameMenu(directory, this));
+        World.entitiesToBeAdded.add(ent);
+        pause = true;
+    }
 
-        if(deleteCheck == null) return;
-
-        //delete
-        String text = deleteCheck.input_text.getText();
-        if(text.equals(deleteCheck.name) && deleteCheck.yes == null) {
-            deleteCheck.yes = new MenuItem("[type: menu][subType: areYouSure][id: yes]", "halfMenuItem", deleteCheck.background.treeNode, "[vertical: bottom][horizontal: right]", -5, 10, 6, 173, 40);
-            deleteCheck.yes.addText(new TextComponent("Delete", 10, "[vertical: center][horizontal: center]", 0, 0));
-        }
-
-        else if (!text.equals(deleteCheck.name) && deleteCheck.yes != null) {
-            World.entitiesToBeDeleted.add(deleteCheck.yes.ent);
-            deleteCheck.yes = null;
-        }
-
-        //bottom buttons
-        if(deleteCheck.yes != null && deleteCheck.yes.isLeftClicked()) {
-            for(listItem item: listItems) {
-                if(item.name.equals(deleteCheck.name)) {
-                    FileSystem.deleteDirectory(item.name);
-                    item.delete();
-                    listItems.remove(item);
-                    toggleDeleteCheck("", false);
-                    positionItems();
-                    break;
-                }
-            }
-        }
-
-        if(deleteCheck.no.isLeftClicked()) { toggleDeleteCheck("", false); }
+    public void toggleDeleteOff() {
+        State.deleteType("subType", "deleteGame");
+        pause = false;
     }
 
     public void update(Entity entity) {
-        if(deleteCheck == null) updateBackground();
-        else updateDeleteMenu();
+        if(!pause) updateBackground();
     }
-
 }

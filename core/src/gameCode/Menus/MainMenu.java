@@ -43,8 +43,8 @@ public class MainMenu extends Component {
 
     public void update(Entity entity) {
 
-        if(createGame.isLeftClicked()) World.setCurrentState("newGame");
-        if(loadGame.isLeftClicked()) World.setCurrentState("loadGame");
+        if(createGame.isLeftClicked()) World.setCurrentState("[action: newGame]");
+        if(loadGame.isLeftClicked()) World.setCurrentState("[action: loadGame]");
 
 
 
