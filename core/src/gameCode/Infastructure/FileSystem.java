@@ -19,42 +19,13 @@ public class FileSystem {
     private static ArrayList<Boolean> chunkUpdate1 = new ArrayList<Boolean>();
     private static ArrayList<Boolean> chunkUpdate2 = new ArrayList<Boolean>();
 
+    //these are the boundaries for the active chunk regions ==========================================================
     public static int outerLeft, outerRight, outerTop, outerBottom;      //outer ring
     public static int middleLeft, middleRight, middleTop, middleBottom;  //middle ring
     public static int centerLeft, centerRight, centerTop, centerBottom;  //center ring
 
-    private FileSystem() {}
-    public static void init() {
-
-        //outer ring
-        outerLeft = 0;
-        outerRight = 0;
-        outerTop = 0;
-        outerBottom = 0;
-
-        //middle ring
-        middleLeft = 0;
-        middleRight = 0;
-        middleTop = 0;
-        middleBottom = 0;
-
-        //center ring
-        centerLeft = 0;
-        centerRight = 0;
-        centerTop = 0;
-        centerBottom = 0;
-
-        //reinitialize the chunks
-        chunkUpdate1.clear();
-        chunkUpdate2.clear();
-
-        for (int y = 0; y < World.getNumChunks(); y++) {
-        for (int x = 0; x < World.getNumChunks(); x++) {
-            chunkUpdate1.add(false);
-            chunkUpdate2.add(false);
-        }}
-    }
-    public static void center(int xIndex, int yIndex) {
+    //these functions are for changing the chunk regions =============================================================
+    private static void center(int xIndex, int yIndex) {
 
         //center ======================================================================
         centerLeft = xIndex;
@@ -89,7 +60,7 @@ public class FileSystem {
         outerTop = MathUtils.clamp(outerTop, 0, World.getNumCells() - 5);
         outerBottom = MathUtils.clamp(outerBottom, 5, World.getNumCells());
     }
-    public static void setUpdate(int x, int y, int select, boolean newVal) {
+    private static void setUpdate(int x, int y, int select, boolean newVal) {
         if (select == 1) {
             if (chunkUpdate1.size() == 0) return;
             int index = (y * World.getNumChunks()) + x;
@@ -103,7 +74,7 @@ public class FileSystem {
             chunkUpdate2.set(index, newVal);
         }
     }
-    public static boolean getUpdate(int x, int y, int select) {
+    private static boolean getUpdate(int x, int y, int select) {
 
         if (select == 1) {
             if (chunkUpdate1.size() == 0) return false;
@@ -121,7 +92,35 @@ public class FileSystem {
 
         return false;
     }
-    public static void writeChunk(int xIndex, int yIndex, boolean deleteCurrent) {
+    private static void updateChunks() {
+
+        //first set all the first one to false
+        for(int y = 0; y < World.getNumChunks(); y++) {
+            for(int x = 0; x < World.getNumChunks(); x++)
+                setUpdate(x, y, 1, false);
+        }
+
+        for(int y = outerTop; y < outerBottom; y++) {
+            for(int x = outerLeft; x < outerRight; x++) {
+                setUpdate(x, y, 1, true);
+            }
+        }
+
+        for(int y = 0; y < World.getNumChunks(); y++) {
+            for(int x = 0; x < World.getNumChunks(); x++) {
+
+                if(getUpdate(x, y, 1) && !getUpdate(x, y, 2)) {
+                    setUpdate(x, y, 2, true);
+                    readChunk(x, y);
+                }
+
+                else if(!getUpdate(x, y, 1) && getUpdate(x, y, 2)) {
+                    setUpdate(x, y, 2, false);
+                    writeChunk(x, y, true);
+                }
+            }}
+    }
+    private static void writeChunk(int xIndex, int yIndex, boolean deleteCurrent) {
 
         //create a new key from the xIndex and yIndex
         myPair<Integer, Integer> key = new myPair(xIndex, yIndex);
@@ -131,9 +130,38 @@ public class FileSystem {
             return;
         }
 
+        ArrayList<StringUtils> tileData = chunkPtr.getSerializedTerrain();
+
+        StringUtils chunkData = new StringUtils("");
+        for(StringUtils tile: tileData) {
+            chunkData.data += tile.data;
+        }
+
+
+        String chunkFileName = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
+
+
+        FileHandle chunkFile = Gdx.files.local(chunkFileName);
+
+
+        if(!chunkFile.exists()) { System.out.println("File: " + chunkFileName + " does not exist!"); return; }
+
+
+
+        /*
+        chunkFile.write("stuff");
+
+
+        chunkPtr.setTerrain(terrainStr);\
+
+         */
+
+
+
+
         World.deleteChunk(key);
     }
-    public static void readChunk(int xIndex, int yIndex) {
+    private static void readChunk(int xIndex, int yIndex) {
 
         //create a new key from the xIndex and yIndex
         myPair<Integer, Integer> key = new myPair(xIndex, yIndex);
@@ -144,6 +172,7 @@ public class FileSystem {
             chunkPtr = newChunk;
             World.insertChunk(key, newChunk);
         }
+
 
 
         String chunkFileName = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
@@ -157,8 +186,26 @@ public class FileSystem {
 
         StringUtils terrainStr = new StringUtils(chunkFile.readString());
         //StringUtils objectStr = new StringUtils(entFile.readString());
-
         chunkPtr.setTerrain(terrainStr);
+
+
+        /*
+        StringUtils chunkFileName = new StringUtils("[type: chunk][xChunk: ][yChunk: ]");
+        StringUtils.setField(chunkFileName, "xChunk", StringUtils.toString(xIndex));
+        StringUtils.setField(chunkFileName, "yChunk", StringUtils.toString(yIndex));
+
+
+        StringUtils terrainData = new StringUtils("");
+        setFile(chunkFileName, terrainData);
+
+
+
+
+
+
+
+         */
+
         //chunkPtr.setObjects(objectStr);
 
         /*
@@ -208,57 +255,70 @@ public class FileSystem {
 
          */
     }
-    public static void updateChunks() {
 
-        //first set all the first one to false
-        for(int y = 0; y < World.getNumChunks(); y++) {
-            for(int x = 0; x < World.getNumChunks(); x++)
-                setUpdate(x, y, 1, false);
-        }
 
-        for(int y = outerTop; y < outerBottom; y++) {
-            for(int x = outerLeft; x < outerRight; x++) {
-                setUpdate(x, y, 1, true);
-            }
-        }
 
-        for(int y = 0; y < World.getNumChunks(); y++) {
-        for(int x = 0; x < World.getNumChunks(); x++) {
+    //public stuff ===================================================================================================
+    private FileSystem() {}
 
-            if(getUpdate(x, y, 1) && !getUpdate(x, y, 2)) {
-                setUpdate(x, y, 2, true);
-                readChunk(x, y);
-            }
-
-            else if(!getUpdate(x, y, 1) && getUpdate(x, y, 2)) {
-                setUpdate(x, y, 2, false);
-                writeChunk(x, y, true);
-            }
-        }}
-    }
-    public static void update() {
-
-        Entity hero = World.getCamera();
-        if(hero == null) return;
-
-        int xIndex = (int)(hero.x_pos * World.getNumChunks()) / World.getNumPixels();
-        int yIndex = (int)(hero.y_pos * World.getNumChunks()) / World.getNumPixels();
-
-        xIndex = MathUtils.clamp(xIndex, 0, World.getNumChunks() - 1);
-        yIndex = MathUtils.clamp(yIndex, 0, World.getNumChunks() - 1);
-
-        if(xIndex < middleLeft || xIndex >= middleRight || yIndex < middleTop || yIndex >= middleBottom) {
-            center(xIndex, yIndex);
-            updateChunks();
-        }
-    }
     public static String getGameSaveDirectory() { return gameSaveDirectory; }
     public static String getGameSubDirectory() { return gameSubDirectory;  }
     public static void setGameSubDirectory(String newDir) { gameSubDirectory = newDir + "/"; }
+    public static ArrayList<String> getSaveNames() {
+
+        ArrayList<String> retVal = new ArrayList<String>();
+        FileHandle dir = Gdx.files.internal("core/saves/");
+        for(FileHandle file: dir.list()) {
+            String fileName = file.toString() + "/metadata.txt";
+
+            FileHandle gameFile = Gdx.files.local(fileName);
+            if(!gameFile.exists()) {
+                System.out.println("File: " + fileName + " does not exist!");
+                return retVal;
+            }
+            String metaData = gameFile.readString();
+            retVal.add(metaData);
+        }
+
+        return retVal;
+    }
+
     public static void deleteDirectory(String directory) {
         FileHandle file = Gdx.files.local(gameSaveDirectory + directory);
         if(file.exists() && file.isDirectory()) file.deleteDirectory();
     }
+    public static void createGameDirectory(String newDir) {
+
+        gameSubDirectory = newDir + "/";
+
+        //create metadata file
+        StringUtils metaName = new StringUtils("[type: metadata]");
+        setFile(metaName, new StringUtils("finally got it working"));
+
+        //create the main character and put in a separate file
+        StringUtils heroName = new StringUtils("[type: hero]");
+        setFile(heroName, new StringUtils("this is hero"));
+
+        //populate the chunks and entities folder
+        for (int yChunk = 0; yChunk < World.getNumChunks(); yChunk++) {
+            for (int xChunk = 0; xChunk < World.getNumChunks(); xChunk++) {
+
+                StringUtils chunkStr = new StringUtils("");
+                for (int yTile = 0; yTile < World.tilesPerChunk; yTile++) {
+                    for (int xTile = 0; xTile < World.tilesPerChunk; xTile++) {
+                        chunkStr.data += "\n";
+                    }}
+
+                StringUtils entStr = new StringUtils("");
+
+                StringUtils chunkName = new StringUtils("[type: chunk][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
+                setFile(chunkName, chunkStr);
+
+                StringUtils entName = new StringUtils("[type: entity][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
+                setFile(entName, entStr);
+            }}
+    }
+
     public static void setFile(StringUtils filename, StringUtils data) {
 
         String type = StringUtils.getField(filename, "type");
@@ -307,53 +367,51 @@ public class FileSystem {
 
         data.data = file.readString();
     }
-    public static void createGameDirectory(String newDir) {
 
-        gameSubDirectory = newDir + "/";
+    public static void init() {
 
-        //create metadata file
-        StringUtils metaName = new StringUtils("[type: metadata]");
-        setFile(metaName, new StringUtils("finally got it working"));
+        //outer ring
+        outerLeft = 0;
+        outerRight = 0;
+        outerTop = 0;
+        outerBottom = 0;
 
-        //create the main character and put in a separate file
-        StringUtils heroName = new StringUtils("[type: hero]");
-        setFile(heroName, new StringUtils("this is hero"));
+        //middle ring
+        middleLeft = 0;
+        middleRight = 0;
+        middleTop = 0;
+        middleBottom = 0;
 
-        //populate the chunks and entities folder
-        for (int yChunk = 0; yChunk < World.getNumChunks(); yChunk++) {
-        for (int xChunk = 0; xChunk < World.getNumChunks(); xChunk++) {
+        //center ring
+        centerLeft = 0;
+        centerRight = 0;
+        centerTop = 0;
+        centerBottom = 0;
 
-            StringUtils chunkStr = new StringUtils("");
-            for (int yTile = 0; yTile < World.tilesPerChunk; yTile++) {
-            for (int xTile = 0; xTile < World.tilesPerChunk; xTile++) {
-                chunkStr.data += "\n";
+        //reinitialize the chunks
+        chunkUpdate1.clear();
+        chunkUpdate2.clear();
+
+        for (int y = 0; y < World.getNumChunks(); y++) {
+            for (int x = 0; x < World.getNumChunks(); x++) {
+                chunkUpdate1.add(false);
+                chunkUpdate2.add(false);
             }}
-
-            StringUtils entStr = new StringUtils("");
-
-            StringUtils chunkName = new StringUtils("[type: chunk][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
-            setFile(chunkName, chunkStr);
-
-            StringUtils entName = new StringUtils("[type: entity][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
-            setFile(entName, entStr);
-        }}
     }
-    public static ArrayList<String> getSaveNames() {
+    public static void update() {
 
-        ArrayList<String> retVal = new ArrayList<String>();
-        FileHandle dir = Gdx.files.internal("core/saves/");
-        for(FileHandle file: dir.list()) {
-            String fileName = file.toString() + "/metadata.txt";
+        Entity hero = World.getCamera();
+        if(hero == null) return;
 
-            FileHandle gameFile = Gdx.files.local(fileName);
-            if(!gameFile.exists()) {
-                System.out.println("File: " + fileName + " does not exist!");
-                return retVal;
-            }
-            String metaData = gameFile.readString();
-            retVal.add(metaData);
+        int xIndex = (int)(hero.x_pos * World.getNumChunks()) / World.getNumPixels();
+        int yIndex = (int)(hero.y_pos * World.getNumChunks()) / World.getNumPixels();
+
+        xIndex = MathUtils.clamp(xIndex, 0, World.getNumChunks() - 1);
+        yIndex = MathUtils.clamp(yIndex, 0, World.getNumChunks() - 1);
+
+        if(xIndex < middleLeft || xIndex >= middleRight || yIndex < middleTop || yIndex >= middleBottom) {
+            center(xIndex, yIndex);
+            updateChunks();
         }
-
-        return retVal;
     }
 }

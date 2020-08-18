@@ -80,7 +80,13 @@ public class Chunk {
         index = MathUtils.clamp(index, 0, tiles.size() - 1);
         return tiles.get(index).tileName;
     }
-
+    public ArrayList<StringUtils> getSerializedTerrain() {
+        ArrayList<StringUtils> retVal = new ArrayList<StringUtils>();
+        for(Tile tile: tiles) {
+            retVal.add(tile.terrainData);
+        }
+        return retVal;
+    }
 
     //These are utility functions for mapping coordinates =================================================
     public static myPair<Integer, Integer> makeKeyFromPixel(int x, int y) {
