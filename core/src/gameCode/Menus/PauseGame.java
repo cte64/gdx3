@@ -1,9 +1,6 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.Component;
-import gameCode.Infastructure.Entity;
-import gameCode.Infastructure.InputAL;
-import gameCode.Infastructure.TextComponent;
+import gameCode.Infastructure.*;
 
 public class PauseGame extends Component {
 
@@ -70,6 +67,12 @@ public class PauseGame extends Component {
             else togglePause(false);
         }
 
+
+        //Save and Quit ===========================================================================
+        if(pausemenu != null && pausemenu.saveAndQuit.isLeftClicked()) {
+            FileSystem.saveCurrentChunks();
+            World.setCurrentState("[action: mainMenu]");
+        }
 
     }
 

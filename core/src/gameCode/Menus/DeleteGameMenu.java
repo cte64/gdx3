@@ -52,7 +52,7 @@ public class DeleteGameMenu extends Component {
         //delete
         String text = input_text.getText();
         if(text.equals(directory) && yes == null) {
-            yes = new MenuItem("[type: menu][subType: areYouSure][id: yes]", "halfMenuItem", background.treeNode, "[vertical: bottom][horizontal: right]", -5, 10, 6, 173, 40);
+            yes = new MenuItem("[type: menu][subType: deleteGame][id: yes]", "halfMenuItem", background.treeNode, "[vertical: bottom][horizontal: right]", -5, 10, 6, 173, 40);
             yes.addText(new TextComponent("Delete", 10, "[vertical: center][horizontal: center]", 0, 0));
         }
 
@@ -62,27 +62,7 @@ public class DeleteGameMenu extends Component {
         }
 
         if(back.isLeftClicked()) { loadGame.toggleDeleteOff(); }
-
-
-        
-        //bottom buttons
-        if(yes != null && yes.isLeftClicked()) {
-            for(LoadGame.listItem item: loadGame.listItems) {
-                if(item.name.equals(directory)) {
-                    //FileSystem.deleteDirectory(item.directory);
-                    item.delete();
-                    loadGame.listItems.remove(item);
-                    toggleDeleteCheck("", false);
-                    positionItems();
-                    break;
-                }
-            }
-        }
-
-        /*
-         */
-
-
+        if(yes != null && yes.isLeftClicked()) loadGame.deleteWorld(directory);
     }
 
 

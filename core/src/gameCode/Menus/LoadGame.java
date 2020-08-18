@@ -23,8 +23,8 @@ public class LoadGame extends Component {
     private int itemHeight = 70;
     private int menuTop = 105;
     private int menuBottom = 526;
-
     boolean pause;
+
 
 
     public class listItem {
@@ -195,6 +195,29 @@ public class LoadGame extends Component {
         World.entitiesToBeAdded.add(ent);
         pause = true;
     }
+
+    public void deleteWorld(String directory) {
+
+
+        //bottom buttons
+
+
+        for(listItem item: listItems) {
+            if(item.name.equals(directory)) {
+                //FileSystem.deleteDirectory(item.directory);
+                item.delete();
+                listItems.remove(item);
+                positionItems();
+                break;
+            }
+        }
+
+
+
+        State.deleteType("subType", "deleteGame");
+        pause = false;
+    }
+
 
     public void toggleDeleteOff() {
         State.deleteType("subType", "deleteGame");

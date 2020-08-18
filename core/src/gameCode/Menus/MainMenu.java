@@ -46,7 +46,5 @@ public class MainMenu extends Component {
         if(createGame.isLeftClicked()) World.setCurrentState("[action: newGame]");
         if(loadGame.isLeftClicked()) World.setCurrentState("[action: loadGame]");
 
-
-
     }
 }

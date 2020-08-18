@@ -47,7 +47,7 @@ public class State {
     }
 
     private static void mainMenu() {
-        deleteType("type", "menu");
+        World.deleteWorld();
         Entity ent = MakeEntity.getEntity("[type: menu][subType: mainMenu]");
         World.entitiesToBeAdded.add(ent);
     }

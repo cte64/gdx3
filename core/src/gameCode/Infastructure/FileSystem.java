@@ -136,11 +136,7 @@ public class FileSystem {
         StringUtils.setField(chunkFileName, "xChunk", StringUtils.toString(xIndex));
         StringUtils.setField(chunkFileName, "yChunk", StringUtils.toString(yIndex));
 
-
         StringUtils terrainData = chunkPtr.getSerializedTerrain();
-
-
-
         setFile(chunkFileName, terrainData);
 
         /*
@@ -305,6 +301,12 @@ public class FileSystem {
                 StringUtils entName = new StringUtils("[type: entity][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
                 setFile(entName, entStr);
             }}
+    }
+    public static void saveCurrentChunks() {
+        for(int yIndex = outerTop; yIndex < outerBottom; yIndex++) {
+        for(int xIndex = outerLeft; xIndex < outerRight; xIndex++) {
+            writeChunk(xIndex, yIndex, false);
+        }}
     }
 
     public static void setFile(StringUtils filename, StringUtils data) {
