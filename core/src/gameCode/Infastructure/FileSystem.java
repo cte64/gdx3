@@ -130,12 +130,20 @@ public class FileSystem {
             return;
         }
 
-        ArrayList<StringUtils> tileData = chunkPtr.getSerializedTerrain();
 
-        StringUtils chunkData = new StringUtils("");
-        for(StringUtils tile: tileData) {
-            chunkData.data += tile.data;
-        }
+
+        StringUtils chunkFileName = new StringUtils("[type: chunk][xChunk: ][yChunk: ]");
+        StringUtils.setField(chunkFileName, "xChunk", StringUtils.toString(xIndex));
+        StringUtils.setField(chunkFileName, "yChunk", StringUtils.toString(yIndex));
+
+
+        StringUtils terrainData = chunkPtr.getSerializedTerrain();
+
+
+
+        setFile(chunkFileName, terrainData);
+
+        /*
 
 
         String chunkFileName = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
@@ -145,14 +153,6 @@ public class FileSystem {
 
 
         if(!chunkFile.exists()) { System.out.println("File: " + chunkFileName + " does not exist!"); return; }
-
-
-
-        /*
-        chunkFile.write("stuff");
-
-
-        chunkPtr.setTerrain(terrainStr);\
 
          */
 
@@ -175,36 +175,24 @@ public class FileSystem {
 
 
 
-        String chunkFileName = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
-        //String entFileName = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
-
-        FileHandle chunkFile = Gdx.files.local(chunkFileName);
-        //FileHandle entFile = Gdx.files.local(entFileName);
-
-        if(!chunkFile.exists()) { System.out.println("File: " + chunkFileName + " does not exist!"); return; }
-        //if(!entFile.exists()) { System.out.println("File: " + entFileName + " does not exist!"); return; }
-
-        StringUtils terrainStr = new StringUtils(chunkFile.readString());
-        //StringUtils objectStr = new StringUtils(entFile.readString());
-        chunkPtr.setTerrain(terrainStr);
-
-
         /*
+        //String entFileName = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
+        //FileHandle entFile = Gdx.files.local(entFileName);
+        //if(!entFile.exists()) { System.out.println("File: " + entFileName + " does not exist!"); return; }
+        //StringUtils objectStr = new StringUtils(entFile.readString());
+         */
+
         StringUtils chunkFileName = new StringUtils("[type: chunk][xChunk: ][yChunk: ]");
         StringUtils.setField(chunkFileName, "xChunk", StringUtils.toString(xIndex));
         StringUtils.setField(chunkFileName, "yChunk", StringUtils.toString(yIndex));
 
-
         StringUtils terrainData = new StringUtils("");
-        setFile(chunkFileName, terrainData);
+        getFile(chunkFileName, terrainData);
+
+        chunkPtr.setTerrain(terrainData);
 
 
 
-
-
-
-
-         */
 
         //chunkPtr.setObjects(objectStr);
 

@@ -80,10 +80,10 @@ public class Chunk {
         index = MathUtils.clamp(index, 0, tiles.size() - 1);
         return tiles.get(index).tileName;
     }
-    public ArrayList<StringUtils> getSerializedTerrain() {
-        ArrayList<StringUtils> retVal = new ArrayList<StringUtils>();
+    public StringUtils getSerializedTerrain() {
+        StringUtils retVal = new StringUtils("");
         for(Tile tile: tiles) {
-            retVal.add(tile.terrainData);
+            retVal.data += tile.terrainData.data + "\n";
         }
         return retVal;
     }
@@ -94,7 +94,6 @@ public class Chunk {
         int chunkY = y / (World.tileSize * World.tilesPerChunk);
         return new myPair(chunkX, chunkY);
     }
-
 
     public void setPixel(int x, int y, String color) {
 
