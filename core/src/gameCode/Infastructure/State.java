@@ -83,6 +83,7 @@ public class State {
         if(action.equals("mainMenu")) mainMenu();
         if(action.equals("play")) play();
         if(action.equals("createNewWorld")) creatingGame();
+
     }
 
     public static void deleteType(String field, String type) {

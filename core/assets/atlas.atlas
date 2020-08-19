@@ -21,8 +21,8 @@ halfMenuItem
 inventoryTray
   rotate: false
   xy: 2, 2
-  size: 51, 52
-  orig: 51, 52
+  size: 52, 52
+  orig: 52, 52
   offset: 0, 0
   index: -1
 listItem
@@ -97,7 +97,7 @@ minus
   index: -1
 play
   rotate: false
-  xy: 108, 14
+  xy: 109, 14
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
@@ -118,7 +118,7 @@ plus
   index: -1
 scrollBar
   rotate: false
-  xy: 55, 2
+  xy: 56, 2
   size: 51, 52
   orig: 51, 52
   offset: 0, 0
