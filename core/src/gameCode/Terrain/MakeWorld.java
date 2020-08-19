@@ -281,8 +281,8 @@ public class MakeWorld {
         messages.add( new StringUtils("Created Hero"));
 
         //MAKE THE SOLID LAYERS =====================================
-        makeLayer((int)(worldRadius * 1.00), 400, 10, "dirt", true, "[name: outer]");
-        messages.add( new StringUtils("Dirt Created"));
+        //makeLayer((int)(worldRadius * 1.00), 400, 10, "dirt", true, "[name: outer]");
+        //messages.add( new StringUtils("Dirt Created"));
 
 
         /*

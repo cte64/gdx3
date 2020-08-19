@@ -68,6 +68,7 @@ public class Graphics implements Disposable {
         addSprite("menuItem");
         addSprite("listItem");
         addSprite("scrollBar");
+        addSprite("inventoryTray");
 
         /*
         addSprite("tile");
