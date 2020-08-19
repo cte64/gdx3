@@ -258,43 +258,10 @@ public class MakeWorld {
 
     public void start() {
 
-        /*
-        boolean state = false;
-        String[] temp = {
-                "one",
-                "two",
-                "three",
-                "four",
-                "five",
-                "six",
-                "seven",
-                "eight",
-                "nine"
-        };
-
-        int index = 0;
-
-        while(true) {
-
-            if(InputAL.isKeyPressed("w") && !state) {
-                messages.add(new StringUtils(temp[index]));
-                index++;
-                if(index > 8) index = 0;
-                state = true;
-            }
-
-            if(!InputAL.isKeyPressed("w")) {
-                state = false;
-            }
-        }
-         */
-
-
         //INITIALIZE WORLD ==========================================
         World.createWorld(numChunks);
         FileSystem.createGameDirectory(directory);
         messages.add( new StringUtils("World Initialized"));
-
 
         //INITIALIZE RIMS ============================================
         rims = new HashMap< String, ArrayList<Vector2> >();
