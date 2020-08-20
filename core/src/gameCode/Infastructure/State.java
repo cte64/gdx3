@@ -24,7 +24,7 @@ public class State {
 
         //set the state =====================================================================
         String directory = StringUtils.getField(newState, "directory");
-        state = newState;
+        state = "[action: play]";
 
         //delete menu stuff =================================================================
         deleteType("type", "menu");
@@ -74,25 +74,10 @@ public class State {
     //State stuff ==========================================================
     private static String state;
     public static String getState() { return state; }
+    public static void setState(String newState) { state = newState; }
 
     //Modifiers ==================================================================
     private State() {}
-
-    public static void loadState() {
-
-
-        /*
-        String action = StringUtils.getField(World.getCurrentState(), "action");
-
-        if(action.equals("newGame")) newGame();
-        if(action.equals("loadGame")) loadGame();
-        if(action.equals("mainMenu")) mainMenu();
-        if(action.equals("play")) play();
-        if(action.equals("createNewWorld")) creatingGame();
-
-         */
-
-    }
 
     public static void deleteType(String field, String type) {
         for(Entity ent: World.getEntList()) {

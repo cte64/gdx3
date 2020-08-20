@@ -101,6 +101,16 @@ public class MenuItem {
         return false;
     }
 
+    public void setParent(Tree<MenuItem> newParent) {
+
+        //first delete this from the children of parent
+        Tree<MenuItem> parent = treeNode.parent;
+        if(parent != null) parent.children.remove(treeNode);
+
+        //set the new parent
+        treeNode.parent = newParent;
+    }
+
     public void update() {
         for(Tree<MenuItem> tree: treeNode.getTraverseArr()) {
             tree.value.positionItem();

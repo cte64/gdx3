@@ -47,11 +47,13 @@ public class PauseGame extends Component {
 
         if(state) {
             pausemenu = new PauseMenu();
+            State.setState("[action: paused]");
         }
 
         else {
             pausemenu.delete();
             pausemenu = null;
+            State.setState("[action: play]");
         }
         
     }

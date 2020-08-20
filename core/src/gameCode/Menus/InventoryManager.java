@@ -2,6 +2,7 @@ package gameCode.Menus;
 
 import gameCode.Infastructure.Component;
 import gameCode.Infastructure.Entity;
+import gameCode.Infastructure.State;
 import gameCode.Infastructure.World;
 import gameCode.Utilities.StringUtils;
 import java.util.ArrayList;
@@ -18,11 +19,13 @@ public class InventoryManager extends Component {
     String pauseState;
 
     private class itemNode {
-        public MenuItem menuItem;
+        public MenuItem tile;
+        public MenuItem item;
         int itemCount;
         public itemNode() {
             itemCount = 0;
-            menuItem = null;
+            tile = null;
+            item = null;
         }
     }
 
@@ -36,12 +39,9 @@ public class InventoryManager extends Component {
     public InventoryManager() {
         type = "logic";
 
-
-
-        /*
         //background that anchors all the items
         background = new MenuItem("[type: inventory][subType: background]", null, null, "[vertical: bottom][horizontal: left]", 0, 0, 4, 500, 100);
-        pauseState = StringUtils.getField(World.getCurrentState(), "action");
+        pauseState = StringUtils.getField(State.getState(), "action");
 
         int width = 52;
 
@@ -57,9 +57,12 @@ public class InventoryManager extends Component {
             int xPos = padding + x*(padding + width);
             int yPos = padding + y*(padding + width);
 
-            node.menuItem = new MenuItem(nodeName.data, "inventoryTray", background.treeNode, "[vertical: bottom][horizontal: left]", xPos, yPos, 5, 52, 52);
+            node.tile = new MenuItem(nodeName.data, "inventoryTray", background.treeNode, "[vertical: bottom][horizontal: left]", xPos, yPos, 5, 52, 52);
             nodes.add(node);
         }}
+
+
+        /*
 
         //Crafting slots =============================================================================
         for(int y = 0; y<3; y++) {
@@ -93,16 +96,57 @@ public class InventoryManager extends Component {
     public void pauseAction() {
 
 
-       // String newAction = StringUtils.getField(World.getCurrentState(), "action");
-        /*
+        String newAction = StringUtils.getField(State.getState(), "action");
         if(!pauseState.equals(newAction)) {
-            System.out.println(newAction + " : " + pauseState);
             pauseState = newAction;
+
+            //Hide Inventory Items ===================================================
+            for(int y = 1; y<invenY; y++) {
+            for(int x = 0; x<invenX; x++) {
+                MenuItem nodePtr = nodes.get((y * invenX) + x).tile;
+                if(pauseState.equals("play")) nodePtr.updateDrawMode("hidden");
+                if(pauseState.equals("paused")) nodePtr.updateDrawMode("hud");
+            }}
+
+            /*
+            //Inventory Items ========================================================
+            for(int y = 1; y<invenY; y++) {
+                for(int x = 0; x<invenX; x++) {
+
+                    Entity *tray = world.getEntByName(nodes[y][x].tray);
+                    if(tray != nullptr) {
+                        if(world.currentState == "play") tray->drawable = false;
+                        if(world.currentState == "paused") tray->drawable = true;
+                    }
+
+                    Entity *item = world.getEntByName(nodes[y][x].itemType);
+                    if(item != nullptr) {
+                        if(world.currentState == "play") item->drawable = false;
+                        if(world.currentState == "paused") item->drawable = true;
+                    }
+                }
+            }
+
+             */
+
+
+
+
         }
 
+    }
 
-         */
+    private void switchWithClipboard() {
 
+    }
+
+    private void leftClick() {
+
+        for(itemNode node: nodes) {
+            if(node.tile.isLeftClicked()) {
+
+            }
+        }
 
     }
 
@@ -110,6 +154,7 @@ public class InventoryManager extends Component {
 
 
         pauseAction();
+        leftClick();
 
 
 
