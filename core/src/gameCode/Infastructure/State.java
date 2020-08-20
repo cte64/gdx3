@@ -57,6 +57,13 @@ public class State {
         state = "mainMenu";
     }
 
+    public static void newMenuTest() {
+        World.deleteWorld();
+        Entity ent = MakeEntity.getEntity("[type: menu][subType: newMenuTest]");
+        World.entitiesToBeAdded.add(ent);
+        state = "newMenuTest";
+    }
+
     public static void newGame() {
         deleteType("type", "menu");
         Entity ent = MakeEntity.getEntity("[type: menu][subType: newGame]");

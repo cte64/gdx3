@@ -16,6 +16,11 @@ public class Tree<Type> {
         if(parent != null) parent.addChild(this);
     }
 
+    public Type getValue() {
+        Type retVal = (Type)value;
+        return retVal;
+    }
+
     public void addChild(Tree newChild) { children.add(newChild); }
 
     public ArrayList<Tree> getTraverseArr() {
@@ -56,7 +61,6 @@ public class Tree<Type> {
         Collections.reverse(retVal);
         return retVal;
     }
-
 
     public ArrayList<Tree> getChildren() {
 
