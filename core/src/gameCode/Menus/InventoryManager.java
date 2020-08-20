@@ -36,6 +36,9 @@ public class InventoryManager extends Component {
     public InventoryManager() {
         type = "logic";
 
+
+
+        /*
         //background that anchors all the items
         background = new MenuItem("[type: inventory][subType: background]", null, null, "[vertical: bottom][horizontal: left]", 0, 0, 4, 500, 100);
         pauseState = StringUtils.getField(World.getCurrentState(), "action");
@@ -83,12 +86,14 @@ public class InventoryManager extends Component {
 
         //Clipboard ===================================================================================
         clipboard = new itemNode();
+
+         */
     }
 
     public void pauseAction() {
 
 
-        String newAction = StringUtils.getField(World.getCurrentState(), "action");
+       // String newAction = StringUtils.getField(World.getCurrentState(), "action");
         /*
         if(!pauseState.equals(newAction)) {
             System.out.println(newAction + " : " + pauseState);

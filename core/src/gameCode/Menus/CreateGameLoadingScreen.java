@@ -40,8 +40,8 @@ public class CreateGameLoadingScreen extends Component {
         background = new MenuItem("[type: menu][name: background]", "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 0, 360, 180);
         background.addText(new TextComponent("Creating New World", 10, "[vertical: top][horizontal: center]", 0, 0));
 
-        String name = StringUtils.getField(World.getCurrentState(), "name");
-        String numChunks = StringUtils.getField(World.getCurrentState(), "numChunks");
+        String name = StringUtils.getField(State.getState(), "name");
+        String numChunks = StringUtils.getField(State.getState(), "numChunks");
         int numChunksInt = StringUtils.stringToInt(numChunks);
 
         directory = name;
@@ -81,7 +81,7 @@ public class CreateGameLoadingScreen extends Component {
         if(!t.isAlive()) {
             StringUtils newState = new StringUtils("[action: play][directory: ]");
             StringUtils.setField(newState, "directory", directory);
-            World.setCurrentState(newState.data);
+            State.play(newState.data);
         }
     }
 }

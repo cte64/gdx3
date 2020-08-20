@@ -42,7 +42,7 @@ public class myGame extends ApplicationAdapter {
 	public void create () {
 
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
-		World.setCurrentState("play");
+		//World.setCurrentState("play");
 
 		//Initialize Game Objects
 		Graphics.init();

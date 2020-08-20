@@ -10,22 +10,26 @@ import java.io.File;
 
 public class State {
 
-    private static void loadGame() {
+    public static void loadGame() {
         deleteType("type", "menu");
         Entity hud = new Entity();
         hud.entityName = "[type: menu][name: loadGame]";
         hud.drawMode = "hud";
         hud.addComponent(new LoadGame());
         World.entitiesToBeAdded.add(hud);
+        state = "loadGame";
     }
 
-    private static void play() {
+    public static void play(String newState) {
+
+        //set the state =====================================================================
+        String directory = StringUtils.getField(newState, "directory");
+        state = newState;
 
         //delete menu stuff =================================================================
         deleteType("type", "menu");
 
         //set Directory =====================================================================
-        String directory = StringUtils.getField(World.getCurrentState(), "directory");
         FileSystem.setGameSubDirectory(directory);
 
         //MetaData and Create World =========================================================
@@ -46,19 +50,22 @@ public class State {
         World.entitiesToBeAdded.add(pause);
     }
 
-    private static void mainMenu() {
+    public static void mainMenu() {
         World.deleteWorld();
         Entity ent = MakeEntity.getEntity("[type: menu][subType: mainMenu]");
         World.entitiesToBeAdded.add(ent);
+        state = "mainMenu";
     }
 
-    private static void newGame() {
+    public static void newGame() {
         deleteType("type", "menu");
         Entity ent = MakeEntity.getEntity("[type: menu][subType: newGame]");
         World.entitiesToBeAdded.add(ent);
+        state = "newGame";
     }
 
-    private static void creatingGame() {
+    public static void creatingGame(String newData) {
+        state = newData;
         deleteType("type", "menu");
         Entity ent = MakeEntity.getEntity("[type: menu][subType: createGameLoadingScreen]");
         World.entitiesToBeAdded.add(ent);
@@ -66,16 +73,15 @@ public class State {
 
     //State stuff ==========================================================
     private static String state;
-
     public static String getState() { return state; }
-
-    public static void setState(String newState) { state = newState; }
 
     //Modifiers ==================================================================
     private State() {}
 
     public static void loadState() {
 
+
+        /*
         String action = StringUtils.getField(World.getCurrentState(), "action");
 
         if(action.equals("newGame")) newGame();
@@ -83,6 +89,8 @@ public class State {
         if(action.equals("mainMenu")) mainMenu();
         if(action.equals("play")) play();
         if(action.equals("createNewWorld")) creatingGame();
+
+         */
 
     }
 

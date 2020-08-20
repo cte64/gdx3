@@ -75,14 +75,14 @@ public class NewGame extends Component {
         }
 
         //back ====================================================
-        if(back.isLeftClicked()) World.setCurrentState("[action: mainMenu]");
+        if(back.isLeftClicked()) State.mainMenu();
 
         //createWorld =============================================
         if(createWorld.isLeftClicked()) {
             StringUtils newState = new StringUtils("[action: createNewWorld][name: ][numChunks: ]");
             StringUtils.setField(newState, "name", textInput.getText());
             StringUtils.setField(newState, "numChunks", StringUtils.toString(numChunks));
-            World.setCurrentState(newState.data);
+            State.creatingGame(newState.data);
         }
     }
 

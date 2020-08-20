@@ -172,7 +172,7 @@ public class LoadGame extends Component {
                 if(item.play.isLeftClicked()) {
                     StringUtils newState = new StringUtils("[action: play][directory: ]");
                     StringUtils.setField(newState, "directory", item.name);
-                    World.setCurrentState(newState.data);
+                    State.play(newState.data);
                 }
                 if(item.delete.isLeftClicked()) {
                     toggleDeleteOn(item.name);
@@ -183,7 +183,7 @@ public class LoadGame extends Component {
 
 
         //back button
-        if(back.isLeftClicked()) World.setCurrentState("[action: mainMenu]");
+        if(back.isLeftClicked()) State.mainMenu();
     }
 
     private void toggleDeleteOn(String directory) {

@@ -67,14 +67,10 @@ public class PauseGame extends Component {
             else togglePause(false);
         }
 
-
         //Save and Quit ===========================================================================
         if(pausemenu != null && pausemenu.saveAndQuit.isLeftClicked()) {
             FileSystem.saveCurrentChunks();
-            World.setCurrentState("[action: mainMenu]");
+            State.mainMenu();
         }
-
     }
-
-
 }

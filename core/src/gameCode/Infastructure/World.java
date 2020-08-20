@@ -28,9 +28,6 @@ public class World {
     //Make Sure that this cant be instantiated
     private World() {}
 
-    //Stores the gameState ==========================================================================
-    private static String currentState = "init";
-
     //Declare constants =============================================================================
     public static final int xCell = 10;
     public static final int tileSize = 60;
@@ -78,7 +75,6 @@ public class World {
         if(chunks.containsKey(key)) return chunks.get(key);
         else return null;
     }
-    public static String getCurrentState() { return currentState; }
     public static Entity getEntByName(String name) {
         if(entByName.containsKey(name)) return entByName.get(name);
         else return null;
@@ -100,7 +96,6 @@ public class World {
     }
 
     //SETTERS ======================================================================================
-    public static void setCurrentState(String newState) { currentState = newState; }
     public static void setDeltaTime(float newDelta) { deltaTime = newDelta; }
     public static void setViewPortWidth(int newWidth) { viewPortWidth = newWidth; }
     public static void setViewPortHeight(int newHeight) { viewPortHeight = newHeight; }
@@ -134,7 +129,7 @@ public class World {
 
     //Modify World State ===========================================================================
     public static void init() {
-        currentState = "[action: mainMenu]";
+        State.mainMenu();
     }
     public static void createWorld(int newChunks) {
 
@@ -195,11 +190,6 @@ public class World {
     }
     public static void update() {
 
-        //update the state ========================================================
-        if(currentState != State.getState()) {
-            State.loadState();
-            State.setState( currentState);
-        }
 
         //print stuff =============================================================
         //for(Entity ent: entitiesToBeAdded) { System.out.println("Added: " + ent.entityName); }
