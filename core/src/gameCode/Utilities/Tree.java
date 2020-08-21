@@ -21,6 +21,13 @@ public class Tree<Type> {
         return retVal;
     }
 
+    public void setParent(Tree newParent) {
+        if(parent != null) parent.children.remove(this);
+        parent = newParent;
+        if(parent != null) parent.addChild(this);
+
+    }
+
     public void addChild(Tree newChild) { children.add(newChild); }
 
     public ArrayList<Tree> getTraverseArr() {

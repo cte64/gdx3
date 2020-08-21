@@ -1,10 +1,10 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.Component;
-import gameCode.Infastructure.Entity;
-import gameCode.Infastructure.State;
-import gameCode.Infastructure.World;
+import gameCode.Infastructure.*;
+import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myPair;
+
 import java.util.ArrayList;
 
 
@@ -18,37 +18,51 @@ public class InventoryManager extends Component {
     int fontSize;
     String pauseState;
 
+    MenuManager menu;
+
     private class itemNode {
-        public MenuItem tile;
-        public MenuItem item;
+        public String tile;
+        public String item;
         int itemCount;
         public itemNode() {
             itemCount = 0;
-            tile = null;
-            item = null;
+            tile = "";
+            item = "";
         }
     }
 
     ArrayList<itemNode> nodes = new ArrayList<itemNode>();
     ArrayList<itemNode> crafting = new ArrayList<itemNode>();
+    ArrayList<String> uniqueNames = new ArrayList<String>;
     itemNode craftedItem;
     itemNode clipboard;
 
-    private MenuItem background;
+    private String background;
 
     public InventoryManager() {
         type = "logic";
 
-        //background that anchors all the items
-        background = new MenuItem("[type: inventory][subType: background]", null, null, "[vertical: bottom][horizontal: left]", 0, 0, 4, 500, 100);
+        int width = 52;
+        menu = new MenuManager();
         pauseState = StringUtils.getField(State.getState(), "action");
 
-        int width = 52;
+
+        //unique names =====================================================================================
+        int numNames = (invenX * invenY);
+        for(int x = 0; x < numNames; x++) {
+            String name = StringUtils.toString(x);
+            uniqueNames.add(name);
+        }
+
+        //background that anchors all the items
+        background = "[type: inventory][subType: background]";
+        menu.registerItem(background, null, null, "[vertical: bottom][horizontal: left]", 0, 0, 4, 500, 100);
 
         //Inventory items ============================================================================
         for(int y = 0; y<invenY; y++) {
         for(int x = 0; x<invenX; x++) {
             itemNode node = new itemNode();
+
 
             StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryTray][xPos: ][yPos: ]");
             StringUtils.setField(nodeName, "xPos", StringUtils.toString(x));
@@ -57,9 +71,16 @@ public class InventoryManager extends Component {
             int xPos = padding + x*(padding + width);
             int yPos = padding + y*(padding + width);
 
-            node.tile = new MenuItem(nodeName.data, "inventoryTray", background.treeNode, "[vertical: bottom][horizontal: left]", xPos, yPos, 5, 52, 52);
+
+            menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: bottom][horizontal: left]", xPos, yPos, 5, 52, 52);
+            node.tile = nodeName.data;
             nodes.add(node);
+
         }}
+
+
+        addItem("[type: item][subType: banana]", 1, new myPair(0, 0));
+
 
 
         /*
@@ -93,9 +114,76 @@ public class InventoryManager extends Component {
          */
     }
 
+    public String createItem(String name) {
+
+        StringUtils newName = new StringUtils("[type: inventoryItem][subType: ][id: ]");
+        StringUtils.setField(newName, "subType", name);
+        StringUtils.setField(newName, "id", uniqueNames.get(0));
+        uniqueNames.remove(0);
+
+        Entity ent = MakeEntity.getEntity(newName.data);
+        ent.deleteComponents();
+        ent.entityName = newName.data;
+        ent.deleteRange = -2;
+        ent.drawMode = "hud";
+        ent.z_pos = 6;
+        World.entitiesToBeAdded.add(ent);
+
+        return newName.data;
+    }
+
+    public void addItem(String name, int amount, myPair<Integer, Integer> slot) {
+
+
+        String nameType = StringUtils.getField(name, "subType");
+        amount = MathUtils.clamp(amount, 1, 1000);
+
+        int slotX = slot.first;
+        int slotY = slot.second;
+
+        if (slotX < 0 || slotY < 0) {
+            for (int y = 0; y < invenY; y++) {
+            for (int x = 0; x < invenX; x++) {
+                String itemSubType = StringUtils.getField(nodes.get(y * invenX + x).item, "subType");
+                if (nameType.equals(itemSubType)) {
+                    nodes.get(y * invenX + x).itemCount += amount;
+                    return;
+                }
+            }}
+
+            outer:
+            for (int y = 0; y < invenY; y++) {
+            for (int x = 0; x < invenX; x++) {
+                if (nodes.get(y * invenX + x).item == null) {
+                    slotX = x;
+                    slotY = y;
+                    break outer;
+                }
+            }}
+
+            return;
+        }
+
+
+        if (nodes.get(slotY * invenX + slotX).item == null && nodes.get(slotY * invenX + slotX).itemCount == 0) {
+            //nodes.get(slotY * invenX + slotX).itemType = createItem(typedName);
+            //nodes.get(slotY * invenX + slotX).itemCount = amount;
+            System.out.println("made it: " + name);
+
+        }
+        /*
+
+         */
+
+
+
+
+    }
+
     public void pauseAction() {
 
 
+            /*
         String newAction = StringUtils.getField(State.getState(), "action");
         if(!pauseState.equals(newAction)) {
             pauseState = newAction;
@@ -108,7 +196,6 @@ public class InventoryManager extends Component {
                 if(pauseState.equals("paused")) nodePtr.updateDrawMode("hud");
             }}
 
-            /*
             //Inventory Items ========================================================
             for(int y = 1; y<invenY; y++) {
                 for(int x = 0; x<invenX; x++) {
@@ -127,26 +214,39 @@ public class InventoryManager extends Component {
                 }
             }
 
-             */
 
 
 
 
         }
+             */
 
     }
 
-    private void switchWithClipboard() {
+    private void switchWithClipboard(itemNode node) {
+
+
+
+        //itemNode temp = node;
+
+
+
+
+
 
     }
 
     private void leftClick() {
 
+
+        /*
         for(itemNode node: nodes) {
             if(node.tile.isLeftClicked()) {
-
+                switchWithClipboard(node);
             }
         }
+
+         */
 
     }
 
