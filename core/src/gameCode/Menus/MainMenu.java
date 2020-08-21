@@ -56,10 +56,7 @@ public class MainMenu extends Component {
     }
 
     public void update(Entity entity) {
-
-
         if(menu.isLeftClicked(createGame)) State.newGame();
         if(menu.isLeftClicked(loadGame)) State.loadGame();
-
     }
 }

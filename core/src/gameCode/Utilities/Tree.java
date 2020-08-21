@@ -25,7 +25,6 @@ public class Tree<Type> {
         if(parent != null) parent.children.remove(this);
         parent = newParent;
         if(parent != null) parent.addChild(this);
-
     }
 
     public void addChild(Tree newChild) { children.add(newChild); }

@@ -33,7 +33,7 @@ public class InventoryManager extends Component {
 
     ArrayList<itemNode> nodes = new ArrayList<itemNode>();
     ArrayList<itemNode> crafting = new ArrayList<itemNode>();
-    ArrayList<String> uniqueNames = new ArrayList<String>;
+    ArrayList<String> uniqueNames = new ArrayList<String>();
     itemNode craftedItem;
     itemNode clipboard;
 
@@ -121,19 +121,11 @@ public class InventoryManager extends Component {
         StringUtils.setField(newName, "id", uniqueNames.get(0));
         uniqueNames.remove(0);
 
-        Entity ent = MakeEntity.getEntity(newName.data);
-        ent.deleteComponents();
-        ent.entityName = newName.data;
-        ent.deleteRange = -2;
-        ent.drawMode = "hud";
-        ent.z_pos = 6;
-        World.entitiesToBeAdded.add(ent);
-
+        menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: left]", 0, 0, 8, 22, 34);
         return newName.data;
     }
 
     public void addItem(String name, int amount, myPair<Integer, Integer> slot) {
-
 
         String nameType = StringUtils.getField(name, "subType");
         amount = MathUtils.clamp(amount, 1, 1000);
@@ -165,19 +157,11 @@ public class InventoryManager extends Component {
         }
 
 
-        if (nodes.get(slotY * invenX + slotX).item == null && nodes.get(slotY * invenX + slotX).itemCount == 0) {
-            //nodes.get(slotY * invenX + slotX).itemType = createItem(typedName);
-            //nodes.get(slotY * invenX + slotX).itemCount = amount;
-            System.out.println("made it: " + name);
-
+        if (nodes.get(slotY * invenX + slotX).item == "" && nodes.get(slotY * invenX + slotX).itemCount == 0) {
+            nodes.get(slotY * invenX + slotX).item = createItem(nameType);
+            nodes.get(slotY * invenX + slotX).itemCount = amount;
+            menu.setParent(nodes.get(slotY * invenX + slotX).item, nodes.get(slotY * invenX + slotX).tile);
         }
-        /*
-
-         */
-
-
-
-
     }
 
     public void pauseAction() {

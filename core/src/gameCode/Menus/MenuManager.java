@@ -62,6 +62,17 @@ public class MenuManager {
         if(horizontal.equals("right")) ent.x_pos = parentX + parentW - ent.getWidth() + mn.xOffset;
     }
 
+    public void setParent(String itemKey, String newParentKey) {
+
+        Tree<MenuItem> item = items.get(itemKey);
+        if(item == null) return;
+
+        Tree<MenuItem> parent = items.get(newParentKey);
+        item.setParent(parent);
+
+        positionItem(item);
+    }
+
     public boolean hover(String id) {
 
 
