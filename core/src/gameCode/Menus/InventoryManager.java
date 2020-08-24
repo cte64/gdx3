@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class InventoryManager extends Component {
 
-    private final int invenX = 7;
+    private final int invenX = 8;
     private final int invenY = 5;
-    private final int padding = 2;
+    private final int padding = 1;
     int selected;
     int fontSize;
     String pauseState;
