@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import gameCode.Infastructure.World;
 import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myPair;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -52,30 +54,15 @@ public class Graphics implements Disposable {
         tileAtlas = new TextureAtlas();
 
         //Menus stuff
-        addSprite("tile");
-        addSprite("mainMenuBack");
-        addSprite("createGameBack");
-        addSprite("loadGameBack");
-        addSprite("loadGameFront");
-        addSprite("minus");
-        addSprite("plus");
-        addSprite("play");
-        addSprite("playHover");
-        addSprite("loadGameDeleteOpen");
-        addSprite("loadGameDeleteClosed");
-        addSprite("loadGameDeleteClosed1");
-        addSprite("halfMenuItem");
-        addSprite("menuItem");
-        addSprite("listItem");
-        addSprite("scrollBar");
-        addSprite("inventoryTray");
-        addSprite("banana");
+        for(TextureAtlas.AtlasRegion name: spriteAtlas.getRegions()) {
 
-        /*
-        addSprite("tile");
+            String[] strs = name.name.split("/");
+            String newName = strs[strs.length - 1];
 
-
-         */
+            TextureRegion region = spriteAtlas.findRegion(name.name);
+            Sprite sprite = new Sprite(region);
+            spriteMap.put(newName, sprite);
+        }
 
 
         //set up the tile atlas ==================================================================
@@ -96,6 +83,18 @@ public class Graphics implements Disposable {
     }
 
     public static void returnCoord(String coord) { tileIDs.add(coord);  }
+
+    public static myPair<Integer, Integer> getSpriteDimensions(String name) {
+
+        myPair<Integer, Integer> retVal = new myPair(0, 0);
+
+        if(spriteMap.containsKey(name)) {
+            retVal.first = (int)spriteMap.get(name).getWidth();
+            retVal.second = (int)spriteMap.get(name).getHeight();
+        }
+
+        return retVal;
+    }
 
     public static String getCoord() {
         if(tileIDs.size() == 0) return "";
@@ -154,7 +153,6 @@ public class Graphics implements Disposable {
 
         shapeRenderer.end();
     }
-
 
     public static void updateSprite(String name, Pixmap image) {
         TextureRegion region = tileAtlas.findRegion(name);

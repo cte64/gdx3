@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class InventoryManager extends Component {
 
+
     private final int invenX = 8;
     private final int invenY = 5;
     private final int padding = 1;
@@ -56,7 +57,7 @@ public class InventoryManager extends Component {
 
         //background that anchors all the items
         background = "[type: inventory][subType: background]";
-        menu.registerItem(background, null, null, "[vertical: bottom][horizontal: left]", 0, 0, 4, 500, 100);
+        menu.registerItem(background, null, null, "[vertical: bottom][horizontal: left]", 0, 0, 4);
 
         //Inventory items ============================================================================
         for(int y = 0; y<invenY; y++) {
@@ -72,7 +73,7 @@ public class InventoryManager extends Component {
             int yPos = padding + y*(padding + width);
 
 
-            menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: bottom][horizontal: left]", xPos, yPos, 5, 52, 52);
+            menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: bottom][horizontal: left]", xPos, yPos, 5);
             node.tile = nodeName.data;
             nodes.add(node);
 
@@ -121,7 +122,7 @@ public class InventoryManager extends Component {
         StringUtils.setField(newName, "id", uniqueNames.get(0));
         uniqueNames.remove(0);
 
-        menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: left]", 0, 0, 8, 22, 34);
+        menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: left]", 0, 0, 8);
         return newName.data;
     }
 
@@ -243,4 +244,6 @@ public class InventoryManager extends Component {
 
 
     }
+
+
 }

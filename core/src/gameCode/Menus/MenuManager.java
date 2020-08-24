@@ -90,7 +90,7 @@ public class MenuManager {
         return false;
     }
 
-    public void registerItem(String id, String sprNm, String parent, String justify, int x, int y, int z, int w, int h) {
+    public void registerItem(String id, String sprNm, String parent, String justify, int x, int y, int z) {
 
 
         MenuItem newItem = new MenuItem();
@@ -106,8 +106,8 @@ public class MenuManager {
         newItem.ent.entityName = id;
         newItem.ent.spriteName = sprNm;
         newItem.ent.drawMode = "hud";
-        newItem.ent.width = w;
-        newItem.ent.height = h;
+        newItem.ent.width = Graphics.getSpriteDimensions(sprNm).first;
+        newItem.ent.height = Graphics.getSpriteDimensions(sprNm).second;
         newItem.ent.z_pos = z;
         newItem.ent.deleteRange = -2;
         World.entitiesToBeAdded.add(newItem.ent);

@@ -49,10 +49,10 @@ public class NewGame extends Component {
 
         menu = new MenuManager();
 
-        menu.registerItem(background, "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 0, 360, 180);
+        menu.registerItem(background, "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 0);
         menu.addText(background, new TextComponent("Create New World", 10, "[vertical: top][horizontal: center]", 0, 0));
 
-        menu.registerItem(newName, "menuItem", background, "[vertical: top][horizontal: center]", 0, start + 1*height, 1, 350, 40);
+        menu.registerItem(newName, "menuItem", background, "[vertical: top][horizontal: center]", 0, start + 1*height, 1);
         TextComponent textDisplay = new TextComponent("", 10, "[vertical: center][horizontal: left]", 60, 0);
         textInput = new TextInput(textDisplay, 30);
 
@@ -60,17 +60,17 @@ public class NewGame extends Component {
         menu.addText(newName, textDisplay);
         menu.addText(newName, textInput);
 
-        menu.registerItem(sizeSelect, "menuItem", background, "[vertical: top][horizontal: center]", 0, start + 2*height, 1, 350, 40);
+        menu.registerItem(sizeSelect, "menuItem", background, "[vertical: top][horizontal: center]", 0, start + 2*height, 1);
         sizeTextComp = new TextComponent(StringUtils.toString(numChunks), 10, "[vertical: center][horizontal: center]", 0, 0);
         menu.addText(sizeSelect, new TextComponent("Size: ", 10, "[vertical: center][horizontal: left]", 10, 0));
         menu.addText(sizeSelect, sizeTextComp);
-        menu.registerItem(minus, "minus", sizeSelect, "[vertical: center][horizontal: center]", -40, 0, 2, 32, 32);
-        menu.registerItem(plus, "plus", sizeSelect, "[vertical: center][horizontal: center]", 40, 0, 2, 32, 32);
+        menu.registerItem(minus, "minus", sizeSelect, "[vertical: center][horizontal: center]", -40, 0, 2);
+        menu.registerItem(plus, "plus", sizeSelect, "[vertical: center][horizontal: center]", 40, 0, 2);
 
-        menu.registerItem(back, "halfMenuItem", background, "[vertical: top][horizontal: left]", 5, start + 3*height, 1, 173, 40);
+        menu.registerItem(back, "halfMenuItem", background, "[vertical: top][horizontal: left]", 5, start + 3*height, 1);
         menu.addText(back, new TextComponent("Back", 10, "[vertical: center][horizontal: center]", 0, 0));
 
-        menu.registerItem(createWorld, "halfMenuItem", background, "[vertical: top][horizontal: right]", -5, start + 3*height, 1, 173, 40);
+        menu.registerItem(createWorld, "halfMenuItem", background, "[vertical: top][horizontal: right]", -5, start + 3*height, 1);
         menu.addText(createWorld, new TextComponent("Create", 10, "[vertical: center][horizontal: center]", 0, 0));
     }
 
