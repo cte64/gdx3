@@ -3,67 +3,82 @@ package gameCode.Menus;
 import gameCode.Infastructure.Component;
 import gameCode.Infastructure.Entity;
 import gameCode.Infastructure.TextComponent;
-import gameCode.Infastructure.World;
 
 public class DeleteGameMenu extends Component {
 
     public String directory;
 
 
-    public LoadGame loadGame;
+    /*
+    public LoadGame1 loadGame;
     public MenuItem background;
     public MenuItem input;
     public MenuItem yes;
     public MenuItem back;
     public TextInput input_text;
+     */
 
 
-
+    public LoadGame loadGame;
+    public String background;
+    public String input;
+    public String yes;
+    public String back;
+    public TextInput input_text;
+    MenuManager menu;
 
 
     public DeleteGameMenu(String directory, LoadGame loadGame) {
 
-
         type = "logic";
+        menu = new MenuManager();
+
+        //Names =====================================================================================
+        background = "[type: menu][subType: deleteGame][id: background]";
+        input = "[type: menu][subType: deleteGame][id: input]";
+        back = "[type: menu][subType: deleteGame][id: no]";
+        yes = "[type: menu][subType: deleteGame][id: yes]";
 
         this.loadGame = loadGame;
         this.directory = directory;
-        background = new MenuItem("[type: menu][subType: deleteGame][id: background]", "createGameBack", this.loadGame.background.treeNode, "[vertical: center][horizontal: center]", 0, 0, 5, 360, 140);
-        background.addText(new TextComponent("Type \"" + this.directory + "\" to delete", 10, "[vertical: top][horizontal: center]", 0, -10));
+        menu.registerItem(background, "createGameBack", this.loadGame.background, "[vertical: center][horizontal: center]", 0, 0, 5);
+        menu.addText(background, new TextComponent("Type \"" + this.directory + "\" to delete", 10, "[vertical: top][horizontal: center]", 0, -10));
 
-        input = new MenuItem("[type: menu][subType: deleteGame][id: input]", "menuItem", background.treeNode, "[vertical: top][horizontal: center]", 0, 50, 6, 350, 40);
+        menu.registerItem(input, "menuItem", background, "[vertical: top][horizontal: center]", 0, 50, 6);
         TextComponent textDisplay = new TextComponent("", 10, "[vertical: center][horizontal: left]", 60, 0);
         TextInput textInput = new TextInput(textDisplay, 30);
-        input.addText(new TextComponent("Name: ", 10, "[vertical: center][horizontal: left]", 10, 0));
-        input.addText(textDisplay);
-        input.ent.addComponent(textInput);
+        menu.addText(input, new TextComponent("Name: ", 10, "[vertical: center][horizontal: left]", 10, 0));
+        menu.addText(input, textDisplay);
+        menu.getEnt(input).addComponent(textInput);
         input_text = textInput;
 
+        menu.registerItem(back, "halfMenuItem", background, "[vertical: bottom][horizontal: left]", 5, 10, 6);
+        menu.addText(back, new TextComponent("Go Back", 10, "[vertical: center][horizontal: center]", 0, 0));
 
-        back = new MenuItem("[type: menu][subType: deleteGame][id: no]", "halfMenuItem", background.treeNode, "[vertical: bottom][horizontal: left]", 5, 10, 6, 173, 40);
-        back.addText(new TextComponent("Go Back", 10, "[vertical: center][horizontal: center]", 0, 0));
+        menu.registerItem(yes, "halfMenuItem", background, "[vertical: bottom][horizontal: right]", -5, 10, 6);
+        menu.addText(yes, new TextComponent("Delete", 10, "[vertical: center][horizontal: center]", 0, 0));
+        menu.getEnt(yes).drawMode = "hidden";
 
-        yes = null;
     }
 
 
     public void update(Entity entity) {
 
+
+
         //delete
         String text = input_text.getText();
-        if(text.equals(directory) && yes == null) {
-            yes = new MenuItem("[type: menu][subType: deleteGame][id: yes]", "halfMenuItem", background.treeNode, "[vertical: bottom][horizontal: right]", -5, 10, 6, 173, 40);
-            yes.addText(new TextComponent("Delete", 10, "[vertical: center][horizontal: center]", 0, 0));
-        }
+        if(text.equals(directory) && menu.getEnt(yes).drawMode == "hidden")
+            menu.getEnt(yes).drawMode = "hud";
 
-        else if (!text.equals(directory) && yes != null) {
-            World.entitiesToBeDeleted.add(yes.ent);
-            yes = null;
-        }
+        else if (!text.equals(directory) && menu.getEnt(yes).drawMode != "hidden")
+            menu.getEnt(yes).drawMode = "hidden";
 
-        if(back.isLeftClicked()) { loadGame.toggleDeleteOff(); }
-        if(yes != null && yes.isLeftClicked()) loadGame.deleteWorld(directory);
+
+        if(menu.isLeftClicked(back)) { loadGame.toggleDeleteOff(); }
+        if(menu.getEnt(yes).drawMode != "hidden" && menu.isLeftClicked(yes)) loadGame.deleteWorld(directory);
     }
+
 
 
 }

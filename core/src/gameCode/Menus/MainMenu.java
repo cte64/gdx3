@@ -52,7 +52,6 @@ public class MainMenu extends Component {
 
         menu.registerItem(options, "menuItem", background, "[vertical: top][horizontal: center]", 0, start + 3*height, 1);
         menu.addText(options, new TextComponent("Options", 10, "[vertical: center][horizontal: center]", 0, 0));
-
     }
 
     public void update(Entity entity) {
