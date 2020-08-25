@@ -9,7 +9,10 @@ import java.util.ArrayList;
 
 public class CreateGameLoadingScreen extends Component {
 
-    private MenuItem background;
+
+
+
+    private String background;
     MakeWorld makeWorld;
 
     ArrayList<StringUtils> loadingMessages;
@@ -21,6 +24,9 @@ public class CreateGameLoadingScreen extends Component {
 
     Thread t;
     String directory;
+
+    MenuManager menu;
+
 
     public class MyRunnable implements Runnable {
         private MakeWorld makeWorld;
@@ -37,8 +43,13 @@ public class CreateGameLoadingScreen extends Component {
 
         type = "logic";
 
-        background = new MenuItem("[type: menu][name: background]", "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 0, 360, 180);
-        background.addText(new TextComponent("Creating New World", 10, "[vertical: top][horizontal: center]", 0, 0));
+        menu = new MenuManager();
+
+        background = "[type: menu][name: background]";
+
+
+        menu.registerItem(background, "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 0);
+        menu.addText(background, new TextComponent("Creating New World", 10, "[vertical: top][horizontal: center]", 0, 0));
 
         String name = StringUtils.getField(State.getState(), "name");
         String numChunks = StringUtils.getField(State.getState(), "numChunks");
@@ -63,12 +74,12 @@ public class CreateGameLoadingScreen extends Component {
                 int yPos = topOffset - x*itemHeight;
                 TextComponent newComp = new TextComponent(loadingMessages.get(x).data, 10, "[vertical: top][horizontal: center]", 0, yPos);
                 textComponents.add(newComp);
-                background.addText(newComp);
+                menu.addText(background, newComp);
             }
 
             //position only the last "maxListSize" items
             if(textComponents.size() > maxListSize) {
-                background.ent.deleteComponent(textComponents.get(0));
+                menu.getEnt(background).deleteComponent(textComponents.get(0));
                 textComponents.remove(0);
                 loadingMessages.remove(0);
                 for(int x = 0; x < textComponents.size(); x++) {
@@ -84,4 +95,5 @@ public class CreateGameLoadingScreen extends Component {
             State.play(newState.data);
         }
     }
+
 }

@@ -5,7 +5,9 @@ import gameCode.Infastructure.*;
 public class PauseGame extends Component {
 
 
+    /*
     private boolean toggle;
+    MenuManager menu;
 
     private class PauseMenu {
 
@@ -37,12 +39,22 @@ public class PauseGame extends Component {
 
     private PauseMenu pausemenu;
 
+     */
+
     public PauseGame() {
+
         type = "logic";
+
+        /*
         toggle = false;
         pausemenu = null;
+        menu = new MenuManager();
+
+         */
     }
-    
+
+
+    /*
     private void togglePause(boolean state) {
 
         if(state) {
@@ -58,8 +70,12 @@ public class PauseGame extends Component {
         
     }
 
+     */
+
     public void update(Entity entity) {
 
+
+        /*
         //back button update =====================================================================
         if(pausemenu != null && pausemenu.backButton.isLeftClicked()) togglePause(false);
         if(InputAL.isKeyPressed("esc") && !toggle) toggle = true;
@@ -74,5 +90,7 @@ public class PauseGame extends Component {
             FileSystem.saveCurrentChunks();
             State.mainMenu();
         }
+
+         */
     }
 }
