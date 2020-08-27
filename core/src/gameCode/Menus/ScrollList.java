@@ -13,7 +13,9 @@ public class ScrollList {
     public int bottom;
     public int left;
     public int itemHeight;
+    public int itemWidth;
     public float scrollIndex;
+    public int padding;
     public float scrollPerFrame = 0.01f;
     ArrayList<String> listItems;
     String scrollBar;
@@ -28,8 +30,10 @@ public class ScrollList {
         scrollIndex = 0;
         width = 1;
         top = 0;
+        padding = 0;
         bottom = 100;
         itemHeight = 70;
+        itemWidth = 40;
         scrollBar = "";
     }
 
@@ -42,7 +46,7 @@ public class ScrollList {
         menuMngr.removeItem(name);
     }
 
-    public void updateList() {
+    public void updateList2() {
 
         //Update the Scrolling =====================================================================
         if(InputAL.isKeyPressed("down")) scrollIndex += scrollPerFrame;
@@ -60,7 +64,9 @@ public class ScrollList {
 
         for(int x = 0; x < listItems.size(); x++)  {
 
-            int yPos = (int) (top + scrollOffset + (x * itemHeight));
+            int yPos = padding + top + scrollOffset + (x/ width)*(itemHeight + padding);
+            int xPos = padding + left + (x % width)*(itemWidth + padding);
+
             String newDrawMode = "hud";
 
             //if the yPos is out of bounds hide it
@@ -68,6 +74,8 @@ public class ScrollList {
             if(yPos > bottom) newDrawMode = "hidden";
 
             menuMngr.getItem(listItems.get(x)).value.yOffset = yPos;
+            menuMngr.getItem(listItems.get(x)).value.xOffset = xPos;
+
             for(Tree<MenuItem> item: menuMngr.getItem(listItems.get(x)).getTraverseArr()) {
                 menuMngr.positionItem(item);
                 item.value.ent.drawMode = newDrawMode;

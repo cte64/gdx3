@@ -17,11 +17,12 @@ public class InventoryManager1 extends Component {
     private final int inventoryWidth = 7;
     private final int itemWidth = 52;
     private final int padding = 1;
-    private int maxInvenItems = 21;
+    private int maxInvenItems = 10;
 
 
     //important stuff =========================================================
     MenuManager menu;
+    ScrollList scrollList;
     private class itemNode {
         public String tile;
         public String item;
@@ -43,7 +44,17 @@ public class InventoryManager1 extends Component {
 
     public InventoryManager1() {
 
+        type = "logic";
+
         menu = new MenuManager();
+        scrollList = new ScrollList(menu);
+        scrollList.left = 34;
+        scrollList.top = 58;
+        scrollList.bottom = 500;
+        scrollList.itemHeight = 52;
+        scrollList.itemWidth = 52;
+        scrollList.width = 7;
+        scrollList.padding = 1;
 
         currentItems = new itemNode[currentNumItems];
         inventoryItems = new ArrayList<itemNode>();
@@ -51,7 +62,7 @@ public class InventoryManager1 extends Component {
         //set up the background and foreGround
         background = "[type: inventory][subType: background]";
         foreground = "[type: inventory][subType: foreground]";
-        menu.registerItem(background, "invenBackground", null, "[vertical: center][horizontal: center]", 0, 0, 5);
+        menu.registerItem(background, "invenBackground", null, "[vertical: center][horizontal: center]", 0, 0, 4);
         menu.registerItem(foreground, "invenForeground", background, "[vertical: center][horizontal: left]", 0, 0, 7);
 
         //inventory selection part ================================================
@@ -68,20 +79,24 @@ public class InventoryManager1 extends Component {
             currentItems[x] = node;
         }
 
+        //this is for the items ===================================================
+        for(int x = 0; x < maxInvenItems; x++) {
+            StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryHidden][index: ]");
+            StringUtils.setField(nodeName, "index", StringUtils.toString(x));
+
+            int xPos = scrollList.left + x*(itemWidth + padding);
+            int yPos = scrollList.top;
+
+            itemNode node = new itemNode();
+            node.tile = nodeName.data;
+
+            menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: top][horizontal: left]", xPos, yPos, 5);
+            scrollList.addItem(nodeName.data);
+            inventoryItems.add(node);
+        }
 
         //this is also a test ======================================================
-
-        addItem("[type: banana][amount: 1][preferredSlot: inventory][preferredSlotIndex: 0]");
-
-        /*
-        //this is just a test
-        StringUtils newItem = new StringUtils("[type: banana][amount: 1][preferredSlot: current][preferredSlotIndex: 2]");
-        addItem(newItem.data);
-
-        StringUtils newItem1 = new StringUtils("[type: apple][amount: 1][preferredSlot: current][preferredSlotIndex: 2]");
-        addItem(newItem1.data);
-
-         */
+        addItem("[type: banana][amount: 1][preferredSlot: inventory][preferredSlotIndex: 1]");
     }
 
     public String createItem(String name) {
@@ -89,7 +104,7 @@ public class InventoryManager1 extends Component {
         StringUtils newName = new StringUtils("[type: inventoryItem][subType: ][id: ]");
         StringUtils.setField(newName, "subType", name);
 
-        menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: center]", 0, 0, 9);
+        menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: center]", 0, 0, 6);
         return newName.data;
     }
 
@@ -207,6 +222,8 @@ public class InventoryManager1 extends Component {
     }
 
     public void update(Entity entity) {
+
+        scrollList.updateList2();
 
     }
 

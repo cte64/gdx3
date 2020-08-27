@@ -46,8 +46,11 @@ public class LoadGame extends Component {
         menu = new MenuManager();
         scrollList = new ScrollList(menu);
         scrollList.top = 105;
+        scrollList.left = 30;
         scrollList.scrollPerFrame = 0.01f;
         scrollList.itemHeight = 70;
+        scrollList.itemWidth = 353;
+        scrollList.width = 1;
         scrollList.bottom = 526;
 
         background = "[type: menu][name: background]";
@@ -134,7 +137,7 @@ public class LoadGame extends Component {
                // scrollList.deleteListItem(item.list);
                 scrollList.deleteListItem(item.list);
                 listItems.remove(item);
-                scrollList.updateList();
+                scrollList.updateList2();
                 break;
             }
         }
@@ -147,7 +150,7 @@ public class LoadGame extends Component {
 
         if(paused) return;
 
-        scrollList.updateList();
+        scrollList.updateList2();
 
         //update the play and delete button ============================
         int mouseY = InputAL.getMouseY();
