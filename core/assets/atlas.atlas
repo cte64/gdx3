@@ -27,96 +27,109 @@ items/tile
   index: -1
 
 atlas2.png
-size: 2048,1024
+size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 menus/createGameBack
   rotate: false
-  xy: 2, 2
+  xy: 483, 771
   size: 360, 140
   orig: 360, 140
   offset: 0, 0
   index: -1
 menus/halfMenuItem
   rotate: false
-  xy: 364, 102
+  xy: 845, 871
   size: 173, 40
   orig: 173, 40
   offset: 0, 0
   index: -1
-menus/invenBackground
-  rotate: false
-  xy: 2, 570
-  size: 783, 424
-  orig: 783, 424
-  offset: 0, 0
-  index: -1
-menus/invenForeground
-  rotate: false
-  xy: 2, 144
-  size: 783, 424
-  orig: 783, 424
-  offset: 0, 0
-  index: -1
 menus/inventoryTray
   rotate: false
-  xy: 1149, 340
+  xy: 364, 257
   size: 52, 52
   orig: 52, 52
   offset: 0, 0
   index: -1
 menus/listItem
   rotate: false
-  xy: 1268, 923
+  xy: 2, 56
   size: 353, 71
   orig: 353, 71
   offset: 0, 0
   index: -1
 menus/loadGameFront
   rotate: false
-  xy: 787, 394
+  xy: 2, 311
   size: 479, 600
   orig: 479, 600
   offset: 0, 0
   index: -1
 menus/mainMenuBack
   rotate: false
-  xy: 787, 212
+  xy: 2, 129
   size: 360, 180
   orig: 360, 180
   offset: 0, 0
   index: -1
 menus/menuItem
   rotate: false
-  xy: 787, 170
+  xy: 483, 729
   size: 350, 40
   orig: 350, 40
   offset: 0, 0
   index: -1
 menus/minus
   rotate: false
-  xy: 1623, 962
+  xy: 483, 695
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 menus/plus
   rotate: false
-  xy: 364, 68
+  xy: 845, 837
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 menus/scrollBar
   rotate: false
-  xy: 1268, 869
+  xy: 2, 2
   size: 51, 52
   orig: 51, 52
   offset: 0, 0
   index: -1
 
 atlas3.png
+size: 2048,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+menus/Inventory/invenBackground
+  rotate: false
+  xy: 2, 39
+  size: 783, 424
+  orig: 783, 424
+  offset: 0, 0
+  index: -1
+menus/Inventory/invenForeground
+  rotate: false
+  xy: 787, 39
+  size: 783, 424
+  orig: 783, 424
+  offset: 0, 0
+  index: -1
+menus/Inventory/scrollBarInventory
+  rotate: false
+  xy: 2, 2
+  size: 19, 35
+  orig: 19, 35
+  offset: 0, 0
+  index: -1
+
+atlas4.png
 size: 512,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -171,7 +184,7 @@ menus/loadGame/playHover
   offset: 0, 0
   index: -1
 
-atlas4.png
+atlas5.png
 size: 1024,64
 format: RGBA8888
 filter: Nearest,Nearest

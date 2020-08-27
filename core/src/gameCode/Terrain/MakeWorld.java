@@ -1,14 +1,10 @@
 package gameCode.Terrain;
 
 import com.badlogic.gdx.math.Vector2;
-import gameCode.Infastructure.FileSystem;
-import gameCode.Infastructure.InputAL;
-import gameCode.Infastructure.World;
+import gameCode.Infrastructure.FileSystem;
+import gameCode.Infrastructure.World;
 import gameCode.Utilities.*;
-import gameCode.Terrain.ScatterTerrain;
-import gameCode.Terrain.Perlin;
 
-import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

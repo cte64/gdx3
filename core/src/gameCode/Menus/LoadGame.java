@@ -1,7 +1,6 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.*;
-import gameCode.Utilities.MathUtils;
+import gameCode.Infrastructure.*;
 import gameCode.Utilities.StringUtils;
 
 import java.util.ArrayList;
@@ -12,8 +11,6 @@ public class LoadGame extends Component {
     MenuManager menu;
 
     private float scrollIndex;
-
-    boolean pause;
 
     public class listItem {
         public String list;
@@ -51,7 +48,7 @@ public class LoadGame extends Component {
         scrollList.itemHeight = 70;
         scrollList.itemWidth = 353;
         scrollList.width = 1;
-        scrollList.bottom = 526;
+        scrollList.bottom = 513;
 
         background = "[type: menu][name: background]";
         overlay = "[type: menu][name: overlay]";
@@ -115,12 +112,12 @@ public class LoadGame extends Component {
         ent.deleteRange = -2;
         ent.addComponent(new DeleteGameMenu(directory, this));
         World.entitiesToBeAdded.add(ent);
-        pause = true;
+        paused = true;
     }
 
     public void toggleDeleteOff() {
         State.deleteType("subType", "deleteGame");
-        pause = false;
+        paused = false;
     }
 
     public void deleteWorld(String directory) {
@@ -128,13 +125,6 @@ public class LoadGame extends Component {
         for(listItem item: listItems) {
             if(item.name.equals(directory)) {
                 //FileSystem.deleteDirectory(item.directory);
-                //scrollList.deleteListItem(item.list);
-                //item.delete();
-                //scrollList.deleteListItem(item.list);
-                //listItems.remove(item);
-                //listItems.remove(item.name);
-                //System.out.println();
-               // scrollList.deleteListItem(item.list);
                 scrollList.deleteListItem(item.list);
                 listItems.remove(item);
                 scrollList.updateList2();
@@ -143,7 +133,7 @@ public class LoadGame extends Component {
         }
 
         State.deleteType("subType", "deleteGame");
-        pause = false;
+        paused = false;
     }
 
     public void update(Entity entity) {
@@ -164,16 +154,16 @@ public class LoadGame extends Component {
             if(menu.hover(item.play)) menu.getEnt(item.play).spriteName = "playHover";
             else menu.getEnt(item.play).spriteName = "play";
 
-            //click action update
-            if(mouseY > scrollList.top && mouseY < scrollList.bottom) {
-                if(menu.isLeftClicked(item.play)) {
-                    StringUtils newState = new StringUtils("[action: play][directory: ]");
-                    StringUtils.setField(newState, "directory", item.name);
-                    State.play(newState.data);
-                }
-                if(menu.isLeftClicked(item.delete)) {
-                    toggleDeleteOn(item.name);
-                }
+
+            //click stuff ========================================================
+            if(scrollList.isLeftClicked(item.play)) {
+                StringUtils newState = new StringUtils("[action: play][directory: ]");
+                StringUtils.setField(newState, "directory", item.name);
+                State.play(newState.data);
+            }
+
+            if(scrollList.isLeftClicked(item.delete)) {
+                toggleDeleteOn(item.name);
             }
         }
 

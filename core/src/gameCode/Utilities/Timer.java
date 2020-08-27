@@ -1,7 +1,5 @@
 package gameCode.Utilities;
 
-import gameCode.Infastructure.World;
-
 import java.util.HashMap;
 
 public class Timer {

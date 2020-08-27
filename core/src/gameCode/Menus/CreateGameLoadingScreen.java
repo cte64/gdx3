@@ -1,8 +1,7 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.*;
+import gameCode.Infrastructure.*;
 import gameCode.Terrain.MakeWorld;
-import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
 
 import java.util.ArrayList;

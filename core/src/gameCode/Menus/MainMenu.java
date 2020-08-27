@@ -1,17 +1,9 @@
 package gameCode.Menus;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import gameCode.Infastructure.Component;
-import gameCode.Infastructure.Entity;
-import gameCode.Infastructure.TextComponent;
-import gameCode.Infastructure.World;
-import gameCode.Infastructure.State;
-
-import gameCode.Utilities.Tree;
-
-import java.awt.*;
-import java.util.HashMap;
+import gameCode.Infrastructure.Component;
+import gameCode.Infrastructure.Entity;
+import gameCode.Infrastructure.TextComponent;
+import gameCode.Infrastructure.State;
 
 public class MainMenu extends Component {
 

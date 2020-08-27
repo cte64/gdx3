@@ -1,6 +1,6 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.Entity;
+import gameCode.Infrastructure.Entity;
 
 public class MenuItem {
     public int clickStateL;

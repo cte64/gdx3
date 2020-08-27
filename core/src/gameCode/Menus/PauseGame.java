@@ -1,6 +1,6 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.*;
+import gameCode.Infrastructure.*;
 
 public class PauseGame extends Component {
 

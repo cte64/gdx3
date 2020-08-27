@@ -1,14 +1,11 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.*;
-import gameCode.Infastructure.Component;
-import gameCode.Infastructure.Graphics;
-import gameCode.Utilities.MathUtils;
+import gameCode.Infrastructure.*;
+import gameCode.Infrastructure.Component;
+import gameCode.Infrastructure.Graphics;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.Tree;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MenuManager {
@@ -59,12 +56,15 @@ public class MenuManager {
         if(vertical.equals("center")) ent.y_pos = parentY + (parentH / 2) - ent.getHeight() / 2 + mn.yOffset;
         if(vertical.equals("bottom")) ent.y_pos = parentY + mn.yOffset;
         if(vertical.equals("top")) ent.y_pos = parentY + parentH - ent.getHeight() - mn.yOffset;
+        if(vertical.equals("mouse")) ent.y_pos = InputAL.getMouseY();
+
 
         //horizontal =================================================================================
         ent.x_pos = 0;
         if(horizontal.equals("center")) ent.x_pos = parentX + (parentW / 2) - ent.getWidth() / 2 + mn.xOffset;
         if(horizontal.equals("left")) ent.x_pos = parentX + mn.xOffset;
         if(horizontal.equals("right")) ent.x_pos = parentX + parentW - ent.getWidth() + mn.xOffset;
+        if(horizontal.equals("mouse")) ent.x_pos = InputAL.getMouseX();
     }
 
     public void updateDrawMode(Tree<MenuItem> item, String newMode) {
@@ -74,7 +74,16 @@ public class MenuManager {
         }
     }
 
+    public void updateItem(String name) {
+        if(!items.containsKey(name)) return;
+        for(Tree<MenuItem> item: items.get(name).getTraverseArr()) {
+            positionItem(item);
+        }
+    }
+
     public void setParent(String itemKey, String newParentKey) {
+
+        if(!items.containsKey(itemKey)) return;
 
         Tree<MenuItem> item = items.get(itemKey);
         if(item == null) return;
@@ -123,7 +132,6 @@ public class MenuManager {
         newItem.ent.deleteRange = -2;
         World.entitiesToBeAdded.add(newItem.ent);
 
-
         Tree<MenuItem> parentTree = null;
         if(items.containsKey(parent)) parentTree = items.get(parent);
 
@@ -131,7 +139,6 @@ public class MenuManager {
 
 
         items.put(id, treeNode);
-
 
         //position new item and all its children
         for(Tree tree: treeNode.getTraverseArr()) { positionItem(tree); }

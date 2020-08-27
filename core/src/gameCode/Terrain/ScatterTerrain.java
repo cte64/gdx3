@@ -1,8 +1,8 @@
 package gameCode.Terrain;
 
 import com.badlogic.gdx.math.Vector2;
-import gameCode.Infastructure.FileSystem;
-import gameCode.Infastructure.World;
+import gameCode.Infrastructure.FileSystem;
+import gameCode.Infrastructure.World;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Pixel;
 import gameCode.Utilities.StringUtils;

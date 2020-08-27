@@ -1,6 +1,6 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.*;
+import gameCode.Infrastructure.*;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.myPair;

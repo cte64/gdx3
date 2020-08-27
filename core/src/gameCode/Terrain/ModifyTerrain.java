@@ -1,13 +1,11 @@
 package gameCode.Terrain;
 
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.math.Vector2;
-import gameCode.Infastructure.Chunk;
-import gameCode.Infastructure.Entity;
-import gameCode.Infastructure.Graphics;
-import gameCode.Infastructure.World;
+import gameCode.Infrastructure.Chunk;
+import gameCode.Infrastructure.Entity;
+import gameCode.Infrastructure.Graphics;
+import gameCode.Infrastructure.World;
 import gameCode.Utilities.myPair;
-import jdk.internal.net.http.common.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;

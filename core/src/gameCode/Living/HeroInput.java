@@ -2,8 +2,8 @@ package gameCode.Living;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import gameCode.Infastructure.Component;
-import gameCode.Infastructure.Entity;
+import gameCode.Infrastructure.Component;
+import gameCode.Infrastructure.Entity;
 
 public class HeroInput extends Component {
 

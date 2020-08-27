@@ -1,23 +1,12 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.Component;
-import gameCode.Infastructure.Entity;
-import gameCode.Infastructure.TextComponent;
+import gameCode.Infrastructure.Component;
+import gameCode.Infrastructure.Entity;
+import gameCode.Infrastructure.TextComponent;
 
 public class DeleteGameMenu extends Component {
 
     public String directory;
-
-
-    /*
-    public LoadGame1 loadGame;
-    public MenuItem background;
-    public MenuItem input;
-    public MenuItem yes;
-    public MenuItem back;
-    public TextInput input_text;
-     */
-
 
     public LoadGame loadGame;
     public String background;
@@ -61,10 +50,7 @@ public class DeleteGameMenu extends Component {
 
     }
 
-
     public void update(Entity entity) {
-
-
 
         //delete
         String text = input_text.getText();
@@ -78,7 +64,4 @@ public class DeleteGameMenu extends Component {
         if(menu.isLeftClicked(back)) { loadGame.toggleDeleteOff(); }
         if(menu.getEnt(yes).drawMode != "hidden" && menu.isLeftClicked(yes)) loadGame.deleteWorld(directory);
     }
-
-
-
 }

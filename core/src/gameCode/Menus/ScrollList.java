@@ -1,6 +1,6 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.InputAL;
+import gameCode.Infrastructure.InputAL;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Tree;
 
@@ -39,6 +39,23 @@ public class ScrollList {
 
     public void addItem(String newItem) {
         listItems.add(newItem);
+    }
+
+    public boolean isLeftClicked(String name) {
+
+
+        int mouseY = InputAL.getMouseY();
+        /*
+        if(mouseY > top && mouseY < bottom &&
+           menuMngr.getEnt(name).drawMode.equals("hud") &&
+           menuMngr.isLeftClicked(name))  return true;
+        else return false;
+
+         */
+
+
+        if(menuMngr.getEnt(name).drawMode.equals("hud") && menuMngr.isLeftClicked(name)) return true;
+        else return false;
     }
 
     public void deleteListItem(String name) {
@@ -85,10 +102,11 @@ public class ScrollList {
         //Position the scroll bar =======================================================
         Tree<MenuItem> sb = menuMngr.getItem(scrollBar);
         if(sb != null) {
-            int barTop = top;
-            int barBot = bottom - itemHeight + 6;
-            int adjPs = (int)(top + (barBot - top) * scrollIndex);
-            adjPs = MathUtils.clamp(adjPs, top, bottom - itemHeight + 6);
+            int sbHeight = (int)((MenuItem)(sb.value)).ent.getWidth();
+            int barTop = top + padding;
+            int barBot = bottom - sbHeight - padding;
+            int adjPs = (int)(padding + top + (barBot - top) * scrollIndex);
+            adjPs = MathUtils.clamp(adjPs, top, barBot);
             ((MenuItem)sb.value).yOffset = (int)adjPs;
             menuMngr.positionItem(sb);
         }

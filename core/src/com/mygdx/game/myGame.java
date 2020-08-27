@@ -1,27 +1,10 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import gameCode.Infastructure.*;
-import gameCode.Infastructure.Graphics;
+import gameCode.Infrastructure.*;
+import gameCode.Infrastructure.Graphics;
 import gameCode.Utilities.Pixel;
-import gameCode.Utilities.StringUtils;
 
 public class myGame extends ApplicationAdapter {
 

@@ -1,15 +1,10 @@
 package gameCode.Living;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Vector3;
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import gameCode.Infastructure.*;
+import gameCode.Infrastructure.*;
 import gameCode.Terrain.ModifyTerrain;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Timer;
 import gameCode.Utilities.myPair;
-import jdk.internal.net.http.common.Pair;
 
 import java.util.ArrayList;
 

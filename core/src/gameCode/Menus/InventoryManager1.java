@@ -1,10 +1,9 @@
 package gameCode.Menus;
 
-import gameCode.Infastructure.Component;
-import gameCode.Infastructure.Entity;
+import gameCode.Infrastructure.Component;
+import gameCode.Infrastructure.Entity;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
-import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
 
@@ -14,15 +13,15 @@ public class InventoryManager1 extends Component {
 
     //constants and lucky numbers =============================================
     private final int currentNumItems = 8;
-    private final int inventoryWidth = 7;
     private final int itemWidth = 52;
     private final int padding = 1;
-    private int maxInvenItems = 10;
+    private int maxInvenItems = 56;
 
 
     //important stuff =========================================================
     MenuManager menu;
     ScrollList scrollList;
+    String scrollBar;
     private class itemNode {
         public String tile;
         public String item;
@@ -37,6 +36,7 @@ public class InventoryManager1 extends Component {
     //lists and containers ====================================================
     ArrayList<itemNode> inventoryItems;
     itemNode[] currentItems;
+    itemNode clipboard;
 
     //ids of menu items =======================================================
     String background;
@@ -50,7 +50,7 @@ public class InventoryManager1 extends Component {
         scrollList = new ScrollList(menu);
         scrollList.left = 34;
         scrollList.top = 58;
-        scrollList.bottom = 500;
+        scrollList.bottom = 308;
         scrollList.itemHeight = 52;
         scrollList.itemWidth = 52;
         scrollList.width = 7;
@@ -58,12 +58,21 @@ public class InventoryManager1 extends Component {
 
         currentItems = new itemNode[currentNumItems];
         inventoryItems = new ArrayList<itemNode>();
+        clipboard = new itemNode();
+
+
+        //set the clipboard
+        clipboard.tile = "[type: inventory][subType: clipboard]";
+        menu.registerItem(clipboard.tile, null, null, "[vertical: mouse][horizontal: mouse]", 0, 0, 9);
 
         //set up the background and foreGround
         background = "[type: inventory][subType: background]";
         foreground = "[type: inventory][subType: foreground]";
+        scrollBar = "[type: inventory][subType: scrollBar]";
         menu.registerItem(background, "invenBackground", null, "[vertical: center][horizontal: center]", 0, 0, 4);
         menu.registerItem(foreground, "invenForeground", background, "[vertical: center][horizontal: left]", 0, 0, 7);
+        menu.registerItem(scrollBar, "scrollBarInventory", foreground, "[vertical: top][horizontal: center]", 36, 0, 8);
+        scrollList.scrollBar = scrollBar;
 
         //inventory selection part ================================================
         for(int x = 0; x < currentNumItems; x++) {
@@ -106,6 +115,35 @@ public class InventoryManager1 extends Component {
 
         menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: center]", 0, 0, 6);
         return newName.data;
+    }
+
+    private void clipboardSwap(itemNode node) {
+
+        String oldClipItem = clipboard.item;
+
+        menu.setParent(node.item, clipboard.tile);
+        clipboard.item = node.item;
+
+        menu.setParent(oldClipItem, node.tile);
+        //menu.getEnt(oldClipItem).z_pos = menu.getEnt(node.tile).z_pos + 1;
+        node.item = oldClipItem;
+    }
+
+    private void leftClick() {
+
+
+        for(itemNode node: currentItems) {
+            if(menu.isLeftClicked(node.tile)) {
+                clipboardSwap(node);
+            }
+        }
+
+        for(itemNode node: inventoryItems) {
+            if(scrollList.isLeftClicked(node.tile)) {
+                clipboardSwap(node);
+            }
+        }
+
     }
 
     public void addItem(String itemToAdd) {
@@ -224,6 +262,13 @@ public class InventoryManager1 extends Component {
     public void update(Entity entity) {
 
         scrollList.updateList2();
+
+        leftClick();
+
+
+        menu.updateItem(clipboard.tile);
+
+
 
     }
 

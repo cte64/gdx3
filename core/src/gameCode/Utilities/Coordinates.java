@@ -1,10 +1,8 @@
 package gameCode.Utilities;
 
 import com.badlogic.gdx.math.Vector2;
-import gameCode.Infastructure.World;
-import jdk.internal.net.http.common.Pair;
-import gameCode.Infastructure.Entity;
-import gameCode.Utilities.MathUtils;
+import gameCode.Infrastructure.World;
+import gameCode.Infrastructure.Entity;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
