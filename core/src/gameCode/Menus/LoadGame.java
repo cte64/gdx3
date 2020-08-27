@@ -12,10 +12,7 @@ public class LoadGame extends Component {
     MenuManager menu;
 
     private float scrollIndex;
-    private float scrollPerFrame = 0.01f;
-    private int itemHeight = 70;
-    private int menuTop = 105;
-    private int menuBottom = 526;
+
     boolean pause;
 
     public class listItem {
@@ -36,7 +33,9 @@ public class LoadGame extends Component {
     private String back;
     private String scrollBar;
     private String loadGame;
-    private String listName;
+
+    private ScrollList scrollList;
+
     ArrayList<listItem> listItems = new ArrayList<listItem>();
     boolean paused;
 
@@ -45,9 +44,11 @@ public class LoadGame extends Component {
         type = "logic";
 
         menu = new MenuManager();
-
-        listName = "list";
-        menu.createList(listName, 1, 105, 526);
+        scrollList = new ScrollList(menu);
+        scrollList.top = 105;
+        scrollList.scrollPerFrame = 0.01f;
+        scrollList.itemHeight = 70;
+        scrollList.bottom = 526;
 
         background = "[type: menu][name: background]";
         overlay = "[type: menu][name: overlay]";
@@ -62,7 +63,7 @@ public class LoadGame extends Component {
 
         //scroll bar
         menu.registerItem(scrollBar, "scrollBar", background, "[vertical: top][horizontal: right]", -32, 0, 5);
-        menu.addListItem("list", scrollBar, "scrollBar");
+        scrollList.scrollBar = scrollBar;
 
         //bottom buttons
         menu.registerItem(back, "halfMenuItem", background, "[vertical: bottom][horizontal: left]", 15, 15, 5);
@@ -100,7 +101,7 @@ public class LoadGame extends Component {
             menu.addText(itemName, new TextComponent("Date Created: " + dateCreated, 10, "[vertical: bottom][horizontal: left]", 8, 8));
 
             listItems.add(newItem);
-            menu.addListItem("list", newItem.list, "listItem");
+            scrollList.addItem(newItem.list);
         }
     }
 
@@ -124,10 +125,16 @@ public class LoadGame extends Component {
         for(listItem item: listItems) {
             if(item.name.equals(directory)) {
                 //FileSystem.deleteDirectory(item.directory);
-                menu.deleteListItem("list", item.list, "listItem");
-                item.delete();
+                //scrollList.deleteListItem(item.list);
+                //item.delete();
+                //scrollList.deleteListItem(item.list);
+                //listItems.remove(item);
+                //listItems.remove(item.name);
+                //System.out.println();
+               // scrollList.deleteListItem(item.list);
+                scrollList.deleteListItem(item.list);
                 listItems.remove(item);
-                menu.updateList("list");
+                scrollList.updateList();
                 break;
             }
         }
@@ -140,7 +147,7 @@ public class LoadGame extends Component {
 
         if(paused) return;
 
-        menu.updateList("list");
+        scrollList.updateList();
 
         //update the play and delete button ============================
         int mouseY = InputAL.getMouseY();
@@ -155,7 +162,7 @@ public class LoadGame extends Component {
             else menu.getEnt(item.play).spriteName = "play";
 
             //click action update
-            if(mouseY > menuTop && mouseY < menuBottom) {
+            if(mouseY > scrollList.top && mouseY < scrollList.bottom) {
                 if(menu.isLeftClicked(item.play)) {
                     StringUtils newState = new StringUtils("[action: play][directory: ]");
                     StringUtils.setField(newState, "directory", item.name);
@@ -165,16 +172,9 @@ public class LoadGame extends Component {
                     toggleDeleteOn(item.name);
                 }
             }
-
         }
 
         //back button
         if(menu.isLeftClicked(back)) State.mainMenu();
-
-
-
-
-
-
     }
 }

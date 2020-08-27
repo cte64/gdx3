@@ -26,7 +26,11 @@ public class StringUtils {
 
     public static String toString(int num) { return Integer.toString(num); }
 
-    public static int stringToInt(String data) { return Integer.parseInt(data); }
+    public static int stringToInt(String data) {
+        if(MathUtils.isNumeric(data))
+            return Integer.parseInt(data);
+        else return 0;
+    }
 
     public static void compressString(StringUtils cont) {
 

@@ -6,6 +6,18 @@ public class MathUtils {
 
     public static final float PI = 3.14159265359f;
 
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
     public static float angle1(float x, float y) {
         float angle = (float)(Math.atan2(y, x)*180.0/PI);
         if(angle < 0) angle += 360.0;

@@ -45,19 +45,14 @@ public class InventoryManager1 extends Component {
 
         menu = new MenuManager();
 
-
         currentItems = new itemNode[currentNumItems];
         inventoryItems = new ArrayList<itemNode>();
-
-
-
 
         //set up the background and foreGround
         background = "[type: inventory][subType: background]";
         foreground = "[type: inventory][subType: foreground]";
         menu.registerItem(background, "invenBackground", null, "[vertical: center][horizontal: center]", 0, 0, 5);
         menu.registerItem(foreground, "invenForeground", background, "[vertical: center][horizontal: left]", 0, 0, 7);
-
 
         //inventory selection part ================================================
         for(int x = 0; x < currentNumItems; x++) {
@@ -75,6 +70,8 @@ public class InventoryManager1 extends Component {
 
 
         //this is also a test ======================================================
+
+        addItem("[type: banana][amount: 1][preferredSlot: inventory][preferredSlotIndex: 0]");
 
         /*
         //this is just a test
@@ -128,6 +125,7 @@ public class InventoryManager1 extends Component {
         If there are no empty spots, then set preferredSlot to "inventory" and preferredSlotIndex to -1 and call recursively
          */
 
+
         if(preferredSlot.equals("current")) {
             if(preferredSlotIndex >= 0 && preferredSlotIndex < currentNumItems) {
                 String slotType = StringUtils.getField(currentItems[preferredSlotIndex].item, "subType");
@@ -169,6 +167,7 @@ public class InventoryManager1 extends Component {
             }
         }
 
+
         /*
         This is for when preferredSlot is "inventory"
 
@@ -182,7 +181,9 @@ public class InventoryManager1 extends Component {
         If not, then append to inventoryList
          */
 
+
         if(preferredSlot.equals("inventory")) {
+
             if(preferredSlotIndex >= 0 && preferredSlotIndex < inventoryItems.size()) {
                 String invenType = StringUtils.getField(inventoryItems.get(preferredSlotIndex).item, "subType");
                 if(invenType.equals("")) {
@@ -202,6 +203,7 @@ public class InventoryManager1 extends Component {
 
             }
         }
+
     }
 
     public void update(Entity entity) {

@@ -17,25 +17,32 @@ public class ScrollList {
     public float scrollPerFrame = 0.01f;
     ArrayList<String> listItems;
     String scrollBar;
+    MenuManager menuMngr;
 
 
-    public ScrollList(int width, int top, int bottom) {
-        
+    public ScrollList(MenuManager menuMngr) {
 
-        /*
-        scrollIndex = 0;
-        this.width = width;
-        this.top = top;
-        this.bottom = bottom;
-        this.itemHeight = 70;
-        scrollBar = "";
+        this.menuMngr = menuMngr;
+
         listItems = new ArrayList<String>();
-
-         */
+        scrollIndex = 0;
+        width = 1;
+        top = 0;
+        bottom = 100;
+        itemHeight = 70;
+        scrollBar = "";
     }
 
+    public void addItem(String newItem) {
+        listItems.add(newItem);
+    }
 
-    public void updateList(String name) {
+    public void deleteListItem(String name) {
+        listItems.remove(name);
+        menuMngr.removeItem(name);
+    }
+
+    public void updateList() {
 
         //Update the Scrolling =====================================================================
         if(InputAL.isKeyPressed("down")) scrollIndex += scrollPerFrame;
@@ -60,33 +67,22 @@ public class ScrollList {
             if(yPos < top - itemHeight) newDrawMode = "hidden";
             if(yPos > bottom) newDrawMode = "hidden";
 
-
-        /*
-            ((MenuItem)items.get( listItems.get(x) ).value).yOffset = yPos;
-            for(Tree<MenuManager.MenuItem> item: items.get( listItems.get(x) ).getTraverseArr() ) {
-                positionItem(item);
+            menuMngr.getItem(listItems.get(x)).value.yOffset = yPos;
+            for(Tree<MenuItem> item: menuMngr.getItem(listItems.get(x)).getTraverseArr()) {
+                menuMngr.positionItem(item);
                 item.value.ent.drawMode = newDrawMode;
             }
-            */
         }
 
-
-        /*
         //Position the scroll bar =======================================================
-        Tree<MenuManager.MenuItem> scrollBar = items.get(scrollBar);
-        if(scrollBar != null) {
+        Tree<MenuItem> sb = menuMngr.getItem(scrollBar);
+        if(sb != null) {
             int barTop = top;
             int barBot = bottom - itemHeight + 6;
             int adjPs = (int)(top + (barBot - top) * scrollIndex);
             adjPs = MathUtils.clamp(adjPs, top, bottom - itemHeight + 6);
-
-            ((MenuManager.MenuItem)scrollBar.value).yOffset = (int)adjPs;
-            positionItem(scrollBar);
+            ((MenuItem)sb.value).yOffset = (int)adjPs;
+            menuMngr.positionItem(sb);
         }
-        
-         */
-
-
-
     }
 }
