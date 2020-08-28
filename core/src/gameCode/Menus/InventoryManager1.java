@@ -2,6 +2,7 @@ package gameCode.Menus;
 
 import gameCode.Infrastructure.Component;
 import gameCode.Infrastructure.Entity;
+import gameCode.Infrastructure.TextComponent;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
 
@@ -26,6 +27,17 @@ public class InventoryManager1 extends Component {
         public String tile;
         public String item;
         int itemCount;
+
+        public void setItemCount(int count) {
+            itemCount = count;
+
+            Entity ent = menu.getEnt(item);
+            if(ent == null) return;
+
+
+
+
+        }
         public itemNode() {
             itemCount = 0;
             tile = "";
@@ -36,6 +48,8 @@ public class InventoryManager1 extends Component {
     //lists and containers ====================================================
     ArrayList<itemNode> inventoryItems;
     itemNode[] currentItems;
+    itemNode[] craftingTray;
+    itemNode[] equippedItems;
     itemNode clipboard;
 
     //ids of menu items =======================================================
@@ -46,20 +60,21 @@ public class InventoryManager1 extends Component {
 
         type = "logic";
 
+        currentItems = new itemNode[currentNumItems];
+        inventoryItems = new ArrayList<itemNode>();
+        craftingTray = new itemNode[9];
+        equippedItems = new itemNode[4];
+        clipboard = new itemNode();
+
         menu = new MenuManager();
         scrollList = new ScrollList(menu);
-        scrollList.left = 34;
-        scrollList.top = 58;
-        scrollList.bottom = 308;
+        scrollList.left = 20;
+        scrollList.top = 57;
+        scrollList.bottom = 307;
         scrollList.itemHeight = 52;
         scrollList.itemWidth = 52;
         scrollList.width = 7;
         scrollList.padding = 1;
-
-        currentItems = new itemNode[currentNumItems];
-        inventoryItems = new ArrayList<itemNode>();
-        clipboard = new itemNode();
-
 
         //set the clipboard
         clipboard.tile = "[type: inventory][subType: clipboard]";
@@ -71,7 +86,7 @@ public class InventoryManager1 extends Component {
         scrollBar = "[type: inventory][subType: scrollBar]";
         menu.registerItem(background, "invenBackground", null, "[vertical: center][horizontal: center]", 0, 0, 4);
         menu.registerItem(foreground, "invenForeground", background, "[vertical: center][horizontal: left]", 0, 0, 7);
-        menu.registerItem(scrollBar, "scrollBarInventory", foreground, "[vertical: top][horizontal: center]", 36, 0, 8);
+        menu.registerItem(scrollBar, "scrollBarInventory", foreground, "[vertical: top][horizontal: center]", 84, 0, 8);
         scrollList.scrollBar = scrollBar;
 
         //inventory selection part ================================================
@@ -79,8 +94,8 @@ public class InventoryManager1 extends Component {
             StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryCurrentTray][index: ]");
             StringUtils.setField(nodeName, "index", StringUtils.toString(x));
 
-            int xPos = 22 + x*(itemWidth + padding);
-            int yPos = 15;
+            int xPos = 10 + x*(itemWidth + padding);
+            int yPos = 10;
 
             itemNode node = new itemNode();
             menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: bottom][horizontal: left]", xPos, yPos, 8);
@@ -88,7 +103,7 @@ public class InventoryManager1 extends Component {
             currentItems[x] = node;
         }
 
-        //this is for the items ===================================================
+        //Inventory Items  ========================================================
         for(int x = 0; x < maxInvenItems; x++) {
             StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryHidden][index: ]");
             StringUtils.setField(nodeName, "index", StringUtils.toString(x));
@@ -104,8 +119,42 @@ public class InventoryManager1 extends Component {
             inventoryItems.add(node);
         }
 
+        //Crafting Trays ==========================================================
+        for(int x = 0; x < craftingTray.length; x++) {
+            StringUtils nodeName = new StringUtils("[type: inventory][subType: craftingTray][index: ]");
+            StringUtils.setField(nodeName, "index", StringUtils.toString(x));
+
+            int xPos = -170 + padding + (x % 3)*(itemWidth + padding);
+            int yPos = 9 + padding + (x / 3)*(itemWidth + padding);
+
+            itemNode node = new itemNode();
+            node.tile = nodeName.data;
+
+            menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: bottom][horizontal: right]", xPos, yPos, 9);
+            craftingTray[x] = node;
+        }
+
+        //Equipped Trays ==========================================================
+        for(int x = 0; x < equippedItems.length; x++) {
+            StringUtils nodeName = new StringUtils("[type: inventory][subType: equippedTrays][index: ]");
+            StringUtils.setField(nodeName, "index", StringUtils.toString(x));
+
+            int xPos = -170 + padding + x*(itemWidth + padding);
+            int yPos = 46;
+
+            itemNode node = new itemNode();
+            node.tile = nodeName.data;
+
+            menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: top][horizontal: right]", xPos, yPos, 9);
+            equippedItems[x] = node;
+        }
+
         //this is also a test ======================================================
         addItem("[type: banana][amount: 1][preferredSlot: inventory][preferredSlotIndex: 1]");
+        addItem("[type: apple][amount: 1][preferredSlot: inventory][preferredSlotIndex: 8]");
+        addItem("[type: watermelon][amount: 1][preferredSlot: inventory][preferredSlotIndex: 2]");
+        addItem("[type: asparagus][amount: 1][preferredSlot: inventory][preferredSlotIndex: 3]");
+        addItem("[type: potato][amount: 1][preferredSlot: inventory][preferredSlotIndex: 4]");
     }
 
     public String createItem(String name) {
@@ -122,10 +171,14 @@ public class InventoryManager1 extends Component {
         String oldClipItem = clipboard.item;
 
         menu.setParent(node.item, clipboard.tile);
+        Entity nodeEnt = menu.getEnt(node.item);
+        if(nodeEnt != null) nodeEnt.z_pos = 10;
         clipboard.item = node.item;
 
         menu.setParent(oldClipItem, node.tile);
-        //menu.getEnt(oldClipItem).z_pos = menu.getEnt(node.tile).z_pos + 1;
+        Entity clipEnt = menu.getEnt(oldClipItem);
+        Entity tile = menu.getEnt(node.tile);
+        if(clipEnt != null && tile != null) clipEnt.z_pos = tile.z_pos + 1;
         node.item = oldClipItem;
     }
 
@@ -139,6 +192,18 @@ public class InventoryManager1 extends Component {
         }
 
         for(itemNode node: inventoryItems) {
+            if(scrollList.isLeftClicked(node.tile)) {
+                clipboardSwap(node);
+            }
+        }
+
+        for(itemNode node: craftingTray) {
+            if(scrollList.isLeftClicked(node.tile)) {
+                clipboardSwap(node);
+            }
+        }
+
+        for(itemNode node: equippedItems) {
             if(scrollList.isLeftClicked(node.tile)) {
                 clipboardSwap(node);
             }

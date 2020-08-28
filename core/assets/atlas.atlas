@@ -1,28 +1,49 @@
 
 atlas.png
-size: 64,64
+size: 128,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 items/apple
   rotate: false
-  xy: 2, 24
+  xy: 2, 31
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
+items/asparagus
+  rotate: false
+  xy: 2, 2
+  size: 23, 27
+  orig: 23, 27
+  offset: 0, 0
+  index: -1
 items/banana
   rotate: false
-  xy: 34, 20
+  xy: 34, 27
   size: 22, 34
   orig: 22, 34
   offset: 0, 0
   index: -1
+items/potato
+  rotate: false
+  xy: 58, 29
+  size: 16, 11
+  orig: 16, 11
+  offset: 0, 0
+  index: -1
 items/tile
   rotate: false
-  xy: 2, 2
+  xy: 89, 41
   size: 20, 20
   orig: 20, 20
+  offset: 0, 0
+  index: -1
+items/watermelon
+  rotate: false
+  xy: 58, 42
+  size: 29, 19
+  orig: 29, 19
   offset: 0, 0
   index: -1
 
@@ -110,15 +131,15 @@ repeat: none
 menus/Inventory/invenBackground
   rotate: false
   xy: 2, 39
-  size: 783, 424
-  orig: 783, 424
+  size: 659, 400
+  orig: 659, 400
   offset: 0, 0
   index: -1
 menus/Inventory/invenForeground
   rotate: false
-  xy: 787, 39
-  size: 783, 424
-  orig: 783, 424
+  xy: 663, 39
+  size: 659, 400
+  orig: 659, 400
   offset: 0, 0
   index: -1
 menus/Inventory/scrollBarInventory
