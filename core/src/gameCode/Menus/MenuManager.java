@@ -67,10 +67,11 @@ public class MenuManager {
         if(horizontal.equals("mouse")) ent.x_pos = InputAL.getMouseX();
     }
 
-    public void updateDrawMode(Tree<MenuItem> item, String newMode) {
-        ((MenuItem)item.value).ent.drawMode = newMode;
-        for(Tree<MenuItem> node: item.getChildren()) {
-            ((MenuItem)node.value).ent.drawMode = newMode;
+
+    public void updateDrawMode(String name, String newMode) {
+        if(!items.containsKey(name)) return;
+        for(Tree<MenuItem> node: items.get(name).getTraverseArr()) {
+            node.value.ent.drawMode = newMode;
         }
     }
 

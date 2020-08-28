@@ -21,6 +21,7 @@ public class InputAL {
 
         //Add all the alphabetical keys here =============
         keys.put("w", Input.Keys.W);
+        keys.put("i", Input.Keys.I);
 
         //Add all the numerical keys here ================
 

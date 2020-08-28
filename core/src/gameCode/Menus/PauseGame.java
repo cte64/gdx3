@@ -1,96 +1,85 @@
 package gameCode.Menus;
 
 import gameCode.Infrastructure.*;
+import gameCode.Utilities.StringUtils;
 
 public class PauseGame extends Component {
 
-
-    /*
-    private boolean toggle;
+    private boolean escToggle;
     MenuManager menu;
 
-    private class PauseMenu {
+    private String background;
+    private String backButton;
+    private String optionsButton;
+    private String saveAndQuit;
 
-      public MenuItem background;
-      public MenuItem backButton;
-      public MenuItem optionsButton;
-      public MenuItem saveAndQuit;
-      int start = 6;
-      int height = 43;
-
-      public PauseMenu() {
-          background = new MenuItem("[type: menu][subType: paused][name: background]", "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 4, 360, 180);
-          background.addText( new TextComponent("Paused", 10, "[vertical: top][horizontal: center]", 0, 0));
-
-          //Save and Quit button
-          saveAndQuit = new MenuItem("[type: menu][subType: paused][name: saveAndQuit]", "menuItem", background.treeNode, "[vertical: top][horizontal: center]", 0, start  + 1*height, 4, 350, 40);
-          saveAndQuit.addText( new TextComponent("Save And Quit", 10, "[vertical: center][horizontal: center]", 0, 0));
-
-          //Options buttons
-          optionsButton = new MenuItem("[type: menu][subType: paused][name: optionsButton]", "menuItem", background.treeNode, "[vertical: top][horizontal: center]", 0, start  +2*height, 4, 350, 40);
-          optionsButton.addText( new TextComponent("Options", 10, "[vertical: center][horizontal: center]", 0, 0));
-
-          //bottom buttons
-          backButton = new MenuItem("[type: menu][subType: paused][name: backButton]", "menuItem", background.treeNode, "[vertical: top][horizontal: center]", 0, start  + 3*height, 4, 350, 40);
-          backButton.addText( new TextComponent("Back", 10, "[vertical: center][horizontal: center]", 0, 0));
-      }
-      public void delete() { background.delete(); }
-    };
-
-    private PauseMenu pausemenu;
-
-     */
+    int start = 6;
+    int height = 43;
 
     public PauseGame() {
 
         type = "logic";
 
-        /*
-        toggle = false;
-        pausemenu = null;
         menu = new MenuManager();
+        escToggle = false;
 
-         */
-    }
-
-
-    /*
-    private void togglePause(boolean state) {
-
-        if(state) {
-            pausemenu = new PauseMenu();
-            State.setState("[action: paused]");
-        }
-
-        else {
-            pausemenu.delete();
-            pausemenu = null;
-            State.setState("[action: play]");
-        }
+        background = "[type: menu][subType: paused][name: background]";
+        backButton = "[type: menu][subType: paused][name: backButton]";
+        optionsButton = "[type: menu][subType: paused][name: optionsButton]";
+        saveAndQuit ="[type: menu][subType: paused][name: saveAndQuit]";
         
-    }
+        //Background
+        menu.registerItem(background, "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 4);
+        menu.addText(background, new TextComponent("Paused", 10, "[vertical: top][horizontal: center]", 0, 0));
 
-     */
+        //Save and Quit button
+        menu.registerItem(saveAndQuit, "menuItem", background, "[vertical: top][horizontal: center]", 0, start  + 1*height, 4);
+        menu.addText(saveAndQuit, new TextComponent("Save And Quit", 10, "[vertical: center][horizontal: center]", 0, 0));
+
+        //Options buttons
+        menu.registerItem(optionsButton, "menuItem", background, "[vertical: top][horizontal: center]", 0, start  +2*height, 4);
+        menu.addText(optionsButton, new TextComponent("Options", 10, "[vertical: center][horizontal: center]", 0, 0));
+
+        //bottom buttons
+        menu.registerItem(backButton, "menuItem", background, "[vertical: top][horizontal: center]", 0, start  + 3*height, 4);
+        menu.addText(backButton, new TextComponent("Back", 10, "[vertical: center][horizontal: center]", 0, 0));
+
+        //escToggle everything to hidden for now
+        menu.updateDrawMode(background, "hidden");
+    }
 
     public void update(Entity entity) {
 
 
-        /*
-        //back button update =====================================================================
-        if(pausemenu != null && pausemenu.backButton.isLeftClicked()) togglePause(false);
-        if(InputAL.isKeyPressed("esc") && !toggle) toggle = true;
-        if(!InputAL.isKeyPressed("esc") && toggle) {
-            toggle = false;
-            if(pausemenu == null) togglePause(true);
-            else togglePause(false);
+        Entity ent = menu.getEnt(background);
+        if(ent == null) return;
+        String currentMode = ent.drawMode;
+
+        String worldState = StringUtils.getField(State.getState(), "action");
+        if(worldState.equals("inventory")) return;
+
+        if(InputAL.isKeyPressed("esc") && !escToggle) escToggle = true;
+        if(!InputAL.isKeyPressed("esc") && escToggle) {
+            if(currentMode.equals("hud")) {
+                menu.updateDrawMode(background, "hidden");
+                State.setState("[action: play]");
+            }
+            if(currentMode.equals("hidden")) {
+                menu.updateDrawMode(background, "hud");
+                State.setState("[action: paused]");
+            }
+            escToggle = false;
         }
 
-        //Save and Quit ===========================================================================
-        if(pausemenu != null && pausemenu.saveAndQuit.isLeftClicked()) {
-            FileSystem.saveCurrentChunks();
-            State.mainMenu();
+        if(currentMode.equals("hud")) {
+            if(menu.isLeftClicked(backButton)) {
+                menu.updateDrawMode(background, "hidden");
+                State.setState("[action: play]");
+            }
+            if(menu.isLeftClicked(saveAndQuit)) {
+                FileSystem.saveCurrentChunks();
+                State.mainMenu();
+            }
         }
-
-         */
     }
 }

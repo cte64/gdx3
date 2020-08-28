@@ -3,247 +3,360 @@ package gameCode.Menus;
 import gameCode.Infrastructure.*;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
-import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
-
-
 
 public class InventoryManager extends Component {
 
 
-    private final int invenX = 8;
-    private final int invenY = 5;
+    //constants and lucky numbers =============================================
+    private final int currentNumItems = 8;
+    private final int itemWidth = 52;
     private final int padding = 1;
-    int selected;
-    int fontSize;
-    String pauseState;
+    private int maxInvenItems = 56;
 
+
+    //important stuff =========================================================
     MenuManager menu;
-
+    ScrollList scrollList;
+    String scrollBar;
     private class itemNode {
         public String tile;
         public String item;
         int itemCount;
+
+        public void setItemCount(int count) {
+            itemCount = count;
+
+            Entity ent = menu.getEnt(item);
+            if(ent == null) return;
+
+
+
+
+        }
         public itemNode() {
             itemCount = 0;
             tile = "";
             item = "";
         }
     }
+    private boolean iToggle;
 
-    ArrayList<itemNode> nodes = new ArrayList<itemNode>();
-    ArrayList<itemNode> crafting = new ArrayList<itemNode>();
-    ArrayList<String> uniqueNames = new ArrayList<String>();
-    itemNode craftedItem;
+    //lists and containers ====================================================
+    ArrayList<itemNode> inventoryItems;
+    itemNode[] currentItems;
+    itemNode[] craftingTray;
+    itemNode[] equippedItems;
     itemNode clipboard;
 
-    private String background;
+    //ids of menu items =======================================================
+    String background;
+    String foreground;
 
     public InventoryManager() {
+
         type = "logic";
 
-        int width = 52;
-        menu = new MenuManager();
-        pauseState = StringUtils.getField(State.getState(), "action");
-
-
-        //unique names =====================================================================================
-        int numNames = (invenX * invenY);
-        for(int x = 0; x < numNames; x++) {
-            String name = StringUtils.toString(x);
-            uniqueNames.add(name);
-        }
-
-        //background that anchors all the items
-        background = "[type: inventory][subType: background]";
-        menu.registerItem(background, null, null, "[vertical: bottom][horizontal: left]", 0, 0, 4);
-
-        //Inventory items ============================================================================
-        for(int y = 0; y<invenY; y++) {
-        for(int x = 0; x<invenX; x++) {
-            itemNode node = new itemNode();
-
-
-            StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryTray][xPos: ][yPos: ]");
-            StringUtils.setField(nodeName, "xPos", StringUtils.toString(x));
-            StringUtils.setField(nodeName, "yPos", StringUtils.toString(y));
-
-            int xPos = padding + x*(padding + width);
-            int yPos = padding + y*(padding + width);
-
-
-            menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: bottom][horizontal: left]", xPos, yPos, 5);
-            node.tile = nodeName.data;
-            nodes.add(node);
-
-        }}
-
-
-        addItem("[type: item][subType: banana]", 1, new myPair(0, 0));
-
-
-
-        /*
-
-        //Crafting slots =============================================================================
-        for(int y = 0; y<3; y++) {
-        for(int x = 0; x<3; x++) {
-            itemNode node = new itemNode();
-
-            StringUtils nodeName = new StringUtils("[type: inventory][subType: craftingTray][xPos: ][yPos: ]");
-            StringUtils.setField(nodeName, "xPos", StringUtils.toString(x));
-            StringUtils.setField(nodeName, "yPos", StringUtils.toString(y));
-
-            int xPos = padding + (x + invenX)*(padding + width);
-            int yPos = padding + y*(padding + width);
-
-            node.menuItem = new MenuItem(nodeName.data, "inventoryTray", background.treeNode, "[vertical: bottom][horizontal: left]", xPos, yPos, 5, 52, 52);
-            crafting.add(node);
-        }}
-
-        //Crafted Item ================================================================================
-        craftedItem = new itemNode();
-        StringUtils nodeName = new StringUtils("[type: inventory][subType: craftedTray][details: ]");
-        int xPos = padding + (3 + invenX)*(padding + width);
-        int yPos = padding;
-        craftedItem.menuItem = new MenuItem(nodeName.data, "inventoryTray", background.treeNode, "[vertical: bottom][horizontal: left]", xPos, yPos, 5, 52, 52);
-
-        //Clipboard ===================================================================================
+        currentItems = new itemNode[currentNumItems];
+        inventoryItems = new ArrayList<itemNode>();
+        craftingTray = new itemNode[9];
+        equippedItems = new itemNode[4];
         clipboard = new itemNode();
 
-         */
+        iToggle = false;
+        menu = new MenuManager();
+        scrollList = new ScrollList(menu);
+        scrollList.left = 20;
+        scrollList.top = 57;
+        scrollList.bottom = 307;
+        scrollList.itemHeight = 52;
+        scrollList.itemWidth = 52;
+        scrollList.width = 7;
+        scrollList.padding = 1;
+
+        //set the clipboard
+        clipboard.tile = "[type: inventory][subType: clipboard]";
+        menu.registerItem(clipboard.tile, null, null, "[vertical: mouse][horizontal: mouse]", 0, 0, 9);
+
+        //set up the background and foreGround
+        background = "[type: inventory][subType: background]";
+        foreground = "[type: inventory][subType: foreground]";
+        scrollBar = "[type: inventory][subType: scrollBar]";
+        menu.registerItem(background, "invenBackground", null, "[vertical: center][horizontal: center]", 0, 0, 4);
+        menu.registerItem(foreground, "invenForeground", background, "[vertical: center][horizontal: left]", 0, 0, 7);
+        menu.registerItem(scrollBar, "scrollBarInventory", foreground, "[vertical: top][horizontal: center]", 84, 0, 8);
+        scrollList.scrollBar = scrollBar;
+
+        //inventory selection part ================================================
+        for(int x = 0; x < currentNumItems; x++) {
+            StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryCurrentTray][index: ]");
+            StringUtils.setField(nodeName, "index", StringUtils.toString(x));
+
+            int xPos = 10 + x*(itemWidth + padding);
+            int yPos = 10;
+
+            itemNode node = new itemNode();
+            menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: bottom][horizontal: left]", xPos, yPos, 8);
+            node.tile = nodeName.data;
+            currentItems[x] = node;
+        }
+
+        //Inventory Items  ========================================================
+        for(int x = 0; x < maxInvenItems; x++) {
+            StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryHidden][index: ]");
+            StringUtils.setField(nodeName, "index", StringUtils.toString(x));
+
+            int xPos = scrollList.left + x*(itemWidth + padding);
+            int yPos = scrollList.top;
+
+            itemNode node = new itemNode();
+            node.tile = nodeName.data;
+
+            menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: top][horizontal: left]", xPos, yPos, 5);
+            scrollList.addItem(nodeName.data);
+            inventoryItems.add(node);
+        }
+
+        //Crafting Trays ==========================================================
+        for(int x = 0; x < craftingTray.length; x++) {
+            StringUtils nodeName = new StringUtils("[type: inventory][subType: craftingTray][index: ]");
+            StringUtils.setField(nodeName, "index", StringUtils.toString(x));
+
+            int xPos = -170 + padding + (x % 3)*(itemWidth + padding);
+            int yPos = 9 + padding + (x / 3)*(itemWidth + padding);
+
+            itemNode node = new itemNode();
+            node.tile = nodeName.data;
+
+            menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: bottom][horizontal: right]", xPos, yPos, 9);
+            craftingTray[x] = node;
+        }
+
+        //Equipped Trays ==========================================================
+        for(int x = 0; x < equippedItems.length; x++) {
+            StringUtils nodeName = new StringUtils("[type: inventory][subType: equippedTrays][index: ]");
+            StringUtils.setField(nodeName, "index", StringUtils.toString(x));
+
+            int xPos = -170 + padding + x*(itemWidth + padding);
+            int yPos = 46;
+
+            itemNode node = new itemNode();
+            node.tile = nodeName.data;
+
+            menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: top][horizontal: right]", xPos, yPos, 9);
+            equippedItems[x] = node;
+        }
+
+
+        //this is also a test ======================================================
+        addItem("[type: banana][amount: 1][preferredSlot: inventory][preferredSlotIndex: 1]");
+        addItem("[type: apple][amount: 1][preferredSlot: inventory][preferredSlotIndex: 8]");
+        addItem("[type: watermelon][amount: 1][preferredSlot: inventory][preferredSlotIndex: 2]");
+        addItem("[type: asparagus][amount: 1][preferredSlot: inventory][preferredSlotIndex: 3]");
+        addItem("[type: potato][amount: 1][preferredSlot: inventory][preferredSlotIndex: 4]");
+
+
+        //Hide all the items by default ============================================
+        menu.updateDrawMode(background, "hidden");
     }
 
     public String createItem(String name) {
 
         StringUtils newName = new StringUtils("[type: inventoryItem][subType: ][id: ]");
         StringUtils.setField(newName, "subType", name);
-        StringUtils.setField(newName, "id", uniqueNames.get(0));
-        uniqueNames.remove(0);
 
-        menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: left]", 0, 0, 8);
+        menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: center]", 0, 0, 6);
+        menu.addText(newName.data, new TextComponent("0", 10, "[vertical: bottom][horizontal: center]", 0, 15));
+
         return newName.data;
     }
 
-    public void addItem(String name, int amount, myPair<Integer, Integer> slot) {
+    private void clipboardSwap(itemNode node) {
 
-        String nameType = StringUtils.getField(name, "subType");
-        amount = MathUtils.clamp(amount, 1, 1000);
+        String oldClipItem = clipboard.item;
 
-        int slotX = slot.first;
-        int slotY = slot.second;
+        menu.setParent(node.item, clipboard.tile);
+        Entity nodeEnt = menu.getEnt(node.item);
+        if(nodeEnt != null) nodeEnt.z_pos = 10;
+        clipboard.item = node.item;
 
-        if (slotX < 0 || slotY < 0) {
-            for (int y = 0; y < invenY; y++) {
-            for (int x = 0; x < invenX; x++) {
-                String itemSubType = StringUtils.getField(nodes.get(y * invenX + x).item, "subType");
-                if (nameType.equals(itemSubType)) {
-                    nodes.get(y * invenX + x).itemCount += amount;
-                    return;
-                }
-            }}
-
-            outer:
-            for (int y = 0; y < invenY; y++) {
-            for (int x = 0; x < invenX; x++) {
-                if (nodes.get(y * invenX + x).item == null) {
-                    slotX = x;
-                    slotY = y;
-                    break outer;
-                }
-            }}
-
-            return;
-        }
-
-
-        if (nodes.get(slotY * invenX + slotX).item == "" && nodes.get(slotY * invenX + slotX).itemCount == 0) {
-            nodes.get(slotY * invenX + slotX).item = createItem(nameType);
-            nodes.get(slotY * invenX + slotX).itemCount = amount;
-            menu.setParent(nodes.get(slotY * invenX + slotX).item, nodes.get(slotY * invenX + slotX).tile);
-        }
-    }
-
-    public void pauseAction() {
-
-
-            /*
-        String newAction = StringUtils.getField(State.getState(), "action");
-        if(!pauseState.equals(newAction)) {
-            pauseState = newAction;
-
-            //Hide Inventory Items ===================================================
-            for(int y = 1; y<invenY; y++) {
-            for(int x = 0; x<invenX; x++) {
-                MenuItem nodePtr = nodes.get((y * invenX) + x).tile;
-                if(pauseState.equals("play")) nodePtr.updateDrawMode("hidden");
-                if(pauseState.equals("paused")) nodePtr.updateDrawMode("hud");
-            }}
-
-            //Inventory Items ========================================================
-            for(int y = 1; y<invenY; y++) {
-                for(int x = 0; x<invenX; x++) {
-
-                    Entity *tray = world.getEntByName(nodes[y][x].tray);
-                    if(tray != nullptr) {
-                        if(world.currentState == "play") tray->drawable = false;
-                        if(world.currentState == "paused") tray->drawable = true;
-                    }
-
-                    Entity *item = world.getEntByName(nodes[y][x].itemType);
-                    if(item != nullptr) {
-                        if(world.currentState == "play") item->drawable = false;
-                        if(world.currentState == "paused") item->drawable = true;
-                    }
-                }
-            }
-
-
-
-
-
-        }
-             */
-
-    }
-
-    private void switchWithClipboard(itemNode node) {
-
-
-
-        //itemNode temp = node;
-
-
-
-
-
-
+        menu.setParent(oldClipItem, node.tile);
+        Entity clipEnt = menu.getEnt(oldClipItem);
+        Entity tile = menu.getEnt(node.tile);
+        if(clipEnt != null && tile != null) clipEnt.z_pos = tile.z_pos + 1;
+        node.item = oldClipItem;
     }
 
     private void leftClick() {
 
 
-        /*
-        for(itemNode node: nodes) {
-            if(node.tile.isLeftClicked()) {
-                switchWithClipboard(node);
+        for(itemNode node: currentItems) {
+            if(menu.isLeftClicked(node.tile)) {
+                clipboardSwap(node);
             }
         }
 
+        for(itemNode node: inventoryItems) {
+            if(scrollList.isLeftClicked(node.tile)) {
+                clipboardSwap(node);
+            }
+        }
+
+        for(itemNode node: craftingTray) {
+            if(scrollList.isLeftClicked(node.tile)) {
+                clipboardSwap(node);
+            }
+        }
+
+        for(itemNode node: equippedItems) {
+            if(scrollList.isLeftClicked(node.tile)) {
+                clipboardSwap(node);
+            }
+        }
+
+    }
+
+    public void addItem(String itemToAdd) {
+
+
+        /*FORMAT ======= [type: ][amount: ][preferredSlot: ][preferredSlotIndex: ]
+         preferredSlot can be "current" or "inventory"
+         preferredSlotIndex can be -1 (take first available spot) or any number 0 and above
          */
+
+        String typeToAdd = StringUtils.getField(itemToAdd, "type");
+        String preferredSlot = StringUtils.getField(itemToAdd, "preferredSlot");
+
+        String amountStr = StringUtils.getField(itemToAdd, "amount");
+        int amount = MathUtils.clamp(StringUtils.stringToInt(amountStr), 0, 10000);
+
+        String slotStr = StringUtils.getField(itemToAdd, "preferredSlotIndex");
+        int preferredSlotIndex = MathUtils.clamp(StringUtils.stringToInt(slotStr), -1, 1000);
+
+        /*
+
+        This is for when preferredSlot is "current"
+
+        If preferredSlotIndex is 0 or above, check to see if spot at preferredSlot and preferredSlotIndex is taken.
+        If not taken put item there and return
+        If taken by item of the same type, increment slot by amount and return
+        If taken by item of different type, set preferredSlotIndex to -1 and call recursively
+
+        If preferredSlotIndex is -1, loop from beginning to end and see if there are any items of same type.
+        If there are, increment that slot by amount and return.
+        If there are no items of the same type, loop from beginning and find first empty spot, put item there, and return
+        If there are no empty spots, then set preferredSlot to "inventory" and preferredSlotIndex to -1 and call recursively
+         */
+
+
+        if(preferredSlot.equals("current")) {
+            if(preferredSlotIndex >= 0 && preferredSlotIndex < currentNumItems) {
+                String slotType = StringUtils.getField(currentItems[preferredSlotIndex].item, "subType");
+                if(slotType.equals("")) {
+                    String newName = createItem(typeToAdd);
+                    currentItems[preferredSlotIndex].item = newName;
+                    menu.setParent(newName, currentItems[preferredSlotIndex].tile);
+                    return;
+                }
+                if(slotType.equals(itemToAdd)) {
+                    currentItems[preferredSlotIndex].itemCount++;
+                    return;
+                }
+                if(!slotType.equals(itemToAdd)){
+                    String newStr = StringUtils.setField(itemToAdd, "preferredSlotIndex", "-1");
+                    addItem(newStr);
+                    return;
+                }
+            }
+            if(preferredSlotIndex == -1) {
+                for(itemNode node: currentItems) {
+                    String nodeType = StringUtils.getField(node.item, "subType");
+                    if(nodeType.equals(typeToAdd)) {
+                        node.itemCount += amount;
+                        return;
+                    }
+                }
+                for(itemNode node: currentItems) {
+                    if(node.item.equals("")) {
+                        String newName = createItem(typeToAdd);
+                        node.item = newName;
+                        menu.setParent(newName, node.tile);
+                        return;
+                    }
+                }
+                String newName = StringUtils.setField(itemToAdd, "preferredSlot", "inventory");
+                addItem(newName);
+                return;
+            }
+        }
+
+
+        /*
+        This is for when preferredSlot is "inventory"
+
+        If preferredSlotIndex is 0 and above, then check to see if spot at preferredSlotIndex in "inventory" is taken
+        If it is not taken put item there and return
+        If it is taken by item of the same type, increment by "amount" and return
+        If it is taken by item of different type set preferredSlotIndex to -1 and call recursively
+
+        If preferredSlotIndex is -1, then loop everything to find items of same type
+        If we find slot with item of the same type, increment by "amount" and return
+        If not, then append to inventoryList
+         */
+
+
+        if(preferredSlot.equals("inventory")) {
+
+            if(preferredSlotIndex >= 0 && preferredSlotIndex < inventoryItems.size()) {
+                String invenType = StringUtils.getField(inventoryItems.get(preferredSlotIndex).item, "subType");
+                if(invenType.equals("")) {
+                    String newName = createItem(typeToAdd);
+                    inventoryItems.get(preferredSlotIndex).item = newName;
+                    menu.setParent(newName, inventoryItems.get(preferredSlotIndex).tile);
+                    return;
+                }
+
+                if(invenType.equals(typeToAdd)) {
+                    inventoryItems.get(preferredSlotIndex).itemCount += amount;
+                    return;
+                }
+            }
+
+            if(preferredSlotIndex == -1) {
+
+            }
+        }
 
     }
 
     public void update(Entity entity) {
 
 
-        pauseAction();
-        leftClick();
+        Entity ent = menu.getEnt(background);
+        if(ent == null) return;
 
+        String worldState = StringUtils.getField(State.getState(), "action");
 
+        if(!worldState.equals("paused")) {
+            if(InputAL.isKeyPressed("i") && !iToggle) iToggle = true;
+            if(!InputAL.isKeyPressed("i") && iToggle) {
+                iToggle = false;
+                if(ent.drawMode.equals("hidden")) {
+                    menu.updateDrawMode(background, "hud");
+                    State.setState("[action: inventory]");
+                }
+                else if(ent.drawMode.equals("hud")) {
+                    menu.updateDrawMode(background, "hidden");
+                    State.setState("[action: play]");
+                }
+            }
+        }
 
+        if(ent.drawMode.equals("hud")) {
+            scrollList.updateList2();
+            leftClick();
+            menu.updateItem(clipboard.tile);
+        }
     }
-
-
 }

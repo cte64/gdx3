@@ -35,7 +35,7 @@ public class MakeEntity {
             ent.z_pos = 3;
             ent.addComponent(new HeroInput());
             ent.addComponent(new PlaceTerrain());
-            ent.addComponent(new InventoryManager1());
+            ent.addComponent(new InventoryManager());
             World.setCamera(ent);
             World.addSiftingFrame(ent, 0, 0);
         }
