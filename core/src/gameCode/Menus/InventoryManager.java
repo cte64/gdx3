@@ -3,13 +3,14 @@ package gameCode.Menus;
 import gameCode.Infrastructure.*;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class InventoryManager extends Component {
 
     //constants and lucky numbers =============================================
-    private final int currentNumItems = 8;
+    private final int currentNumItems = 7;
     private final int itemWidth = 52;
     private final int padding = 1;
     private int maxInvenItems = 56;
@@ -19,21 +20,21 @@ public class InventoryManager extends Component {
     ScrollList scrollList;
     String scrollBar;
     String textBack;
+    String currentBackground;
     private class itemNode {
         public String tile;
         public String item;
-        int itemCount;
+        private int itemCount;
 
         public void setItemCount(int count) {
             itemCount = count;
-
             Entity ent = menu.getEnt(item);
             if(ent == null) return;
-
-
-
-
+            TextComponent tc = (TextComponent) ent.getComponent("text");
+            if(tc != null) tc.setText(StringUtils.toString(count));
         }
+        public int getItemCount() { return itemCount; }
+
         public itemNode() {
             itemCount = 0;
             tile = "";
@@ -86,29 +87,27 @@ public class InventoryManager extends Component {
         foreground = "[type: inventory][subType: foreground]";
         scrollBar = "[type: inventory][subType: scrollBar]";
         textBack = "[type: inventory][subType: textBack]";
+        currentBackground = "[type: inventory][subType: currentBackground]";
         menu.registerItem(background, "invenBack", null, "[vertical: center][horizontal: center]", 0, 0, 4);
         menu.registerItem(foreground, "invenFront", background, "[vertical: center][horizontal: left]", 0, 0, 7);
         menu.registerItem(scrollBar, "invenScrollBar", foreground, "[vertical: top][horizontal: center]", 50, 0, 8);
         menu.registerItem(textBack, "invenTextBack", foreground, "[vertical: top][horizontal: right]", -10, 25, 8);
+        menu.registerItem(currentBackground, "currentBackground", null, "[vertical: bottom][horizontal: center]", 0, 0, 6);
         scrollList.scrollBar = scrollBar;
 
         //inventory selection part ================================================
-
-        /*
         for(int x = 0; x < currentNumItems; x++) {
             StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryCurrentTray][index: ]");
             StringUtils.setField(nodeName, "index", StringUtils.toString(x));
 
-            int xPos = 10 + x*(itemWidth + padding);
-            int yPos = 10;
+            int xPos = 2 + x*(itemWidth + padding);
+            int yPos = 2;
 
             itemNode node = new itemNode();
-            menu.registerItem(nodeName.data, "inventoryTray", null, "[vertical: bottom][horizontal: left]", xPos, yPos, 8);
+            menu.registerItem(nodeName.data, "inventoryTray", currentBackground, "[vertical: bottom][horizontal: left]", xPos, yPos, 7);
             node.tile = nodeName.data;
             currentItems[x] = node;
         }
-
-         */
 
         //Inventory Items  ========================================================
         for(int x = 0; x < maxInvenItems; x++) {
@@ -161,18 +160,11 @@ public class InventoryManager extends Component {
         craftedItem.tile = "[type: inventory][subType: craftedItem]";
         menu.registerItem(craftedItem.tile, "inventoryTray", foreground, "[vertical: bottom][horizontal: right]", -10, 80, 9);
 
-
-
-
-        /*
         //this is also a test ======================================================
         addItem("[type: banana][amount: 1][preferredSlot: inventory][preferredSlotIndex: 1]");
-        addItem("[type: apple][amount: 1][preferredSlot: inventory][preferredSlotIndex: 8]");
         addItem("[type: watermelon][amount: 1][preferredSlot: inventory][preferredSlotIndex: 2]");
         addItem("[type: asparagus][amount: 1][preferredSlot: inventory][preferredSlotIndex: 3]");
         addItem("[type: potato][amount: 1][preferredSlot: inventory][preferredSlotIndex: 4]");
-
-         */
 
         //Hide all the items by default ============================================
         menu.updateDrawMode(background, "hidden");
@@ -205,36 +197,35 @@ public class InventoryManager extends Component {
         node.item = oldClipItem;
     }
 
-    private void leftClick() {
-
-
-        /*
+    private void leftClick(String trays) {
 
         for(itemNode node: currentItems) {
-            if(menu.isLeftClicked(node.tile)) {
+            if(menu.isLeftClicked(node.tile))
                 clipboardSwap(node);
-            }
         }
 
+        if(!trays.equals("hud")) return;
+
         for(itemNode node: inventoryItems) {
-            if(scrollList.isLeftClicked(node.tile)) {
+            if(scrollList.isLeftClicked(node.tile))
                 clipboardSwap(node);
-            }
         }
 
         for(itemNode node: craftingTray) {
-            if(scrollList.isLeftClicked(node.tile)) {
+            if(menu.isLeftClicked(node.tile))
                 clipboardSwap(node);
-            }
         }
 
         for(itemNode node: equippedItems) {
-            if(scrollList.isLeftClicked(node.tile)) {
+            if(menu.isLeftClicked(node.tile))
                 clipboardSwap(node);
-            }
         }
+    }
 
-         */
+    private void rightClick(String trays) {
+
+
+
 
     }
 
@@ -277,11 +268,13 @@ public class InventoryManager extends Component {
                 if(slotType.equals("")) {
                     String newName = createItem(typeToAdd);
                     currentItems[preferredSlotIndex].item = newName;
+                    currentItems[preferredSlotIndex].setItemCount(amount);
                     menu.setParent(newName, currentItems[preferredSlotIndex].tile);
                     return;
                 }
                 if(slotType.equals(itemToAdd)) {
-                    currentItems[preferredSlotIndex].itemCount++;
+                    int newCount = currentItems[preferredSlotIndex].itemCount + 1;
+                    currentItems[preferredSlotIndex].setItemCount(newCount);
                     return;
                 }
                 if(!slotType.equals(itemToAdd)){
@@ -334,12 +327,14 @@ public class InventoryManager extends Component {
                 if(invenType.equals("")) {
                     String newName = createItem(typeToAdd);
                     inventoryItems.get(preferredSlotIndex).item = newName;
+                    inventoryItems.get(preferredSlotIndex).setItemCount(amount);
                     menu.setParent(newName, inventoryItems.get(preferredSlotIndex).tile);
                     return;
                 }
 
                 if(invenType.equals(typeToAdd)) {
-                    inventoryItems.get(preferredSlotIndex).itemCount += amount;
+                    int newAmount = inventoryItems.get(preferredSlotIndex).getItemCount() + amount;
+                    inventoryItems.get(preferredSlotIndex).setItemCount(newAmount);
                     return;
                 }
             }
@@ -357,7 +352,6 @@ public class InventoryManager extends Component {
         if(ent == null) return;
 
         String worldState = StringUtils.getField(State.getState(), "action");
-
         if(!worldState.equals("paused")) {
             if(InputAL.isKeyPressed("i") && !iToggle) iToggle = true;
             if(!InputAL.isKeyPressed("i") && iToggle) {
@@ -373,10 +367,15 @@ public class InventoryManager extends Component {
             }
         }
 
+        leftClick(ent.drawMode);
+        menu.updateItem(clipboard.tile);
+
+
         if(ent.drawMode.equals("hud")) {
             scrollList.updateList2();
-            leftClick();
-            menu.updateItem(clipboard.tile);
         }
+
+
+
     }
 }
