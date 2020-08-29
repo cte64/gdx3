@@ -64,9 +64,6 @@ public class MakeEntity {
             ent.addComponent(new PauseGame());
         }
 
-
-
-
         return ent;
     }
 }

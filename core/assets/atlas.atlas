@@ -128,25 +128,32 @@ size: 2048,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-menus/Inventory/invenBackground
+menus/Inventory/invenBack
   rotate: false
-  xy: 2, 39
-  size: 659, 400
-  orig: 659, 400
+  xy: 2, 44
+  size: 619, 429
+  orig: 619, 429
   offset: 0, 0
   index: -1
-menus/Inventory/invenForeground
+menus/Inventory/invenFront
   rotate: false
-  xy: 663, 39
-  size: 659, 400
-  orig: 659, 400
+  xy: 623, 44
+  size: 619, 429
+  orig: 619, 429
   offset: 0, 0
   index: -1
-menus/Inventory/scrollBarInventory
+menus/Inventory/invenScrollBar
   rotate: false
   xy: 2, 2
-  size: 19, 35
-  orig: 19, 35
+  size: 18, 40
+  orig: 18, 40
+  offset: 0, 0
+  index: -1
+menus/Inventory/invenTextBack
+  rotate: false
+  xy: 1244, 262
+  size: 220, 211
+  orig: 220, 211
   offset: 0, 0
   index: -1
 
