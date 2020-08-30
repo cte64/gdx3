@@ -15,6 +15,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import static com.badlogic.gdx.graphics.Pixmap.Format.RGB888;
+import static com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888;
+
 public class Graphics implements Disposable {
 
     private static TextureAtlas spriteAtlas;
@@ -84,7 +87,7 @@ public class Graphics implements Disposable {
             int xPos = padding + x*(padding + World.tileSize);
             int yPos = padding + y*(padding + World.tileSize);
             String name = "tileId: " + StringUtils.toString(x) + "." + StringUtils.toString(y);
-            Texture newTexture = new Texture(World.tileSize, World.tileSize, Pixmap.Format.RGB888);
+            Texture newTexture = new Texture(World.tileSize, World.tileSize, RGB888);
             tileAtlas.addRegion(name, newTexture, xPos, yPos, World.tileSize, World.tileSize);
             TextureRegion region = tileAtlas.findRegion(name);
             Sprite sprite = new Sprite(region);
@@ -166,10 +169,24 @@ public class Graphics implements Disposable {
     }
 
     public static void updateSprite(String name, Pixmap image) {
+
+        int z = World.tileSize;
+        Pixmap layOver = new Pixmap(z, z, RGBA8888);
+        Color color = new Color(0.0f, 0.5f, 0, 0.5f);
+
+        for(int y = 0; y < z; y++) {
+            for(int x = 0; x < z; x++) {
+                layOver.drawPixel(x, y, color.toIntBits());
+            }
+        }
+
+        Texture dt = new Texture(60, 60, Pixmap.Format.RGBA8888);
+        image.drawPixmap(layOver, 0, 0);
+        dt.draw(image, 0, 0);
+
         TextureRegion region = tileAtlas.findRegion(name);
-        Texture newTexture = new Texture(image);
-        region.setTexture(newTexture);
-        spriteMap.put(name, new Sprite(newTexture));
+        region.setTexture(dt);
+        spriteMap.put(name, new Sprite(dt));
     }
 
     public Graphics() {
@@ -226,8 +243,12 @@ public class Graphics implements Disposable {
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
 
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFuncSeparate(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA, Gdx.gl.GL_ONE, Gdx.gl.GL_ZERO);
+
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 
         batch.begin();
             for(Entity ent: World.getEntByZIndex()) {
