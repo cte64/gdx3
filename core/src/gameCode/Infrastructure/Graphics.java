@@ -33,6 +33,8 @@ public class Graphics implements Disposable {
     private static BitmapFont font;
     private static GlyphLayout layout;
 
+    private RayHandler rayHandler;
+
     public static float light = 0.0f;
 
     //this is for sorting them by zPos
