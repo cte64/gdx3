@@ -33,6 +33,8 @@ public class Graphics implements Disposable {
     private static BitmapFont font;
     private static GlyphLayout layout;
 
+    public static float light = 0.0f;
+
     //this is for sorting them by zPos
     public static class sorter implements Comparator<Entity>
     {
@@ -170,23 +172,16 @@ public class Graphics implements Disposable {
 
     public static void updateSprite(String name, Pixmap image) {
 
-        int z = World.tileSize;
-        Pixmap layOver = new Pixmap(z, z, RGBA8888);
-        Color color = new Color(0.0f, 0.5f, 0, 0.5f);
-
-        for(int y = 0; y < z; y++) {
-            for(int x = 0; x < z; x++) {
-                layOver.drawPixel(x, y, color.toIntBits());
-            }
-        }
 
         Texture dt = new Texture(60, 60, Pixmap.Format.RGBA8888);
-        image.drawPixmap(layOver, 0, 0);
         dt.draw(image, 0, 0);
 
+
         TextureRegion region = tileAtlas.findRegion(name);
+
         region.setTexture(dt);
         spriteMap.put(name, new Sprite(dt));
+
     }
 
     public Graphics() {
@@ -243,8 +238,8 @@ public class Graphics implements Disposable {
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFuncSeparate(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA, Gdx.gl.GL_ONE, Gdx.gl.GL_ZERO);
+       // Gdx.gl.glEnable(GL20.GL_BLEND);
+        //Gdx.gl.glBlendFuncSeparate(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA, Gdx.gl.GL_ONE, Gdx.gl.GL_ZERO);
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -252,6 +247,8 @@ public class Graphics implements Disposable {
 
         batch.begin();
             for(Entity ent: World.getEntByZIndex()) {
+
+                batch.setColor(ent.shade, ent.shade, ent.shade, 1.0f);
                 if(ent.drawMode == "normal" && spriteMap.containsKey(ent.spriteName)) {
                     batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);
                 }
@@ -260,6 +257,9 @@ public class Graphics implements Disposable {
 
 
         hudBatch.begin();
+
+
+
             for(Entity ent: World.getEntByZIndex()) {
 
                 if(ent.drawMode != "hud") continue;
@@ -273,6 +273,7 @@ public class Graphics implements Disposable {
                         font.draw(hudBatch, text.getText(), text.getXPos(), text.getYPos());
                     }
                 }
+
             }
         hudBatch.end();
 

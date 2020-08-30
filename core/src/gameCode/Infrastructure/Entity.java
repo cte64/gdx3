@@ -1,4 +1,6 @@
 package gameCode.Infrastructure;
+import gameCode.Utilities.MathUtils;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -10,12 +12,16 @@ public class Entity {
     public boolean moveable, drawable, markForDeletion, flip, cameraBound;
     public String spriteName, drawMode, entityName;
 
+    public float shade;
+
     ArrayList<Component> components;
 
     public float width;
     public float height;
 
     public Entity() {
+
+        shade = 0.5f;
         x_pos = 0.0f;
         y_pos = 0.0f;
         angle = 0.0f;
@@ -50,6 +56,16 @@ public class Entity {
             if(comp.type == type)
                 comp.update(this);
         }
+
+
+        float center = World.getNumPixels()/2;
+
+        float dist = MathUtils.mag(center, center, x_pos, y_pos);
+
+        shade = ((dist - 1500) / 1500.0f);
+
+        shade = MathUtils.clamp(shade, 0.0f, 1.0f);
+
     }
 
     public Component getComponent(String type) {

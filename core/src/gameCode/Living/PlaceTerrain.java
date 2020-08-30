@@ -32,6 +32,13 @@ public class PlaceTerrain extends Component {
                 myPair<Integer, Integer> val = InputAL.getMouseAbs();
                 ArrayList<myPair<Integer, Integer>> pixels = new ArrayList<myPair<Integer, Integer>>();
 
+
+
+
+
+
+                /*
+
                 for(int y = -width; y < width; y++) {
                 for(int x = -width; x < width; x++) {
                     float mag = MathUtils.mag(x, y, 0, 0);
@@ -43,6 +50,8 @@ public class PlaceTerrain extends Component {
                 }}
 
                 ModifyTerrain.addPixels(pixels);
+
+                 */
             }
         }
 
