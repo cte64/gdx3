@@ -1,5 +1,6 @@
 package gameCode.Infrastructure;
 
+import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
@@ -7,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import gameCode.Utilities.StringUtils;
@@ -37,11 +40,16 @@ public class Graphics implements Disposable {
     private static BitmapFont font;
     private static GlyphLayout layout;
 
+    private static Body player;
+
     private static RayHandler rayHandler;
     private static com.badlogic.gdx.physics.box2d.World world;
     private static Box2DDebugRenderer b2d;
+    private static PointLight myLight;
 
     public static float light = 0.0f;
+
+    private static float xPos = 0;
 
     //this is for sorting them by zPos
     public static class sorter implements Comparator<Entity> {
@@ -58,9 +66,11 @@ public class Graphics implements Disposable {
 
         //Ray Handler ============================================================================
         world = new com.badlogic.gdx.physics.box2d.World(new Vector2(0, 0), false);
-        rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(1.9f);
         b2d = new Box2DDebugRenderer();
+        rayHandler = new RayHandler(world);
+        rayHandler.setAmbientLight(0.5f);
+        myLight = new PointLight(rayHandler, 100, Color.WHITE, 10, 0, 0);
+        player = new Body(world, );
 
 
 
@@ -242,44 +252,31 @@ public class Graphics implements Disposable {
         return new Vector2(width, height);
     }
 
-    public static void update(float deltaTime) {
-
-
-
-
-        Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+    private static void lights() {
+        rayHandler.update();
         b2d.render(world, camera.combined.cpy().scl(32));
         rayHandler.render();
+        rayHandler.setCombinedMatrix(camera.combined.cpy().scl(32));
 
+    }
 
+    public static void update(float deltaTime) {
 
-        //setCamera1();
-
-
-        //rayHandler.update();
-
-
-        /*
         setCamera1();
-
-        rayHandler.update();
-
-        rayHandler.render();
-
         Collections.sort(World.getEntByZIndex(), new sorter());
-
         cameraHelper.update(deltaTime);
         cameraHelper.applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-       // Gdx.gl.glEnable(GL20.GL_BLEND);
-        //Gdx.gl.glBlendFuncSeparate(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA, Gdx.gl.GL_ONE, Gdx.gl.GL_ZERO);
-
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
+        myLight.setPosition(xPos, 0);
+        xPos += 0.01;
+
+        lights();
 
 
         batch.begin();
@@ -294,9 +291,6 @@ public class Graphics implements Disposable {
 
 
         hudBatch.begin();
-
-
-
             for(Entity ent: World.getEntByZIndex()) {
 
                 if(ent.drawMode != "hud") continue;
@@ -314,12 +308,7 @@ public class Graphics implements Disposable {
             }
         hudBatch.end();
 
-
-
-
         drawOutlines();
-
-         */
     }
 
     public static void resize(int width, int height) {

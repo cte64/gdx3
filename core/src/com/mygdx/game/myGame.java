@@ -101,7 +101,6 @@ public class myGame extends ApplicationAdapter {
 
 
 
-		/*
 
 		for(Entity ent: World.getEntList()) { ent.updateType("input"); }
 		//System.out.println("input");
@@ -119,6 +118,7 @@ public class myGame extends ApplicationAdapter {
 		World.setDeltaTime(Gdx.graphics.getRawDeltaTime());
 		InputAL.reset();
 
+		/*
 		 */
 
 		Graphics.update(Gdx.graphics.getDeltaTime());
