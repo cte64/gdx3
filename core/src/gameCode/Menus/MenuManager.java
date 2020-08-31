@@ -3,12 +3,16 @@ package gameCode.Menus;
 import gameCode.Infrastructure.*;
 import gameCode.Infrastructure.Component;
 import gameCode.Infrastructure.Graphics;
+import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.Tree;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MenuManager {
+
+
 
     HashMap<String, Tree<MenuItem>> items;
 
@@ -112,13 +116,47 @@ public class MenuManager {
         return false;
     }
 
+    public void hoverAction(String name, String type) {
+
+
+        MenuItem item = (MenuItem)(items.get(name).value);
+        if(item == null) return;
+
+
+        if(!hover(name) && item.hoverState == 0) item.hoverState = 1;
+        if(hover(name) && item.hoverState == 1) item.hoverState = 2;
+        if(!hover(name) && item.hoverState == 2) item.hoverState = 0;
+
+
+        String hoverType = StringUtils.getField(type, "hoverType");
+
+        if(hoverType.equals("toggle")) {
+            String fs = StringUtils.getField(type, "size");
+            int newSize = MathUtils.clamp( StringUtils.stringToInt(fs), -20, 20);
+
+            ArrayList<Component> textComps = item.ent.getComponents("text");
+            for(Component comp: textComps) {
+                TextComponent text = (TextComponent)comp;
+                if(text != null && text.show) {
+                    if(item.hoverState == 0) text.setFontSize(text.getOldFontSize());
+                    if(item.hoverState == 2) text.setFontSize(text.getOldFontSize() + newSize);
+                }
+            }
+        }
+
+        /*
+         */
+
+
+    }
+
     public void registerItem(String id, String sprNm, String parent, String justify, int x, int y, int z) {
 
         MenuItem newItem = new MenuItem();
 
         newItem.clickStateL = 0;
         newItem.clickStateR = 0;
-        newItem.hoverState = false;
+        newItem.hoverState = 0;
         newItem.justify = justify;
         newItem.xOffset = x;
         newItem.yOffset = y;

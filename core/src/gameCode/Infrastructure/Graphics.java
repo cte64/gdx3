@@ -5,6 +5,7 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.myPair;
+import sun.font.TrueTypeFont;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,8 +41,13 @@ public class Graphics implements Disposable {
     private static HashMap<String, String> seen = new HashMap<String, String>();
     private static BitmapFont font;
     private static GlyphLayout layout;
-
     private static Body player;
+
+
+    //Font stuff here ======================================
+    private static FreeTypeFontGenerator generator;
+    private static FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    private static HashMap<Integer, BitmapFont> bmpFonts;
 
     private static RayHandler rayHandler;
     private static com.badlogic.gdx.physics.box2d.World world;
@@ -63,6 +70,17 @@ public class Graphics implements Disposable {
 
     public static void init() {
 
+        //Font stuff =====================================================================================
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("core/fonts/timesNewRoman.ttf"));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        bmpFonts = new HashMap<Integer, BitmapFont>();
+        for(int x = 10; x < 40; x++) {
+            parameter.size = x;
+            BitmapFont newFont = generator.generateFont(parameter);
+            bmpFonts.put(x, newFont);
+        }
+
+        generator.dispose(); // don't forget to dispose to avoid memory leaks!
 
         //Ray Handler ============================================================================
         world = new com.badlogic.gdx.physics.box2d.World(new Vector2(0, 0), false);
@@ -70,17 +88,15 @@ public class Graphics implements Disposable {
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.5f);
         myLight = new PointLight(rayHandler, 100, Color.WHITE, 10, 0, 0);
-        player = new Body(world, );
-
 
 
         //Fonts ==================================================================================
         font = new BitmapFont();
         layout = new GlyphLayout();
-
         cameraHelper = new CameraHelper();
         shapeRenderer = new ShapeRenderer();
         tileIDs = new ArrayList<String>();
+
 
         //Set up the camera ======================================================================
         camera = new OrthographicCamera(World.getViewPortWidth(), World.getViewPortHeight());
@@ -246,7 +262,7 @@ public class Graphics implements Disposable {
     }
 
     public static Vector2 getTextBounds(String text, int fontSize) {
-        layout.setText(font, text);
+        layout.setText(bmpFonts.get(fontSize), text);
         float width = layout.width;
         float height = layout.height;
         return new Vector2(width, height);
@@ -269,16 +285,11 @@ public class Graphics implements Disposable {
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-        myLight.setPosition(xPos, 0);
-        xPos += 0.01;
-
-        lights();
-
-
+       // lights();
         batch.begin();
             for(Entity ent: World.getEntByZIndex()) {
 
@@ -300,8 +311,10 @@ public class Graphics implements Disposable {
                 for(Component comp: textComps) {
                     TextComponent text = (TextComponent)comp;
                     if(text != null && text.show) {
-                        font.setColor(1.0f, 1.0f, 0.0f, 1.0f);
-                        font.draw(hudBatch, text.getText(), text.getXPos(), text.getYPos());
+                        int fontSize = text.getFontSize();
+                        if(!bmpFonts.containsKey(fontSize)) continue;
+                        bmpFonts.get(text.getFontSize()).setColor(1.0f, 1.0f, 0.0f, 1.0f);
+                        bmpFonts.get(text.getFontSize()).draw(hudBatch, text.getText(), text.getXPos(), text.getYPos());
                     }
                 }
 
@@ -318,7 +331,6 @@ public class Graphics implements Disposable {
 
     @Override
     public void dispose() {
-
         rayHandler.dispose();
         batch.dispose();
     }

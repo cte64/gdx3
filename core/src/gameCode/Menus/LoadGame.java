@@ -59,7 +59,7 @@ public class LoadGame extends Component {
         //background
         menu.registerItem(background, "loadGameBack", null, "[vertical: center][horizontal: center]", 0, 0, 1);
         menu.registerItem(overlay, "loadGameFront", background, "[vertical: center][horizontal: center]", 0, 0, 4);
-        menu.addText(overlay, new TextComponent("Load Game", 10, "[vertical: top][horizontal: center]", 0, 0));
+        menu.addText(overlay, new TextComponent("Load Game", 30, "[vertical: top][horizontal: center]", 0, 0));
 
         //scroll bar
         menu.registerItem(scrollBar, "scrollBar", background, "[vertical: top][horizontal: right]", -32, 0, 5);
@@ -67,7 +67,7 @@ public class LoadGame extends Component {
 
         //bottom buttons
         menu.registerItem(back, "halfMenuItem", background, "[vertical: bottom][horizontal: left]", 15, 15, 5);
-        menu.addText(back, new TextComponent("Back", 10, "[vertical: center][horizontal: center]", 0, 0));
+        menu.addText(back, new TextComponent("Back", 20, "[vertical: center][horizontal: center]", 0, 0));
 
         //load game files
         ArrayList<String> files = FileSystem.getSaveNames();
@@ -96,9 +96,9 @@ public class LoadGame extends Component {
             newItem.delete = deleteName; menu.registerItem(deleteName, "loadGameDeleteClosed1", newItem.list, "[vertical: center][horizontal: right]", -7, 5, 3);
 
             //add the text
-            menu.addText(itemName, new TextComponent(worldName, 10, "[vertical: top][horizontal: left]", 8, 7));
-            menu.addText(itemName, new TextComponent("Size: " + numChunks, 10, "[vertical: center][horizontal: left]", 8, 0));
-            menu.addText(itemName, new TextComponent("Date Created: " + dateCreated, 10, "[vertical: bottom][horizontal: left]", 8, 8));
+            menu.addText(itemName, new TextComponent(worldName, 22, "[vertical: top][horizontal: left]", 8, 7));
+            menu.addText(itemName, new TextComponent("Size: " + numChunks, 16, "[vertical: center][horizontal: left]", 8, 0));
+            menu.addText(itemName, new TextComponent("Date Created: " + dateCreated, 16, "[vertical: bottom][horizontal: left]", 8, 8));
 
             listItems.add(newItem);
             scrollList.addItem(newItem.list);

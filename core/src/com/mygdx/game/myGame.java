@@ -15,9 +15,6 @@ public class myGame extends ApplicationAdapter {
 	private float timerCount = 0;
 	private int fpsCount = 0;
 
-
-
-
 	private void fpsCounter(float time) {
 		timerCount += time;
 		fpsCount++;
@@ -98,8 +95,6 @@ public class myGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-
-
 
 
 		for(Entity ent: World.getEntList()) { ent.updateType("input"); }
