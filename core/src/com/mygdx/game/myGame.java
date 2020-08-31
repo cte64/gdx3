@@ -1,7 +1,11 @@
 package com.mygdx.game;
 
+import box2dLight.RayHandler;
 import com.badlogic.gdx.*;
 
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import gameCode.Infrastructure.*;
 import gameCode.Infrastructure.Graphics;
 import gameCode.Utilities.Pixel;
@@ -10,6 +14,9 @@ public class myGame extends ApplicationAdapter {
 
 	private float timerCount = 0;
 	private int fpsCount = 0;
+
+
+
 
 	private void fpsCounter(float time) {
 		timerCount += time;
@@ -23,6 +30,7 @@ public class myGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+
 
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		//World.setCurrentState("play");
@@ -93,6 +101,8 @@ public class myGame extends ApplicationAdapter {
 
 
 
+		/*
+
 		for(Entity ent: World.getEntList()) { ent.updateType("input"); }
 		//System.out.println("input");
 
@@ -109,9 +119,15 @@ public class myGame extends ApplicationAdapter {
 		World.setDeltaTime(Gdx.graphics.getRawDeltaTime());
 		InputAL.reset();
 
+		 */
+
+		Graphics.update(Gdx.graphics.getDeltaTime());
+
 	}
 	
 	@Override
 	public void dispose () {
+
+
 	}
 }

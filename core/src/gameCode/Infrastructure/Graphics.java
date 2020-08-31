@@ -1,11 +1,13 @@
 package gameCode.Infrastructure;
 
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.myPair;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+
+
 
 import static com.badlogic.gdx.graphics.Pixmap.Format.RGB888;
 import static com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888;
@@ -33,13 +37,14 @@ public class Graphics implements Disposable {
     private static BitmapFont font;
     private static GlyphLayout layout;
 
-    private RayHandler rayHandler;
+    private static RayHandler rayHandler;
+    private static com.badlogic.gdx.physics.box2d.World world;
+    private static Box2DDebugRenderer b2d;
 
     public static float light = 0.0f;
 
     //this is for sorting them by zPos
-    public static class sorter implements Comparator<Entity>
-    {
+    public static class sorter implements Comparator<Entity> {
         @Override
         public int compare(Entity o1, Entity o2) {
             if(o1.z_pos < o2.z_pos) return -1;
@@ -48,8 +53,16 @@ public class Graphics implements Disposable {
         }
     }
 
-
     public static void init() {
+
+
+        //Ray Handler ============================================================================
+        world = new com.badlogic.gdx.physics.box2d.World(new Vector2(0, 0), false);
+        rayHandler = new RayHandler(world);
+        rayHandler.setAmbientLight(1.9f);
+        b2d = new Box2DDebugRenderer();
+
+
 
         //Fonts ==================================================================================
         font = new BitmapFont();
@@ -231,7 +244,29 @@ public class Graphics implements Disposable {
 
     public static void update(float deltaTime) {
 
+
+
+
+        Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        b2d.render(world, camera.combined.cpy().scl(32));
+        rayHandler.render();
+
+
+
+        //setCamera1();
+
+
+        //rayHandler.update();
+
+
+        /*
         setCamera1();
+
+        rayHandler.update();
+
+        rayHandler.render();
 
         Collections.sort(World.getEntByZIndex(), new sorter());
 
@@ -283,6 +318,8 @@ public class Graphics implements Disposable {
 
 
         drawOutlines();
+
+         */
     }
 
     public static void resize(int width, int height) {
@@ -292,6 +329,8 @@ public class Graphics implements Disposable {
 
     @Override
     public void dispose() {
+
+        rayHandler.dispose();
         batch.dispose();
     }
 }

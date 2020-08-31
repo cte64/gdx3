@@ -6,10 +6,9 @@ import com.mygdx.game.myGame;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import gameCode.Infrastructure.Entity;
 
-;import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
 
 public class DesktopLauncher {
 
