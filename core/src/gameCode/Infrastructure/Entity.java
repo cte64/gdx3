@@ -1,5 +1,6 @@
 package gameCode.Infrastructure;
 import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,6 +13,8 @@ public class Entity {
     public boolean moveable, drawable, markForDeletion, flip, cameraBound;
     public String spriteName, drawMode, entityName;
 
+    public myPair<Float, Float> scale;
+
     public float shade;
 
     ArrayList<Component> components;
@@ -20,7 +23,7 @@ public class Entity {
     public float height;
 
     public Entity() {
-
+        scale = new myPair(1.0f, 1.0f);
         shade = 0.5f;
         x_pos = 0.0f;
         y_pos = 0.0f;
@@ -86,11 +89,11 @@ public class Entity {
     }
 
     public float getWidth() {
-        return width;
+        return (width * scale.first);
     }
 
     public float getHeight() {
-        return height;
+        return (height * scale.second);
     }
 
     public void deleteComponents() { components.clear(); }

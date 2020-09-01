@@ -290,6 +290,8 @@ public class Graphics implements Disposable {
 
 
        // lights();
+
+        /*
         batch.begin();
             for(Entity ent: World.getEntByZIndex()) {
 
@@ -300,12 +302,17 @@ public class Graphics implements Disposable {
             }
         batch.end();
 
+         */
 
         hudBatch.begin();
             for(Entity ent: World.getEntByZIndex()) {
 
                 if(ent.drawMode != "hud") continue;
-                if(spriteMap.containsKey(ent.spriteName)) hudBatch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);
+
+
+                if(spriteMap.containsKey(ent.spriteName)) {
+                    hudBatch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos, ent.getWidth(), ent.getHeight());
+                }
 
                 ArrayList<Component> textComps = ent.getComponents("text");
                 for(Component comp: textComps) {
@@ -317,7 +324,6 @@ public class Graphics implements Disposable {
                         bmpFonts.get(text.getFontSize()).draw(hudBatch, text.getText(), text.getXPos(), text.getYPos());
                     }
                 }
-
             }
         hudBatch.end();
 

@@ -12,8 +12,6 @@ import java.util.HashMap;
 
 public class MenuManager {
 
-
-
     HashMap<String, Tree<MenuItem>> items;
 
     public MenuManager() {
@@ -70,7 +68,6 @@ public class MenuManager {
         if(horizontal.equals("right")) ent.x_pos = parentX + parentW - ent.getWidth() + mn.xOffset;
         if(horizontal.equals("mouse")) ent.x_pos = InputAL.getMouseX();
     }
-
 
     public void updateDrawMode(String name, String newMode) {
         if(!items.containsKey(name)) return;
@@ -138,16 +135,19 @@ public class MenuManager {
             for(Component comp: textComps) {
                 TextComponent text = (TextComponent)comp;
                 if(text != null && text.show) {
-                    if(item.hoverState == 0) text.setFontSize(text.getOldFontSize());
-                    if(item.hoverState == 2) text.setFontSize(text.getOldFontSize() + newSize);
+                    if(item.hoverState == 0) {
+                        text.setFontSize(text.getOldFontSize());
+                        item.ent.scale.first = 1f;
+                        item.ent.scale.second = 1f;
+                    }
+                    if(item.hoverState == 2){
+                        text.setFontSize(text.getOldFontSize() + newSize);
+                        item.ent.scale.first = 1.01f;
+                        item.ent.scale.second = 1.01f;
+                    }
                 }
             }
         }
-
-        /*
-         */
-
-
     }
 
     public void registerItem(String id, String sprNm, String parent, String justify, int x, int y, int z) {
