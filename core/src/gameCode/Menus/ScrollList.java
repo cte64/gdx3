@@ -32,7 +32,7 @@ public class ScrollList {
         scrollIndex = 0;
         sbState = 0;
         width = 1;
-        scrollPixPerSecond = 50;
+        scrollPixPerSecond = 300;
         top = 0;
         vPadding = 1;
         hPadding = 0;

@@ -199,7 +199,6 @@ public class MenuManager {
 
         Tree<MenuItem> treeNode = new Tree<MenuItem>(newItem, parentTree);
 
-
         items.put(id, treeNode);
 
         //position new item and all its children
@@ -231,6 +230,22 @@ public class MenuManager {
         return false;
     }
 
+    public boolean isRightClicked(String id) {
+
+
+        if(!items.containsKey(id)) return false;
+        MenuItem mn = (MenuItem)items.get(id).value;
+
+        if (!hover(id) && !InputAL.isMousePressed("mouse right")) mn.clickStateR = 0;
+        if (mn.clickStateR == 0 && hover(id) && !InputAL.isMousePressed("mouse right")) mn.clickStateR = 1;
+        if (mn.clickStateR == 1 && hover(id) && InputAL.isMousePressed("mouse right")) mn.clickStateR = 2;
+        if (mn.clickStateR == 2 && hover(id) && !InputAL.isMousePressed("mouse right")) {
+            mn.clickStateR = 0;
+            return true;
+        }
+
+        return false;
+    }
 
 
     //Field Setters ========================================================================================

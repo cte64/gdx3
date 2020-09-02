@@ -3,6 +3,7 @@ package gameCode.Menus;
 import gameCode.Infrastructure.*;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myPair;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -176,8 +177,13 @@ public class InventoryManager extends Component {
         StringUtils newName = new StringUtils("[type: inventoryItem][subType: ][id: ]");
         StringUtils.setField(newName, "subType", name);
 
+        //I will find a more elegant solution for this later
+        myPair<Integer, Integer> comp = Graphics.getSpriteDimensions(name);
+        int xComp = -(52 - comp.first) / 2 + 3;
+        int yComp = -(52 - comp.second) / 2 + 3;
+
         menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: center]", 0, 0, 6);
-        menu.addText(newName.data, new TextComponent("0", 10, "[vertical: bottom][horizontal: center]", 0, 15));
+        menu.addText(newName.data, new TextComponent("0", 18, "[vertical: bottom][horizontal: left]", xComp, yComp));
 
         return newName.data;
     }
@@ -225,6 +231,34 @@ public class InventoryManager extends Component {
 
     private void rightClick(String trays) {
 
+
+        for(itemNode node: currentItems) {
+            if(menu.isRightClicked(node.tile)) {
+                System.out.println(node.tile);
+            }
+
+        }
+
+        /*
+
+        if(!trays.equals("hud")) return;
+
+        for(itemNode node: inventoryItems) {
+            if(scrollList.isLeftClicked(node.tile))
+                clipboardSwap(node);
+        }
+
+        for(itemNode node: craftingTray) {
+            if(menu.isLeftClicked(node.tile))
+                clipboardSwap(node);
+        }
+
+        for(itemNode node: equippedItems) {
+            if(menu.isLeftClicked(node.tile))
+                clipboardSwap(node);
+        }
+
+         */
 
 
 
@@ -347,6 +381,12 @@ public class InventoryManager extends Component {
 
     }
 
+    public void subtractItem() {
+
+
+
+    }
+
     public void update(Entity entity) {
 
         Entity ent = menu.getEnt(background);
@@ -369,8 +409,9 @@ public class InventoryManager extends Component {
         }
 
         leftClick(ent.drawMode);
-        //menu.updateItem(clipboard.tile);
+        rightClick(ent.drawMode);
 
+        menu.updatePosition(clipboard.tile);
 
         if(ent.drawMode.equals("hud")) {
             scrollList.updateList2();
