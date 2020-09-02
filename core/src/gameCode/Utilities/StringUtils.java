@@ -32,6 +32,12 @@ public class StringUtils {
         else return 0;
     }
 
+    public static float stringToFloat(String data) {
+        if(MathUtils.isNumeric(data))
+            return Float.parseFloat(data);
+        else return 0.0f;
+    }
+
     public static void compressString(StringUtils cont) {
 
         if(cont.data.length() <= 0) return;

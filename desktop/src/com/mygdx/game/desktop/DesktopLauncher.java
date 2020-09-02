@@ -20,6 +20,8 @@ public class DesktopLauncher {
 
 	public static void main(String[] arg) {
 
+
+
 		if(rebuildAtlas) {
 			Settings settings = new Settings();
 			settings.maxWidth = 2048;

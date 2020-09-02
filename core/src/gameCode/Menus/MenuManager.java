@@ -6,7 +6,6 @@ import gameCode.Infrastructure.Graphics;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.Tree;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,18 +17,13 @@ public class MenuManager {
         items = new HashMap<String, Tree<MenuItem>>();
     }
 
-    public Tree<MenuItem> getItem(String name) {
-        if(!items.containsKey(name)) return null;
-        else return items.get(name);
-    }
-
     public void removeItem(String name) {
         if(!items.containsKey(name)) return;
         for(Tree<MenuItem> item: items.get(name).getTraverseArr()) { World.entitiesToBeDeleted.add( item.value.ent ); }
         items.remove(name);
     }
 
-    public void positionItem(Tree<MenuItem> item) {
+    private void positionItem(Tree<MenuItem> item) {
 
         MenuItem mn = ((MenuItem)item.value);
         Entity ent = mn.ent;
@@ -69,20 +63,6 @@ public class MenuManager {
         if(horizontal.equals("mouse")) ent.x_pos = InputAL.getMouseX();
     }
 
-    public void updateDrawMode(String name, String newMode) {
-        if(!items.containsKey(name)) return;
-        for(Tree<MenuItem> node: items.get(name).getTraverseArr()) {
-            node.value.ent.drawMode = newMode;
-        }
-    }
-
-    public void updateItem(String name) {
-        if(!items.containsKey(name)) return;
-        for(Tree<MenuItem> item: items.get(name).getTraverseArr()) {
-            positionItem(item);
-        }
-    }
-
     public void setParent(String itemKey, String newParentKey) {
 
         if(!items.containsKey(itemKey)) return;
@@ -119,34 +99,77 @@ public class MenuManager {
         MenuItem item = (MenuItem)(items.get(name).value);
         if(item == null) return;
 
-
         if(!hover(name) && item.hoverState == 0) item.hoverState = 1;
         if(hover(name) && item.hoverState == 1) item.hoverState = 2;
         if(!hover(name) && item.hoverState == 2) item.hoverState = 0;
 
+        String oldSprite = StringUtils.getField(type, "sprite");
+        String newSprite = StringUtils.getField(type, "hoverSprite");
+        if(newSprite != "" && oldSprite != "") {
+            if(item.hoverState == 0) item.ent.spriteName = oldSprite;
+            if(item.hoverState == 2) item.ent.spriteName = newSprite;
+        }
 
         String hoverType = StringUtils.getField(type, "hoverType");
 
         if(hoverType.equals("toggle")) {
-            String fs = StringUtils.getField(type, "size");
-            int newSize = MathUtils.clamp( StringUtils.stringToInt(fs), -20, 20);
 
-            ArrayList<Component> textComps = item.ent.getComponents("text");
-            for(Component comp: textComps) {
-                TextComponent text = (TextComponent)comp;
-                if(text != null && text.show) {
-                    if(item.hoverState == 0) {
-                        text.setFontSize(text.getOldFontSize());
-                        item.ent.scale.first = 1f;
-                        item.ent.scale.second = 1f;
-                    }
-                    if(item.hoverState == 2){
-                        text.setFontSize(text.getOldFontSize() + newSize);
-                        item.ent.scale.first = 1.01f;
-                        item.ent.scale.second = 1.01f;
+            String scale = StringUtils.getField(type, "scale");
+            if(scale != "") {
+                float scaleF = StringUtils.stringToFloat(scale);
+                if(item.hoverState == 0) {
+                    item.ent.scale.first = 1f;
+                    item.ent.scale.second = 1f;
+                }
+                if(item.hoverState == 2){
+                    item.ent.scale.first = scaleF;
+                    item.ent.scale.second = scaleF;
+                }
+            }
+
+            String fs = StringUtils.getField(type, "fontSize");
+            if(fs != "") {
+                int newSize = MathUtils.clamp( StringUtils.stringToInt(fs), -20, 20);
+                ArrayList<Component> textComps = item.ent.getComponents("text");
+                for(Component comp: textComps) {
+                    TextComponent text = (TextComponent)comp;
+                    if(text != null && text.show) {
+                        if(item.hoverState == 0) text.setFontSize(text.getOldFontSize());
+                        if(item.hoverState == 2) text.setFontSize(text.getOldFontSize() + newSize);
                     }
                 }
             }
+
+            updatePosition(name);
+        }
+
+        if(hoverType.equals("sine")) {
+
+            if(!hover(name)) {
+                item.ent.scale.first = 1.0f;
+                item.ent.scale.second = 1.0f;
+                item.tick = 0.0f;
+                updatePosition(name);
+                return;
+            }
+
+            String ampStr = StringUtils.getField(type, "amplitude");
+            String freqStr = StringUtils.getField(type, "frequency");
+
+            float amp = 0.05f;
+            float freq = 1.0f;
+            if(ampStr != "") amp = StringUtils.stringToFloat(ampStr);
+            if(freqStr != "") freq = StringUtils.stringToFloat(freqStr);
+
+            item.tick += World.getDeltaTime();
+            double arg = item.tick * 2.0f * freq * MathUtils.PI;
+            float scale = (float)Math.sin(arg);
+            float newScale = 1.0f + scale * amp;
+
+            item.ent.scale.first = newScale;
+            item.ent.scale.second = newScale;
+
+            updatePosition(name);
         }
     }
 
@@ -206,5 +229,34 @@ public class MenuManager {
             return true;
         }
         return false;
+    }
+
+
+
+    //Field Setters ========================================================================================
+    public void updateXOffset(String name, int newXOffset) {
+        if(!items.containsKey(name)) return;
+        items.get(name).value.xOffset = newXOffset;
+        updatePosition(name);
+    }
+
+    public void updateYOffset(String name, int newYOffset) {
+        if(!items.containsKey(name)) return;
+        items.get(name).value.yOffset = newYOffset;
+        updatePosition(name);
+    }
+
+    public void updateDrawMode(String name, String newMode) {
+        if(!items.containsKey(name)) return;
+        for(Tree<MenuItem> node: items.get(name).getTraverseArr()) {
+            node.value.ent.drawMode = newMode;
+        }
+    }
+
+    public void updatePosition(String name) {
+        if(!items.containsKey(name)) return;
+        for(Tree<MenuItem> item: items.get(name).getTraverseArr()) {
+            positionItem(item);
+        }
     }
 }

@@ -59,6 +59,13 @@ public class InventoryManager extends Component {
 
         type = "logic";
 
+        //set up the background and foreGround
+        background = "[type: inventory][subType: background]";
+        foreground = "[type: inventory][subType: foreground]";
+        scrollBar = "[type: inventory][subType: scrollBar]";
+        textBack = "[type: inventory][subType: textBack]";
+        currentBackground = "[type: inventory][subType: currentBackground]";
+
         currentItems = new itemNode[currentNumItems];
         inventoryItems = new ArrayList<itemNode>();
         craftingTray = new itemNode[9];
@@ -71,23 +78,17 @@ public class InventoryManager extends Component {
         scrollList = new ScrollList(menu);
         scrollList.left = 20;
         scrollList.top = 55;
-        scrollList.bottom = 374;
-        scrollList.itemHeight = 52;
-        scrollList.scrollPerFrame = 0.003f;
-        scrollList.itemWidth = 52;
+        scrollList.bottom = 371;
+        scrollList.parent = background;
+        scrollList.scrollPixPerSecond = 330;
         scrollList.width = 6;
-        scrollList.padding = 1;
+        scrollList.vPadding = 1;
+        scrollList.hPadding = 1;
 
         //set the clipboard
         clipboard.tile = "[type: inventory][subType: clipboard]";
         menu.registerItem(clipboard.tile, null, null, "[vertical: mouse][horizontal: mouse]", 0, 0, 9);
 
-        //set up the background and foreGround
-        background = "[type: inventory][subType: background]";
-        foreground = "[type: inventory][subType: foreground]";
-        scrollBar = "[type: inventory][subType: scrollBar]";
-        textBack = "[type: inventory][subType: textBack]";
-        currentBackground = "[type: inventory][subType: currentBackground]";
         menu.registerItem(background, "invenBack", null, "[vertical: center][horizontal: center]", 0, 0, 4);
         menu.registerItem(foreground, "invenFront", background, "[vertical: center][horizontal: left]", 0, 0, 7);
         menu.registerItem(scrollBar, "invenScrollBar", foreground, "[vertical: top][horizontal: center]", 50, 0, 8);
@@ -368,7 +369,7 @@ public class InventoryManager extends Component {
         }
 
         leftClick(ent.drawMode);
-        menu.updateItem(clipboard.tile);
+        //menu.updateItem(clipboard.tile);
 
 
         if(ent.drawMode.equals("hud")) {

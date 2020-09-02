@@ -44,9 +44,7 @@ public class LoadGame extends Component {
         scrollList = new ScrollList(menu);
         scrollList.top = 105;
         scrollList.left = 30;
-        scrollList.scrollPerFrame = 0.01f;
-        scrollList.itemHeight = 70;
-        scrollList.itemWidth = 353;
+        scrollList.scrollPixPerSecond = 350;
         scrollList.width = 1;
         scrollList.bottom = 513;
 
@@ -64,6 +62,7 @@ public class LoadGame extends Component {
         //scroll bar
         menu.registerItem(scrollBar, "scrollBar", background, "[vertical: top][horizontal: right]", -32, 0, 5);
         scrollList.scrollBar = scrollBar;
+        scrollList.parent = background;
 
         //bottom buttons
         menu.registerItem(back, "halfMenuItem", background, "[vertical: bottom][horizontal: left]", 15, 15, 5);
@@ -147,13 +146,14 @@ public class LoadGame extends Component {
         for(listItem item: listItems) {
 
             //load game hover action
-            if(menu.hover(item.delete)) menu.getEnt(item.delete).spriteName = "loadGameDeleteOpen";
-            else menu.getEnt(item.delete).spriteName = "loadGameDeleteClosed1";
+            //if(scrollList.hover(item.delete)) menu.getEnt(item.delete).spriteName = "loadGameDeleteOpen";
+            //else menu.getEnt(item.delete).spriteName = "loadGameDeleteClosed1";
+            menu.hoverAction(item.delete, "[hoverType: sine][amplitude: 0.05][sprite: loadGameDeleteClosed1][hoverSprite: loadGameDeleteOpen]");
 
             //play game hover action
-            if(menu.hover(item.play)) menu.getEnt(item.play).spriteName = "playHover";
-            else menu.getEnt(item.play).spriteName = "play";
-
+            //if(scrollList.hover(item.play)) menu.getEnt(item.play).spriteName = "playHover";
+            //else menu.getEnt(item.play).spriteName = "play";
+            menu.hoverAction(item.play, "[hoverType: sine][amplitude: 0.05][frequency: 1]");
 
             //click stuff ========================================================
             if(scrollList.isLeftClicked(item.play)) {
@@ -169,5 +169,6 @@ public class LoadGame extends Component {
 
         //back button
         if(menu.isLeftClicked(back)) State.mainMenu();
+        menu.hoverAction(back, "[hoverType: toggle][fontSize: 1][scale: 1.006]");
     }
 }

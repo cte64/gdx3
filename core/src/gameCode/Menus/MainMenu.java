@@ -47,11 +47,16 @@ public class MainMenu extends Component {
     }
 
     public void update(Entity entity) {
+
+
+        //Update Click State =====================================================
         if(menu.isLeftClicked(createGame)) State.newGame();
         if(menu.isLeftClicked(loadGame)) State.loadGame();
 
 
-
-        menu.hoverAction(createGame, "[hoverType: toggle][size: 2]");
+        //Update Hover State =====================================================
+        menu.hoverAction(createGame, "[hoverType: toggle][fontSize: 1][scale: 1.007]");
+        menu.hoverAction(loadGame, "[hoverType: toggle][fontSize: 1][scale: 1.007]");
+        menu.hoverAction(options, "[hoverType: toggle][fontSize: 1][scale: 1.007]");
     }
 }

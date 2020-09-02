@@ -1,6 +1,8 @@
 package gameCode.Menus;
 
+import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.InputAL;
+import gameCode.Infrastructure.World;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Tree;
 
@@ -12,28 +14,29 @@ public class ScrollList {
     public int top;
     public int bottom;
     public int left;
-    public int itemHeight;
-    public int itemWidth;
     public float scrollIndex;
-    public int padding;
-    public float scrollPerFrame = 0.01f;
+    public int vPadding;
+    public int hPadding;
+    public float scrollPixPerSecond;
     ArrayList<String> listItems;
+    String parent;
     String scrollBar;
     MenuManager menuMngr;
 
+    //Scroll stuff ======================================
+    int sbState;
 
     public ScrollList(MenuManager menuMngr) {
-
         this.menuMngr = menuMngr;
-
         listItems = new ArrayList<String>();
         scrollIndex = 0;
+        sbState = 0;
         width = 1;
+        scrollPixPerSecond = 50;
         top = 0;
-        padding = 0;
+        vPadding = 1;
+        hPadding = 0;
         bottom = 100;
-        itemHeight = 70;
-        itemWidth = 40;
         scrollBar = "";
     }
 
@@ -41,20 +44,31 @@ public class ScrollList {
         listItems.add(newItem);
     }
 
+    private boolean boundCheck(int mouseY) {
+        int adjTop = top;
+        int adjBot = bottom;
+
+        Entity ent = menuMngr.getEnt(parent);
+        if(ent != null) {
+            adjTop += ent.y_pos;
+            adjBot += ent.y_pos;
+        }
+
+        if(mouseY > adjTop && mouseY < adjBot) return true;
+        else return false;
+    }
+
     public boolean isLeftClicked(String name) {
-
-
-        int mouseY = InputAL.getMouseY();
-        /*
-        if(mouseY > top && mouseY < bottom &&
+        int mouseY = World.getViewPortHeight() - InputAL.getMouseY();
+        if(boundCheck(mouseY) &&
            menuMngr.getEnt(name).drawMode.equals("hud") &&
            menuMngr.isLeftClicked(name))  return true;
         else return false;
+    }
 
-         */
-
-
-        if(menuMngr.getEnt(name).drawMode.equals("hud") && menuMngr.isLeftClicked(name)) return true;
+    public boolean hover(String name) {
+        int mouseY = World.getViewPortHeight() - InputAL.getMouseY();
+        if(boundCheck(mouseY) && menuMngr.hover(name)) return true;
         else return false;
     }
 
@@ -66,49 +80,80 @@ public class ScrollList {
     public void updateList2() {
 
         //Update the Scrolling =====================================================================
-        if(InputAL.isKeyPressed("down")) scrollIndex += scrollPerFrame;
-        if(InputAL.isKeyPressed("up")) scrollIndex -= scrollPerFrame;
-        for(Integer i: InputAL.scrollQueue) {
-            if(i == -1) scrollIndex -= scrollPerFrame;
-            if(i == 1) scrollIndex += scrollPerFrame;
+        int totalPixelsToScroll = 0;
+        int rows = -1 + (listItems.size() + width - 1) / width;
+        for(int x = 0; x < rows; x++) {
+            Entity listEnt = menuMngr.getEnt(listItems.get(x));
+            if(listEnt != null) totalPixelsToScroll -= (listEnt.getHeight() + vPadding);
         }
+
+        float fps = 1.0f / World.getDeltaTime();
+        float pixThisFrame = scrollPixPerSecond / fps;
+        float adjScrollPerFrame = pixThisFrame / totalPixelsToScroll;
+
+        if(InputAL.isKeyPressed("down")) scrollIndex -= adjScrollPerFrame;
+        if(InputAL.isKeyPressed("up")) scrollIndex += adjScrollPerFrame;
+        for(Integer i: InputAL.scrollQueue) {
+            if(i == 1) scrollIndex -= adjScrollPerFrame;
+            if(i == -1) scrollIndex += adjScrollPerFrame;
+        }
+
+        if(hover(scrollBar) && InputAL.isMousePressed("mouse left") && sbState == 0) sbState = 1;
+        if(!InputAL.isMousePressed("mouse left") ) sbState = 0;
+
+        if(sbState == 1) {
+            int adjTop = top;
+            int adjBot = bottom;
+            Entity ent = menuMngr.getEnt(parent);
+            if(ent != null) {
+                adjTop += ent.y_pos;
+                adjBot += ent.y_pos;
+            }
+
+            float mouseY = World.getViewPortHeight() - InputAL.getMouseY();
+            float sbHeight = menuMngr.getEnt(scrollBar).getHeight();
+            float totalLength = adjBot - adjTop - sbHeight;
+            float sbHeightComp = (sbHeight / 2.0f) / totalLength;
+            scrollIndex = -sbHeightComp + (mouseY - adjTop) / totalLength;
+        }
+
 
         //Position Everything ======================================================================
         scrollIndex = MathUtils.clamp(scrollIndex, 0.0f, 1.0f);
-        int totalAmount = (listItems.size() - 1) * itemHeight * -1;
-        int scrollOffset = (int)(totalAmount * scrollIndex);
-        scrollOffset = MathUtils.clamp(scrollOffset, totalAmount, 0);
+        int scrollOffset = (int)(totalPixelsToScroll * scrollIndex);
+        scrollOffset = MathUtils.clamp(scrollOffset, totalPixelsToScroll, 0);
 
         for(int x = 0; x < listItems.size(); x++)  {
 
-            int yPos = padding + top + scrollOffset + (x/ width)*(itemHeight + padding);
-            int xPos = padding + left + (x % width)*(itemWidth + padding);
+            int itemHeight = 0;
+            int itemWidth = 0;
+            Entity listEnt = menuMngr.getEnt(listItems.get(x));
+            if(listEnt != null) {
+                itemHeight = (int)listEnt.getHeight();
+                itemWidth = (int)listEnt.getWidth();
+            }
+
+            int yPos = vPadding + top + scrollOffset + (x/ width)*(itemHeight + vPadding);
+            int xPos = hPadding + left + (x % width)*(itemWidth + hPadding);
 
             String newDrawMode = "hud";
-
-            //if the yPos is out of bounds hide it
             if(yPos < top - itemHeight) newDrawMode = "hidden";
             if(yPos > bottom) newDrawMode = "hidden";
 
-            menuMngr.getItem(listItems.get(x)).value.yOffset = yPos;
-            menuMngr.getItem(listItems.get(x)).value.xOffset = xPos;
-
-            for(Tree<MenuItem> item: menuMngr.getItem(listItems.get(x)).getTraverseArr()) {
-                menuMngr.positionItem(item);
-                item.value.ent.drawMode = newDrawMode;
-            }
+            menuMngr.updateYOffset(listItems.get(x), yPos);
+            menuMngr.updateXOffset(listItems.get(x), xPos);
+            menuMngr.updateDrawMode(listItems.get(x), newDrawMode);
         }
 
         //Position the scroll bar =======================================================
-        Tree<MenuItem> sb = menuMngr.getItem(scrollBar);
+        Entity sb = menuMngr.getEnt(scrollBar);
         if(sb != null) {
-            int sbHeight = (int)((MenuItem)(sb.value)).ent.getWidth();
-            int barTop = top + padding;
-            int barBot = bottom - sbHeight - padding;
-            int adjPs = (int)(padding + top + (barBot - top) * scrollIndex);
-            adjPs = MathUtils.clamp(adjPs, top, barBot);
-            ((MenuItem)sb.value).yOffset = (int)adjPs;
-            menuMngr.positionItem(sb);
+            float sbHeight = sb.getHeight();
+            float barTop = top;
+            float barBot = bottom - sbHeight + 1;
+            float adjPs =  barTop + (barBot - barTop) * scrollIndex;
+            adjPs = MathUtils.clamp(adjPs, barTop, barBot);
+            menuMngr.updateYOffset(scrollBar, (int)adjPs);
         }
     }
 }
