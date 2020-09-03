@@ -162,11 +162,17 @@ public class InventoryManager extends Component {
         craftedItem.tile = "[type: inventory][subType: craftedItem]";
         menu.registerItem(craftedItem.tile, "inventoryTray", foreground, "[vertical: bottom][horizontal: right]", -10, 80, 9);
 
+
+
+
+        /*
         //this is also a test ======================================================
         addItem("[type: banana][amount: 1][preferredSlot: inventory][preferredSlotIndex: 1]");
         addItem("[type: watermelon][amount: 1][preferredSlot: inventory][preferredSlotIndex: 2]");
         addItem("[type: asparagus][amount: 1][preferredSlot: inventory][preferredSlotIndex: 3]");
         addItem("[type: potato][amount: 1][preferredSlot: inventory][preferredSlotIndex: 4]");
+
+         */
 
         //Hide all the items by default ============================================
         menu.updateDrawMode(background, "hidden");
@@ -297,6 +303,7 @@ public class InventoryManager extends Component {
          */
 
 
+
         if(preferredSlot.equals("current")) {
             if(preferredSlotIndex >= 0 && preferredSlotIndex < currentNumItems) {
                 String slotType = StringUtils.getField(currentItems[preferredSlotIndex].item, "subType");
@@ -355,6 +362,8 @@ public class InventoryManager extends Component {
          */
 
 
+
+        /*
         if(preferredSlot.equals("inventory")) {
 
             if(preferredSlotIndex >= 0 && preferredSlotIndex < inventoryItems.size()) {
@@ -378,6 +387,8 @@ public class InventoryManager extends Component {
 
             }
         }
+
+         */
 
     }
 
