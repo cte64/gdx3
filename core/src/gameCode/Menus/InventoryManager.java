@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class InventoryManager extends Component {
 
     //constants and lucky numbers =============================================
-    private final int currentNumItems = 7;
+    private final int currentNumItems = 3;
     private final int itemWidth = 52;
     private final int padding = 1;
     private int maxInvenItems = 56;
@@ -111,6 +111,8 @@ public class InventoryManager extends Component {
             currentItems[x] = node;
         }
 
+
+        /*
         //Inventory Items  ========================================================
         for(int x = 0; x < maxInvenItems; x++) {
             StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryHidden][index: ]");
@@ -126,6 +128,7 @@ public class InventoryManager extends Component {
             scrollList.addItem(nodeName.data);
             inventoryItems.add(node);
         }
+         */
 
         //Crafting Trays ==========================================================
         for(int x = 0; x < craftingTray.length; x++) {
@@ -163,16 +166,12 @@ public class InventoryManager extends Component {
         menu.registerItem(craftedItem.tile, "inventoryTray", foreground, "[vertical: bottom][horizontal: right]", -10, 80, 9);
 
 
+        addItem("banana", "current", -1, 1);
+        addItem("watermelon", "current", -1, 1);
+        addItem("asparagus", "current", -1, 17);
+        addItem("apple", "current", 0, 17);
+        addItem("potato", "current", 0, 17);
 
-
-        /*
-        //this is also a test ======================================================
-        addItem("[type: banana][amount: 1][preferredSlot: inventory][preferredSlotIndex: 1]");
-        addItem("[type: watermelon][amount: 1][preferredSlot: inventory][preferredSlotIndex: 2]");
-        addItem("[type: asparagus][amount: 1][preferredSlot: inventory][preferredSlotIndex: 3]");
-        addItem("[type: potato][amount: 1][preferredSlot: inventory][preferredSlotIndex: 4]");
-
-         */
 
         //Hide all the items by default ============================================
         menu.updateDrawMode(background, "hidden");
@@ -188,7 +187,7 @@ public class InventoryManager extends Component {
         int xComp = -(52 - comp.first) / 2 + 3;
         int yComp = -(52 - comp.second) / 2 + 3;
 
-        menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: center]", 0, 0, 6);
+        menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: center]", 0, 0, 7);
         menu.addText(newName.data, new TextComponent("0", 18, "[vertical: bottom][horizontal: left]", xComp, yComp));
 
         return newName.data;
@@ -270,22 +269,20 @@ public class InventoryManager extends Component {
 
     }
 
-    public void addItem(String itemToAdd) {
+    public void addItem(String type, String ps, int psi, int amount) {
 
 
-        /*FORMAT ======= [type: ][amount: ][preferredSlot: ][preferredSlotIndex: ]
-         preferredSlot can be "current" or "inventory"
-         preferredSlotIndex can be -1 (take first available spot) or any number 0 and above
-         */
-
-        String typeToAdd = StringUtils.getField(itemToAdd, "type");
-        String preferredSlot = StringUtils.getField(itemToAdd, "preferredSlot");
-
-        String amountStr = StringUtils.getField(itemToAdd, "amount");
-        int amount = MathUtils.clamp(StringUtils.stringToInt(amountStr), 0, 10000);
-
-        String slotStr = StringUtils.getField(itemToAdd, "preferredSlotIndex");
-        int preferredSlotIndex = MathUtils.clamp(StringUtils.stringToInt(slotStr), -1, 1000);
+        /*
+        type = item type
+        ps = preferred slot (either "current" or "inventory")
+        psi = preferred slot index (can be -1 -1 (take first available spot) or any number 0 and above)
+        amount = number of items to add (must be 1 or more)
+        */
+        
+        //some basic checks here 
+        if( !ps.equals("current") && !ps.equals("inventory") ) return;
+        amount = MathUtils.clamp(amount, 1, 1000);
+        
 
         /*
 
@@ -301,48 +298,47 @@ public class InventoryManager extends Component {
         If there are no items of the same type, loop from beginning and find first empty spot, put item there, and return
         If there are no empty spots, then set preferredSlot to "inventory" and preferredSlotIndex to -1 and call recursively
          */
+        if(ps.equals("current")) {
 
 
-
-        if(preferredSlot.equals("current")) {
-            if(preferredSlotIndex >= 0 && preferredSlotIndex < currentNumItems) {
-                String slotType = StringUtils.getField(currentItems[preferredSlotIndex].item, "subType");
+            if(psi >= 0 && psi < currentNumItems) {
+                String slotType = StringUtils.getField(currentItems[psi].item, "subType");
                 if(slotType.equals("")) {
-                    String newName = createItem(typeToAdd);
-                    currentItems[preferredSlotIndex].item = newName;
-                    currentItems[preferredSlotIndex].setItemCount(amount);
-                    menu.setParent(newName, currentItems[preferredSlotIndex].tile);
+                    String newName = createItem(type);
+                    currentItems[psi].item = newName;
+                    currentItems[psi].setItemCount(amount);
+                    menu.setParent(newName, currentItems[psi].tile);
                     return;
                 }
-                if(slotType.equals(itemToAdd)) {
-                    int newCount = currentItems[preferredSlotIndex].itemCount + 1;
-                    currentItems[preferredSlotIndex].setItemCount(newCount);
+                if(slotType.equals(type)) {
+                    int newCount = currentItems[psi].itemCount + amount;
+                    currentItems[psi].setItemCount(newCount);
                     return;
                 }
-                if(!slotType.equals(itemToAdd)){
-                    String newStr = StringUtils.setField(itemToAdd, "preferredSlotIndex", "-1");
-                    addItem(newStr);
+                if(!slotType.equals(type)){
+                    addItem(type, ps, -1, amount);
                     return;
                 }
             }
-            if(preferredSlotIndex == -1) {
+            if(psi == -1) {
                 for(itemNode node: currentItems) {
                     String nodeType = StringUtils.getField(node.item, "subType");
-                    if(nodeType.equals(typeToAdd)) {
-                        node.itemCount += amount;
+                    if(nodeType.equals(type)) {
+                        int newAmount = node.itemCount + amount;
+                        node.setItemCount(newAmount);
                         return;
                     }
                 }
                 for(itemNode node: currentItems) {
                     if(node.item.equals("")) {
-                        String newName = createItem(typeToAdd);
+                        String newName = createItem(type);
                         node.item = newName;
+                        node.setItemCount(amount);
                         menu.setParent(newName, node.tile);
                         return;
                     }
                 }
-                String newName = StringUtils.setField(itemToAdd, "preferredSlot", "inventory");
-                addItem(newName);
+                addItem(type, "inventory", psi, amount);
                 return;
             }
         }
@@ -362,33 +358,51 @@ public class InventoryManager extends Component {
          */
 
 
-
-        /*
-        if(preferredSlot.equals("inventory")) {
-
-            if(preferredSlotIndex >= 0 && preferredSlotIndex < inventoryItems.size()) {
-                String invenType = StringUtils.getField(inventoryItems.get(preferredSlotIndex).item, "subType");
+        if(ps.equals("inventory")) {
+            if(psi >= 0 && psi < inventoryItems.size()) {
+                String invenType = StringUtils.getField(inventoryItems.get(psi).item, "subType");
                 if(invenType.equals("")) {
-                    String newName = createItem(typeToAdd);
-                    inventoryItems.get(preferredSlotIndex).item = newName;
-                    inventoryItems.get(preferredSlotIndex).setItemCount(amount);
-                    menu.setParent(newName, inventoryItems.get(preferredSlotIndex).tile);
+                    String newName = createItem(type);
+                    inventoryItems.get(psi).item = newName;
+                    inventoryItems.get(psi).setItemCount(amount);
+                    menu.setParent(newName, inventoryItems.get(psi).tile);
                     return;
                 }
-
-                if(invenType.equals(typeToAdd)) {
-                    int newAmount = inventoryItems.get(preferredSlotIndex).getItemCount() + amount;
-                    inventoryItems.get(preferredSlotIndex).setItemCount(newAmount);
+                if(invenType.equals(type)) {
+                    int newAmount = inventoryItems.get(psi).getItemCount() + amount;
+                    inventoryItems.get(psi).setItemCount(newAmount);
+                    return;
+                }
+                if(!invenType.equals(type)) {
+                    addItem(type, ps, -1, amount);
                     return;
                 }
             }
+            if(psi == -1) {
 
-            if(preferredSlotIndex == -1) {
+                for(itemNode node: inventoryItems) {
+                    String nodeType = StringUtils.getField(node.item, "subType");
+                    if(nodeType.equals(type)) {
+                        int newAmount = node.itemCount + amount;
+                        node.setItemCount(newAmount);
+                        return;
+                    }
+                }
 
+                itemNode newNode = new itemNode();
+                StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryHidden][index: ]");
+                StringUtils.setField(nodeName, "index", StringUtils.toString(inventoryItems.size()));
+                newNode.tile = nodeName.data;
+                menu.registerItem(nodeName.data, "inventoryTray", background, "[vertical: top][horizontal: left]", 0, 0, 5);
+                scrollList.addItem(nodeName.data);
+                inventoryItems.add(newNode);
+
+                String newItemName = createItem(type);
+                newNode.item = newItemName;
+                menu.setParent(newItemName, newNode.tile);
+                return;
             }
         }
-
-         */
 
     }
 
