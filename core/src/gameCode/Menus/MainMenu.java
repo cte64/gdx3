@@ -2,7 +2,6 @@ package gameCode.Menus;
 
 import gameCode.Infrastructure.Component;
 import gameCode.Infrastructure.Entity;
-import gameCode.Infrastructure.TextComponent;
 import gameCode.Infrastructure.State;
 
 public class MainMenu extends Component {

@@ -2,7 +2,6 @@ package gameCode.Menus;
 
 import gameCode.Infrastructure.Graphics;
 import gameCode.Infrastructure.InputAL;
-import gameCode.Infrastructure.TextComponent;
 import gameCode.Infrastructure.World;
 import gameCode.Utilities.Timer;
 

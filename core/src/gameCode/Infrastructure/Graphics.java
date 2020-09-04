@@ -10,12 +10,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Disposable;
+import gameCode.Menus.TextComponent;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.myPair;
-import sun.font.TrueTypeFont;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +24,6 @@ import java.util.HashMap;
 
 
 import static com.badlogic.gdx.graphics.Pixmap.Format.RGB888;
-import static com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888;
 
 public class Graphics implements Disposable {
 
@@ -320,7 +318,7 @@ public class Graphics implements Disposable {
                     if(text != null && text.show) {
                         int fontSize = text.getFontSize();
                         if(!bmpFonts.containsKey(fontSize)) continue;
-                        bmpFonts.get(text.getFontSize()).setColor(1.0f, 1.0f, 0.0f, 1.0f);
+                        bmpFonts.get(text.getFontSize()).setColor(text.getR(), text.getG(), text.getB(), text.getA());
                         bmpFonts.get(text.getFontSize()).draw(hudBatch, text.getText(), text.getXPos(), text.getYPos());
                     }
                 }

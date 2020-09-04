@@ -1,4 +1,7 @@
-package gameCode.Infrastructure;
+package gameCode.Menus;
+import gameCode.Infrastructure.Component;
+import gameCode.Infrastructure.Entity;
+import gameCode.Infrastructure.Graphics;
 import gameCode.Utilities.StringUtils;
 
 public class TextComponent extends Component {
@@ -9,6 +12,7 @@ public class TextComponent extends Component {
     public int yPos, xPos, xOffset, yOffset;
     public String justify;
     public boolean show;
+    float r, g, b, a;
 
     public TextComponent(String newText, int newFontSize, String newJustify, int newX, int newY) {
         type = "text";
@@ -19,6 +23,10 @@ public class TextComponent extends Component {
         xOffset = newX;
         yOffset = newY;
         show = true;
+        r = 1.0f;
+        g = 1.0f;
+        b = 0.0f;
+        a = 1.0f;
     }
 
     public void update(Entity ent) {
@@ -43,10 +51,21 @@ public class TextComponent extends Component {
     public int getOldFontSize() { return oldFontSize; }
     public int getXPos() { return xPos; }
     public int getYPos() { return yPos; }
+    public float getR() { return r; }
+    public float getG() { return g; }
+    public float getB() { return b; }
+    public float getA() { return a; }
+
 
     //setters ====================================================================
     public void setText(String newText) { text = newText; }
     public void setFontSize(int newFontSize) { currentFontSize = newFontSize; }
     public void setXPos(int newX) { xPos = newX; }
     public void setYPos(int newY) { yPos = newY; }
+    public void setColor(float r, float g, float b, float a) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
 }

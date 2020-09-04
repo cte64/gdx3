@@ -32,6 +32,13 @@ public class StringUtils {
         else return 0;
     }
 
+    public static boolean compareFields(String a, String b, String field) {
+        String aField = getField(a, field);
+        String bField = getField(b, field);
+        if(aField.equals(bField)) return true;
+        else return false;
+    }
+
     public static float stringToFloat(String data) {
         if(MathUtils.isNumeric(data))
             return Float.parseFloat(data);
