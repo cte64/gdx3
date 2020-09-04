@@ -16,7 +16,7 @@ public class TextInput {
     float blinkTime;
     boolean blinkState;
 
-    String text;
+    public String text;
     int charLimit;
     public int fontSize;
     String acceptableChars;

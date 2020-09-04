@@ -19,8 +19,8 @@ public class ScrollList {
     public int hPadding;
     public float scrollPixPerSecond;
     ArrayList<String> listItems;
-    String parent;
-    String scrollBar;
+    public String parent;
+    public String scrollBar;
     MenuManager menuMngr;
 
     //Scroll stuff ======================================

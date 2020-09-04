@@ -1,7 +1,11 @@
-package gameCode.Menus;
+package gameCode.Menus.MenuScreens;
 
 import gameCode.Infrastructure.Component;
 import gameCode.Infrastructure.Entity;
+import gameCode.Menus.MenuManager;
+import gameCode.Menus.MenuScreens.LoadGame;
+import gameCode.Menus.TextComponent;
+import gameCode.Menus.TextInput;
 
 public class DeleteGameMenu extends Component {
 

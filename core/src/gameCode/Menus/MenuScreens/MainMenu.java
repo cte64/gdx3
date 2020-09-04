@@ -1,8 +1,10 @@
-package gameCode.Menus;
+package gameCode.Menus.MenuScreens;
 
 import gameCode.Infrastructure.Component;
 import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.State;
+import gameCode.Menus.MenuManager;
+import gameCode.Menus.TextComponent;
 
 public class MainMenu extends Component {
 
@@ -47,15 +49,13 @@ public class MainMenu extends Component {
 
     public void update(Entity entity) {
 
-
         //Update Click State =====================================================
         if(menu.isLeftClicked(createGame)) State.newGame();
         if(menu.isLeftClicked(loadGame)) State.loadGame();
 
-
         //Update Hover State =====================================================
-        menu.hoverAction(createGame, "[hoverType: toggle][fontSize: 1][scale: 1.007]");
-        menu.hoverAction(loadGame, "[hoverType: toggle][fontSize: 1][scale: 1.007]");
-        menu.hoverAction(options, "[hoverType: toggle][fontSize: 1][scale: 1.007]");
+        menu.hoverAction(createGame, "[hoverType: toggle][fontSize: 1][scale: 1.009]");
+        menu.hoverAction(loadGame, "[hoverType: toggle][fontSize: 1][scale: 1.009]");
+        menu.hoverAction(options, "[hoverType: toggle][fontSize: 1][scale: 1.009]");
     }
 }

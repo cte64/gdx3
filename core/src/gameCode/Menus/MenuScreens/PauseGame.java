@@ -1,6 +1,8 @@
-package gameCode.Menus;
+package gameCode.Menus.MenuScreens;
 
 import gameCode.Infrastructure.*;
+import gameCode.Menus.MenuManager;
+import gameCode.Menus.TextComponent;
 import gameCode.Utilities.StringUtils;
 
 public class PauseGame extends Component {

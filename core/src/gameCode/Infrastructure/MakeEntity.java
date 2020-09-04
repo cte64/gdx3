@@ -3,7 +3,11 @@ package gameCode.Infrastructure;
 import com.badlogic.gdx.graphics.Pixmap;
 import gameCode.Living.HeroInput;
 import gameCode.Living.PlaceTerrain;
-import gameCode.Menus.*;
+import gameCode.Menus.Inventory.InventoryManager;
+import gameCode.Menus.MenuScreens.CreateGameLoadingScreen;
+import gameCode.Menus.MenuScreens.MainMenu;
+import gameCode.Menus.MenuScreens.NewGame;
+import gameCode.Menus.MenuScreens.PauseGame;
 import gameCode.Utilities.StringUtils;
 
 public class MakeEntity {

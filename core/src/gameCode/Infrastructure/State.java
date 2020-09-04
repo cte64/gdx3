@@ -1,6 +1,6 @@
 package gameCode.Infrastructure;
 
-import gameCode.Menus.*;
+import gameCode.Menus.MenuScreens.LoadGame;
 import gameCode.Utilities.StringUtils;
 
 public class State {

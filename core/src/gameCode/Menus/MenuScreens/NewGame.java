@@ -1,7 +1,10 @@
-package gameCode.Menus;
+package gameCode.Menus.MenuScreens;
 
 
 import gameCode.Infrastructure.*;
+import gameCode.Menus.MenuManager;
+import gameCode.Menus.TextComponent;
+import gameCode.Menus.TextInput;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.MathUtils;
 
