@@ -43,7 +43,6 @@ public class Pixel {
         colors[8] = new Colors("lava", 0, "lavaTexture.png");
         colors[9] = new Colors("sand", 0, "sandTexture.png");
         colors[10] = new Colors("bloodstone", 0, "bloodstoneTexture.png");
-
     }
 
     public static int charToColor(char b) {

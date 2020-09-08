@@ -1,0 +1,1 @@
+[type: woodPickaxe][0: ,][1: lumber,1][2: ,][3: ,][4: lumber,1][5: ,][6: stone,1][7: stone,1][8: stone,1]

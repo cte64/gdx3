@@ -333,6 +333,7 @@ public class FileSystem {
         String type = StringUtils.getField(filename, "type");
         String name = "";
 
+        if (type.equals("inventory")) name = "core/gameFiles/InventoryRecipes.txt";
         if (type.equals("hero")) name = gameSaveDirectory + gameSubDirectory + "hero.txt";
         if (type.equals("metadata")) name = gameSaveDirectory + gameSubDirectory + "metadata.txt";
         if (type.equals("chunk")) {

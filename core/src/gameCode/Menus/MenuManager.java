@@ -74,6 +74,13 @@ public class MenuManager {
         item.setParent(parent);
 
         positionItem(item);
+
+        //set the zPos of the item to newParentKey + 1
+        Entity childEnt = item.getValue().ent;
+        Entity parentEnt = parent.getValue().ent;
+        if(childEnt != null && parent != null) {
+            childEnt.z_pos = parentEnt.z_pos + 1;
+        }
     }
 
     public boolean hover(String id) {

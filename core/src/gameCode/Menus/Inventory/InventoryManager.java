@@ -34,6 +34,7 @@ public class InventoryManager extends Component {
     ItemNode clipboard;
     ItemNode craftedItem;
     ArrayList<String> uniqueIds;
+    InventoryLookup invenLookup;
 
     public InventoryManager() {
 
@@ -65,6 +66,7 @@ public class InventoryManager extends Component {
         scrollList.width = 6;
         scrollList.vPadding = 1;
         scrollList.hPadding = 1;
+        invenLookup = new InventoryLookup();
 
         //set the clipboard
         clipboard.tile = "[type: inventory][subType: clipboard]";
@@ -149,11 +151,12 @@ public class InventoryManager extends Component {
         addItem("asparagus", "current", -1, 17);
         addItem("apple", "inventory", 0, 5);
         addItem("potato", "inventory", 0, 4);
+        addItem("lumber", "inventory", 4, 20);
+        addItem("stone", "inventory", 5, 20);
 
         //Hide all the items by default ============================================
         menu.updateDrawMode(background, "hidden");
     }
-
 
     //Item Modifier ================================================================
     public String createItem(String name) {
@@ -332,40 +335,56 @@ public class InventoryManager extends Component {
 
         menu.setParent(node.item, clipboard.tile);
         Entity nodeEnt = menu.getEnt(node.item);
-        if(nodeEnt != null) nodeEnt.z_pos = 10;
+        if(nodeEnt != null) nodeEnt.z_pos = 12;
         clipboard.item = node.item;
         setItemCount(clipboard, node.getItemCount());
 
         menu.setParent(oldClipItem, node.tile);
-        Entity clipEnt = menu.getEnt(oldClipItem);
-        Entity tile = menu.getEnt(node.tile);
-        if(clipEnt != null && tile != null) clipEnt.z_pos = tile.z_pos + 1;
         node.item = oldClipItem;
         setItemCount(node, oldClipCount);
     }
 
-    private void leftClick(String trays) {
+    private void grabCraftedItem() {
 
-        for(ItemNode node: currentItems) {
-            if(menu.isLeftClicked(node.tile))
-                leftClickAction(node);
-        }
+        if(craftedItem.item == "") return;
+        String type = StringUtils.getField(craftedItem.item, "subType");
+        int amount = craftedItem.getItemCount();
 
-        if(!trays.equals("hud")) return;
-
-        for(ItemNode node: inventoryItems) {
-            if(scrollList.isLeftClicked(node.tile))
-                leftClickAction(node);
-        }
-
+        ArrayList<myPair<String, Integer>> toTest = new ArrayList<>();
         for(ItemNode node: craftingTray) {
-            if(menu.isLeftClicked(node.tile))
-                leftClickAction(node);
+            String subType = StringUtils.getField(node.item, "subType");
+            myPair item = new myPair(subType, node.getItemCount());
+            toTest.add(item);
         }
 
-        for(ItemNode node: equippedItems) {
-            if(menu.isLeftClicked(node.tile))
-                leftClickAction(node);
+        ArrayList<myPair<String, Integer>> recipe = invenLookup.getRecipe(toTest);
+        for(int x = 0; x < craftingTray.length; x++) {
+            int reduceAmount = recipe.get(x).second * amount;
+            subtractItem(craftingTray[x], reduceAmount);
+        }
+
+        clipboardSwap(craftedItem);
+    }
+
+    private void updateCrafting() {
+
+        //remove the old one
+        menu.removeItem(craftedItem.item);
+        craftedItem.item = "";
+
+        ArrayList<myPair<String, Integer>> toTest = new ArrayList<>();
+        for(ItemNode node: craftingTray) {
+            String subType = StringUtils.getField(node.item, "subType");
+            myPair item = new myPair(subType, node.getItemCount());
+            toTest.add(item);
+        }
+
+        myPair<String, Integer> newItem = invenLookup.getCraftedItem(toTest);
+        if(!newItem.first.equals("") && newItem.second != 0) {
+            String newName = createItem(newItem.first);
+            craftedItem.item = newName;
+            setItemCount(craftedItem, newItem.second);
+            menu.setParent(newName, craftedItem.tile);
         }
     }
 
@@ -410,13 +429,40 @@ public class InventoryManager extends Component {
         }
 
         for(ItemNode node: craftingTray) {
-            if(menu.isRightClicked(node.tile) && !clipboard.item.equals(""))
+            if(menu.isRightClicked(node.tile) && !clipboard.item.equals("")) {
                 rightClickAction(node);
+                updateCrafting();
+            }
         }
     }
 
-    void updateCrafting() {
+    private void leftClick(String trays) {
 
+        for(ItemNode node: currentItems) {
+            if(menu.isLeftClicked(node.tile))
+                leftClickAction(node);
+        }
+
+        if(!trays.equals("hud")) return;
+
+        for(ItemNode node: inventoryItems) {
+            if(scrollList.isLeftClicked(node.tile))
+                leftClickAction(node);
+        }
+
+        for(ItemNode node: craftingTray) {
+            if(menu.isLeftClicked(node.tile)) {
+                leftClickAction(node);
+                updateCrafting();
+            }
+        }
+
+        for(ItemNode node: equippedItems) {
+            if(menu.isLeftClicked(node.tile))
+                leftClickAction(node);
+        }
+
+        if(menu.isLeftClicked(craftedItem.tile)) grabCraftedItem();
     }
 
 
@@ -446,12 +492,8 @@ public class InventoryManager extends Component {
         rightClick(ent.drawMode);
 
         menu.updatePosition(clipboard.tile);
-
         if(ent.drawMode.equals("hud")) {
             scrollList.updateList2();
         }
-
-
-
     }
 }
