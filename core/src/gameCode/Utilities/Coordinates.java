@@ -30,8 +30,8 @@ public class Coordinates {
         float xN = (float)(xMid + h*Math.cos( pR + pA));
         float yN = (float)(yMid - h*Math.sin( pR + pA));
 
-        xN = MathUtils.clamp(xN, 0.0f, (float)(World.getNumPixels() - 1));
-        yN = MathUtils.clamp(yN, 0.0f, (float)World.getNumPixels() - 1);
+        xN = MathUtils.clamp(xN, 0.0f, (float)(World.get().getNumPixels() - 1));
+        yN = MathUtils.clamp(yN, 0.0f, (float)World.get().getNumPixels() - 1);
 
         Vector2 retVal = new Vector2(xN, yN);
         return retVal;
@@ -57,8 +57,8 @@ public class Coordinates {
         float xN = (float)(xMid + h*Math.cos( pR + pA));
         float yN = (float)(yMid + h*Math.sin( pR + pA));
 
-        xN = MathUtils.clamp(xN, 0.0f, (float)(World.getNumPixels() - 1));
-        yN = MathUtils.clamp(yN, 0.0f, (float)World.getNumPixels() - 1);
+        xN = MathUtils.clamp(xN, 0.0f, (float)(World.get().getNumPixels() - 1));
+        yN = MathUtils.clamp(yN, 0.0f, (float)World.get().getNumPixels() - 1);
 
         Vector2 retVal = new Vector2(xN, yN);
         return retVal;
@@ -74,8 +74,8 @@ public class Coordinates {
         float xN = (float)(fromX + h*Math.cos( pR + pA));
         float yN = (float)(fromY + h*Math.sin( pR + pA ));
 
-        xN = MathUtils.clamp(xN, 0.0f, (float)(World.getNumPixels() - 1));
-        yN = MathUtils.clamp(yN, 0.0f, (float)(World.getNumPixels() - 1));
+        xN = MathUtils.clamp(xN, 0.0f, (float)(World.get().getNumPixels() - 1));
+        yN = MathUtils.clamp(yN, 0.0f, (float)(World.get().getNumPixels() - 1));
 
         Vector2 retVal = new Vector2(xN, yN);
         return retVal;
@@ -91,8 +91,8 @@ public class Coordinates {
         float xN = (float)(fromX + h*Math.cos( pR + pA));
         float yN = (float)(fromY + h*Math.sin( pR + pA ));
 
-        xN = MathUtils.clamp(xN, 0.0f, (float)(World.getNumPixels() - 1));
-        yN = MathUtils.clamp(yN, 0.0f, (float)(World.getNumPixels() - 1));
+        xN = MathUtils.clamp(xN, 0.0f, (float)(World.get().getNumPixels() - 1));
+        yN = MathUtils.clamp(yN, 0.0f, (float)(World.get().getNumPixels() - 1));
 
         Vector2 retVal = new Vector2(xN, yN);
         return retVal;
@@ -142,31 +142,31 @@ public class Coordinates {
         }
         
         //  TOP LEFT
-        int topLeftX = (int)((ent.x_pos * World.getNumCells()) / World.getNumPixels());
-        int topLeftY = (int)((ent.y_pos * World.getNumCells()) / World.getNumPixels());
-        topLeftX = MathUtils.clamp(topLeftX, 0, World.getNumCells() - 1);
-        topLeftY = MathUtils.clamp(topLeftY, 0, World.getNumCells() - 1);
+        int topLeftX = (int)((ent.x_pos * World.get().getNumCells()) / World.get().getNumPixels());
+        int topLeftY = (int)((ent.y_pos * World.get().getNumCells()) / World.get().getNumPixels());
+        topLeftX = MathUtils.clamp(topLeftX, 0, World.get().getNumCells() - 1);
+        topLeftY = MathUtils.clamp(topLeftY, 0, World.get().getNumCells() - 1);
         corner_coords.add(new Vector2(topLeftY, topLeftX));
 
         // TOP RIGHT
-        int topRightX = (int)((ent.x_pos + ent.getWidth())/(World.tileSize*World.xCell));
-        int topRightY = (int)((ent.y_pos)/(World.tileSize*World.xCell));
-        topRightX = MathUtils.clamp(topRightX, 0, World.getNumCells() - 1);
-        topRightY = MathUtils.clamp(topRightY, 0, World.getNumCells() - 1);
+        int topRightX = (int)((ent.x_pos + ent.getWidth())/(World.get().tileSize*World.get().xCell));
+        int topRightY = (int)((ent.y_pos)/(World.get().tileSize*World.get().xCell));
+        topRightX = MathUtils.clamp(topRightX, 0, World.get().getNumCells() - 1);
+        topRightY = MathUtils.clamp(topRightY, 0, World.get().getNumCells() - 1);
         corner_coords.add(new Vector2(topRightY, topRightX));
 
         // BOTTOM LEFT
-        int bottomLeftX = (int)((ent.x_pos)/(World.tileSize*World.xCell));
-        int bottomLeftY = (int)((ent.y_pos + ent.getHeight())/(World.tileSize*World.xCell));
-        bottomLeftX = MathUtils.clamp(bottomLeftX, 0, World.getNumCells() - 1);
-        bottomLeftY = MathUtils.clamp(bottomLeftY, 0, World.getNumCells() - 1);
+        int bottomLeftX = (int)((ent.x_pos)/(World.get().tileSize*World.get().xCell));
+        int bottomLeftY = (int)((ent.y_pos + ent.getHeight())/(World.get().tileSize*World.get().xCell));
+        bottomLeftX = MathUtils.clamp(bottomLeftX, 0, World.get().getNumCells() - 1);
+        bottomLeftY = MathUtils.clamp(bottomLeftY, 0, World.get().getNumCells() - 1);
         corner_coords.add(new Vector2(bottomLeftY, bottomLeftX));
 
         // BOTTOM RIGHT
-        int bottomRightX = (int)((ent.x_pos + ent.getWidth())/(World.tileSize*World.xCell));
-        int bottomRightY = (int)((ent.y_pos + ent.getHeight())/(World.tileSize*World.xCell));
-        bottomRightX = MathUtils.clamp(bottomRightX, 0, World.getNumCells() - 1);
-        bottomRightY = MathUtils.clamp(bottomRightY, 0, World.getNumCells() - 1);
+        int bottomRightX = (int)((ent.x_pos + ent.getWidth())/(World.get().tileSize*World.get().xCell));
+        int bottomRightY = (int)((ent.y_pos + ent.getHeight())/(World.get().tileSize*World.get().xCell));
+        bottomRightX = MathUtils.clamp(bottomRightX, 0, World.get().getNumCells() - 1);
+        bottomRightY = MathUtils.clamp(bottomRightY, 0, World.get().getNumCells() - 1);
         corner_coords.add(new Vector2(bottomRightY, bottomRightX));
 
         //GET RID OF DUPLICATES

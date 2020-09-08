@@ -61,7 +61,7 @@ public class CreateGameLoadingScreen extends Component {
         maxListSize = 7;
 
         loadingMessages = new ArrayList<StringUtils>();
-        int radius = (int)((numChunksInt * World.tilesPerChunk * World.tileSize) * 0.3f);
+        int radius = (int)((numChunksInt * World.get().tilesPerChunk * World.get().tileSize) * 0.3f);
         makeWorld = new MakeWorld(name, numChunksInt, radius, loadingMessages);
 
         t = new Thread(new MyRunnable(makeWorld));

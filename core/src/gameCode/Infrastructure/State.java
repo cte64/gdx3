@@ -11,7 +11,7 @@ public class State {
         hud.entityName = "[type: menu][name: loadGame]";
         hud.drawMode = "hud";
         hud.addComponent(new LoadGame());
-        World.entitiesToBeAdded.add(hud);
+        World.get().entitiesToBeAdded.add(hud);
         state = "loadGame";
     }
 
@@ -32,37 +32,37 @@ public class State {
         FileSystem.getFile(new StringUtils("[type: metadata]"), metaData);
         String numChunksStr = StringUtils.getField(metaData, "numChunks");
         int numChunks = StringUtils.stringToInt(numChunksStr);
-        World.createWorld(numChunks);
+        World.get().createWorld(numChunks);
 
         //Hero ==============================================================================
         StringUtils heroData = new StringUtils("");
         FileSystem.getFile(new StringUtils("[type: hero]"), heroData);
         Entity hero = MakeEntity.getEntity(heroData.data);
-        World.entitiesToBeAdded.add(hero);
+        World.get().entitiesToBeAdded.add(hero);
 
         //Add the pause item ================================================================
         Entity pause = MakeEntity.getEntity("[type: menu][subType: pause]");
-        World.entitiesToBeAdded.add(pause);
+        World.get().entitiesToBeAdded.add(pause);
     }
 
     public static void mainMenu() {
-        World.deleteWorld();
+        World.get().deleteWorld();
         Entity ent = MakeEntity.getEntity("[type: menu][subType: mainMenu]");
-        World.entitiesToBeAdded.add(ent);
+        World.get().entitiesToBeAdded.add(ent);
         state = "mainMenu";
     }
 
     public static void newMenuTest() {
-        World.deleteWorld();
+        World.get().deleteWorld();
         Entity ent = MakeEntity.getEntity("[type: menu][subType: newMenuTest]");
-        World.entitiesToBeAdded.add(ent);
+        World.get().entitiesToBeAdded.add(ent);
         state = "newMenuTest";
     }
 
     public static void newGame() {
         deleteType("type", "menu");
         Entity ent = MakeEntity.getEntity("[type: menu][subType: newGame]");
-        World.entitiesToBeAdded.add(ent);
+        World.get().entitiesToBeAdded.add(ent);
         state = "newGame";
     }
 
@@ -70,7 +70,7 @@ public class State {
         state = newData;
         deleteType("type", "menu");
         Entity ent = MakeEntity.getEntity("[type: menu][subType: createGameLoadingScreen]");
-        World.entitiesToBeAdded.add(ent);
+        World.get().entitiesToBeAdded.add(ent);
     }
 
     //State stuff ==========================================================
@@ -82,9 +82,9 @@ public class State {
     private State() {}
 
     public static void deleteType(String field, String type) {
-        for(Entity ent: World.getEntList()) {
+        for(Entity ent: World.get().getEntList()) {
             String thisType = StringUtils.getField(ent.entityName, field);
-            if(thisType.equals(type)) World.entitiesToBeDeleted.add(ent);
+            if(thisType.equals(type)) World.get().entitiesToBeDeleted.add(ent);
         }
     }
 }

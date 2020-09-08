@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.Engine;
+import com.mygdx.game.Graphics;
 import gameCode.Utilities.myPair;
 
 import gameCode.Utilities.Coordinates;
@@ -13,63 +15,71 @@ import gameCode.Utilities.MathUtils;
 
 public class World {
 
-    //Make Sure that this cant be instantiated
-    private World() {}
+    //Single instance ===============================================================================
+    private static World worldInstance = null;
+    private World() {
+    }
+    public static World get() {
+        if(worldInstance == null)
+            worldInstance = new World();
+        return worldInstance;
+    }
+
 
     //Declare constants =============================================================================
-    public static final int xCell = 10;
-    public static final int tileSize = 60;
-    public static final int tilesPerChunk = 20;
+    public final int xCell = 10;
+    public final int tileSize = 60;
+    public final int tilesPerChunk = 20;
 
     //These values change based on the size of the game ============================================
-    private static int numChunks;
-    private static int numBlocks;
-    private static int numPixels;
-    private static int numCells;
+    private int numChunks;
+    private int numBlocks;
+    private int numPixels;
+    private int numCells;
 
     //ViewPort parameters =========================================================================
-    private static int viewPortWidth = 1000;
-    private static int viewPortHeight = 700;
+    private int viewPortWidth = 1000;
+    private int viewPortHeight = 700;
 
     //Time between frame ==========================================================================
-    private static float deltaTime = 0.0f;
+    private float deltaTime = 0.0f;
 
     //Add and delete entities =====================================================================
-    public static ArrayList<Entity> entitiesToBeAdded = new ArrayList<Entity>();
-    public static ArrayList<Entity> entitiesToBeDeleted = new ArrayList<Entity>();
+    public ArrayList<Entity> entitiesToBeAdded = new ArrayList<Entity>();
+    public ArrayList<Entity> entitiesToBeDeleted = new ArrayList<Entity>();
 
     //These are the different data structures that reference the game entities =====================
-    private static LinkedList<Entity> entList = new LinkedList<Entity>();
-    private static HashMap<String, Entity> entByName = new HashMap<String, Entity>();
-    private static ArrayList<Entity> entByZIndex = new ArrayList<Entity>();
-    private static HashMap<myPair<Integer, Integer>, Chunk> chunks = new HashMap<myPair<Integer, Integer>, Chunk>();
-    private static class FrameStruct { int width, height, left, right, top, bottom; Entity ent; };
-    private static ArrayList<FrameStruct> frames = new ArrayList<FrameStruct>();
+    private LinkedList<Entity> entList = new LinkedList<Entity>();
+    private HashMap<String, Entity> entByName = new HashMap<String, Entity>();
+    private ArrayList<Entity> entByZIndex = new ArrayList<Entity>();
+    private HashMap<myPair<Integer, Integer>, Chunk> chunks = new HashMap<myPair<Integer, Integer>, Chunk>();
+    private class FrameStruct { int width, height, left, right, top, bottom; Entity ent; };
+    private ArrayList<FrameStruct> frames = new ArrayList<FrameStruct>();
 
     //Entity that controls the viewport ============================================================
-    private static Entity camera = null;
+    private Entity camera = null;
 
     //GETTERS =======================================================================================
-    public static int getNumChunks() { return numChunks; }
-    public static int getNumPixels() { return numPixels; }
-    public static int getNumBlocks() { return numBlocks; }
-    public static int getNumCells() { return numCells; }
-    public static int getViewPortWidth() { return viewPortWidth; }
-    public static int getViewPortHeight() { return viewPortHeight; }
-    public static float getDeltaTime() { return deltaTime; }
-    public static LinkedList<Entity> getEntList() { return entList; }
-    public static Entity getCamera() { return camera; }
-    public static Chunk getChunk(myPair<Integer, Integer> key) {
+    public int getNumChunks() { return numChunks; }
+    public int getNumPixels() { return numPixels; }
+    public int getNumBlocks() { return numBlocks; }
+    public int getNumCells() { return numCells; }
+    public int getViewPortWidth() { return viewPortWidth; }
+    public int getViewPortHeight() { return viewPortHeight; }
+    public float getDeltaTime() { return deltaTime; }
+    public LinkedList<Entity> getEntList() { return entList; }
+    public Entity getCamera() { return camera; }
+    public Chunk getChunk(myPair<Integer, Integer> key) {
         if(chunks.containsKey(key)) return chunks.get(key);
         else return null;
     }
-    public static Entity getEntByName(String name) {
+    public Entity getEntByName(String name) {
         if(entByName.containsKey(name)) return entByName.get(name);
         else return null;
     }
-    public static ArrayList<Entity> getEntByZIndex() { return entByZIndex; }
-    public static HashMap<myPair<Integer, Integer>, Chunk> getChunkMap() { return chunks; }
-    public static ArrayList<Entity> getEntByLocation(int x, int y) {
+    public ArrayList<Entity> getEntByZIndex() { return entByZIndex; }
+    public HashMap<myPair<Integer, Integer>, Chunk> getChunkMap() { return chunks; }
+    public ArrayList<Entity> getEntByLocation(int x, int y) {
 
         //will rewrite this later
         ArrayList<Entity> ents = new ArrayList<Entity>();
@@ -84,22 +94,22 @@ public class World {
     }
 
     //SETTERS ======================================================================================
-    public static void setDeltaTime(float newDelta) { deltaTime = newDelta; }
-    public static void setViewPortWidth(int newWidth) { viewPortWidth = newWidth; }
-    public static void setViewPortHeight(int newHeight) { viewPortHeight = newHeight; }
-    public static void addSiftingFrame(Entity ent, int newWidth, int newHeight) {
+    public void setDeltaTime(float newDelta) { deltaTime = newDelta; }
+    public void setViewPortWidth(int newWidth) { viewPortWidth = newWidth; }
+    public void setViewPortHeight(int newHeight) { viewPortHeight = newHeight; }
+    public void addSiftingFrame(Entity ent, int newWidth, int newHeight) {
         FrameStruct newFrame = new FrameStruct();
         newFrame.width = newWidth;
         newFrame.height = newHeight;
         newFrame.ent = ent;
         frames.add(newFrame);
     }
-    public static void setCamera(Entity newCamera) { camera = newCamera; }
-    public static void insertChunk(myPair<Integer, Integer> key, Chunk newChunk) {
+    public void setCamera(Entity newCamera) { camera = newCamera; }
+    public void insertChunk(myPair<Integer, Integer> key, Chunk newChunk) {
         chunks.put(key, newChunk);
     }
-    public static void deleteChunk(myPair<Integer, Integer> key) { chunks.remove(key); }
-    private static void positionByZIndex(Entity ent) {
+    public void deleteChunk(myPair<Integer, Integer> key) { chunks.remove(key); }
+    private void positionByZIndex(Entity ent) {
 
         if(entByZIndex.size() == 0) {
             entByZIndex.add(ent);
@@ -116,10 +126,10 @@ public class World {
     }
 
     //Modify World State ===========================================================================
-    public static void init() {
-        State.mainMenu();
+    public void init() {
+        //State.mainMenu();
     }
-    public static void createWorld(int newChunks) {
+    public void createWorld(int newChunks) {
 
         numChunks = newChunks;
         numBlocks = numChunks * tilesPerChunk;
@@ -129,7 +139,7 @@ public class World {
         chunks.clear();
         FileSystem.init();
     }
-    public static void deleteWorld() {
+    public void deleteWorld() {
 
         for(Entity ent: entList) { entitiesToBeDeleted.add(ent); }
         chunks.clear();
@@ -146,7 +156,7 @@ public class World {
     }
 
     //Loading and Unloading ========================================================================
-    public static void setEdge() {
+    public void setEdge() {
 
         for(FrameStruct frame: frames) {
 
@@ -176,7 +186,7 @@ public class World {
             }
         }
     }
-    public static void update() {
+    public void update() {
 
 
         //print stuff =============================================================
@@ -186,7 +196,7 @@ public class World {
         //delete stuff ============================================================
         for(Entity ent: entitiesToBeDeleted) {
             if(ent == null) continue;
-            if( StringUtils.getField(ent.entityName, "type").equals( "tile") ) { Graphics.returnCoord(ent.spriteName); }
+            if( StringUtils.getField(ent.entityName, "type").equals( "tile") ) { Engine.get().getGraphics().returnCoord(ent.spriteName); }
             ent.markForDeletion = true;
 
             entByName.remove(ent.entityName);
@@ -203,7 +213,7 @@ public class World {
         }
         entitiesToBeAdded.clear();
     }
-    public static void cleanUp() {
+    public void cleanUp() {
 
         if (camera == null) return;
         for (FrameStruct frame : frames) {
@@ -257,7 +267,7 @@ public class World {
             }
         }
     }
-    public static void loadEntities() {
+    public void loadEntities() {
 
 
               /*

@@ -1,8 +1,9 @@
 package gameCode.Menus;
 
+import com.mygdx.game.Engine;
+import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.*;
 import gameCode.Infrastructure.Component;
-import gameCode.Infrastructure.Graphics;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.Tree;
@@ -19,7 +20,7 @@ public class MenuManager {
 
     public void removeItem(String name) {
         if(!items.containsKey(name)) return;
-        for(Tree<MenuItem> item: items.get(name).getTraverseArr()) { World.entitiesToBeDeleted.add( item.value.ent ); }
+        for(Tree<MenuItem> item: items.get(name).getTraverseArr()) { World.get().entitiesToBeDeleted.add( item.value.ent ); }
         items.remove(name);
     }
 
@@ -34,8 +35,8 @@ public class MenuManager {
         //get the coordinates of the parent element====================================================
         int parentX = 0;
         int parentY = 0;
-        int parentW = World.getViewPortWidth();
-        int parentH = World.getViewPortHeight();
+        int parentW = World.get().getViewPortWidth();
+        int parentH = World.get().getViewPortHeight();
 
         Entity parentEnt = null;
         if(item.parent != null) parentEnt = ((MenuItem)item.parent.value).ent;
@@ -52,7 +53,7 @@ public class MenuManager {
         if(vertical.equals("center")) ent.y_pos = parentY + (parentH / 2) - ent.getHeight() / 2 + mn.yOffset;
         if(vertical.equals("bottom")) ent.y_pos = parentY + mn.yOffset;
         if(vertical.equals("top")) ent.y_pos = parentY + parentH - ent.getHeight() - mn.yOffset;
-        if(vertical.equals("mouse")) ent.y_pos = InputAL.getMouseY();
+        if(vertical.equals("mouse")) ent.y_pos = Engine.get().getInput().getMouseY();
 
 
         //horizontal =================================================================================
@@ -60,7 +61,7 @@ public class MenuManager {
         if(horizontal.equals("center")) ent.x_pos = parentX + (parentW / 2) - ent.getWidth() / 2 + mn.xOffset;
         if(horizontal.equals("left")) ent.x_pos = parentX + mn.xOffset;
         if(horizontal.equals("right")) ent.x_pos = parentX + parentW - ent.getWidth() + mn.xOffset;
-        if(horizontal.equals("mouse")) ent.x_pos = InputAL.getMouseX();
+        if(horizontal.equals("mouse")) ent.x_pos = Engine.get().getInput().getMouseX();
     }
 
     public void setParent(String itemKey, String newParentKey) {
@@ -90,8 +91,8 @@ public class MenuManager {
 
         Entity ent = ((MenuItem)items.get(id).value).ent;
 
-        int xPos = InputAL.getMouseX();
-        int yPos = InputAL.getMouseY();
+        int xPos = Engine.get().getInput().getMouseX();
+        int yPos = Engine.get().getInput().getMouseY();
 
         if(xPos >= ent.x_pos && xPos <= ent.x_pos + ent.getWidth() &&
                 yPos >= ent.y_pos && yPos <= ent.y_pos + ent.getHeight()) {
@@ -168,7 +169,7 @@ public class MenuManager {
             if(ampStr != "") amp = StringUtils.stringToFloat(ampStr);
             if(freqStr != "") freq = StringUtils.stringToFloat(freqStr);
 
-            item.tick += World.getDeltaTime();
+            item.tick += World.get().getDeltaTime();
             double arg = item.tick * 2.0f * freq * MathUtils.PI;
             float scale = (float)Math.sin(arg);
             float newScale = 1.0f + scale * amp;
@@ -195,11 +196,11 @@ public class MenuManager {
         newItem.ent.entityName = id;
         newItem.ent.spriteName = sprNm;
         newItem.ent.drawMode = "hud";
-        newItem.ent.width = Graphics.getSpriteDimensions(sprNm).first;
-        newItem.ent.height = Graphics.getSpriteDimensions(sprNm).second;
+        newItem.ent.width = Engine.get().getGraphics().getSpriteDimensions(sprNm).first;
+        newItem.ent.height = Engine.get().getGraphics().getSpriteDimensions(sprNm).second;
         newItem.ent.z_pos = z;
         newItem.ent.deleteRange = -2;
-        World.entitiesToBeAdded.add(newItem.ent);
+        World.get().entitiesToBeAdded.add(newItem.ent);
 
         Tree<MenuItem> parentTree = null;
         if(items.containsKey(parent)) parentTree = items.get(parent);
@@ -227,10 +228,10 @@ public class MenuManager {
         if(!items.containsKey(id)) return false;
         MenuItem mn = (MenuItem)items.get(id).value;
 
-        if (!hover(id) && !InputAL.isMousePressed("mouse left")) mn.clickStateL = 0;
-        if (mn.clickStateL == 0 && hover(id) && !InputAL.isMousePressed("mouse left")) mn.clickStateL = 1;
-        if (mn.clickStateL == 1 && hover(id) && InputAL.isMousePressed("mouse left")) mn.clickStateL = 2;
-        if (mn.clickStateL == 2 && hover(id) && !InputAL.isMousePressed("mouse left")) {
+        if (!hover(id) && !Engine.get().getInput().isMousePressed("mouse left")) mn.clickStateL = 0;
+        if (mn.clickStateL == 0 && hover(id) && !Engine.get().getInput().isMousePressed("mouse left")) mn.clickStateL = 1;
+        if (mn.clickStateL == 1 && hover(id) && Engine.get().getInput().isMousePressed("mouse left")) mn.clickStateL = 2;
+        if (mn.clickStateL == 2 && hover(id) && !Engine.get().getInput().isMousePressed("mouse left")) {
             mn.clickStateL = 0;
             return true;
         }
@@ -243,10 +244,10 @@ public class MenuManager {
         if(!items.containsKey(id)) return false;
         MenuItem mn = (MenuItem)items.get(id).value;
 
-        if (!hover(id) && !InputAL.isMousePressed("mouse right")) mn.clickStateR = 0;
-        if (mn.clickStateR == 0 && hover(id) && !InputAL.isMousePressed("mouse right")) mn.clickStateR = 1;
-        if (mn.clickStateR == 1 && hover(id) && InputAL.isMousePressed("mouse right")) mn.clickStateR = 2;
-        if (mn.clickStateR == 2 && hover(id) && !InputAL.isMousePressed("mouse right")) {
+        if (!hover(id) && !Engine.get().getInput().isMousePressed("mouse right")) mn.clickStateR = 0;
+        if (mn.clickStateR == 0 && hover(id) && !Engine.get().getInput().isMousePressed("mouse right")) mn.clickStateR = 1;
+        if (mn.clickStateR == 1 && hover(id) && Engine.get().getInput().isMousePressed("mouse right")) mn.clickStateR = 2;
+        if (mn.clickStateR == 2 && hover(id) && !Engine.get().getInput().isMousePressed("mouse right")) {
             mn.clickStateR = 0;
             return true;
         }

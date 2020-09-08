@@ -1,4 +1,6 @@
 package gameCode.Menus.Inventory;
+import com.mygdx.game.Engine;
+import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.*;
 import gameCode.Menus.MenuManager;
 import gameCode.Menus.ScrollList;
@@ -167,7 +169,7 @@ public class InventoryManager extends Component {
         uniqueIds.remove(0);
 
         //I will find a more elegant solution for this later
-        myPair<Integer, Integer> comp = Graphics.getSpriteDimensions(name);
+        myPair<Integer, Integer> comp = Engine.get().getGraphics().getSpriteDimensions(name);
         int xComp = -(52 - comp.first) / 2 + 3;
         int yComp = -(52 - comp.second) / 2 + 3;
 
@@ -474,8 +476,8 @@ public class InventoryManager extends Component {
 
         String worldState = StringUtils.getField(State.getState(), "action");
         if(!worldState.equals("paused")) {
-            if(InputAL.isKeyPressed("i") && !iToggle) iToggle = true;
-            if(!InputAL.isKeyPressed("i") && iToggle) {
+            if(Engine.get().getInput().isKeyPressed("i") && !iToggle) iToggle = true;
+            if(!Engine.get().getInput().isKeyPressed("i") && iToggle) {
                 iToggle = false;
                 if(ent.drawMode.equals("hidden")) {
                     menu.updateDrawMode(background, "hud");

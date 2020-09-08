@@ -1,6 +1,8 @@
 package gameCode.Infrastructure;
 
 import com.badlogic.gdx.graphics.Pixmap;
+import com.mygdx.game.Engine;
+import com.mygdx.game.Graphics;
 import gameCode.Living.HeroInput;
 import gameCode.Living.PlaceTerrain;
 import gameCode.Menus.Inventory.InventoryManager;
@@ -15,8 +17,8 @@ public class MakeEntity {
     public static Entity getEntity(String name, Pixmap image) {
         Entity ent = getEntity(name);
         ent.deleteRange = -1;
-        ent.spriteName = Graphics.getCoord();
-        Graphics.updateSprite(ent.spriteName, image);
+        ent.spriteName = Engine.get().getGraphics().getCoord();
+        Engine.get().getGraphics().updateSprite(ent.spriteName, image);
         return ent;
     }
 
@@ -32,7 +34,7 @@ public class MakeEntity {
         if(type.equals("hero")) {
             String x_posStr = StringUtils.getField(name, "xPos");
             String y_posStr = StringUtils.getField(name, "yPos");
-            ent.x_pos = World.getNumPixels()/2;//StringUtils.stringToInt(x_posStr);
+            ent.x_pos = World.get().getNumPixels()/2;//StringUtils.stringToInt(x_posStr);
             ent.y_pos = ent.x_pos;//StringUtils.stringToInt(y_posStr);
             ent.spriteName = "tile";
             ent.entityName = "hero";
@@ -40,8 +42,8 @@ public class MakeEntity {
             ent.addComponent(new HeroInput());
             ent.addComponent(new PlaceTerrain());
             ent.addComponent(new InventoryManager());
-            World.setCamera(ent);
-            World.addSiftingFrame(ent, 0, 0);
+            World.get().setCamera(ent);
+            World.get().addSiftingFrame(ent, 0, 0);
         }
 
         if(subType.equals("mainMenu")) {

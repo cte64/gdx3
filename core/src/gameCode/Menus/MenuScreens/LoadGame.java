@@ -1,5 +1,7 @@
 package gameCode.Menus.MenuScreens;
 
+import com.mygdx.game.Engine;
+import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.*;
 import gameCode.Menus.MenuManager;
 import gameCode.Menus.ScrollList;
@@ -22,9 +24,9 @@ public class LoadGame extends Component {
         public String name;
         public listItem() {}
         public void delete() {
-            World.entitiesToBeDeleted.add(menu.getEnt(list));
-            World.entitiesToBeDeleted.add(menu.getEnt(play));
-            World.entitiesToBeDeleted.add(menu.getEnt(delete));
+            World.get().entitiesToBeDeleted.add(menu.getEnt(list));
+            World.get().entitiesToBeDeleted.add(menu.getEnt(play));
+            World.get().entitiesToBeDeleted.add(menu.getEnt(delete));
         }
     }
 
@@ -113,7 +115,7 @@ public class LoadGame extends Component {
         ent.drawMode = "hud";
         ent.deleteRange = -2;
         ent.addComponent(new DeleteGameMenu(directory, this));
-        World.entitiesToBeAdded.add(ent);
+        World.get().entitiesToBeAdded.add(ent);
         paused = true;
     }
 
@@ -145,7 +147,7 @@ public class LoadGame extends Component {
         scrollList.updateList2();
 
         //update the play and delete button ============================
-        int mouseY = InputAL.getMouseY();
+        int mouseY = Engine.get().getInput().getMouseY();
         for(listItem item: listItems) {
 
             //load game hover action

@@ -1,5 +1,7 @@
 package gameCode.Menus.MenuScreens;
 
+import com.mygdx.game.Engine;
+import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.*;
 import gameCode.Menus.MenuManager;
 import gameCode.Menus.TextComponent;
@@ -60,8 +62,8 @@ public class PauseGame extends Component {
         String worldState = StringUtils.getField(State.getState(), "action");
         if(worldState.equals("inventory")) return;
 
-        if(InputAL.isKeyPressed("esc") && !escToggle) escToggle = true;
-        if(!InputAL.isKeyPressed("esc") && escToggle) {
+        if(Engine.get().getInput().isKeyPressed("esc") && !escToggle) escToggle = true;
+        if(!Engine.get().getInput().isKeyPressed("esc") && escToggle) {
             if(currentMode.equals("hud")) {
                 menu.updateDrawMode(background, "hidden");
                 State.setState("[action: play]");

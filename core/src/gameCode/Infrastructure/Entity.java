@@ -61,7 +61,7 @@ public class Entity {
         }
 
 
-        float center = World.getNumPixels()/2;
+        float center = World.get().getNumPixels()/2;
 
         float dist = MathUtils.mag(center, center, x_pos, y_pos);
 

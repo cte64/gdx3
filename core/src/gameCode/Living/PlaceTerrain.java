@@ -1,8 +1,8 @@
 package gameCode.Living;
 
+import com.mygdx.game.Engine;
+import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.*;
-import gameCode.Terrain.ModifyTerrain;
-import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Timer;
 import gameCode.Utilities.myPair;
 
@@ -22,14 +22,14 @@ public class PlaceTerrain extends Component {
     public void update(Entity entity) {
 
 
-        if(InputAL.isMousePressed("mouse left")) {
-            timer.update(World.getDeltaTime());
+        if(Engine.get().getInput().isMousePressed("mouse left")) {
+            timer.update(World.get().getDeltaTime());
             if(timer.getTime("place") > 0.6f) {
                 timer.resetTimer("place");
 
                 //delete a square
                 int width = 20;
-                myPair<Integer, Integer> val = InputAL.getMouseAbs();
+                myPair<Integer, Integer> val = Engine.get().getInput().getMouseAbs();
                 ArrayList<myPair<Integer, Integer>> pixels = new ArrayList<myPair<Integer, Integer>>();
 
 

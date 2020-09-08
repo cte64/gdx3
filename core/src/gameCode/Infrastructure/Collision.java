@@ -11,14 +11,14 @@ public class Collision {
         /*
         ArrayList<Float> largest = new ArrayList<Float>();
 
-        for(Entity ent: World.getEntList()) {
+        for(Entity ent: World.get().getEntList()) {
             if(ent.moveable) {
                 largest.add(java.lang.Math.abs(ent.getXVelocity()));
                 largest.add(java.lang.Math.abs(ent.getYVelocity()));
             }
         }
 
-        if(largest.size() > 0) numMoveTicks = ceil(*std::max_element(std::begin(largest), std::end(largest))/world.maxFps);
+        if(largest.size() > 0) numMoveTicks = ceil(*std::max_element(std::begin(largest), std::end(largest))/World.get().maxFps);
         else numMoveTicks = 1;
 
         if(numMoveTicks < 1) numMoveTicks = 1;
@@ -37,20 +37,20 @@ public class Collision {
             FileSystem.update();
             //System.out.println("file thing");
 
-            World.setEdge();
+            World.get().setEdge();
             //System.out.println("edge");
 
-            World.cleanUp();
+            World.get().cleanUp();
             //System.out.println("clean up");
 
-            World.loadEntities();
+            World.get().loadEntities();
             //System.out.println("loaded up");
 
-            World.update();
+            World.get().update();
             //System.out.println("updated");
             /*
 
-            if (world.currentState == "paused") continue;
+            if (World.get().currentState == "paused") continue;
 
             createVec();
             moveVec();

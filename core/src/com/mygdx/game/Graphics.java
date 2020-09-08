@@ -1,4 +1,4 @@
-package gameCode.Infrastructure;
+package com.mygdx.game;
 
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Disposable;
+import gameCode.Infrastructure.*;
 import gameCode.Menus.TextComponent;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.myPair;
@@ -23,41 +24,36 @@ import java.util.HashMap;
 
 
 
+import com.badlogic.gdx.graphics.Pixmap.Format;
+
 import static com.badlogic.gdx.graphics.Pixmap.Format.RGB888;
 
 public class Graphics implements Disposable {
 
-    private static TextureAtlas spriteAtlas;
-    private static TextureAtlas tileAtlas;
-    private static ArrayList<String> tileIDs;
-    private static SpriteBatch batch;
-    private static SpriteBatch hudBatch;
-    private static OrthographicCamera camera;
-    public static CameraHelper cameraHelper;
-    private static ShapeRenderer shapeRenderer;
-    private static HashMap<String, Sprite> spriteMap;
-    private static HashMap<String, String> seen = new HashMap<String, String>();
-    private static BitmapFont font;
-    private static GlyphLayout layout;
-    private static Body player;
+    private TextureAtlas spriteAtlas;
+    private TextureAtlas tileAtlas;
+    private ArrayList<String> tileIDs;
+    private SpriteBatch batch;
+    private SpriteBatch hudBatch;
+    private OrthographicCamera camera;
+    public CameraHelper cameraHelper;
+    private ShapeRenderer shapeRenderer;
+    private HashMap<String, Sprite> spriteMap;
+    private HashMap<String, String> seen = new HashMap<String, String>();
+    private BitmapFont font;
+    private GlyphLayout layout;
+    private Body player;
 
 
     //Font stuff here ======================================
-    private static FreeTypeFontGenerator generator;
-    private static FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-    private static HashMap<Integer, BitmapFont> bmpFonts;
+    private FreeTypeFontGenerator generator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    private HashMap<Integer, BitmapFont> bmpFonts;
 
-    private static RayHandler rayHandler;
-    private static com.badlogic.gdx.physics.box2d.World world;
-    private static Box2DDebugRenderer b2d;
-    private static PointLight myLight;
 
-    public static float light = 0.0f;
-
-    private static float xPos = 0;
 
     //this is for sorting them by zPos
-    public static class sorter implements Comparator<Entity> {
+    public class sorter implements Comparator<Entity> {
         @Override
         public int compare(Entity o1, Entity o2) {
             if(o1.z_pos < o2.z_pos) return -1;
@@ -66,7 +62,8 @@ public class Graphics implements Disposable {
         }
     }
 
-    public static void init() {
+    public void init() {
+
 
         //Font stuff =====================================================================================
         generator = new FreeTypeFontGenerator(Gdx.files.internal("core/fonts/timesNewRoman.ttf"));
@@ -80,14 +77,6 @@ public class Graphics implements Disposable {
 
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
 
-        //Ray Handler ============================================================================
-        world = new com.badlogic.gdx.physics.box2d.World(new Vector2(0, 0), false);
-        b2d = new Box2DDebugRenderer();
-        rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(0.5f);
-        myLight = new PointLight(rayHandler, 100, Color.WHITE, 10, 0, 0);
-
-
         //Fonts ==================================================================================
         font = new BitmapFont();
         layout = new GlyphLayout();
@@ -97,7 +86,7 @@ public class Graphics implements Disposable {
 
 
         //Set up the camera ======================================================================
-        camera = new OrthographicCamera(World.getViewPortWidth(), World.getViewPortHeight());
+        camera = new OrthographicCamera(World.get().getViewPortWidth(), World.get().getViewPortHeight());
         camera.position.set(0, 0, 0);
         camera.update();
 
@@ -125,11 +114,11 @@ public class Graphics implements Disposable {
         int padding = 1;
         for(int y = 0; y < numTiles; y++) {
         for(int x = 0; x < numTiles; x++) {
-            int xPos = padding + x*(padding + World.tileSize);
-            int yPos = padding + y*(padding + World.tileSize);
+            int xPos = padding + x*(padding + World.get().tileSize);
+            int yPos = padding + y*(padding + World.get().tileSize);
             String name = "tileId: " + StringUtils.toString(x) + "." + StringUtils.toString(y);
-            Texture newTexture = new Texture(World.tileSize, World.tileSize, RGB888);
-            tileAtlas.addRegion(name, newTexture, xPos, yPos, World.tileSize, World.tileSize);
+            Texture newTexture = new Texture(World.get().tileSize, World.get().tileSize, RGB888);
+            tileAtlas.addRegion(name, newTexture, xPos, yPos, World.get().tileSize, World.get().tileSize);
             TextureRegion region = tileAtlas.findRegion(name);
             Sprite sprite = new Sprite(region);
             spriteMap.put(name, sprite);
@@ -137,9 +126,9 @@ public class Graphics implements Disposable {
         }}
     }
 
-    public static void returnCoord(String coord) { tileIDs.add(coord);  }
+    public void returnCoord(String coord) { tileIDs.add(coord);  }
 
-    public static myPair<Integer, Integer> getSpriteDimensions(String name) {
+    public myPair<Integer, Integer> getSpriteDimensions(String name) {
 
         myPair<Integer, Integer> retVal = new myPair(0, 0);
 
@@ -151,30 +140,30 @@ public class Graphics implements Disposable {
         return retVal;
     }
 
-    public static String getCoord() {
+    public String getCoord() {
         if(tileIDs.size() == 0) return "";
         String retVal = new String ( tileIDs.get(0)) ;
         tileIDs.remove(0);
         return retVal;
     }
 
-    private static void setCamera1() {
-        Entity hero = World.getCamera();
+    private void setCamera1() {
+        Entity hero = World.get().getCamera();
         if(hero == null) return;
         float xPos = hero.x_pos;
         float yPos = hero.y_pos;
         cameraHelper.setPosition(xPos, yPos);
     }
 
-    private static void drawOutlines() {
+    private void drawOutlines() {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
         //center ==============================================================================
-        int cLeft = FileSystem.centerLeft * World.tilesPerChunk * World.tileSize;
-        int cRight = FileSystem.centerRight * World.tilesPerChunk * World.tileSize;
-        int cTop = FileSystem.centerTop * World.tilesPerChunk * World.tileSize;
-        int cBottom = FileSystem.centerBottom * World.tilesPerChunk * World.tileSize;
+        int cLeft = FileSystem.centerLeft * World.get().tilesPerChunk * World.get().tileSize;
+        int cRight = FileSystem.centerRight * World.get().tilesPerChunk * World.get().tileSize;
+        int cTop = FileSystem.centerTop * World.get().tilesPerChunk * World.get().tileSize;
+        int cBottom = FileSystem.centerBottom * World.get().tilesPerChunk * World.get().tileSize;
 
         shapeRenderer.setColor(0, 0, 1, 1);
         shapeRenderer.line(cLeft, cTop, cLeft, cBottom);
@@ -183,10 +172,10 @@ public class Graphics implements Disposable {
         shapeRenderer.line(cLeft, cBottom, cRight, cBottom);
 
 		//middle =================================================================================
-		int mLeft = FileSystem.middleLeft * World.tilesPerChunk * World.tileSize;
-		int mRight = FileSystem.middleRight * World.tilesPerChunk * World.tileSize;
-		int mTop = FileSystem.middleTop * World.tilesPerChunk * World.tileSize;
-		int mBottom = FileSystem.middleBottom * World.tilesPerChunk * World.tileSize;
+		int mLeft = FileSystem.middleLeft * World.get().tilesPerChunk * World.get().tileSize;
+		int mRight = FileSystem.middleRight * World.get().tilesPerChunk * World.get().tileSize;
+		int mTop = FileSystem.middleTop * World.get().tilesPerChunk * World.get().tileSize;
+		int mBottom = FileSystem.middleBottom * World.get().tilesPerChunk * World.get().tileSize;
 
         shapeRenderer.setColor(1, 0, 0.5f, 1);
         shapeRenderer.line(mLeft, mTop, mLeft, mBottom);
@@ -195,10 +184,10 @@ public class Graphics implements Disposable {
         shapeRenderer.line(mLeft, mBottom, mRight, mBottom);
 
         //outer =================================================================================
-        int oLeft = FileSystem.outerLeft * World.tilesPerChunk * World.tileSize;
-        int oRight = FileSystem.outerRight * World.tilesPerChunk * World.tileSize;
-        int oTop = FileSystem.outerTop * World.tilesPerChunk * World.tileSize;
-        int oBottom = FileSystem.outerBottom * World.tilesPerChunk * World.tileSize;
+        int oLeft = FileSystem.outerLeft * World.get().tilesPerChunk * World.get().tileSize;
+        int oRight = FileSystem.outerRight * World.get().tilesPerChunk * World.get().tileSize;
+        int oTop = FileSystem.outerTop * World.get().tilesPerChunk * World.get().tileSize;
+        int oBottom = FileSystem.outerBottom * World.get().tilesPerChunk * World.get().tileSize;
 
         shapeRenderer.setColor(1, 0, 0, 1);
         shapeRenderer.line(oLeft, oTop, oLeft, oBottom);
@@ -209,7 +198,7 @@ public class Graphics implements Disposable {
         shapeRenderer.end();
     }
 
-    public static void updateSprite(String name, Pixmap image) {
+    public void updateSprite(String name, Pixmap image) {
 
 
         Texture dt = new Texture(60, 60, Pixmap.Format.RGBA8888);
@@ -224,19 +213,20 @@ public class Graphics implements Disposable {
     }
 
     public Graphics() {
+        init();
     }
 
-    public static Vector3 getMouse() {
+    public Vector3 getMouse() {
         return camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
     }
 
-    private static void addSprite(String filename) {
+    private void addSprite(String filename) {
         TextureRegion region = spriteAtlas.findRegion(filename);
         Sprite sprite = new Sprite(region);
         spriteMap.put(filename, sprite);
     }
 
-    private static void printColors(String name) {
+    private void printColors(String name) {
 
         Texture texture = spriteMap.get(name).getTexture();
         TextureData td = texture.getTextureData();
@@ -259,17 +249,17 @@ public class Graphics implements Disposable {
 
     }
 
-    public static Vector2 getTextBounds(String text, int fontSize) {
+    public Vector2 getTextBounds(String text, int fontSize) {
         layout.setText(bmpFonts.get(fontSize), text);
         float width = layout.width;
         float height = layout.height;
         return new Vector2(width, height);
     }
-    
-    public static void update(float deltaTime) {
+
+    public void update(float deltaTime) {
 
         setCamera1();
-        Collections.sort(World.getEntByZIndex(), new sorter());
+        Collections.sort(World.get().getEntByZIndex(), new sorter());
         cameraHelper.update(deltaTime);
         cameraHelper.applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
@@ -280,7 +270,7 @@ public class Graphics implements Disposable {
 
 
         hudBatch.begin();
-            for(Entity ent: World.getEntByZIndex()) {
+            for(Entity ent: World.get().getEntByZIndex()) {
 
                 if(ent.drawMode != "hud") continue;
 
@@ -305,14 +295,13 @@ public class Graphics implements Disposable {
         drawOutlines();
     }
 
-    public static void resize(int width, int height) {
+    public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
     }
 
     @Override
     public void dispose() {
-        rayHandler.dispose();
         batch.dispose();
     }
 }

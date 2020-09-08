@@ -73,55 +73,55 @@ public class Pixel {
 
     public static void insertPixel(StringUtils tiles, int xPixel, int yPixel, char terrainChar) {
 
-        int tSize = World.tileSize * World.tileSize;
+        int tSize = World.get().tileSize * World.get().tileSize;
         yPixel = 59 - yPixel;
 
-        if(tiles.data.length() == tSize) tiles.replaceIndex(yPixel*World.tileSize + xPixel, terrainChar);
+        if(tiles.data.length() == tSize) tiles.replaceIndex(yPixel*World.get().tileSize + xPixel, terrainChar);
 
         if( tiles.data.length() == 1) {
             char firstPixel = tiles.data.charAt(0);
             tiles.data = "";
             for(int x = 0; x<tSize; x++) { tiles.data += firstPixel; }
-            tiles.replaceIndex(yPixel*World.tileSize + xPixel, terrainChar);
+            tiles.replaceIndex(yPixel*World.get().tileSize + xPixel, terrainChar);
         }
 
         if( tiles.data.length() == 0) {
             char emptyPixel = getCharFromType("empty");
             tiles.data = "";
             for(int x = 0; x<tSize; x++) { tiles.data += emptyPixel; }
-            tiles.replaceIndex(yPixel*World.tileSize + xPixel, terrainChar);
+            tiles.replaceIndex(yPixel*World.get().tileSize + xPixel, terrainChar);
         }
     }
 
     public static Pixmap stringToImage(StringUtils data) {
 
-        int pixPerTile = World.tileSize * World.tileSize;
-        Pixmap image = new Pixmap(World.tileSize, World.tileSize, Pixmap.Format.RGB888);
+        int pixPerTile = World.get().tileSize * World.get().tileSize;
+        Pixmap image = new Pixmap(World.get().tileSize, World.get().tileSize, Pixmap.Format.RGB888);
 
 
         //System.out.println(data.data.length());
 
         if(data.data.length() == 0) {
             int color = 16777215;
-            for(int y = 0; y < World.tileSize; y++) {
-            for(int x = 0; x < World.tileSize; x++) {
+            for(int y = 0; y < World.get().tileSize; y++) {
+            for(int x = 0; x < World.get().tileSize; x++) {
                 image.drawPixel(x, y, color);
             }}
         }
 
         else if(data.data.length() == 1) {
 
-            for(int y = 0; y < World.tileSize; y++) {
-            for(int x = 0; x < World.tileSize; x++) {
+            for(int y = 0; y < World.get().tileSize; y++) {
+            for(int x = 0; x < World.get().tileSize; x++) {
                 int color = charToColor(data.data.charAt(0), x, y);
                 image.drawPixel(x, y, color);
             }}
         }
 
         else if(data.data.length() == pixPerTile) {
-            for(int y = 0; y < World.tileSize; y++) {
-            for(int x = 0; x < World.tileSize; x++) {
-                int index = (y * World.tileSize) + x;
+            for(int y = 0; y < World.get().tileSize; y++) {
+            for(int x = 0; x < World.get().tileSize; x++) {
+                int index = (y * World.get().tileSize) + x;
                 index = MathUtils.clamp(index, 0, pixPerTile);
                 int color = charToColor( data.data.charAt(index), x, y);
                 image.drawPixel(x, y, color);

@@ -1,7 +1,7 @@
 package gameCode.Menus;
 
-import gameCode.Infrastructure.Graphics;
-import gameCode.Infrastructure.InputAL;
+import com.mygdx.game.Engine;
+import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.World;
 import gameCode.Utilities.Timer;
 
@@ -29,7 +29,7 @@ public class TextInput {
         nameText = new TextComponent(name, fontSize, "[vertical: center][horizontal: left]", 10, 0);
         menu.addText(background, nameText);
 
-        int leftOffset = (int)Graphics.getTextBounds(name, fontSize).x;
+        int leftOffset = (int) Engine.get().getGraphics().getTextBounds(name, fontSize).x;
         input = new TextComponent("", fontSize, "[vertical: center][horizontal: left]", leftOffset + 10, 0);
         menu.addText(background, input);
 
@@ -54,7 +54,7 @@ public class TextInput {
     public void update() {
 
         int sizeBefore = text.length();
-        for(char c: InputAL.charsQueue) {
+        for(char c: Engine.get().getInput().charsQueue) {
             if(text.length() > 0 && (int)c == 8) text = text.substring(0, text.length() - 1);
             else if(isAcceptable(c) && sizeBefore < charLimit) text += c;
         }
@@ -63,7 +63,7 @@ public class TextInput {
         }
 
         //blinker
-        timer.update(World.getDeltaTime());
+        timer.update(World.get().getDeltaTime());
         if(timer.getTime("blinker") > blinkTime) {
             timer.resetTimer("blinker");
             blinkState = !blinkState;
