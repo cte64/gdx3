@@ -265,15 +265,7 @@ public class Graphics implements Disposable {
         float height = layout.height;
         return new Vector2(width, height);
     }
-
-    private static void lights() {
-        rayHandler.update();
-        b2d.render(world, camera.combined.cpy().scl(32));
-        rayHandler.render();
-        rayHandler.setCombinedMatrix(camera.combined.cpy().scl(32));
-
-    }
-
+    
     public static void update(float deltaTime) {
 
         setCamera1();
@@ -286,21 +278,6 @@ public class Graphics implements Disposable {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
-       // lights();
-
-        /*
-        batch.begin();
-            for(Entity ent: World.getEntByZIndex()) {
-
-                batch.setColor(ent.shade, ent.shade, ent.shade, 1.0f);
-                if(ent.drawMode == "normal" && spriteMap.containsKey(ent.spriteName)) {
-                    batch.draw(spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos);
-                }
-            }
-        batch.end();
-
-         */
 
         hudBatch.begin();
             for(Entity ent: World.getEntByZIndex()) {
