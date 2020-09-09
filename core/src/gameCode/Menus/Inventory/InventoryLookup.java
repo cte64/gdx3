@@ -1,6 +1,6 @@
 package gameCode.Menus.Inventory;
 
-import gameCode.Infrastructure.FileSystem;
+import com.mygdx.game.Engine;
 import gameCode.Utilities.StringUtils;
 import gameCode.Utilities.myPair;
 
@@ -28,7 +28,7 @@ public class InventoryLookup {
 
         StringUtils fileName = new StringUtils("[type: inventory]");
         StringUtils data = new StringUtils("");
-        FileSystem.getFile(fileName, data);
+        Engine.get().getFileSystem().getFile(fileName, data);
         ArrayList<StringUtils> dataList = StringUtils.getBeforeChar(data.data, '\n');
 
         for(StringUtils d: dataList) {

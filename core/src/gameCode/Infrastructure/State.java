@@ -1,5 +1,6 @@
 package gameCode.Infrastructure;
 
+import com.mygdx.game.Engine;
 import gameCode.Menus.MenuScreens.LoadGame;
 import gameCode.Utilities.StringUtils;
 
@@ -25,18 +26,18 @@ public class State {
         deleteType("type", "menu");
 
         //set Directory =====================================================================
-        FileSystem.setGameSubDirectory(directory);
+        Engine.get().getFileSystem().setGameSubDirectory(directory);
 
         //MetaData and Create World =========================================================
         StringUtils metaData = new StringUtils("");
-        FileSystem.getFile(new StringUtils("[type: metadata]"), metaData);
+        Engine.get().getFileSystem().getFile(new StringUtils("[type: metadata]"), metaData);
         String numChunksStr = StringUtils.getField(metaData, "numChunks");
         int numChunks = StringUtils.stringToInt(numChunksStr);
         World.get().createWorld(numChunks);
 
         //Hero ==============================================================================
         StringUtils heroData = new StringUtils("");
-        FileSystem.getFile(new StringUtils("[type: hero]"), heroData);
+        Engine.get().getFileSystem().getFile(new StringUtils("[type: hero]"), heroData);
         Entity hero = MakeEntity.getEntity(heroData.data);
         World.get().entitiesToBeAdded.add(hero);
 

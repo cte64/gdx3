@@ -70,10 +70,10 @@ public class Graphics implements Disposable {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
         //center ==============================================================================
-        int cLeft = FileSystem.centerLeft * World.get().tilesPerChunk * World.get().tileSize;
-        int cRight = FileSystem.centerRight * World.get().tilesPerChunk * World.get().tileSize;
-        int cTop = FileSystem.centerTop * World.get().tilesPerChunk * World.get().tileSize;
-        int cBottom = FileSystem.centerBottom * World.get().tilesPerChunk * World.get().tileSize;
+        int cLeft = Engine.get().getFileSystem().centerLeft * World.get().tilesPerChunk * World.get().tileSize;
+        int cRight = Engine.get().getFileSystem().centerRight * World.get().tilesPerChunk * World.get().tileSize;
+        int cTop = Engine.get().getFileSystem().centerTop * World.get().tilesPerChunk * World.get().tileSize;
+        int cBottom = Engine.get().getFileSystem().centerBottom * World.get().tilesPerChunk * World.get().tileSize;
 
         shapeRenderer.setColor(0, 0, 1, 1);
         shapeRenderer.line(cLeft, cTop, cLeft, cBottom);
@@ -82,10 +82,10 @@ public class Graphics implements Disposable {
         shapeRenderer.line(cLeft, cBottom, cRight, cBottom);
 
 		//middle =================================================================================
-		int mLeft = FileSystem.middleLeft * World.get().tilesPerChunk * World.get().tileSize;
-		int mRight = FileSystem.middleRight * World.get().tilesPerChunk * World.get().tileSize;
-		int mTop = FileSystem.middleTop * World.get().tilesPerChunk * World.get().tileSize;
-		int mBottom = FileSystem.middleBottom * World.get().tilesPerChunk * World.get().tileSize;
+		int mLeft = Engine.get().getFileSystem().middleLeft * World.get().tilesPerChunk * World.get().tileSize;
+		int mRight = Engine.get().getFileSystem().middleRight * World.get().tilesPerChunk * World.get().tileSize;
+		int mTop = Engine.get().getFileSystem().middleTop * World.get().tilesPerChunk * World.get().tileSize;
+		int mBottom = Engine.get().getFileSystem().middleBottom * World.get().tilesPerChunk * World.get().tileSize;
 
         shapeRenderer.setColor(1, 0, 0.5f, 1);
         shapeRenderer.line(mLeft, mTop, mLeft, mBottom);
@@ -94,10 +94,10 @@ public class Graphics implements Disposable {
         shapeRenderer.line(mLeft, mBottom, mRight, mBottom);
 
         //outer =================================================================================
-        int oLeft = FileSystem.outerLeft * World.get().tilesPerChunk * World.get().tileSize;
-        int oRight = FileSystem.outerRight * World.get().tilesPerChunk * World.get().tileSize;
-        int oTop = FileSystem.outerTop * World.get().tilesPerChunk * World.get().tileSize;
-        int oBottom = FileSystem.outerBottom * World.get().tilesPerChunk * World.get().tileSize;
+        int oLeft = Engine.get().getFileSystem().outerLeft * World.get().tilesPerChunk * World.get().tileSize;
+        int oRight = Engine.get().getFileSystem().outerRight * World.get().tilesPerChunk * World.get().tileSize;
+        int oTop = Engine.get().getFileSystem().outerTop * World.get().tilesPerChunk * World.get().tileSize;
+        int oBottom = Engine.get().getFileSystem().outerBottom * World.get().tilesPerChunk * World.get().tileSize;
 
         shapeRenderer.setColor(1, 0, 0, 1);
         shapeRenderer.line(oLeft, oTop, oLeft, oBottom);

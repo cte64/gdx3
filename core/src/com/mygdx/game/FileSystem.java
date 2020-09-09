@@ -1,7 +1,10 @@
-package gameCode.Infrastructure;
+package com.mygdx.game;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.Gdx;
+import gameCode.Infrastructure.Chunk;
+import gameCode.Infrastructure.Entity;
+import gameCode.Infrastructure.World;
 import gameCode.Utilities.StringUtils;
 
 import gameCode.Utilities.MathUtils;
@@ -11,18 +14,18 @@ import java.util.ArrayList;
 
 public class FileSystem {
 
-    private final static String gameSaveDirectory = "core/saves/";
-    private static String gameSubDirectory;
-    private static ArrayList<Boolean> chunkUpdate1 = new ArrayList<Boolean>();
-    private static ArrayList<Boolean> chunkUpdate2 = new ArrayList<Boolean>();
+    private final String gameSaveDirectory = "core/saves/";
+    private String gameSubDirectory;
+    private ArrayList<Boolean> chunkUpdate1 = new ArrayList<Boolean>();
+    private ArrayList<Boolean> chunkUpdate2 = new ArrayList<Boolean>();
 
     //these are the boundaries for the active chunk regions ==========================================================
-    public static int outerLeft, outerRight, outerTop, outerBottom;      //outer ring
-    public static int middleLeft, middleRight, middleTop, middleBottom;  //middle ring
-    public static int centerLeft, centerRight, centerTop, centerBottom;  //center ring
+    public int outerLeft, outerRight, outerTop, outerBottom;      //outer ring
+    public int middleLeft, middleRight, middleTop, middleBottom;  //middle ring
+    public int centerLeft, centerRight, centerTop, centerBottom;  //center ring
 
     //these functions are for changing the chunk regions =============================================================
-    private static void center(int xIndex, int yIndex) {
+    private void center(int xIndex, int yIndex) {
 
         //center ======================================================================
         centerLeft = xIndex;
@@ -57,7 +60,7 @@ public class FileSystem {
         outerTop = MathUtils.clamp(outerTop, 0, World.get().getNumCells() - 5);
         outerBottom = MathUtils.clamp(outerBottom, 5, World.get().getNumCells());
     }
-    private static void setUpdate(int x, int y, int select, boolean newVal) {
+    private void setUpdate(int x, int y, int select, boolean newVal) {
         if (select == 1) {
             if (chunkUpdate1.size() == 0) return;
             int index = (y * World.get().getNumChunks()) + x;
@@ -71,7 +74,7 @@ public class FileSystem {
             chunkUpdate2.set(index, newVal);
         }
     }
-    private static boolean getUpdate(int x, int y, int select) {
+    private boolean getUpdate(int x, int y, int select) {
 
         if (select == 1) {
             if (chunkUpdate1.size() == 0) return false;
@@ -89,7 +92,7 @@ public class FileSystem {
 
         return false;
     }
-    private static void updateChunks() {
+    private void updateChunks() {
 
         //first set all the first one to false
         for(int y = 0; y < World.get().getNumChunks(); y++) {
@@ -117,7 +120,7 @@ public class FileSystem {
                 }
             }}
     }
-    private static void writeChunk(int xIndex, int yIndex, boolean deleteCurrent) {
+    private void writeChunk(int xIndex, int yIndex, boolean deleteCurrent) {
 
         //create a new key from the xIndex and yIndex
         myPair<Integer, Integer> key = new myPair(xIndex, yIndex);
@@ -154,7 +157,7 @@ public class FileSystem {
 
         World.get().deleteChunk(key);
     }
-    private static void readChunk(int xIndex, int yIndex) {
+    private void readChunk(int xIndex, int yIndex) {
 
         //create a new key from the xIndex and yIndex
         myPair<Integer, Integer> key = new myPair(xIndex, yIndex);
@@ -240,10 +243,10 @@ public class FileSystem {
     //public stuff ===================================================================================================
     public FileSystem() {}
 
-    public static String getGameSaveDirectory() { return gameSaveDirectory; }
-    public static String getGameSubDirectory() { return gameSubDirectory;  }
-    public static void setGameSubDirectory(String newDir) { gameSubDirectory = newDir + "/"; }
-    public static ArrayList<String> getSaveNames() {
+    public String getGameSaveDirectory() { return gameSaveDirectory; }
+    public String getGameSubDirectory() { return gameSubDirectory;  }
+    public void setGameSubDirectory(String newDir) { gameSubDirectory = newDir + "/"; }
+    public ArrayList<String> getSaveNames() {
 
         ArrayList<String> retVal = new ArrayList<String>();
         FileHandle dir = Gdx.files.internal("core/saves/");
@@ -262,11 +265,11 @@ public class FileSystem {
         return retVal;
     }
 
-    public static void deleteDirectory(String directory) {
+    public void deleteDirectory(String directory) {
         FileHandle file = Gdx.files.local(gameSaveDirectory + directory);
         if(file.exists() && file.isDirectory()) file.deleteDirectory();
     }
-    public static void createGameDirectory(String newDir) {
+    public void createGameDirectory(String newDir) {
 
         gameSubDirectory = newDir + "/";
 
@@ -297,14 +300,14 @@ public class FileSystem {
                 setFile(entName, entStr);
             }}
     }
-    public static void saveCurrentChunks() {
+    public void saveCurrentChunks() {
         for(int yIndex = outerTop; yIndex < outerBottom; yIndex++) {
         for(int xIndex = outerLeft; xIndex < outerRight; xIndex++) {
             writeChunk(xIndex, yIndex, false);
         }}
     }
 
-    public static void setFile(StringUtils filename, StringUtils data) {
+    public void setFile(StringUtils filename, StringUtils data) {
 
         String type = StringUtils.getField(filename, "type");
         String name = "";
@@ -326,7 +329,7 @@ public class FileSystem {
         FileHandle file = Gdx.files.local(name);
         file.writeString(data.data, false);
     }
-    public static void getFile(StringUtils filename, StringUtils data) {
+    public void getFile(StringUtils filename, StringUtils data) {
 
         String type = StringUtils.getField(filename, "type");
         String name = "";
@@ -354,7 +357,7 @@ public class FileSystem {
         data.data = file.readString();
     }
 
-    public static void init() {
+    public void init() {
 
         //outer ring
         outerLeft = 0;
@@ -384,7 +387,7 @@ public class FileSystem {
                 chunkUpdate2.add(false);
             }}
     }
-    public static void update() {
+    public void update() {
 
         Entity hero = World.get().getCamera();
         if(hero == null) return;

@@ -137,7 +137,7 @@ public class World {
         numCells = numBlocks / xCell;
 
         chunks.clear();
-        FileSystem.init();
+        Engine.get().getFileSystem().init();
     }
     public void deleteWorld() {
 
@@ -152,7 +152,7 @@ public class World {
         numCells =  0;
         camera = null;
 
-        FileSystem.init();
+        Engine.get().getFileSystem().init();
     }
 
     //Loading and Unloading ========================================================================

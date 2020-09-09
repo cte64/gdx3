@@ -74,7 +74,7 @@ public class LoadGame extends Component {
         menu.addText(back, new TextComponent("Back", 20, "[vertical: center][horizontal: center]", 0, 0));
 
         //load game files
-        ArrayList<String> files = FileSystem.getSaveNames();
+        ArrayList<String> files = Engine.get().getFileSystem().getSaveNames();
         for(int x = 0; x < files.size(); x++) {
 
             //parse out the data from the metadata files

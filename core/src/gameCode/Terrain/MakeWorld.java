@@ -1,7 +1,7 @@
 package gameCode.Terrain;
 
 import com.badlogic.gdx.math.Vector2;
-import gameCode.Infrastructure.FileSystem;
+import com.mygdx.game.Engine;
 import gameCode.Infrastructure.World;
 import gameCode.Utilities.*;
 
@@ -57,7 +57,7 @@ public class MakeWorld {
                 String fileName = "[type: terrain][xChunk: ][yChunk: ]";
                 StringUtils.setField(fileName, "xChunk", StringUtils.toString(xChunk));
                 StringUtils.setField(fileName, "yChunk", StringUtils.toString(yChunk));
-                FileSystem.getFile(new StringUtils(fileName), data);
+                Engine.get().getFileSystem().getFile(new StringUtils(fileName), data);
                 String[] tiles = data.data.split("\n");
 
                 int index = (yChunk * World.get().getNumChunks()) + xChunk;
@@ -180,7 +180,7 @@ public class MakeWorld {
             StringUtils fileName = new StringUtils("[type: chunk][xChunk: ][yChunk: ]");
             StringUtils.setField(fileName, "xChunk", StringUtils.toString(xChunk));
             StringUtils.setField(fileName, "yChunk", StringUtils.toString(yChunk));
-            FileSystem.getFile(fileName, data);
+            Engine.get().getFileSystem().getFile(fileName, data);
 
             ArrayList<StringUtils> tiles = StringUtils.getBeforeChar(data.data, '\n');
 
@@ -241,7 +241,7 @@ public class MakeWorld {
             StringUtils updatedChunk = new StringUtils("");
             for(int x = 0; x < tiles.size(); x++) { updatedChunk.data += tiles.get(x).data; }
             StringUtils name = new StringUtils("[type: chunk][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
-            FileSystem.setFile(name, updatedChunk);
+            Engine.get().getFileSystem().setFile(name, updatedChunk);
         }}
     }
 
@@ -256,7 +256,7 @@ public class MakeWorld {
 
         //INITIALIZE WORLD ==========================================
         World.get().createWorld(numChunks);
-        FileSystem.createGameDirectory(directory);
+        Engine.get().getFileSystem().createGameDirectory(directory);
         messages.add( new StringUtils("World Initialized"));
 
         //INITIALIZE RIMS ============================================
@@ -268,12 +268,12 @@ public class MakeWorld {
         data.setField(data, "numChunks", StringUtils.toString(numChunks));
         data.setField(data, "worldName", directory);
         data.setField(data, "dateCreated", Misc.getDate());
-        FileSystem.setFile(new StringUtils("[type: metadata]"), data);
+        Engine.get().getFileSystem().setFile(new StringUtils("[type: metadata]"), data);
         messages.add( new StringUtils("MetaData File Created"));
 
         //CREATE THE MAIN CHARACTER =================================
         StringUtils heroData = new StringUtils("[type: hero][subType: testHero][details: ][xPos: 2400][yPos: 2400][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]");
-        FileSystem.setFile(new StringUtils("[type: hero]"), heroData);
+        Engine.get().getFileSystem().setFile(new StringUtils("[type: hero]"), heroData);
         messages.add( new StringUtils("Created Hero"));
 
         /*

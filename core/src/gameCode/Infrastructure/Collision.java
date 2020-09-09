@@ -1,5 +1,7 @@
 package gameCode.Infrastructure;
 
+import com.mygdx.game.Engine;
+
 public class Collision {
 
     private static int numMoveTicks = 1;
@@ -34,7 +36,7 @@ public class Collision {
         for(int t = 0; t<numMoveTicks; t++) {
 
 
-            FileSystem.update();
+            Engine.get().getFileSystem().update();
             //System.out.println("file thing");
 
             World.get().setEdge();

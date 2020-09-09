@@ -81,7 +81,7 @@ public class PauseGame extends Component {
                 State.setState("[action: play]");
             }
             if(menu.isLeftClicked(saveAndQuit)) {
-                FileSystem.saveCurrentChunks();
+                Engine.get().getFileSystem().saveCurrentChunks();
                 State.mainMenu();
             }
         }

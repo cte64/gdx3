@@ -1,7 +1,7 @@
 package gameCode.Terrain;
 
 import com.badlogic.gdx.math.Vector2;
-import gameCode.Infrastructure.FileSystem;
+import com.mygdx.game.Engine;
 import gameCode.Infrastructure.World;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Pixel;
@@ -152,7 +152,7 @@ public class ScatterTerrain {
             StringUtils fileName = new StringUtils("[type: chunk][xChunk: ][yChunk: ]");
             fileName.setField(fileName, "xChunk", StringUtils.toString(xChunk));
             fileName.setField(fileName, "yChunk", StringUtils.toString(yChunk));
-            FileSystem.getFile(fileName, data);
+            Engine.get().getFileSystem().getFile(fileName, data);
 
             ArrayList<StringUtils> tiles = StringUtils.getBeforeChar(data.data, '\n');
 
@@ -188,7 +188,7 @@ public class ScatterTerrain {
             StringUtils updatedChunk = new StringUtils("");
             for (int x = 0; x < tiles.size(); x++) { updatedChunk.data += tiles.get(x).data; updatedChunk.data += "\n"; }
             StringUtils name = new StringUtils("[type: chunk][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
-            FileSystem.setFile(name, updatedChunk);
+            Engine.get().getFileSystem().setFile(name, updatedChunk);
         }}
     }
     public ScatterTerrain(String type) {
