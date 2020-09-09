@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 public class Engine {
 
-
     //singleton instance variable ================================================================
     private static Engine engineInstance = null;
 

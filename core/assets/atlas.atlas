@@ -1,81 +1,283 @@
 
 atlas.png
-size: 256,64
+size: 128,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 items/apple
   rotate: false
-  xy: 112, 26
+  xy: 36, 25
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
 items/asparagus
   rotate: false
-  xy: 168, 29
+  xy: 92, 28
   size: 23, 27
   orig: 23, 27
   offset: 0, 0
   index: -1
 items/banana
   rotate: false
-  xy: 144, 22
+  xy: 68, 21
   size: 22, 34
   orig: 22, 34
   offset: 0, 0
   index: -1
 items/lumber
   rotate: false
-  xy: 224, 34
+  xy: 92, 4
   size: 24, 22
   orig: 24, 22
   offset: 0, 0
   index: -1
 items/potato
   rotate: false
-  xy: 2, 3
+  xy: 58, 8
   size: 16, 11
   orig: 16, 11
   offset: 0, 0
   index: -1
 items/stone
   rotate: false
-  xy: 44, 24
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-items/stonePickaxe
-  rotate: false
-  xy: 78, 24
+  xy: 2, 23
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 items/tile
   rotate: false
-  xy: 44, 2
+  xy: 36, 3
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 items/watermelon
   rotate: false
-  xy: 193, 37
+  xy: 2, 2
   size: 29, 19
   orig: 29, 19
   offset: 0, 0
   index: -1
-items/woodPickaxe
+
+atlas2.png
+size: 256,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+items/Tools/diamondAxe
   rotate: false
-  xy: 2, 16
+  xy: 121, 159
+  size: 30, 35
+  orig: 30, 35
+  offset: 0, 0
+  index: -1
+items/Tools/diamondHoe
+  rotate: false
+  xy: 185, 166
+  size: 30, 35
+  orig: 30, 35
+  offset: 0, 0
+  index: -1
+items/Tools/diamondPickaxe
+  rotate: false
+  xy: 37, 41
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+items/Tools/diamondShovel
+  rotate: false
+  xy: 44, 119
+  size: 33, 33
+  orig: 33, 33
+  offset: 0, 0
+  index: -1
+items/Tools/diamondSword
+  rotate: false
+  xy: 2, 154
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
+items/Tools/goldAxe
+  rotate: false
+  xy: 217, 167
+  size: 30, 35
+  orig: 30, 35
+  offset: 0, 0
+  index: -1
+items/Tools/goldHoe
+  rotate: false
+  xy: 39, 75
+  size: 30, 35
+  orig: 30, 35
+  offset: 0, 0
+  index: -1
+items/Tools/goldPickaxe
+  rotate: false
+  xy: 103, 83
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+items/Tools/goldShovel
+  rotate: false
+  xy: 86, 161
+  size: 33, 33
+  orig: 33, 33
+  offset: 0, 0
+  index: -1
+items/Tools/goldSword
+  rotate: false
+  xy: 45, 196
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+items/Tools/lavaAxe
+  rotate: false
+  xy: 2, 75
+  size: 35, 35
+  orig: 35, 35
+  offset: 0, 0
+  index: -1
+items/Tools/lavaHoe
+  rotate: false
+  xy: 79, 117
+  size: 30, 35
+  orig: 30, 35
+  offset: 0, 0
+  index: -1
+items/Tools/lavaPickaxe
+  rotate: false
+  xy: 103, 49
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+items/Tools/lavaShovel
+  rotate: false
+  xy: 129, 203
+  size: 33, 33
+  orig: 33, 33
+  offset: 0, 0
+  index: -1
+items/Tools/lavaSword
+  rotate: false
+  xy: 2, 112
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+items/Tools/silverAxe
+  rotate: false
+  xy: 71, 80
+  size: 30, 35
+  orig: 30, 35
+  offset: 0, 0
+  index: -1
+items/Tools/silverHoe
+  rotate: false
+  xy: 71, 43
+  size: 30, 35
+  orig: 30, 35
+  offset: 0, 0
+  index: -1
+items/Tools/silverPickaxe
+  rotate: false
+  xy: 103, 15
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+items/Tools/silverShovel
+  rotate: false
+  xy: 2, 40
+  size: 33, 33
+  orig: 33, 33
+  offset: 0, 0
+  index: -1
+items/Tools/silverSword
+  rotate: false
+  xy: 44, 154
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+items/Tools/stoneAxe
+  rotate: false
+  xy: 2, 2
+  size: 30, 36
+  orig: 30, 36
+  offset: 0, 0
+  index: -1
+items/Tools/stoneHoe
+  rotate: false
+  xy: 153, 165
+  size: 30, 36
+  orig: 30, 36
+  offset: 0, 0
+  index: -1
+items/Tools/stonePickaxe
+  rotate: false
+  xy: 175, 131
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+items/Tools/stoneShovel
+  rotate: false
+  xy: 164, 203
+  size: 33, 33
+  orig: 33, 33
+  offset: 0, 0
+  index: -1
+items/Tools/stoneSword
+  rotate: false
+  xy: 87, 196
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+items/Tools/woodAxe
+  rotate: false
+  xy: 143, 124
+  size: 30, 33
+  orig: 30, 33
+  offset: 0, 0
+  index: -1
+items/Tools/woodHoe
+  rotate: false
+  xy: 111, 122
+  size: 30, 35
+  orig: 30, 35
+  offset: 0, 0
+  index: -1
+items/Tools/woodPickaxe
+  rotate: false
+  xy: 209, 132
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+items/Tools/woodShovel
+  rotate: false
+  xy: 199, 204
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+items/Tools/woodSword
+  rotate: false
+  xy: 2, 196
+  size: 41, 40
+  orig: 41, 40
+  offset: 0, 0
+  index: -1
 
-atlas2.png
+atlas3.png
 size: 1024,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -116,7 +318,7 @@ menus/menuItem
   offset: 0, 0
   index: -1
 
-atlas3.png
+atlas4.png
 size: 128,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -136,7 +338,7 @@ menus/createGame/plus
   offset: 0, 0
   index: -1
 
-atlas4.png
+atlas5.png
 size: 2048,512
 format: RGBA8888
 filter: Nearest,Nearest
@@ -184,7 +386,7 @@ menus/Inventory/inventoryTray
   offset: 0, 0
   index: -1
 
-atlas5.png
+atlas6.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -253,7 +455,7 @@ menus/loadGame/scrollBar
   offset: 0, 0
   index: -1
 
-atlas6.png
+atlas7.png
 size: 1024,64
 format: RGBA8888
 filter: Nearest,Nearest
