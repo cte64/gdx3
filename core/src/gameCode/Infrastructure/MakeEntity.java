@@ -17,8 +17,8 @@ public class MakeEntity {
     public static Entity getEntity(String name, Pixmap image) {
         Entity ent = getEntity(name);
         ent.deleteRange = -1;
-        ent.spriteName = Engine.get().getGraphics().getCoord();
-        Engine.get().getGraphics().updateSprite(ent.spriteName, image);
+        ent.spriteName = Engine.get().getAssets().getCoord();
+        Engine.get().getAssets().updateSprite(ent.spriteName, image);
         return ent;
     }
 

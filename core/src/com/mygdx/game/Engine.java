@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import gameCode.Infrastructure.FileSystem;
+
 public class Engine {
 
 
@@ -9,6 +11,8 @@ public class Engine {
     private Engine() {
         graphics = new Graphics();
         input = new InputAL();
+        assets = new Assets();
+        fileSystem = new FileSystem();
     }
 
     public static Engine get() {
@@ -17,12 +21,15 @@ public class Engine {
         return engineInstance;
     }
 
-
     //All the components this engine is made out of =============================================
     Graphics graphics;
     InputAL input;
+    Assets assets;
+    FileSystem fileSystem;
 
     //getters ====================================================================================
     public Graphics getGraphics() { return graphics; }
     public InputAL getInput() { return input; }
+    public Assets getAssets() { return assets; }
+    public FileSystem getFileSystem() { return fileSystem; }
 }

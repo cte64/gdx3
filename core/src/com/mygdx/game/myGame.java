@@ -22,26 +22,16 @@ public class myGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-
-
 		Engine.get();
-
 		Pixel.init();
-
-
 		State.mainMenu();
-
 	}
 
 	@Override
 	public void render () {
 
-
-
 		for(Entity ent: World.get().getEntList()) { ent.updateType("input"); }
-
 		Collision.update();
-
 
 		for(Entity ent: World.get().getEntList()) { ent.updateType("logic"); }
 		for(Entity ent: World.get().getEntList()) { ent.updateType("text"); }
@@ -53,7 +43,6 @@ public class myGame extends ApplicationAdapter {
 		Engine.get().getInput().reset();
 
 		Engine.get().getGraphics().update(Gdx.graphics.getDeltaTime());
-
 	}
 
 	@Override
@@ -70,7 +59,6 @@ public class myGame extends ApplicationAdapter {
 	public void resume() {
 
 	}
-
 
 	@Override
 	public void dispose () {

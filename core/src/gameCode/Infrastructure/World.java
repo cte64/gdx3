@@ -196,7 +196,7 @@ public class World {
         //delete stuff ============================================================
         for(Entity ent: entitiesToBeDeleted) {
             if(ent == null) continue;
-            if( StringUtils.getField(ent.entityName, "type").equals( "tile") ) { Engine.get().getGraphics().returnCoord(ent.spriteName); }
+            if( StringUtils.getField(ent.entityName, "type").equals( "tile") ) { Engine.get().getAssets().returnCoord(ent.spriteName); }
             ent.markForDeletion = true;
 
             entByName.remove(ent.entityName);

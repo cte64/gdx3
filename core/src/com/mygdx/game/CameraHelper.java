@@ -1,4 +1,4 @@
-package gameCode.Infrastructure;
+package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;

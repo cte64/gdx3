@@ -29,7 +29,7 @@ public class TextInput {
         nameText = new TextComponent(name, fontSize, "[vertical: center][horizontal: left]", 10, 0);
         menu.addText(background, nameText);
 
-        int leftOffset = (int) Engine.get().getGraphics().getTextBounds(name, fontSize).x;
+        int leftOffset = (int) Engine.get().getAssets().getTextBounds(name, fontSize).x;
         input = new TextComponent("", fontSize, "[vertical: center][horizontal: left]", leftOffset + 10, 0);
         menu.addText(background, input);
 

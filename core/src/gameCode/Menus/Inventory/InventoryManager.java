@@ -169,7 +169,7 @@ public class InventoryManager extends Component {
         uniqueIds.remove(0);
 
         //I will find a more elegant solution for this later
-        myPair<Integer, Integer> comp = Engine.get().getGraphics().getSpriteDimensions(name);
+        myPair<Integer, Integer> comp = Engine.get().getAssets().getSpriteDimensions(name);
         int xComp = -(52 - comp.first) / 2 + 3;
         int yComp = -(52 - comp.second) / 2 + 3;
 

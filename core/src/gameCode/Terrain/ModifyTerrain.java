@@ -36,7 +36,7 @@ public class ModifyTerrain {
         }
 
         for(Entity ent: ents.keySet()) {
-            Engine.get().getGraphics().updateSprite(ent.spriteName, ents.get(ent));
+            Engine.get().getAssets().updateSprite(ent.spriteName, ents.get(ent));
         }
     }
 }

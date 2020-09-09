@@ -237,10 +237,8 @@ public class FileSystem {
          */
     }
 
-
-
     //public stuff ===================================================================================================
-    private FileSystem() {}
+    public FileSystem() {}
 
     public static String getGameSaveDirectory() { return gameSaveDirectory; }
     public static String getGameSubDirectory() { return gameSubDirectory;  }

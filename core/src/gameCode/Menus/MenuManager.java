@@ -196,8 +196,8 @@ public class MenuManager {
         newItem.ent.entityName = id;
         newItem.ent.spriteName = sprNm;
         newItem.ent.drawMode = "hud";
-        newItem.ent.width = Engine.get().getGraphics().getSpriteDimensions(sprNm).first;
-        newItem.ent.height = Engine.get().getGraphics().getSpriteDimensions(sprNm).second;
+        newItem.ent.width = Engine.get().getAssets().getSpriteDimensions(sprNm).first;
+        newItem.ent.height = Engine.get().getAssets().getSpriteDimensions(sprNm).second;
         newItem.ent.z_pos = z;
         newItem.ent.deleteRange = -2;
         World.get().entitiesToBeAdded.add(newItem.ent);
