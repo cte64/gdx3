@@ -4,7 +4,7 @@ import gameCode.Infrastructure.*;
 import gameCode.Menus.MenuManager;
 import gameCode.Menus.ScrollList;
 import gameCode.Menus.TextComponent;
-import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myMath;
 import gameCode.Utilities.myString;
 import gameCode.Utilities.myPair;
 import java.util.ArrayList;
@@ -191,7 +191,7 @@ public class InventoryManager extends Component {
 
         //some basic checks here
         if( !ps.equals("current") && !ps.equals("inventory") ) return;
-        amount = MathUtils.clamp(amount, 1, 1000);
+        amount = myMath.clamp(amount, 1, 1000);
 
 
         /*
@@ -308,7 +308,7 @@ public class InventoryManager extends Component {
 
     public void subtractItem(ItemNode node, int amount) {
 
-        amount = MathUtils.clamp(amount, 1, 1000);
+        amount = myMath.clamp(amount, 1, 1000);
         int newAmount = node.getItemCount() - amount;
 
         if(newAmount > 0) setItemCount(node, newAmount);

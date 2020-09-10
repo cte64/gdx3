@@ -4,10 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.Engine;
-import com.mygdx.game.Graphics;
 import gameCode.Infrastructure.World;
-import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myMath;
 import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
@@ -91,14 +89,14 @@ public class InputAL {
 
     public int getMouseX() {
         int mouseX = Gdx.input.getX();
-        mouseX = MathUtils.clamp(mouseX, 0, World.get().getViewPortWidth() - 1);
+        mouseX = myMath.clamp(mouseX, 0, World.get().getViewPortWidth() - 1);
         return mouseX;
     }
 
     public int getMouseY() {
         int mouseY = Gdx.input.getY();
         mouseY = World.get().getViewPortHeight() - mouseY;
-        mouseY = MathUtils.clamp(mouseY, 0, World.get().getViewPortHeight() - 1);
+        mouseY = myMath.clamp(mouseY, 0, World.get().getViewPortHeight() - 1);
         return mouseY;
     }
 

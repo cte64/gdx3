@@ -47,18 +47,18 @@ public class Pixel {
 
     public static int charToColor(char b) {
         int index = (int)b;
-        index = MathUtils.clamp(index, 0, 255);
+        index = myMath.clamp(index, 0, 255);
         return colors[index].defaultColor;
     }
 
     public static int charToColor(char b, int x, int y) {
 
         int index = (int)b;
-        index = MathUtils.clamp(index, 0, 255);
+        index = myMath.clamp(index, 0, 255);
         if(colors[index].image == null) return colors[index].defaultColor;
 
-        x = MathUtils.clamp(x, 0, colors[index].image.getWidth() - 1);
-        y = MathUtils.clamp(y, 0, colors[index].image.getHeight() - 1);
+        x = myMath.clamp(x, 0, colors[index].image.getWidth() - 1);
+        y = myMath.clamp(y, 0, colors[index].image.getHeight() - 1);
         return colors[index].image.getPixel(x, y);
     }
 
@@ -122,7 +122,7 @@ public class Pixel {
             for(int y = 0; y < World.get().tileSize; y++) {
             for(int x = 0; x < World.get().tileSize; x++) {
                 int index = (y * World.get().tileSize) + x;
-                index = MathUtils.clamp(index, 0, pixPerTile);
+                index = myMath.clamp(index, 0, pixPerTile);
                 int color = charToColor( data.data.charAt(index), x, y);
                 image.drawPixel(x, y, color);
             }}

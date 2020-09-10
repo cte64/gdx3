@@ -3,7 +3,7 @@ package gameCode.Menus;
 import com.mygdx.game.Engine;
 import gameCode.Infrastructure.*;
 import gameCode.Infrastructure.Component;
-import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myMath;
 import gameCode.Utilities.myString;
 import gameCode.Utilities.Tree;
 import java.util.ArrayList;
@@ -136,7 +136,7 @@ public class MenuManager {
 
             String fs = myString.getField(type, "fontSize");
             if(fs != "") {
-                int newSize = MathUtils.clamp( myString.stringToInt(fs), -20, 20);
+                int newSize = myMath.clamp( myString.stringToInt(fs), -20, 20);
                 ArrayList<Component> textComps = item.ent.getComponents("text");
                 for(Component comp: textComps) {
                     TextComponent text = (TextComponent)comp;
@@ -169,7 +169,7 @@ public class MenuManager {
             if(freqStr != "") freq = myString.stringToFloat(freqStr);
 
             item.tick += World.get().getDeltaTime();
-            double arg = item.tick * 2.0f * freq * MathUtils.PI;
+            double arg = item.tick * 2.0f * freq * myMath.PI;
             float scale = (float)Math.sin(arg);
             float newScale = 1.0f + scale * amp;
 

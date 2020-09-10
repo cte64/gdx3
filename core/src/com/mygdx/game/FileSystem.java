@@ -7,7 +7,7 @@ import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.World;
 import gameCode.Utilities.myString;
 
-import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myMath;
 import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
@@ -33,10 +33,10 @@ public class FileSystem {
         centerTop = yIndex;
         centerBottom = centerTop + 1;
 
-        centerLeft = MathUtils.clamp(centerLeft, 0, World.get().getNumCells() - 1);
-        centerRight = MathUtils.clamp(centerRight, 0, World.get().getNumCells());
-        centerTop = MathUtils.clamp(centerTop, 0, World.get().getNumCells() - 1);
-        centerBottom = MathUtils.clamp(centerBottom, 0, World.get().getNumCells());
+        centerLeft = myMath.clamp(centerLeft, 0, World.get().getNumCells() - 1);
+        centerRight = myMath.clamp(centerRight, 0, World.get().getNumCells());
+        centerTop = myMath.clamp(centerTop, 0, World.get().getNumCells() - 1);
+        centerBottom = myMath.clamp(centerBottom, 0, World.get().getNumCells());
 
         //middle ======================================================================
         middleLeft = centerLeft - 1;
@@ -44,10 +44,10 @@ public class FileSystem {
         middleTop = centerTop - 1;
         middleBottom = centerBottom + 1;
 
-        middleLeft = MathUtils.clamp(middleLeft, 0, World.get().getNumCells() - 3);
-        middleRight = MathUtils.clamp(middleRight, 3, World.get().getNumCells());
-        middleTop = MathUtils.clamp(middleTop, 0, World.get().getNumCells() - 3);
-        middleBottom = MathUtils.clamp(middleBottom, 3, World.get().getNumCells());
+        middleLeft = myMath.clamp(middleLeft, 0, World.get().getNumCells() - 3);
+        middleRight = myMath.clamp(middleRight, 3, World.get().getNumCells());
+        middleTop = myMath.clamp(middleTop, 0, World.get().getNumCells() - 3);
+        middleBottom = myMath.clamp(middleBottom, 3, World.get().getNumCells());
 
         //outer =======================================================================
         outerLeft = centerLeft - 2;
@@ -55,22 +55,22 @@ public class FileSystem {
         outerTop = centerTop - 2;
         outerBottom = centerBottom + 2;
 
-        outerLeft = MathUtils.clamp(outerLeft, 0, World.get().getNumCells() - 5);
-        outerRight = MathUtils.clamp(outerRight, 5, World.get().getNumCells());
-        outerTop = MathUtils.clamp(outerTop, 0, World.get().getNumCells() - 5);
-        outerBottom = MathUtils.clamp(outerBottom, 5, World.get().getNumCells());
+        outerLeft = myMath.clamp(outerLeft, 0, World.get().getNumCells() - 5);
+        outerRight = myMath.clamp(outerRight, 5, World.get().getNumCells());
+        outerTop = myMath.clamp(outerTop, 0, World.get().getNumCells() - 5);
+        outerBottom = myMath.clamp(outerBottom, 5, World.get().getNumCells());
     }
     private void setUpdate(int x, int y, int select, boolean newVal) {
         if (select == 1) {
             if (chunkUpdate1.size() == 0) return;
             int index = (y * World.get().getNumChunks()) + x;
-            index = MathUtils.clamp(index, 0, chunkUpdate1.size() - 1);
+            index = myMath.clamp(index, 0, chunkUpdate1.size() - 1);
             chunkUpdate1.set(index, newVal);
         }
         if (select == 2) {
             if (chunkUpdate2.size() == 0) return;
             int index = (y * World.get().getNumChunks()) + x;
-            index = MathUtils.clamp(index, 0, chunkUpdate2.size() - 1);
+            index = myMath.clamp(index, 0, chunkUpdate2.size() - 1);
             chunkUpdate2.set(index, newVal);
         }
     }
@@ -79,14 +79,14 @@ public class FileSystem {
         if (select == 1) {
             if (chunkUpdate1.size() == 0) return false;
             int index = (y * World.get().getNumChunks()) + x;
-            index = MathUtils.clamp(index, 0, chunkUpdate1.size() - 1);
+            index = myMath.clamp(index, 0, chunkUpdate1.size() - 1);
             return chunkUpdate1.get(index);
         }
 
         if (select == 2) {
             if (chunkUpdate2.size() == 0) return false;
             int index = (y * World.get().getNumChunks()) + x;
-            index = MathUtils.clamp(index, 0, chunkUpdate2.size() - 1);
+            index = myMath.clamp(index, 0, chunkUpdate2.size() - 1);
             return chunkUpdate2.get(index);
         }
 
@@ -396,8 +396,8 @@ public class FileSystem {
         int xIndex = (int)(hero.x_pos * World.get().getNumChunks()) / World.get().getNumPixels();
         int yIndex = (int)(hero.y_pos * World.get().getNumChunks()) / World.get().getNumPixels();
 
-        xIndex = MathUtils.clamp(xIndex, 0, World.get().getNumChunks() - 1);
-        yIndex = MathUtils.clamp(yIndex, 0, World.get().getNumChunks() - 1);
+        xIndex = myMath.clamp(xIndex, 0, World.get().getNumChunks() - 1);
+        yIndex = myMath.clamp(yIndex, 0, World.get().getNumChunks() - 1);
 
         if(xIndex < middleLeft || xIndex >= middleRight || yIndex < middleTop || yIndex >= middleBottom) {
             center(xIndex, yIndex);

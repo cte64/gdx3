@@ -2,9 +2,8 @@ package gameCode.Menus;
 
 import com.mygdx.game.Engine;
 import gameCode.Infrastructure.Entity;
-import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.World;
-import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myMath;
 
 import java.util.ArrayList;
 
@@ -119,9 +118,9 @@ public class ScrollList {
 
 
         //Position Everything ======================================================================
-        scrollIndex = MathUtils.clamp(scrollIndex, 0.0f, 1.0f);
+        scrollIndex = myMath.clamp(scrollIndex, 0.0f, 1.0f);
         int scrollOffset = (int)(totalPixelsToScroll * scrollIndex);
-        scrollOffset = MathUtils.clamp(scrollOffset, totalPixelsToScroll, 0);
+        scrollOffset = myMath.clamp(scrollOffset, totalPixelsToScroll, 0);
 
         for(int x = 0; x < listItems.size(); x++)  {
 
@@ -152,7 +151,7 @@ public class ScrollList {
             float barTop = top;
             float barBot = bottom - sbHeight + 1;
             float adjPs =  barTop + (barBot - barTop) * scrollIndex;
-            adjPs = MathUtils.clamp(adjPs, barTop, barBot);
+            adjPs = myMath.clamp(adjPs, barTop, barBot);
             menuMngr.updateYOffset(scrollBar, (int)adjPs);
         }
     }

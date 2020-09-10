@@ -6,7 +6,7 @@ import gameCode.Menus.MenuManager;
 import gameCode.Menus.TextComponent;
 import gameCode.Menus.TextInput;
 import gameCode.Utilities.myString;
-import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myMath;
 
 public class NewGame extends Component {
 
@@ -78,14 +78,14 @@ public class NewGame extends Component {
         menu.hoverAction(minus, "[hoverType: sine][amplitude: 0.05][frequency: 1]");
         if(menu.isLeftClicked(minus)) {
             numChunks--;
-            numChunks = MathUtils.clamp(numChunks, min, max);
+            numChunks = myMath.clamp(numChunks, min, max);
             sizeTextComp.text = myString.toString(numChunks);
         }
 
         menu.hoverAction(plus, "[hoverType: sine][amplitude: 0.05][frequency: 1]");
         if(menu.isLeftClicked(plus)) {
             numChunks++;
-            numChunks = MathUtils.clamp(numChunks, min, max);
+            numChunks = myMath.clamp(numChunks, min, max);
             sizeTextComp.text = myString.toString(numChunks);
         }
 

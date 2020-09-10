@@ -10,7 +10,7 @@ import gameCode.Utilities.myPair;
 
 import gameCode.Utilities.Coordinates;
 import gameCode.Utilities.myString;
-import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myMath;
 
 public class World {
 
@@ -223,10 +223,10 @@ public class World {
             int bottom_edge = frame.bottom + a;
             int top_edge = frame.top - a;
 
-            left_edge = MathUtils.clamp(left_edge, 0, numBlocks - 1);
-            right_edge = MathUtils.clamp(right_edge, 0, numBlocks - 1);
-            top_edge = MathUtils.clamp(top_edge, 0, numBlocks - 1);
-            bottom_edge = MathUtils.clamp(bottom_edge, 0, numBlocks - 1);
+            left_edge = myMath.clamp(left_edge, 0, numBlocks - 1);
+            right_edge = myMath.clamp(right_edge, 0, numBlocks - 1);
+            top_edge = myMath.clamp(top_edge, 0, numBlocks - 1);
+            bottom_edge = myMath.clamp(bottom_edge, 0, numBlocks - 1);
 
             for (Entity ent : entList) {
 
@@ -242,7 +242,7 @@ public class World {
                 if (ent.deleteRange == -2) continue;
                 if (ent.deleteRange == -1 && (aX < left || aX > right || aY < top || aY > bottom)) mark = true;
                 if (ent.deleteRange >= 0) {
-                    int dist = (int) MathUtils.mag(ent.x_pos + ent.getWidth() / 2,
+                    int dist = (int) myMath.mag(ent.x_pos + ent.getWidth() / 2,
                             ent.y_pos + ent.getHeight() / 2,
                             camera.x_pos + camera.getWidth() / 2,
                             camera.y_pos + camera.getHeight() / 2);

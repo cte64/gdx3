@@ -1,9 +1,8 @@
 package gameCode.Infrastructure;
-import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myMath;
 import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 
 public class Entity {
@@ -63,11 +62,11 @@ public class Entity {
 
         float center = World.get().getNumPixels()/2;
 
-        float dist = MathUtils.mag(center, center, x_pos, y_pos);
+        float dist = myMath.mag(center, center, x_pos, y_pos);
 
         shade = ((dist - 1500) / 1500.0f);
 
-        shade = MathUtils.clamp(shade, 0.0f, 1.0f);
+        shade = myMath.clamp(shade, 0.0f, 1.0f);
 
     }
 

@@ -3,7 +3,7 @@ package gameCode.Infrastructure;
 import com.badlogic.gdx.graphics.Pixmap;
 import java.util.ArrayList;
 
-import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myMath;
 import gameCode.Utilities.Pixel;
 import gameCode.Utilities.myString;
 import gameCode.Utilities.myPair;
@@ -52,7 +52,7 @@ public class Chunk {
     }
     public void setActive(int x, int y, boolean newActive) {
         int index = (World.get().tilesPerChunk * y) + x;
-        index = MathUtils.clamp(index, 0, tiles.size() - 1);
+        index = myMath.clamp(index, 0, tiles.size() - 1);
         tiles.get(index).active = newActive;
     }
 
@@ -60,23 +60,23 @@ public class Chunk {
     public String getChunkName() { return chunkName; }
     public Pixmap getImage(int x, int y) {
         int index = (World.get().tilesPerChunk * y) + x;
-        index = MathUtils.clamp(index, 0, tiles.size() - 1);
+        index = myMath.clamp(index, 0, tiles.size() - 1);
         return tiles.get(index).image;
     }
     public boolean getActive(int x, int y) {
         int index = (World.get().tilesPerChunk * y) + x;
-        index = MathUtils.clamp(index, 0, tiles.size() - 1);
+        index = myMath.clamp(index, 0, tiles.size() - 1);
         return tiles.get(index).active;
     }
     public boolean isImageBlank(int xIndex, int yIndex) {
         int index = (World.get().tilesPerChunk * yIndex) + xIndex;
-        index = MathUtils.clamp(index, 0, tiles.size() - 1);
+        index = myMath.clamp(index, 0, tiles.size() - 1);
         if(tiles.get(index).terrainData.data.length() == 0) return true;
         else return false;
     }
     public String getTileName(int x, int y) {
         int index = (World.get().tilesPerChunk * y) + x;
-        index = MathUtils.clamp(index, 0, tiles.size() - 1);
+        index = myMath.clamp(index, 0, tiles.size() - 1);
         return tiles.get(index).tileName;
     }
     public myString getSerializedTerrain() {

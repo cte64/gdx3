@@ -2,7 +2,7 @@ package gameCode.Utilities;
 
 import java.util.Random;
 
-public class MathUtils {
+public class myMath {
 
     public static final float PI = 3.14159265359f;
 

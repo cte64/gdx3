@@ -66,7 +66,7 @@ public class myString {
 
     //Static Utility Methods =================================================================
     public static float stringToFloat(String data) {
-        if(MathUtils.isNumeric(data))
+        if(myMath.isNumeric(data))
             return Float.parseFloat(data);
         else return 0.0f;
     }
@@ -106,7 +106,7 @@ public class myString {
     public static String toString(int num) { return Integer.toString(num); }
 
     public static int stringToInt(String data) {
-        if(MathUtils.isNumeric(data))
+        if(myMath.isNumeric(data))
             return Integer.parseInt(data);
         else return 0;
     }

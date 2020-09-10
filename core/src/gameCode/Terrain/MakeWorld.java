@@ -45,7 +45,7 @@ public class MakeWorld {
                 int yChunk = (int)((coord.y * World.get().getNumChunks()) / World.get().getNumPixels());
 
                 int index = (yChunk * World.get().getNumChunks()) + xChunk;
-                index = MathUtils.clamp(index, 0, chunkGrid.size() - 1);
+                index = myMath.clamp(index, 0, chunkGrid.size() - 1);
                 chunkGrid.get(index).add(coord);
             }
 
@@ -61,7 +61,7 @@ public class MakeWorld {
                 String[] tiles = data.data.split("\n");
 
                 int index = (yChunk * World.get().getNumChunks()) + xChunk;
-                index = MathUtils.clamp(index, 0, chunkGrid.size() - 1);
+                index = myMath.clamp(index, 0, chunkGrid.size() - 1);
 
                 for(Vector2 i: chunkGrid.get(index)) {
 
@@ -69,7 +69,7 @@ public class MakeWorld {
                     int yTile = (int)((i.y / World.get().tileSize) % World.get().tilesPerChunk);
 
                     int tileIndex = (yTile * World.get().tilesPerChunk) + xTile;
-                    tileIndex = MathUtils.clamp(tileIndex, 0, tiles.length - 1);
+                    tileIndex = myMath.clamp(tileIndex, 0, tiles.length - 1);
 
                     if (tiles[tileIndex].length() == 1 && tiles[tileIndex].charAt(0) != emptyChar) continue;
 
@@ -77,7 +77,7 @@ public class MakeWorld {
                     int pixelY = (int)(i.y % World.get().tileSize);
 
                     int pixIndex = (pixelY * World.get().tileSize) + pixelX;
-                    pixIndex = MathUtils.clamp(pixIndex, 0, tiles[tileIndex].length() - 1);
+                    pixIndex = myMath.clamp(pixIndex, 0, tiles[tileIndex].length() - 1);
 
                     if (rim.getValue().size() == 0) break;
                     if (tiles[tileIndex].charAt(pixIndex) == emptyChar) {
@@ -190,13 +190,13 @@ public class MakeWorld {
                 int yPos = (yChunk * World.get().tilesPerChunk * World.get().tileSize) + (yTile * World.get().tileSize);
                 int xPos = (xChunk * World.get().tilesPerChunk * World.get().tileSize) + (xTile * World.get().tileSize);
 
-                int mTL = (int)MathUtils.mag(centerX, centerY, xPos, yPos);
-                int mTR = (int)MathUtils.mag(centerX, centerY, xPos + World.get().tileSize, yPos);
-                int mBL = (int)MathUtils.mag(centerX, centerY, xPos, yPos + World.get().tileSize);
-                int mBR = (int)MathUtils.mag(centerX, centerY, xPos + World.get().tileSize, yPos + World.get().tileSize);
+                int mTL = (int) myMath.mag(centerX, centerY, xPos, yPos);
+                int mTR = (int) myMath.mag(centerX, centerY, xPos + World.get().tileSize, yPos);
+                int mBL = (int) myMath.mag(centerX, centerY, xPos, yPos + World.get().tileSize);
+                int mBR = (int) myMath.mag(centerX, centerY, xPos + World.get().tileSize, yPos + World.get().tileSize);
 
                 int tileIndex = (yTile * World.get().tilesPerChunk) + xTile;
-                tileIndex = MathUtils.clamp(tileIndex, 0, tiles.size() - 1);
+                tileIndex = myMath.clamp(tileIndex, 0, tiles.size() - 1);
 
                 int highestPoint = lowestPoint + stretch;
                 int chunkPoint = lowestPoint - 60;
@@ -214,8 +214,8 @@ public class MakeWorld {
                         int xPix = (xChunk * World.get().tilesPerChunk * World.get().tileSize) + (xTile * World.get().tileSize) + xPixel;
                         int pixelIndex = ((59 - yPixel ) * World.get().tileSize) + xPixel;
 
-                        int pixMag = (int)MathUtils.mag(centerX, centerY, xPix, yPix);
-                        float angle = MathUtils.angleBetweenCells(centerX, centerY, xPix, yPix);
+                        int pixMag = (int) myMath.mag(centerX, centerY, xPix, yPix);
+                        float angle = myMath.angleBetweenCells(centerX, centerY, xPix, yPix);
                         int adjX = (int)((angle / 360.0)*layerC);
 
                         //capture the outermost pixel =======================================================================
@@ -303,7 +303,7 @@ public class MakeWorld {
         lowestPoint = newLowest;
         stretch = newStretch;
         fillIt = newFillIt;
-        layerC = (int)((lowestPoint + stretch) * 2.0f * MathUtils.PI);
+        layerC = (int)((lowestPoint + stretch) * 2.0f * myMath.PI);
         terrainType = Pixel.getCharFromType(newType);
 
         ArrayList<Float> newTotal = new ArrayList<Float>();

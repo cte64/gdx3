@@ -3,7 +3,7 @@ package gameCode.Terrain;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Engine;
 import gameCode.Infrastructure.World;
-import gameCode.Utilities.MathUtils;
+import gameCode.Utilities.myMath;
 import gameCode.Utilities.Pixel;
 import gameCode.Utilities.myString;
 
@@ -56,8 +56,8 @@ public class ScatterTerrain {
         // TURN THE SEEDS INTO ACTUAL COORDINATES================
         for (layer lay: layers) {
 
-            int outerArea = (int)(lay.upperBound * lay.upperBound * MathUtils.PI);
-            int lowerArea = (int)(lay.lowerBound * lay.lowerBound * MathUtils.PI);
+            int outerArea = (int)(lay.upperBound * lay.upperBound * myMath.PI);
+            int lowerArea = (int)(lay.lowerBound * lay.lowerBound * myMath.PI);
             int area = outerArea - lowerArea;
             int chunkArea = (World.get().tilesPerChunk * World.get().tilesPerChunk) * (World.get().tileSize * World.get().tileSize);
             int numSeeds = (int)((area / chunkArea) * lay.seedsPerChunk);
@@ -67,10 +67,10 @@ public class ScatterTerrain {
                 int radius = (int)(lay.lowerBound + (Math.random() * (lay.upperBound - lay.lowerBound)));
                 float angle = (float)((Math.random() * 3650) / 10.0);
 
-                int xPos = (int)((World.get().getNumPixels() / 2) + radius * Math.cos(MathUtils.toRad(angle)));
-                int yPos = (int)((World.get().getNumPixels() / 2) + radius * Math.sin(MathUtils.toRad(angle)));
-                int newNum = (int)MathUtils.getGauss(lay.meanPix, lay.stdDevPix);
-                newNum = MathUtils.clamp(newNum, 1, 500);
+                int xPos = (int)((World.get().getNumPixels() / 2) + radius * Math.cos(myMath.toRad(angle)));
+                int yPos = (int)((World.get().getNumPixels() / 2) + radius * Math.sin(myMath.toRad(angle)));
+                int newNum = (int) myMath.getGauss(lay.meanPix, lay.stdDevPix);
+                newNum = myMath.clamp(newNum, 1, 500);
 
                 seed s = new seed();
                 s.currentX = xPos;
@@ -90,24 +90,24 @@ public class ScatterTerrain {
 
             for (int z = 0; z < s.numPixels; z++) {
 
-                float div = (float)MathUtils.getGauss(s.mDiv, s.sdDiv);
-                int gran = (int)MathUtils.getGauss(s.meanGran, s.stdDevGran);
+                float div = (float) myMath.getGauss(s.mDiv, s.sdDiv);
+                int gran = (int) myMath.getGauss(s.meanGran, s.stdDevGran);
 
-                div = MathUtils.clamp(div, 0.7f, 2.5f);
-                gran = MathUtils.clamp(gran, 10, 1000);
+                div = myMath.clamp(div, 0.7f, 2.5f);
+                gran = myMath.clamp(gran, 10, 1000);
 
-                float angle = MathUtils.toRad((float)(Math.random() * 2000));
+                float angle = myMath.toRad((float)(Math.random() * 2000));
                 int newX = s.currentX + (int)((gran / div) * Math.cos(angle));
                 int newY = s.currentY + (int)((gran / div) * Math.sin(angle));
 
-                newX = MathUtils.clamp(newX, 0, World.get().getNumPixels() - 1);
-                newY = MathUtils.clamp(newY, 0, World.get().getNumPixels() - 1);
+                newX = myMath.clamp(newX, 0, World.get().getNumPixels() - 1);
+                newY = myMath.clamp(newY, 0, World.get().getNumPixels() - 1);
 
                 s.currentX = newX;
                 s.currentY = newY;
 
                 ArrayList<Float> a = new ArrayList<Float>();
-                Perlin perlin = new Perlin((gran / 4), (int)(gran * MathUtils.PI), 6, (gran / 4), a);
+                Perlin perlin = new Perlin((gran / 4), (int)(gran * myMath.PI), 6, (gran / 4), a);
 
                 int centerX = gran / 2;
                 int centerY = gran / 2;
@@ -115,16 +115,16 @@ public class ScatterTerrain {
                 for (int y = 0; y < gran; y++) {
                 for (int x = 0; x < gran; x++) {
 
-                    float cellAngle = MathUtils.angleBetweenCells(x, y, centerX, centerY);
+                    float cellAngle = myMath.angleBetweenCells(x, y, centerX, centerY);
 
                     int index = (int)((cellAngle / 365.0) * a.size());
-                    index = MathUtils.clamp(index, 0, a.size() - 1);
-                    int m = (int)MathUtils.mag(x, y, centerX, centerY);
+                    index = myMath.clamp(index, 0, a.size() - 1);
+                    int m = (int) myMath.mag(x, y, centerX, centerY);
 
                     int xPos = newX + x;
                     int yPos = newY + y;
-                    xPos = MathUtils.clamp(xPos, 0, World.get().getNumPixels() - 1);
-                    yPos = MathUtils.clamp(yPos, 0, World.get().getNumPixels() - 1);
+                    xPos = myMath.clamp(xPos, 0, World.get().getNumPixels() - 1);
+                    yPos = myMath.clamp(yPos, 0, World.get().getNumPixels() - 1);
 
                     if (m <= a.get(index)) {
 
@@ -132,7 +132,7 @@ public class ScatterTerrain {
                         int yIndex = (yPos * World.get().getNumChunks()) / World.get().getNumPixels();
 
                         int innerIndex = (yIndex * World.get().getNumChunks()) + xIndex;
-                        innerIndex = MathUtils.clamp(innerIndex, 0, chunkGrid.size() - 1);
+                        innerIndex = myMath.clamp(innerIndex, 0, chunkGrid.size() - 1);
 
                         chunkGrid.get(innerIndex).add( new Vector2(xPos, yPos) );
                     }
@@ -157,7 +157,7 @@ public class ScatterTerrain {
             ArrayList<myString> tiles = myString.getBeforeChar(data.data, '\n');
 
             int index = (yChunk * World.get().getNumChunks()) + xChunk;
-            index = MathUtils.clamp(index, 0, chunkGrid.size() - 1);
+            index = myMath.clamp(index, 0, chunkGrid.size() - 1);
 
             for (int z = 0; z < chunkGrid.get(index).size(); z++) {
 
@@ -171,7 +171,7 @@ public class ScatterTerrain {
                 int yPixel = yPosPixel % World.get().tileSize;
 
                 int tileIndex = (yTile * World.get().tilesPerChunk) + xTile;
-                tileIndex = MathUtils.clamp(tileIndex, 0, tiles.size() - 1);
+                tileIndex = myMath.clamp(tileIndex, 0, tiles.size() - 1);
 
                 if(tiles.get(tileIndex).data.length() > 0) {
 
