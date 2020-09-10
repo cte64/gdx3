@@ -31,7 +31,7 @@ public class State {
         //MetaData and Create World =========================================================
         myString metaData = new myString("");
         Engine.get().getFileSystem().getFile(new myString("[type: metadata]"), metaData);
-        String numChunksStr = myString.getField(metaData, "numChunks");
+        String numChunksStr = metaData.getField("numChunks");
         int numChunks = myString.stringToInt(numChunksStr);
         World.get().createWorld(numChunks);
 

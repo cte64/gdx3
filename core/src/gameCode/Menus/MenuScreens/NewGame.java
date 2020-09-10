@@ -97,8 +97,8 @@ public class NewGame extends Component {
         menu.hoverAction(createWorld, "[hoverType: toggle][fontSize: 1][scale: 1.006]");
         if(menu.isLeftClicked(createWorld)) {
             myString newState = new myString("[action: createNewWorld][name: ][numChunks: ]");
-            myString.setField(newState, "name", textInput1.text);
-            myString.setField(newState, "numChunks", myString.toString(numChunks));
+            newState.setField( "name", textInput1.text);
+            newState.setField( "numChunks", myString.toString(numChunks));
             State.creatingGame(newState.data);
         }
     }

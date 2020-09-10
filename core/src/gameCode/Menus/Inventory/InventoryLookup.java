@@ -34,12 +34,12 @@ public class InventoryLookup {
         for(myString d: dataList) {
 
             Recipe newRecipe = new Recipe();
-            newRecipe.type = myString.getField(d, "type");
+            newRecipe.type = d.getField("type");
             String key = "";
 
             for(int z = 0; z < 9; z++) {
 
-                String full = myString.getField(d, myString.toString(z));
+                String full = d.getField(myString.toString(z));
                 String[] fields = full.split(",");
 
                 String type = "";

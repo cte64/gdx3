@@ -86,7 +86,7 @@ public class InventoryManager extends Component {
         //inventory selection part ================================================
         for(int x = 0; x < currentNumItems; x++) {
             myString nodeName = new myString("[type: inventory][subType: inventoryCurrentTray][index: ]");
-            myString.setField(nodeName, "index", myString.toString(x));
+            nodeName.setField( "index", myString.toString(x));
 
             int xPos = 2 + x*(itemWidth + padding);
             int yPos = 2;
@@ -100,7 +100,7 @@ public class InventoryManager extends Component {
         //Inventory Items  ========================================================
         for(int x = 0; x < maxInvenItems; x++) {
             myString nodeName = new myString("[type: inventory][subType: inventoryHidden][index: ]");
-            myString.setField(nodeName, "index", myString.toString(x));
+            nodeName.setField( "index", myString.toString(x));
 
             int xPos = scrollList.left + x*(itemWidth + padding);
             int yPos = scrollList.top;
@@ -116,7 +116,7 @@ public class InventoryManager extends Component {
         //Crafting Trays ==========================================================
         for(int x = 0; x < craftingTray.length; x++) {
             myString nodeName = new myString("[type: inventory][subType: craftingTray][index: ]");
-            myString.setField(nodeName, "index", myString.toString(x));
+            nodeName.setField("index", myString.toString(x));
 
             int xPos = 389 + (x % 3)*(itemWidth + padding);
             int yPos = 25 + padding + (x / 3)*(itemWidth + padding);
@@ -131,7 +131,7 @@ public class InventoryManager extends Component {
         //Equipped Trays ==========================================================
         for(int x = 0; x < equippedItems.length; x++) {
             myString nodeName = new myString("[type: inventory][subType: equippedTrays][index: ]");
-            myString.setField(nodeName, "index", myString.toString(x));
+            nodeName.setField( "index", myString.toString(x));
 
             int xPos = 0;
             int yPos = x*(itemWidth + padding);;
@@ -163,8 +163,8 @@ public class InventoryManager extends Component {
     public String createItem(String name) {
 
         myString newName = new myString("[type: inventoryItem][subType: ][id: ]");
-        myString.setField(newName, "subType", name);
-        myString.setField(newName, "id", uniqueIds.get(0));
+        newName.setField("subType", name);
+        newName.setField("id", uniqueIds.get(0));
         uniqueIds.remove(0);
 
         //I will find a more elegant solution for this later

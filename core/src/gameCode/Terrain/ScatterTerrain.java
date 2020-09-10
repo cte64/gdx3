@@ -150,8 +150,8 @@ public class ScatterTerrain {
 
             myString data = new myString("");
             myString fileName = new myString("[type: chunk][xChunk: ][yChunk: ]");
-            fileName.setField(fileName, "xChunk", myString.toString(xChunk));
-            fileName.setField(fileName, "yChunk", myString.toString(yChunk));
+            fileName.setField("xChunk", myString.toString(xChunk));
+            fileName.setField("yChunk", myString.toString(yChunk));
             Engine.get().getFileSystem().getFile(fileName, data);
 
             ArrayList<myString> tiles = myString.getBeforeChar(data.data, '\n');

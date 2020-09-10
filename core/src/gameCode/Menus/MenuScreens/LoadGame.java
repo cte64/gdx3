@@ -162,7 +162,7 @@ public class LoadGame extends Component {
             //click stuff ========================================================
             if(scrollList.isLeftClicked(item.play)) {
                 myString newState = new myString("[action: play][directory: ]");
-                myString.setField(newState, "directory", item.name);
+                newState.setField("directory", item.name);
                 State.play(newState.data);
             }
 

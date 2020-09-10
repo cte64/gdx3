@@ -25,10 +25,10 @@ public class Chunk {
             active = false;
 
             myString newName = new myString("[type: tile][chunkX: ][chunkY: ][tileX: ][tileY: ]");
-            myString.setField(newName, "chunkX", myString.getField(chunkName, "chunkX"));
-            myString.setField(newName, "chunkY", myString.getField(chunkName, "chunkY"));
-            myString.setField(newName, "tileX", myString.toString(index % World.get().tilesPerChunk));
-            myString.setField(newName, "tileY", myString.toString(index / World.get().tilesPerChunk));
+            newName.setField("chunkX", myString.getField(chunkName, "chunkX"));
+            newName.setField("chunkY", myString.getField(chunkName, "chunkY"));
+            newName.setField( "tileX", myString.toString(index % World.get().tilesPerChunk));
+            newName.setField("tileY", myString.toString(index / World.get().tilesPerChunk));
             tileName = newName.data;
         }
     }

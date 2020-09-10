@@ -133,8 +133,9 @@ public class FileSystem {
 
 
         myString chunkFileName = new myString("[type: chunk][xChunk: ][yChunk: ]");
-        myString.setField(chunkFileName, "xChunk", myString.toString(xIndex));
-        myString.setField(chunkFileName, "yChunk", myString.toString(yIndex));
+
+        chunkFileName.setField("xChunk", myString.toString(xIndex));
+        chunkFileName.setField("yChunk", myString.toString(yIndex));
 
         myString terrainData = chunkPtr.getSerializedTerrain();
         setFile(chunkFileName, terrainData);
@@ -179,8 +180,8 @@ public class FileSystem {
          */
 
         myString chunkFileName = new myString("[type: chunk][xChunk: ][yChunk: ]");
-        myString.setField(chunkFileName, "xChunk", myString.toString(xIndex));
-        myString.setField(chunkFileName, "yChunk", myString.toString(yIndex));
+        chunkFileName.setField("xChunk", myString.toString(xIndex));
+        chunkFileName.setField("yChunk", myString.toString(yIndex));
 
         myString terrainData = new myString("");
         getFile(chunkFileName, terrainData);
@@ -316,13 +317,13 @@ public class FileSystem {
         if (type.equals("metadata")) name = gameSaveDirectory + gameSubDirectory + "metadata.txt";
 
         if (type.equals("chunk"))  {
-            int xIndex = myString.stringToInt(myString.getField(filename, "xChunk"));
-            int yIndex = myString.stringToInt(myString.getField(filename, "yChunk"));
+            int xIndex = myString.stringToInt(filename.getField("xChunk"));
+            int yIndex = myString.stringToInt(filename.getField("yChunk"));
             name = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + myString.toString(xIndex) + "." + myString.toString(yIndex) + ".txt";
         }
         if (type.equals("entity")) {
-            int xIndex = myString.stringToInt(myString.getField(filename, "xChunk"));
-            int yIndex = myString.stringToInt(myString.getField(filename, "yChunk"));
+            int xIndex = myString.stringToInt(filename.getField("xChunk"));
+            int yIndex = myString.stringToInt(filename.getField("yChunk"));
             name = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + myString.toString(xIndex) + "." + myString.toString(yIndex) + ".txt";
         }
 
@@ -331,20 +332,20 @@ public class FileSystem {
     }
     public void getFile(myString filename, myString data) {
 
-        String type = myString.getField(filename, "type");
+        String type = filename.getField("type");
         String name = "";
 
         if (type.equals("inventory")) name = "core/gameFiles/InventoryRecipes.txt";
         if (type.equals("hero")) name = gameSaveDirectory + gameSubDirectory + "hero.txt";
         if (type.equals("metadata")) name = gameSaveDirectory + gameSubDirectory + "metadata.txt";
         if (type.equals("chunk")) {
-            int xIndex = myString.stringToInt(myString.getField(filename, "xChunk"));
-            int yIndex = myString.stringToInt(myString.getField(filename, "yChunk"));
+            int xIndex = myString.stringToInt(filename.getField("xChunk"));
+            int yIndex = myString.stringToInt(filename.getField("yChunk"));
             name = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + myString.toString(xIndex) + "." + myString.toString(yIndex) + ".txt";
         }
         if (type.equals("entity")) {
-            int xIndex = myString.stringToInt(myString.getField(filename, "xChunk"));
-            int yIndex = myString.stringToInt(myString.getField(filename, "yChunk"));
+            int xIndex = myString.stringToInt(filename.getField("xChunk"));
+            int yIndex = myString.stringToInt(filename.getField("yChunk"));
             name = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + myString.toString(xIndex) + "." + myString.toString(yIndex) + ".txt";
         }
 

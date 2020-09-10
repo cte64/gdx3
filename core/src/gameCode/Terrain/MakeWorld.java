@@ -54,10 +54,10 @@ public class MakeWorld {
             for (int xChunk = 0; xChunk < World.get().getNumChunks(); xChunk++) {
 
                 myString data = new myString("");
-                String fileName = "[type: terrain][xChunk: ][yChunk: ]";
-                myString.setField(fileName, "xChunk", myString.toString(xChunk));
-                myString.setField(fileName, "yChunk", myString.toString(yChunk));
-                Engine.get().getFileSystem().getFile(new myString(fileName), data);
+                myString fileName = new myString("[type: terrain][xChunk: ][yChunk: ]");
+                fileName.setField("xChunk", myString.toString(xChunk));
+                fileName.setField( "yChunk", myString.toString(yChunk));
+                Engine.get().getFileSystem().getFile(new myString(fileName.data), data);
                 String[] tiles = data.data.split("\n");
 
                 int index = (yChunk * World.get().getNumChunks()) + xChunk;
@@ -178,8 +178,8 @@ public class MakeWorld {
 
             myString data = new myString("");
             myString fileName = new myString("[type: chunk][xChunk: ][yChunk: ]");
-            myString.setField(fileName, "xChunk", myString.toString(xChunk));
-            myString.setField(fileName, "yChunk", myString.toString(yChunk));
+            fileName.setField( "xChunk", myString.toString(xChunk));
+            fileName.setField( "yChunk", myString.toString(yChunk));
             Engine.get().getFileSystem().getFile(fileName, data);
 
             ArrayList<myString> tiles = myString.getBeforeChar(data.data, '\n');
@@ -265,9 +265,9 @@ public class MakeWorld {
 
         //FILL METADATA FILE ========================================
         myString data = new myString("[worldName: ][numChunks: ][dateCreated: ]");
-        data.setField(data, "numChunks", myString.toString(numChunks));
-        data.setField(data, "worldName", directory);
-        data.setField(data, "dateCreated", Misc.getDate());
+        data.setField("numChunks", myString.toString(numChunks));
+        data.setField("worldName", directory);
+        data.setField("dateCreated", Misc.getDate());
         Engine.get().getFileSystem().setFile(new myString("[type: metadata]"), data);
         messages.add( new myString("MetaData File Created"));
 

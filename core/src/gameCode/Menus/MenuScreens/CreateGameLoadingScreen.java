@@ -92,7 +92,7 @@ public class CreateGameLoadingScreen extends Component {
 
         if(!t.isAlive()) {
             myString newState = new myString("[action: play][directory: ]");
-            myString.setField(newState, "directory", directory);
+            newState.setField("directory", directory);
             State.play(newState.data);
         }
     }
