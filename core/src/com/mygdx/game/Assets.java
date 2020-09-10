@@ -31,7 +31,7 @@ public class Assets {
 
     public Assets() {
 
-        spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlas.atlas");
+        spriteAtlas = new TextureAtlas("/Users/me/Desktop/gdx3/core/assets/atlases/atlas.atlas");
 
         //Font stuff =====================================================================================
         generator = new FreeTypeFontGenerator(Gdx.files.internal("core/fonts/timesNewRoman.ttf"));

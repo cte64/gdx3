@@ -27,7 +27,7 @@ public class DesktopLauncher {
 			settings.maxWidth = 2048;
 			settings.maxHeight = 2048;
 			settings.edgePadding = true;
-			TexturePacker.process(settings, "/Users/me/Desktop/gdx3/core/assets", "/Users/me/Desktop/gdx3/core/assets", "atlas" );
+			TexturePacker.process(settings, "/Users/me/Desktop/gdx3/core/assets", "/Users/me/Desktop/gdx3/core/assets/atlases", "atlas" );
 		}
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
