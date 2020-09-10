@@ -1,11 +1,10 @@
 package gameCode.Menus;
 
 import com.mygdx.game.Engine;
-import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.*;
 import gameCode.Infrastructure.Component;
 import gameCode.Utilities.MathUtils;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 import gameCode.Utilities.Tree;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +28,8 @@ public class MenuManager {
         MenuItem mn = ((MenuItem)item.value);
         Entity ent = mn.ent;
 
-        String vertical = StringUtils.getField(mn.justify, "vertical");
-        String horizontal = StringUtils.getField(mn.justify, "horizontal");
+        String vertical = myString.getField(mn.justify, "vertical");
+        String horizontal = myString.getField(mn.justify, "horizontal");
 
         //get the coordinates of the parent element====================================================
         int parentX = 0;
@@ -111,20 +110,20 @@ public class MenuManager {
         if(hover(name) && item.hoverState == 1) item.hoverState = 2;
         if(!hover(name) && item.hoverState == 2) item.hoverState = 0;
 
-        String oldSprite = StringUtils.getField(type, "sprite");
-        String newSprite = StringUtils.getField(type, "hoverSprite");
+        String oldSprite = myString.getField(type, "sprite");
+        String newSprite = myString.getField(type, "hoverSprite");
         if(newSprite != "" && oldSprite != "") {
             if(item.hoverState == 0) item.ent.spriteName = oldSprite;
             if(item.hoverState == 2) item.ent.spriteName = newSprite;
         }
 
-        String hoverType = StringUtils.getField(type, "hoverType");
+        String hoverType = myString.getField(type, "hoverType");
 
         if(hoverType.equals("toggle")) {
 
-            String scale = StringUtils.getField(type, "scale");
+            String scale = myString.getField(type, "scale");
             if(scale != "") {
-                float scaleF = StringUtils.stringToFloat(scale);
+                float scaleF = myString.stringToFloat(scale);
                 if(item.hoverState == 0) {
                     item.ent.scale.first = 1f;
                     item.ent.scale.second = 1f;
@@ -135,9 +134,9 @@ public class MenuManager {
                 }
             }
 
-            String fs = StringUtils.getField(type, "fontSize");
+            String fs = myString.getField(type, "fontSize");
             if(fs != "") {
-                int newSize = MathUtils.clamp( StringUtils.stringToInt(fs), -20, 20);
+                int newSize = MathUtils.clamp( myString.stringToInt(fs), -20, 20);
                 ArrayList<Component> textComps = item.ent.getComponents("text");
                 for(Component comp: textComps) {
                     TextComponent text = (TextComponent)comp;
@@ -161,13 +160,13 @@ public class MenuManager {
                 return;
             }
 
-            String ampStr = StringUtils.getField(type, "amplitude");
-            String freqStr = StringUtils.getField(type, "frequency");
+            String ampStr = myString.getField(type, "amplitude");
+            String freqStr = myString.getField(type, "frequency");
 
             float amp = 0.05f;
             float freq = 1.0f;
-            if(ampStr != "") amp = StringUtils.stringToFloat(ampStr);
-            if(freqStr != "") freq = StringUtils.stringToFloat(freqStr);
+            if(ampStr != "") amp = myString.stringToFloat(ampStr);
+            if(freqStr != "") freq = myString.stringToFloat(freqStr);
 
             item.tick += World.get().getDeltaTime();
             double arg = item.tick * 2.0f * freq * MathUtils.PI;

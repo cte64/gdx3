@@ -5,7 +5,7 @@ import gameCode.Infrastructure.*;
 import gameCode.Menus.MenuManager;
 import gameCode.Menus.TextComponent;
 import gameCode.Menus.TextInput;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 import gameCode.Utilities.MathUtils;
 
 public class NewGame extends Component {
@@ -57,7 +57,7 @@ public class NewGame extends Component {
 
 
         menu.registerItem(sizeSelect, "menuItem", background, "[vertical: top][horizontal: center]", 0, start + 2*height, 1);
-        sizeTextComp = new TextComponent(StringUtils.toString(numChunks), 18, "[vertical: center][horizontal: center]", 0, 0);
+        sizeTextComp = new TextComponent(myString.toString(numChunks), 18, "[vertical: center][horizontal: center]", 0, 0);
         menu.addText(sizeSelect, new TextComponent("Size: ", 18, "[vertical: center][horizontal: left]", 10, 0));
         menu.addText(sizeSelect, sizeTextComp);
         menu.registerItem(minus, "minus", sizeSelect, "[vertical: center][horizontal: center]", -40, 0, 2);
@@ -79,14 +79,14 @@ public class NewGame extends Component {
         if(menu.isLeftClicked(minus)) {
             numChunks--;
             numChunks = MathUtils.clamp(numChunks, min, max);
-            sizeTextComp.text = StringUtils.toString(numChunks);
+            sizeTextComp.text = myString.toString(numChunks);
         }
 
         menu.hoverAction(plus, "[hoverType: sine][amplitude: 0.05][frequency: 1]");
         if(menu.isLeftClicked(plus)) {
             numChunks++;
             numChunks = MathUtils.clamp(numChunks, min, max);
-            sizeTextComp.text = StringUtils.toString(numChunks);
+            sizeTextComp.text = myString.toString(numChunks);
         }
 
         //back ====================================================
@@ -96,9 +96,9 @@ public class NewGame extends Component {
         //createWorld =============================================
         menu.hoverAction(createWorld, "[hoverType: toggle][fontSize: 1][scale: 1.006]");
         if(menu.isLeftClicked(createWorld)) {
-            StringUtils newState = new StringUtils("[action: createNewWorld][name: ][numChunks: ]");
-            StringUtils.setField(newState, "name", textInput1.text);
-            StringUtils.setField(newState, "numChunks", StringUtils.toString(numChunks));
+            myString newState = new myString("[action: createNewWorld][name: ][numChunks: ]");
+            myString.setField(newState, "name", textInput1.text);
+            myString.setField(newState, "numChunks", myString.toString(numChunks));
             State.creatingGame(newState.data);
         }
     }

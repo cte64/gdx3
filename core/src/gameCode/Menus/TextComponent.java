@@ -2,8 +2,7 @@ package gameCode.Menus;
 import com.mygdx.game.Engine;
 import gameCode.Infrastructure.Component;
 import gameCode.Infrastructure.Entity;
-import com.mygdx.game.Graphics;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 
 public class TextComponent extends Component {
 
@@ -32,8 +31,8 @@ public class TextComponent extends Component {
 
     public void update(Entity ent) {
 
-        String vertical = StringUtils.getField(justify, "vertical");
-        String horizontal = StringUtils.getField(justify, "horizontal");
+        String vertical = myString.getField(justify, "vertical");
+        String horizontal = myString.getField(justify, "horizontal");
 
         //vertical
         if(vertical.equals("center")) yPos = (int)(ent.y_pos + ent.getHeight()/2 + Engine.get().getAssets().getTextBounds(text, currentFontSize).y/2  ) + yOffset;

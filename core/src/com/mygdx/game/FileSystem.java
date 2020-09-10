@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import gameCode.Infrastructure.Chunk;
 import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.World;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.myPair;
@@ -132,11 +132,11 @@ public class FileSystem {
 
 
 
-        StringUtils chunkFileName = new StringUtils("[type: chunk][xChunk: ][yChunk: ]");
-        StringUtils.setField(chunkFileName, "xChunk", StringUtils.toString(xIndex));
-        StringUtils.setField(chunkFileName, "yChunk", StringUtils.toString(yIndex));
+        myString chunkFileName = new myString("[type: chunk][xChunk: ][yChunk: ]");
+        myString.setField(chunkFileName, "xChunk", myString.toString(xIndex));
+        myString.setField(chunkFileName, "yChunk", myString.toString(yIndex));
 
-        StringUtils terrainData = chunkPtr.getSerializedTerrain();
+        myString terrainData = chunkPtr.getSerializedTerrain();
         setFile(chunkFileName, terrainData);
 
         /*
@@ -178,11 +178,11 @@ public class FileSystem {
         //StringUtils objectStr = new StringUtils(entFile.readString());
          */
 
-        StringUtils chunkFileName = new StringUtils("[type: chunk][xChunk: ][yChunk: ]");
-        StringUtils.setField(chunkFileName, "xChunk", StringUtils.toString(xIndex));
-        StringUtils.setField(chunkFileName, "yChunk", StringUtils.toString(yIndex));
+        myString chunkFileName = new myString("[type: chunk][xChunk: ][yChunk: ]");
+        myString.setField(chunkFileName, "xChunk", myString.toString(xIndex));
+        myString.setField(chunkFileName, "yChunk", myString.toString(yIndex));
 
-        StringUtils terrainData = new StringUtils("");
+        myString terrainData = new myString("");
         getFile(chunkFileName, terrainData);
 
         chunkPtr.setTerrain(terrainData);
@@ -274,29 +274,29 @@ public class FileSystem {
         gameSubDirectory = newDir + "/";
 
         //create metadata file
-        StringUtils metaName = new StringUtils("[type: metadata]");
-        setFile(metaName, new StringUtils("finally got it working"));
+        myString metaName = new myString("[type: metadata]");
+        setFile(metaName, new myString("finally got it working"));
 
         //create the main character and put in a separate file
-        StringUtils heroName = new StringUtils("[type: hero]");
-        setFile(heroName, new StringUtils("this is hero"));
+        myString heroName = new myString("[type: hero]");
+        setFile(heroName, new myString("this is hero"));
 
         //populate the chunks and entities folder
         for (int yChunk = 0; yChunk < World.get().getNumChunks(); yChunk++) {
             for (int xChunk = 0; xChunk < World.get().getNumChunks(); xChunk++) {
 
-                StringUtils chunkStr = new StringUtils("");
+                myString chunkStr = new myString("");
                 for (int yTile = 0; yTile < World.get().tilesPerChunk; yTile++) {
                     for (int xTile = 0; xTile < World.get().tilesPerChunk; xTile++) {
                         chunkStr.data += "\n";
                     }}
 
-                StringUtils entStr = new StringUtils("");
+                myString entStr = new myString("");
 
-                StringUtils chunkName = new StringUtils("[type: chunk][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
+                myString chunkName = new myString("[type: chunk][xChunk: " + myString.toString(xChunk) + "][yChunk: " + myString.toString(yChunk) + "]");
                 setFile(chunkName, chunkStr);
 
-                StringUtils entName = new StringUtils("[type: entity][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
+                myString entName = new myString("[type: entity][xChunk: " + myString.toString(xChunk) + "][yChunk: " + myString.toString(yChunk) + "]");
                 setFile(entName, entStr);
             }}
     }
@@ -307,45 +307,45 @@ public class FileSystem {
         }}
     }
 
-    public void setFile(StringUtils filename, StringUtils data) {
+    public void setFile(myString filename, myString data) {
 
-        String type = StringUtils.getField(filename, "type");
+        String type = filename.getField("type");
         String name = "";
 
         if (type.equals("hero")) name = gameSaveDirectory + gameSubDirectory + "hero.txt";
         if (type.equals("metadata")) name = gameSaveDirectory + gameSubDirectory + "metadata.txt";
 
         if (type.equals("chunk"))  {
-            int xIndex = StringUtils.stringToInt(StringUtils.getField(filename, "xChunk"));
-            int yIndex = StringUtils.stringToInt(StringUtils.getField(filename, "yChunk"));
-            name = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
+            int xIndex = myString.stringToInt(myString.getField(filename, "xChunk"));
+            int yIndex = myString.stringToInt(myString.getField(filename, "yChunk"));
+            name = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + myString.toString(xIndex) + "." + myString.toString(yIndex) + ".txt";
         }
         if (type.equals("entity")) {
-            int xIndex = StringUtils.stringToInt(StringUtils.getField(filename, "xChunk"));
-            int yIndex = StringUtils.stringToInt(StringUtils.getField(filename, "yChunk"));
-            name = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
+            int xIndex = myString.stringToInt(myString.getField(filename, "xChunk"));
+            int yIndex = myString.stringToInt(myString.getField(filename, "yChunk"));
+            name = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + myString.toString(xIndex) + "." + myString.toString(yIndex) + ".txt";
         }
 
         FileHandle file = Gdx.files.local(name);
         file.writeString(data.data, false);
     }
-    public void getFile(StringUtils filename, StringUtils data) {
+    public void getFile(myString filename, myString data) {
 
-        String type = StringUtils.getField(filename, "type");
+        String type = myString.getField(filename, "type");
         String name = "";
 
         if (type.equals("inventory")) name = "core/gameFiles/InventoryRecipes.txt";
         if (type.equals("hero")) name = gameSaveDirectory + gameSubDirectory + "hero.txt";
         if (type.equals("metadata")) name = gameSaveDirectory + gameSubDirectory + "metadata.txt";
         if (type.equals("chunk")) {
-            int xIndex = StringUtils.stringToInt(StringUtils.getField(filename, "xChunk"));
-            int yIndex = StringUtils.stringToInt(StringUtils.getField(filename, "yChunk"));
-            name = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
+            int xIndex = myString.stringToInt(myString.getField(filename, "xChunk"));
+            int yIndex = myString.stringToInt(myString.getField(filename, "yChunk"));
+            name = gameSaveDirectory + gameSubDirectory + "chunks/" + "chunk-" + myString.toString(xIndex) + "." + myString.toString(yIndex) + ".txt";
         }
         if (type.equals("entity")) {
-            int xIndex = StringUtils.stringToInt(StringUtils.getField(filename, "xChunk"));
-            int yIndex = StringUtils.stringToInt(StringUtils.getField(filename, "yChunk"));
-            name = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + StringUtils.toString(xIndex) + "." + StringUtils.toString(yIndex) + ".txt";
+            int xIndex = myString.stringToInt(myString.getField(filename, "xChunk"));
+            int yIndex = myString.stringToInt(myString.getField(filename, "yChunk"));
+            name = gameSaveDirectory + gameSubDirectory + "entities/" + "chunk-" + myString.toString(xIndex) + "." + myString.toString(yIndex) + ".txt";
         }
 
         FileHandle file = Gdx.files.local(name);

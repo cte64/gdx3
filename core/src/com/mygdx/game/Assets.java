@@ -3,12 +3,11 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import gameCode.Infrastructure.World;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
@@ -73,7 +72,7 @@ public class Assets {
         for(int x = 0; x < numTiles; x++) {
             int xPos = padding + x*(padding + World.get().tileSize);
             int yPos = padding + y*(padding + World.get().tileSize);
-            String name = "tileId: " + StringUtils.toString(x) + "." + StringUtils.toString(y);
+            String name = "tileId: " + myString.toString(x) + "." + myString.toString(y);
             Texture newTexture = new Texture(World.get().tileSize, World.get().tileSize, RGB888);
             tileAtlas.addRegion(name, newTexture, xPos, yPos, World.get().tileSize, World.get().tileSize);
             TextureRegion region = tileAtlas.findRegion(name);

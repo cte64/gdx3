@@ -6,11 +6,10 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Engine;
-import com.mygdx.game.Graphics;
 import gameCode.Utilities.myPair;
 
 import gameCode.Utilities.Coordinates;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 import gameCode.Utilities.MathUtils;
 
 public class World {
@@ -196,7 +195,7 @@ public class World {
         //delete stuff ============================================================
         for(Entity ent: entitiesToBeDeleted) {
             if(ent == null) continue;
-            if( StringUtils.getField(ent.entityName, "type").equals( "tile") ) { Engine.get().getAssets().returnCoord(ent.spriteName); }
+            if( myString.getField(ent.entityName, "type").equals( "tile") ) { Engine.get().getAssets().returnCoord(ent.spriteName); }
             ent.markForDeletion = true;
 
             entByName.remove(ent.entityName);
@@ -259,7 +258,7 @@ public class World {
                 Chunk chunkPtr = getChunk(key);
 
                 if(chunkPtr != null) {
-                    if(StringUtils.getField(ent.entityName, "type") == "tile" && chunkPtr.isImageBlank(tileX, tileY)) mark = true;
+                    if(myString.getField(ent.entityName, "type") == "tile" && chunkPtr.isImageBlank(tileX, tileY)) mark = true;
                     chunkPtr.setActive(tileX, tileY, false);
                 }
 

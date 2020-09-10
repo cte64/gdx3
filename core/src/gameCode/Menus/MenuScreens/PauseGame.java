@@ -1,11 +1,10 @@
 package gameCode.Menus.MenuScreens;
 
 import com.mygdx.game.Engine;
-import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.*;
 import gameCode.Menus.MenuManager;
 import gameCode.Menus.TextComponent;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 
 public class PauseGame extends Component {
 
@@ -59,7 +58,7 @@ public class PauseGame extends Component {
         if(ent == null) return;
         String currentMode = ent.drawMode;
 
-        String worldState = StringUtils.getField(State.getState(), "action");
+        String worldState = myString.getField(State.getState(), "action");
         if(worldState.equals("inventory")) return;
 
         if(Engine.get().getInput().isKeyPressed("esc") && !escToggle) escToggle = true;

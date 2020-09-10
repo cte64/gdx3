@@ -71,7 +71,7 @@ public class Pixel {
         return retVal;
     }
 
-    public static void insertPixel(StringUtils tiles, int xPixel, int yPixel, char terrainChar) {
+    public static void insertPixel(myString tiles, int xPixel, int yPixel, char terrainChar) {
 
         int tSize = World.get().tileSize * World.get().tileSize;
         yPixel = 59 - yPixel;
@@ -93,7 +93,7 @@ public class Pixel {
         }
     }
 
-    public static Pixmap stringToImage(StringUtils data) {
+    public static Pixmap stringToImage(myString data) {
 
         int pixPerTile = World.get().tileSize * World.get().tileSize;
         Pixmap image = new Pixmap(World.get().tileSize, World.get().tileSize, Pixmap.Format.RGB888);

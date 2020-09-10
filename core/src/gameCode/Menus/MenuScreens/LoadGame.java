@@ -1,12 +1,11 @@
 package gameCode.Menus.MenuScreens;
 
 import com.mygdx.game.Engine;
-import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.*;
 import gameCode.Menus.MenuManager;
 import gameCode.Menus.ScrollList;
 import gameCode.Menus.TextComponent;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 
 import java.util.ArrayList;
 
@@ -78,9 +77,9 @@ public class LoadGame extends Component {
         for(int x = 0; x < files.size(); x++) {
 
             //parse out the data from the metadata files
-            String dateCreated = StringUtils.getField(files.get(x), "dateCreated");
-            String numChunks = StringUtils.getField(files.get(x), "numChunks");
-            String worldName = StringUtils.getField(files.get(x), "worldName");
+            String dateCreated = myString.getField(files.get(x), "dateCreated");
+            String numChunks = myString.getField(files.get(x), "numChunks");
+            String worldName = myString.getField(files.get(x), "worldName");
 
             //create new unique names for each list item
             String itemName = "[type: menu][item: list][id: ]";
@@ -88,9 +87,9 @@ public class LoadGame extends Component {
             String deleteName = "[type: menu][item: delete][id: ]";
 
             //set the names accordingly
-            itemName = StringUtils.setField(itemName, "id", worldName);
-            playName = StringUtils.setField(playName, "id", worldName);
-            deleteName = StringUtils.setField(deleteName, "id", worldName);
+            itemName = myString.setField(itemName, "id", worldName);
+            playName = myString.setField(playName, "id", worldName);
+            deleteName = myString.setField(deleteName, "id", worldName);
 
             //create a new list item with the following items and add it to the list
             listItem newItem = new listItem();
@@ -162,8 +161,8 @@ public class LoadGame extends Component {
 
             //click stuff ========================================================
             if(scrollList.isLeftClicked(item.play)) {
-                StringUtils newState = new StringUtils("[action: play][directory: ]");
-                StringUtils.setField(newState, "directory", item.name);
+                myString newState = new myString("[action: play][directory: ]");
+                myString.setField(newState, "directory", item.name);
                 State.play(newState.data);
             }
 

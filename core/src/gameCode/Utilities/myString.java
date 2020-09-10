@@ -2,21 +2,21 @@ package gameCode.Utilities;
 
 import java.util.ArrayList;
 
-public class StringUtils {
+public class myString {
 
     public String data;
 
-    public StringUtils(String newData) {
+    public myString(String newData) {
         data = newData;
     }
 
-    public static ArrayList<StringUtils> getBeforeChar(String data, char splitChar) {
-        ArrayList<StringUtils> retVal = new ArrayList<StringUtils>();
+    public static ArrayList<myString> getBeforeChar(String data, char splitChar) {
+        ArrayList<myString> retVal = new ArrayList<myString>();
         String newStr = "";
         for(int x = 0; x < data.length(); x++) {
             char c = data.charAt(x);
             if(c == splitChar) {
-                retVal.add(new StringUtils(newStr));
+                retVal.add(new myString(newStr));
                 newStr = "";
             }
             else newStr += c;
@@ -45,7 +45,7 @@ public class StringUtils {
         else return 0.0f;
     }
 
-    public static void compressString(StringUtils cont) {
+    public static void compressString(myString cont) {
 
         if(cont.data.length() <= 0) return;
 
@@ -63,7 +63,9 @@ public class StringUtils {
         }
     }
 
-    public static String getField(StringUtils name, String field) {
+
+    /*
+    public static String getField(myString name, String field) {
 
         int index = name.data.indexOf(field);
         if(index == -1) return "";
@@ -84,12 +86,37 @@ public class StringUtils {
         return retVal;
     }
 
+     */
+
+
     public static String getField(String name, String field) {
-        StringUtils str = new StringUtils(name);
-        return getField(str, field);
+        myString str = new myString(name);
+        return str.getField(field);
     }
 
-    public static void setField(StringUtils name, String field, String value) {
+    public String getField(String field) {
+
+        int index = data.indexOf(field);
+        if(index == -1) return "";
+
+        int startIndex = index;
+        int endIndex = startIndex;
+        int x = index;
+
+        while (x < data.length()) {
+            if (data.charAt(x) == ':') startIndex = x;
+            else if (data.charAt(x)  == ']') {
+                endIndex = x;
+                break;
+            } x++;
+        }
+
+        String retVal = data.substring(startIndex + 2, endIndex);
+        return retVal;
+
+    }
+
+    public static void setField(myString name, String field, String value) {
 
         int index = name.data.indexOf("[" + field);
         if(index == -1) {
@@ -120,7 +147,7 @@ public class StringUtils {
     }
 
     public static String setField(String name, String field, String value) {
-        StringUtils newString = new StringUtils(name);
+        myString newString = new myString(name);
         setField(newString, field, value);
         return newString.data;
     }

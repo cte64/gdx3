@@ -4,7 +4,7 @@ import gameCode.Infrastructure.*;
 import gameCode.Menus.MenuManager;
 import gameCode.Menus.TextComponent;
 import gameCode.Terrain.MakeWorld;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class CreateGameLoadingScreen extends Component {
     private String background;
     MakeWorld makeWorld;
 
-    ArrayList<StringUtils> loadingMessages;
+    ArrayList<myString> loadingMessages;
     private ArrayList<TextComponent> textComponents;
 
     int maxListSize;
@@ -52,15 +52,15 @@ public class CreateGameLoadingScreen extends Component {
         menu.registerItem(background, "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 0);
         menu.addText(background, new TextComponent("Creating New World", 10, "[vertical: top][horizontal: center]", 0, 0));
 
-        String name = StringUtils.getField(State.getState(), "name");
-        String numChunks = StringUtils.getField(State.getState(), "numChunks");
-        int numChunksInt = StringUtils.stringToInt(numChunks);
+        String name = myString.getField(State.getState(), "name");
+        String numChunks = myString.getField(State.getState(), "numChunks");
+        int numChunksInt = myString.stringToInt(numChunks);
 
         directory = name;
         textComponents = new ArrayList<TextComponent>();
         maxListSize = 7;
 
-        loadingMessages = new ArrayList<StringUtils>();
+        loadingMessages = new ArrayList<myString>();
         int radius = (int)((numChunksInt * World.get().tilesPerChunk * World.get().tileSize) * 0.3f);
         makeWorld = new MakeWorld(name, numChunksInt, radius, loadingMessages);
 
@@ -91,8 +91,8 @@ public class CreateGameLoadingScreen extends Component {
         }
 
         if(!t.isAlive()) {
-            StringUtils newState = new StringUtils("[action: play][directory: ]");
-            StringUtils.setField(newState, "directory", directory);
+            myString newState = new myString("[action: play][directory: ]");
+            myString.setField(newState, "directory", directory);
             State.play(newState.data);
         }
     }

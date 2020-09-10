@@ -2,7 +2,7 @@ package gameCode.Infrastructure;
 
 import com.mygdx.game.Engine;
 import gameCode.Menus.MenuScreens.LoadGame;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 
 public class State {
 
@@ -19,7 +19,7 @@ public class State {
     public static void play(String newState) {
 
         //set the state =====================================================================
-        String directory = StringUtils.getField(newState, "directory");
+        String directory = myString.getField(newState, "directory");
         state = "[action: play]";
 
         //delete menu stuff =================================================================
@@ -29,15 +29,15 @@ public class State {
         Engine.get().getFileSystem().setGameSubDirectory(directory);
 
         //MetaData and Create World =========================================================
-        StringUtils metaData = new StringUtils("");
-        Engine.get().getFileSystem().getFile(new StringUtils("[type: metadata]"), metaData);
-        String numChunksStr = StringUtils.getField(metaData, "numChunks");
-        int numChunks = StringUtils.stringToInt(numChunksStr);
+        myString metaData = new myString("");
+        Engine.get().getFileSystem().getFile(new myString("[type: metadata]"), metaData);
+        String numChunksStr = myString.getField(metaData, "numChunks");
+        int numChunks = myString.stringToInt(numChunksStr);
         World.get().createWorld(numChunks);
 
         //Hero ==============================================================================
-        StringUtils heroData = new StringUtils("");
-        Engine.get().getFileSystem().getFile(new StringUtils("[type: hero]"), heroData);
+        myString heroData = new myString("");
+        Engine.get().getFileSystem().getFile(new myString("[type: hero]"), heroData);
         Entity hero = MakeEntity.getEntity(heroData.data);
         World.get().entitiesToBeAdded.add(hero);
 
@@ -84,7 +84,7 @@ public class State {
 
     public static void deleteType(String field, String type) {
         for(Entity ent: World.get().getEntList()) {
-            String thisType = StringUtils.getField(ent.entityName, field);
+            String thisType = myString.getField(ent.entityName, field);
             if(thisType.equals(type)) World.get().entitiesToBeDeleted.add(ent);
         }
     }

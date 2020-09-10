@@ -1,7 +1,7 @@
 package gameCode.Menus.Inventory;
 
 import com.mygdx.game.Engine;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
@@ -26,27 +26,27 @@ public class InventoryLookup {
 
         recipes = new HashMap<>();
 
-        StringUtils fileName = new StringUtils("[type: inventory]");
-        StringUtils data = new StringUtils("");
+        myString fileName = new myString("[type: inventory]");
+        myString data = new myString("");
         Engine.get().getFileSystem().getFile(fileName, data);
-        ArrayList<StringUtils> dataList = StringUtils.getBeforeChar(data.data, '\n');
+        ArrayList<myString> dataList = myString.getBeforeChar(data.data, '\n');
 
-        for(StringUtils d: dataList) {
+        for(myString d: dataList) {
 
             Recipe newRecipe = new Recipe();
-            newRecipe.type = StringUtils.getField(d, "type");
+            newRecipe.type = myString.getField(d, "type");
             String key = "";
 
             for(int z = 0; z < 9; z++) {
 
-                String full = StringUtils.getField(d, StringUtils.toString(z));
+                String full = myString.getField(d, myString.toString(z));
                 String[] fields = full.split(",");
 
                 String type = "";
                 int amount = 0;
                 if(fields.length == 2) {
                     type = fields[0];
-                    amount = StringUtils.stringToInt(fields[1]);
+                    amount = myString.stringToInt(fields[1]);
                 }
 
                 key += type + ".";

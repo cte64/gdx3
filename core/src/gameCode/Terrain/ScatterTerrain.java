@@ -5,7 +5,7 @@ import com.mygdx.game.Engine;
 import gameCode.Infrastructure.World;
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Pixel;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 
 import java.util.ArrayList;
 
@@ -148,13 +148,13 @@ public class ScatterTerrain {
         for (int yChunk = 0; yChunk < World.get().getNumChunks(); yChunk++) {
         for (int xChunk = 0; xChunk < World.get().getNumChunks(); xChunk++) {
 
-            StringUtils data = new StringUtils("");
-            StringUtils fileName = new StringUtils("[type: chunk][xChunk: ][yChunk: ]");
-            fileName.setField(fileName, "xChunk", StringUtils.toString(xChunk));
-            fileName.setField(fileName, "yChunk", StringUtils.toString(yChunk));
+            myString data = new myString("");
+            myString fileName = new myString("[type: chunk][xChunk: ][yChunk: ]");
+            fileName.setField(fileName, "xChunk", myString.toString(xChunk));
+            fileName.setField(fileName, "yChunk", myString.toString(yChunk));
             Engine.get().getFileSystem().getFile(fileName, data);
 
-            ArrayList<StringUtils> tiles = StringUtils.getBeforeChar(data.data, '\n');
+            ArrayList<myString> tiles = myString.getBeforeChar(data.data, '\n');
 
             int index = (yChunk * World.get().getNumChunks()) + xChunk;
             index = MathUtils.clamp(index, 0, chunkGrid.size() - 1);
@@ -185,9 +185,9 @@ public class ScatterTerrain {
                 }
             }
 
-            StringUtils updatedChunk = new StringUtils("");
+            myString updatedChunk = new myString("");
             for (int x = 0; x < tiles.size(); x++) { updatedChunk.data += tiles.get(x).data; updatedChunk.data += "\n"; }
-            StringUtils name = new StringUtils("[type: chunk][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
+            myString name = new myString("[type: chunk][xChunk: " + myString.toString(xChunk) + "][yChunk: " + myString.toString(yChunk) + "]");
             Engine.get().getFileSystem().setFile(name, updatedChunk);
         }}
     }

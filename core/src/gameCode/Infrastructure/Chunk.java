@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import gameCode.Utilities.MathUtils;
 import gameCode.Utilities.Pixel;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 import gameCode.Utilities.myPair;
 
 public class Chunk {
@@ -16,19 +16,19 @@ public class Chunk {
 
     private class Tile {
         public Pixmap image;
-        public StringUtils terrainData;
+        public myString terrainData;
         public boolean active;
         public String tileName;
         public Tile(int index) {
             image = new Pixmap(World.get().tileSize, World.get().tileSize, Pixmap.Format.RGB888);
-            terrainData = new StringUtils("");
+            terrainData = new myString("");
             active = false;
 
-            StringUtils newName = new StringUtils("[type: tile][chunkX: ][chunkY: ][tileX: ][tileY: ]");
-            StringUtils.setField(newName, "chunkX", StringUtils.getField(chunkName, "chunkX"));
-            StringUtils.setField(newName, "chunkY", StringUtils.getField(chunkName, "chunkY"));
-            StringUtils.setField(newName, "tileX", StringUtils.toString(index % World.get().tilesPerChunk));
-            StringUtils.setField(newName, "tileY", StringUtils.toString(index / World.get().tilesPerChunk));
+            myString newName = new myString("[type: tile][chunkX: ][chunkY: ][tileX: ][tileY: ]");
+            myString.setField(newName, "chunkX", myString.getField(chunkName, "chunkX"));
+            myString.setField(newName, "chunkY", myString.getField(chunkName, "chunkY"));
+            myString.setField(newName, "tileX", myString.toString(index % World.get().tilesPerChunk));
+            myString.setField(newName, "tileY", myString.toString(index / World.get().tilesPerChunk));
             tileName = newName.data;
         }
     }
@@ -36,13 +36,13 @@ public class Chunk {
     private ArrayList<Tile> tiles;
 
     public Chunk(myPair<Integer, Integer> key) {
-        chunkName = "[type: chunk][chunkX: " + StringUtils.toString(key.first) + "][chunkY: " + StringUtils.toString(key.second) + "]";
+        chunkName = "[type: chunk][chunkX: " + myString.toString(key.first) + "][chunkY: " + myString.toString(key.second) + "]";
         tiles = new ArrayList<Tile>();
     }
 
     //Setters =============================================================================================
-    public void setTerrain(StringUtils terrainData) {
-        ArrayList<StringUtils> tileStrArr = StringUtils.getBeforeChar(terrainData.data, '\n');
+    public void setTerrain(myString terrainData) {
+        ArrayList<myString> tileStrArr = myString.getBeforeChar(terrainData.data, '\n');
         for(int index = 0; index < tileStrArr.size(); index++) {
             Tile newTile = new Tile(index);
             newTile.terrainData = tileStrArr.get(index);
@@ -79,8 +79,8 @@ public class Chunk {
         index = MathUtils.clamp(index, 0, tiles.size() - 1);
         return tiles.get(index).tileName;
     }
-    public StringUtils getSerializedTerrain() {
-        StringUtils retVal = new StringUtils("");
+    public myString getSerializedTerrain() {
+        myString retVal = new myString("");
         for(Tile tile: tiles) {
             retVal.data += tile.terrainData.data + "\n";
         }

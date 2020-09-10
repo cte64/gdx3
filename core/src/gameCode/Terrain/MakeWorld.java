@@ -24,7 +24,7 @@ public class MakeWorld {
 
     String directory;
     int numChunks;
-    ArrayList<StringUtils> messages;
+    ArrayList<myString> messages;
 
 
     private void cleanUpRims() {
@@ -53,11 +53,11 @@ public class MakeWorld {
             for (int yChunk = 0; yChunk < World.get().getNumChunks(); yChunk++) {
             for (int xChunk = 0; xChunk < World.get().getNumChunks(); xChunk++) {
 
-                StringUtils data = new StringUtils("");
+                myString data = new myString("");
                 String fileName = "[type: terrain][xChunk: ][yChunk: ]";
-                StringUtils.setField(fileName, "xChunk", StringUtils.toString(xChunk));
-                StringUtils.setField(fileName, "yChunk", StringUtils.toString(yChunk));
-                Engine.get().getFileSystem().getFile(new StringUtils(fileName), data);
+                myString.setField(fileName, "xChunk", myString.toString(xChunk));
+                myString.setField(fileName, "yChunk", myString.toString(yChunk));
+                Engine.get().getFileSystem().getFile(new myString(fileName), data);
                 String[] tiles = data.data.split("\n");
 
                 int index = (yChunk * World.get().getNumChunks()) + xChunk;
@@ -176,13 +176,13 @@ public class MakeWorld {
         for(int yChunk = 0; yChunk < World.get().getNumChunks(); yChunk++) {
         for(int xChunk = 0; xChunk < World.get().getNumChunks(); xChunk++) {
 
-            StringUtils data = new StringUtils("");
-            StringUtils fileName = new StringUtils("[type: chunk][xChunk: ][yChunk: ]");
-            StringUtils.setField(fileName, "xChunk", StringUtils.toString(xChunk));
-            StringUtils.setField(fileName, "yChunk", StringUtils.toString(yChunk));
+            myString data = new myString("");
+            myString fileName = new myString("[type: chunk][xChunk: ][yChunk: ]");
+            myString.setField(fileName, "xChunk", myString.toString(xChunk));
+            myString.setField(fileName, "yChunk", myString.toString(yChunk));
             Engine.get().getFileSystem().getFile(fileName, data);
 
-            ArrayList<StringUtils> tiles = StringUtils.getBeforeChar(data.data, '\n');
+            ArrayList<myString> tiles = myString.getBeforeChar(data.data, '\n');
 
             for(int yTile = 0; yTile < World.get().tilesPerChunk; yTile++) {
             for(int xTile = 0; xTile < World.get().tilesPerChunk; xTile++) {
@@ -201,7 +201,7 @@ public class MakeWorld {
                 int highestPoint = lowestPoint + stretch;
                 int chunkPoint = lowestPoint - 60;
 
-                if( mTL < chunkPoint && mTR < chunkPoint && mBL < chunkPoint && mBR < chunkPoint ) { tiles.set(tileIndex, new StringUtils("" + terrainType)); }
+                if( mTL < chunkPoint && mTR < chunkPoint && mBL < chunkPoint && mBR < chunkPoint ) { tiles.set(tileIndex, new myString("" + terrainType)); }
 
                 if( (mTL <= highestPoint && mTL >= chunkPoint) || (mTR <= highestPoint && mTR >= chunkPoint) ||
                          (mBL <= highestPoint && mBL >= chunkPoint) || (mBR <= highestPoint && mBR >= chunkPoint)) {
@@ -238,14 +238,14 @@ public class MakeWorld {
                 tiles.get(tileIndex).data += "\n";
             }}
 
-            StringUtils updatedChunk = new StringUtils("");
+            myString updatedChunk = new myString("");
             for(int x = 0; x < tiles.size(); x++) { updatedChunk.data += tiles.get(x).data; }
-            StringUtils name = new StringUtils("[type: chunk][xChunk: " + StringUtils.toString(xChunk) + "][yChunk: " + StringUtils.toString(yChunk) + "]");
+            myString name = new myString("[type: chunk][xChunk: " + myString.toString(xChunk) + "][yChunk: " + myString.toString(yChunk) + "]");
             Engine.get().getFileSystem().setFile(name, updatedChunk);
         }}
     }
 
-    public MakeWorld(String newDirectory, int numChunks, int tRadius, ArrayList<StringUtils> loadingMessages) {
+    public MakeWorld(String newDirectory, int numChunks, int tRadius, ArrayList<myString> loadingMessages) {
         directory = newDirectory;
         this.numChunks = numChunks;
         worldRadius = tRadius;
@@ -257,24 +257,24 @@ public class MakeWorld {
         //INITIALIZE WORLD ==========================================
         World.get().createWorld(numChunks);
         Engine.get().getFileSystem().createGameDirectory(directory);
-        messages.add( new StringUtils("World Initialized"));
+        messages.add( new myString("World Initialized"));
 
         //INITIALIZE RIMS ============================================
         rims = new HashMap< String, ArrayList<Vector2> >();
-        messages.add( new StringUtils("Rims Initialized"));
+        messages.add( new myString("Rims Initialized"));
 
         //FILL METADATA FILE ========================================
-        StringUtils data = new StringUtils("[worldName: ][numChunks: ][dateCreated: ]");
-        data.setField(data, "numChunks", StringUtils.toString(numChunks));
+        myString data = new myString("[worldName: ][numChunks: ][dateCreated: ]");
+        data.setField(data, "numChunks", myString.toString(numChunks));
         data.setField(data, "worldName", directory);
         data.setField(data, "dateCreated", Misc.getDate());
-        Engine.get().getFileSystem().setFile(new StringUtils("[type: metadata]"), data);
-        messages.add( new StringUtils("MetaData File Created"));
+        Engine.get().getFileSystem().setFile(new myString("[type: metadata]"), data);
+        messages.add( new myString("MetaData File Created"));
 
         //CREATE THE MAIN CHARACTER =================================
-        StringUtils heroData = new StringUtils("[type: hero][subType: testHero][details: ][xPos: 2400][yPos: 2400][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]");
-        Engine.get().getFileSystem().setFile(new StringUtils("[type: hero]"), heroData);
-        messages.add( new StringUtils("Created Hero"));
+        myString heroData = new myString("[type: hero][subType: testHero][details: ][xPos: 2400][yPos: 2400][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]");
+        Engine.get().getFileSystem().setFile(new myString("[type: hero]"), heroData);
+        messages.add( new myString("Created Hero"));
 
         /*
         //MAKE THE SOLID LAYERS =====================================
@@ -312,6 +312,6 @@ public class MakeWorld {
         fillTerrain(newTotal, rimName);
     }
 
-    void makeMap(String directory, int numChunks, int tRadius, StringUtils message, StringUtils loadingBar) {}
+    void makeMap(String directory, int numChunks, int tRadius, myString message, myString loadingBar) {}
 
 }

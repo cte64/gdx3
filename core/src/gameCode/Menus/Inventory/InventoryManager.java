@@ -1,12 +1,11 @@
 package gameCode.Menus.Inventory;
 import com.mygdx.game.Engine;
-import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.*;
 import gameCode.Menus.MenuManager;
 import gameCode.Menus.ScrollList;
 import gameCode.Menus.TextComponent;
 import gameCode.Utilities.MathUtils;
-import gameCode.Utilities.StringUtils;
+import gameCode.Utilities.myString;
 import gameCode.Utilities.myPair;
 import java.util.ArrayList;
 
@@ -82,12 +81,12 @@ public class InventoryManager extends Component {
         scrollList.scrollBar = scrollBar;
 
         //Unique Ids ==============================================================
-        for(int x = 0; x < 100; x++) { uniqueIds.add(StringUtils.toString(x)); }
+        for(int x = 0; x < 100; x++) { uniqueIds.add(myString.toString(x)); }
 
         //inventory selection part ================================================
         for(int x = 0; x < currentNumItems; x++) {
-            StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryCurrentTray][index: ]");
-            StringUtils.setField(nodeName, "index", StringUtils.toString(x));
+            myString nodeName = new myString("[type: inventory][subType: inventoryCurrentTray][index: ]");
+            myString.setField(nodeName, "index", myString.toString(x));
 
             int xPos = 2 + x*(itemWidth + padding);
             int yPos = 2;
@@ -100,8 +99,8 @@ public class InventoryManager extends Component {
 
         //Inventory Items  ========================================================
         for(int x = 0; x < maxInvenItems; x++) {
-            StringUtils nodeName = new StringUtils("[type: inventory][subType: inventoryHidden][index: ]");
-            StringUtils.setField(nodeName, "index", StringUtils.toString(x));
+            myString nodeName = new myString("[type: inventory][subType: inventoryHidden][index: ]");
+            myString.setField(nodeName, "index", myString.toString(x));
 
             int xPos = scrollList.left + x*(itemWidth + padding);
             int yPos = scrollList.top;
@@ -116,8 +115,8 @@ public class InventoryManager extends Component {
 
         //Crafting Trays ==========================================================
         for(int x = 0; x < craftingTray.length; x++) {
-            StringUtils nodeName = new StringUtils("[type: inventory][subType: craftingTray][index: ]");
-            StringUtils.setField(nodeName, "index", StringUtils.toString(x));
+            myString nodeName = new myString("[type: inventory][subType: craftingTray][index: ]");
+            myString.setField(nodeName, "index", myString.toString(x));
 
             int xPos = 389 + (x % 3)*(itemWidth + padding);
             int yPos = 25 + padding + (x / 3)*(itemWidth + padding);
@@ -131,8 +130,8 @@ public class InventoryManager extends Component {
 
         //Equipped Trays ==========================================================
         for(int x = 0; x < equippedItems.length; x++) {
-            StringUtils nodeName = new StringUtils("[type: inventory][subType: equippedTrays][index: ]");
-            StringUtils.setField(nodeName, "index", StringUtils.toString(x));
+            myString nodeName = new myString("[type: inventory][subType: equippedTrays][index: ]");
+            myString.setField(nodeName, "index", myString.toString(x));
 
             int xPos = 0;
             int yPos = x*(itemWidth + padding);;
@@ -163,9 +162,9 @@ public class InventoryManager extends Component {
     //Item Modifier ================================================================
     public String createItem(String name) {
 
-        StringUtils newName = new StringUtils("[type: inventoryItem][subType: ][id: ]");
-        StringUtils.setField(newName, "subType", name);
-        StringUtils.setField(newName, "id", uniqueIds.get(0));
+        myString newName = new myString("[type: inventoryItem][subType: ][id: ]");
+        myString.setField(newName, "subType", name);
+        myString.setField(newName, "id", uniqueIds.get(0));
         uniqueIds.remove(0);
 
         //I will find a more elegant solution for this later
@@ -211,7 +210,7 @@ public class InventoryManager extends Component {
          */
         if(ps.equals("current")) {
             if(psi >= 0 && psi < currentNumItems) {
-                String slotType = StringUtils.getField(currentItems[psi].item, "subType");
+                String slotType = myString.getField(currentItems[psi].item, "subType");
                 if(slotType.equals("")) {
                     String newName = createItem(type);
                     currentItems[psi].item = newName;
@@ -231,7 +230,7 @@ public class InventoryManager extends Component {
             }
             if(psi == -1) {
                 for(ItemNode node: currentItems) {
-                    String nodeType = StringUtils.getField(node.item, "subType");
+                    String nodeType = myString.getField(node.item, "subType");
                     if(nodeType.equals(type)) {
                         int newAmount = node.getItemCount() + amount;
                         setItemCount(node, newAmount);
@@ -266,7 +265,7 @@ public class InventoryManager extends Component {
          */
         if(ps.equals("inventory")) {
             if(psi >= 0 && psi < inventoryItems.size()) {
-                String invenType = StringUtils.getField(inventoryItems.get(psi).item, "subType");
+                String invenType = myString.getField(inventoryItems.get(psi).item, "subType");
                 if(invenType.equals("")) {
                     String newName = createItem(type);
                     inventoryItems.get(psi).item = newName;
@@ -286,7 +285,7 @@ public class InventoryManager extends Component {
             }
             if(psi == -1) {
                 for(ItemNode node: inventoryItems) {
-                    String nodeType = StringUtils.getField(node.item, "subType");
+                    String nodeType = myString.getField(node.item, "subType");
                     if(nodeType.equals(type)) {
                         int newAmount = node.getItemCount() + amount;
                         setItemCount(node, newAmount);
@@ -314,7 +313,7 @@ public class InventoryManager extends Component {
 
         if(newAmount > 0) setItemCount(node, newAmount);
         else {
-            uniqueIds.add(StringUtils.getField(node.item, "id"));
+            uniqueIds.add(myString.getField(node.item, "id"));
             menu.removeItem(node.item);
             node.item = "";
         }
@@ -325,7 +324,7 @@ public class InventoryManager extends Component {
         Entity ent = menu.getEnt(node.item);
         if(ent == null) return;
         TextComponent tc = (TextComponent) ent.getComponent("text");
-        if(tc != null) tc.setText(StringUtils.toString(count));
+        if(tc != null) tc.setText(myString.toString(count));
     }
 
 
@@ -349,12 +348,12 @@ public class InventoryManager extends Component {
     private void grabCraftedItem() {
 
         if(craftedItem.item == "") return;
-        String type = StringUtils.getField(craftedItem.item, "subType");
+        String type = myString.getField(craftedItem.item, "subType");
         int amount = craftedItem.getItemCount();
 
         ArrayList<myPair<String, Integer>> toTest = new ArrayList<>();
         for(ItemNode node: craftingTray) {
-            String subType = StringUtils.getField(node.item, "subType");
+            String subType = myString.getField(node.item, "subType");
             myPair item = new myPair(subType, node.getItemCount());
             toTest.add(item);
         }
@@ -376,7 +375,7 @@ public class InventoryManager extends Component {
 
         ArrayList<myPair<String, Integer>> toTest = new ArrayList<>();
         for(ItemNode node: craftingTray) {
-            String subType = StringUtils.getField(node.item, "subType");
+            String subType = myString.getField(node.item, "subType");
             myPair item = new myPair(subType, node.getItemCount());
             toTest.add(item);
         }
@@ -391,13 +390,13 @@ public class InventoryManager extends Component {
     }
 
     private void rightClickAction(ItemNode node) {
-        if(StringUtils.compareFields(node.item, clipboard.item, "subType") ) {
+        if(myString.compareFields(node.item, clipboard.item, "subType") ) {
             int newAmount = node.getItemCount() + 1;
             setItemCount(node, newAmount);
             subtractItem(clipboard, 1);
         }
         if(node.item.equals("")) {
-            String newItem = createItem(StringUtils.getField(clipboard.item, "subType"));
+            String newItem = createItem(myString.getField(clipboard.item, "subType"));
             node.item = newItem;
             menu.setParent(newItem, node.tile);
             setItemCount(node,1);
@@ -406,7 +405,7 @@ public class InventoryManager extends Component {
     }
 
     private void leftClickAction(ItemNode node) {
-        if(StringUtils.compareFields(node.item, clipboard.item, "subType")) {
+        if(myString.compareFields(node.item, clipboard.item, "subType")) {
             int newAmount = node.getItemCount() + clipboard.getItemCount();
             setItemCount(node, newAmount);
             subtractItem(clipboard, clipboard.getItemCount());
@@ -474,7 +473,7 @@ public class InventoryManager extends Component {
         Entity ent = menu.getEnt(background);
         if(ent == null) return;
 
-        String worldState = StringUtils.getField(State.getState(), "action");
+        String worldState = myString.getField(State.getState(), "action");
         if(!worldState.equals("paused")) {
             if(Engine.get().getInput().isKeyPressed("i") && !iToggle) iToggle = true;
             if(!Engine.get().getInput().isKeyPressed("i") && iToggle) {
