@@ -330,7 +330,7 @@ public class myWorld {
                         ent.bitMapX = tileXAbs;
                         ent.bitMapY = tileYAbs;
                         ent.deleteRange = -1;
-                        Engine.get().getGraphics().addBody(ent);
+                        Engine.get().getPhysics().addBody(ent);
                         entitiesToBeAdded.add(ent);
                     }
 

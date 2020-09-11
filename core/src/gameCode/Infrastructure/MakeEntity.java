@@ -45,7 +45,7 @@ public class MakeEntity {
 
             //ent.addComponent(new PlaceTerrain());
             //ent.addComponent(new InventoryManager());
-            Engine.get().getGraphics().addBody(ent);
+            Engine.get().getPhysics().addBody(ent);
             myWorld.get().setCamera(ent);
             myWorld.get().addSiftingFrame(ent, 0, 0);
         }

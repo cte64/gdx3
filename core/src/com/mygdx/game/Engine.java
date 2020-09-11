@@ -10,6 +10,7 @@ public class Engine {
         input = new InputAL();
         assets = new Assets();
         fileSystem = new FileSystem();
+        physics = new Physics();
     }
 
     public static Engine get() {
@@ -23,10 +24,12 @@ public class Engine {
     InputAL input;
     Assets assets;
     FileSystem fileSystem;
+    Physics physics;
 
     //getters ====================================================================================
     public Graphics getGraphics() { return graphics; }
     public InputAL getInput() { return input; }
     public Assets getAssets() { return assets; }
     public FileSystem getFileSystem() { return fileSystem; }
+    public Physics getPhysics() { return physics; }
 }

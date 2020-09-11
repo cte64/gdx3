@@ -22,52 +22,7 @@ public class Graphics implements Disposable {
     private ShapeRenderer shapeRenderer;
     private SpriteBatch batch;
     private SpriteBatch hudBatch;
-
-
-    //World stuff ==============================================================================================
-    public World b2world;
     private Box2DDebugRenderer b2debug;
-
-
-    private void initPhysics() {
-        if (b2world != null) {
-            b2world.dispose();
-        }
-        b2world = new World(new Vector2(0, 9.81f), true);
-        b2debug = new Box2DDebugRenderer();
-        // Rocks
-    }
-    
-    public void addBody(Entity ent) {
-
-
-
-
-        BodyDef bodyDef = new BodyDef();
-
-        if(ent.entityName.equals("hero"))
-            bodyDef.type = BodyDef.BodyType.DynamicBody;
-        else
-            bodyDef.type = BodyDef.BodyType.StaticBody;
-
-        bodyDef.position.set(ent.x_pos, ent.y_pos);
-        Body body = b2world.createBody(bodyDef);
-
-
-
-        ent.body = body;
-        PolygonShape polygonShape = new PolygonShape();
-
-        Vector2 origin = new Vector2();
-        origin.x = ent.getWidth() / 2.0f;
-        origin.y = ent.getHeight() / 2.0f;
-        polygonShape.setAsBox(ent.getWidth() / 2.0f, ent.getHeight() / 2.0f, origin, 0);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = polygonShape;
-        body.createFixture(fixtureDef);
-        polygonShape.dispose();
-    }
 
     //this is for sorting them by zPos
     public class sorter implements Comparator<Entity> {
@@ -80,9 +35,6 @@ public class Graphics implements Disposable {
     }
 
     public void init() {
-
-
-
 
         //Fonts ==================================================================================
         cameraHelper = new CameraHelper();
@@ -98,12 +50,8 @@ public class Graphics implements Disposable {
         batch = new SpriteBatch();
         hudBatch = new SpriteBatch();
 
-
-
-        initPhysics();
-
-
-
+        //set up the box2d debug renderer ========================================================
+        b2debug = new Box2DDebugRenderer();
     }
 
     private void setCamera1() {
@@ -167,6 +115,7 @@ public class Graphics implements Disposable {
 
     public void update(float deltaTime) {
 
+
         setCamera1();
         Collections.sort(myWorld.get().getEntByZIndex(), new sorter());
         cameraHelper.update(deltaTime);
@@ -178,17 +127,25 @@ public class Graphics implements Disposable {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-
-
-
-
-
         batch.begin();
             for(Entity ent: myWorld.get().getEntByZIndex()) {
                 if(ent.drawMode == "hud") continue;
 
-                if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName))
-                    batch.draw(Engine.get().getAssets().spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos, ent.getWidth(), ent.getHeight());
+                if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName)) {
+
+
+
+
+
+
+
+                    batch.draw(Engine.get().getAssets().spriteMap.get(ent.spriteName),
+                               ent.x_pos,
+                               ent.y_pos,
+                               ent.getWidth(),
+                               ent.getHeight());
+
+                }
 
                 /*
                 ArrayList<Component> textComps = ent.getComponents("text");
@@ -232,8 +189,8 @@ public class Graphics implements Disposable {
         hudBatch.end();
         drawOutlines();
 
-        b2world.step(myWorld.get().getDeltaTime(), 100, 3);
-        b2debug.render(b2world, camera.combined);
+        b2debug.render(Engine.get().getPhysics().getb2World(), camera.combined);
+
     }
 
     public void resize(int width, int height) {

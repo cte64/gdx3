@@ -37,6 +37,9 @@ public class myGame extends ApplicationAdapter {
 		for(Entity ent: myWorld.get().getEntList()) { ent.updateType("text"); }
 		for(Entity ent: myWorld.get().getEntList()) { ent.updateBody(); }
 
+
+		Engine.get().getPhysics().update();
+
 		Engine.get().getGraphics().update(Gdx.graphics.getDeltaTime());
 
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
