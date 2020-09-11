@@ -19,7 +19,7 @@ public class MenuManager {
 
     public void removeItem(String name) {
         if(!items.containsKey(name)) return;
-        for(Tree<MenuItem> item: items.get(name).getTraverseArr()) { World.get().entitiesToBeDeleted.add( item.value.ent ); }
+        for(Tree<MenuItem> item: items.get(name).getTraverseArr()) { myWorld.get().entitiesToBeDeleted.add( item.value.ent ); }
         items.remove(name);
     }
 
@@ -34,8 +34,8 @@ public class MenuManager {
         //get the coordinates of the parent element====================================================
         int parentX = 0;
         int parentY = 0;
-        int parentW = World.get().getViewPortWidth();
-        int parentH = World.get().getViewPortHeight();
+        int parentW = myWorld.get().getViewPortWidth();
+        int parentH = myWorld.get().getViewPortHeight();
 
         Entity parentEnt = null;
         if(item.parent != null) parentEnt = ((MenuItem)item.parent.value).ent;
@@ -168,7 +168,7 @@ public class MenuManager {
             if(ampStr != "") amp = myString.stringToFloat(ampStr);
             if(freqStr != "") freq = myString.stringToFloat(freqStr);
 
-            item.tick += World.get().getDeltaTime();
+            item.tick += myWorld.get().getDeltaTime();
             double arg = item.tick * 2.0f * freq * myMath.PI;
             float scale = (float)Math.sin(arg);
             float newScale = 1.0f + scale * amp;
@@ -199,7 +199,7 @@ public class MenuManager {
         newItem.ent.height = Engine.get().getAssets().getSpriteDimensions(sprNm).second;
         newItem.ent.z_pos = z;
         newItem.ent.deleteRange = -2;
-        World.get().entitiesToBeAdded.add(newItem.ent);
+        myWorld.get().entitiesToBeAdded.add(newItem.ent);
 
         Tree<MenuItem> parentTree = null;
         if(items.containsKey(parent)) parentTree = items.get(parent);

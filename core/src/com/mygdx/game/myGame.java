@@ -30,16 +30,17 @@ public class myGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 
-		for(Entity ent: World.get().getEntList()) { ent.updateType("input"); }
+		for(Entity ent: myWorld.get().getEntList()) { ent.updateType("input"); }
 		Collision.update();
 
-		for(Entity ent: World.get().getEntList()) { ent.updateType("logic"); }
-		for(Entity ent: World.get().getEntList()) { ent.updateType("text"); }
+		for(Entity ent: myWorld.get().getEntList()) { ent.updateType("logic"); }
+		for(Entity ent: myWorld.get().getEntList()) { ent.updateType("text"); }
+		for(Entity ent: myWorld.get().getEntList()) { ent.updateBody(); }
 
 		Engine.get().getGraphics().update(Gdx.graphics.getDeltaTime());
 
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
-		World.get().setDeltaTime(Gdx.graphics.getRawDeltaTime());
+		myWorld.get().setDeltaTime(Gdx.graphics.getRawDeltaTime());
 		Engine.get().getInput().reset();
 
 		Engine.get().getGraphics().update(Gdx.graphics.getDeltaTime());

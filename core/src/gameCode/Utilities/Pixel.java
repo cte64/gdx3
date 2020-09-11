@@ -2,7 +2,7 @@ package gameCode.Utilities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
-import gameCode.Infrastructure.World;
+import gameCode.Infrastructure.myWorld;
 
 public class Pixel {
 
@@ -73,55 +73,55 @@ public class Pixel {
 
     public static void insertPixel(myString tiles, int xPixel, int yPixel, char terrainChar) {
 
-        int tSize = World.get().tileSize * World.get().tileSize;
+        int tSize = myWorld.get().tileSize * myWorld.get().tileSize;
         yPixel = 59 - yPixel;
 
-        if(tiles.data.length() == tSize) tiles.replaceIndex(yPixel*World.get().tileSize + xPixel, terrainChar);
+        if(tiles.data.length() == tSize) tiles.replaceIndex(yPixel* myWorld.get().tileSize + xPixel, terrainChar);
 
         if( tiles.data.length() == 1) {
             char firstPixel = tiles.data.charAt(0);
             tiles.data = "";
             for(int x = 0; x<tSize; x++) { tiles.data += firstPixel; }
-            tiles.replaceIndex(yPixel*World.get().tileSize + xPixel, terrainChar);
+            tiles.replaceIndex(yPixel* myWorld.get().tileSize + xPixel, terrainChar);
         }
 
         if( tiles.data.length() == 0) {
             char emptyPixel = getCharFromType("empty");
             tiles.data = "";
             for(int x = 0; x<tSize; x++) { tiles.data += emptyPixel; }
-            tiles.replaceIndex(yPixel*World.get().tileSize + xPixel, terrainChar);
+            tiles.replaceIndex(yPixel* myWorld.get().tileSize + xPixel, terrainChar);
         }
     }
 
     public static Pixmap stringToImage(myString data) {
 
-        int pixPerTile = World.get().tileSize * World.get().tileSize;
-        Pixmap image = new Pixmap(World.get().tileSize, World.get().tileSize, Pixmap.Format.RGB888);
+        int pixPerTile = myWorld.get().tileSize * myWorld.get().tileSize;
+        Pixmap image = new Pixmap(myWorld.get().tileSize, myWorld.get().tileSize, Pixmap.Format.RGB888);
 
 
         //System.out.println(data.data.length());
 
         if(data.data.length() == 0) {
             int color = 16777215;
-            for(int y = 0; y < World.get().tileSize; y++) {
-            for(int x = 0; x < World.get().tileSize; x++) {
+            for(int y = 0; y < myWorld.get().tileSize; y++) {
+            for(int x = 0; x < myWorld.get().tileSize; x++) {
                 image.drawPixel(x, y, color);
             }}
         }
 
         else if(data.data.length() == 1) {
 
-            for(int y = 0; y < World.get().tileSize; y++) {
-            for(int x = 0; x < World.get().tileSize; x++) {
+            for(int y = 0; y < myWorld.get().tileSize; y++) {
+            for(int x = 0; x < myWorld.get().tileSize; x++) {
                 int color = charToColor(data.data.charAt(0), x, y);
                 image.drawPixel(x, y, color);
             }}
         }
 
         else if(data.data.length() == pixPerTile) {
-            for(int y = 0; y < World.get().tileSize; y++) {
-            for(int x = 0; x < World.get().tileSize; x++) {
-                int index = (y * World.get().tileSize) + x;
+            for(int y = 0; y < myWorld.get().tileSize; y++) {
+            for(int x = 0; x < myWorld.get().tileSize; x++) {
+                int index = (y * myWorld.get().tileSize) + x;
                 index = myMath.clamp(index, 0, pixPerTile);
                 int color = charToColor( data.data.charAt(index), x, y);
                 image.drawPixel(x, y, color);

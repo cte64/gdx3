@@ -1,7 +1,6 @@
 package gameCode.Living;
 
 import com.mygdx.game.Engine;
-import com.mygdx.game.InputAL;
 import gameCode.Infrastructure.*;
 import gameCode.Utilities.Timer;
 import gameCode.Utilities.myPair;
@@ -23,7 +22,7 @@ public class PlaceTerrain extends Component {
 
 
         if(Engine.get().getInput().isMousePressed("mouse left")) {
-            timer.update(World.get().getDeltaTime());
+            timer.update(myWorld.get().getDeltaTime());
             if(timer.getTime("place") > 0.6f) {
                 timer.resetTimer("place");
 

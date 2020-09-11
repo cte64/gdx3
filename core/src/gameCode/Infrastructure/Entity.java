@@ -1,4 +1,5 @@
 package gameCode.Infrastructure;
+import com.badlogic.gdx.physics.box2d.Body;
 import gameCode.Utilities.myMath;
 import gameCode.Utilities.myPair;
 
@@ -11,19 +12,28 @@ public class Entity {
     public int bitMapX, bitMapY, z_pos, deleteRange, spriteOffsetX, spriteOffsetY;// -2 = false; -1 = delete at edge, > 0 =  delete out of range
     public boolean moveable, drawable, markForDeletion, flip, cameraBound;
     public String spriteName, drawMode, entityName;
-
     public myPair<Float, Float> scale;
-
-    public float shade;
+    public Body body;
 
     ArrayList<Component> components;
-
     public float width;
     public float height;
 
+    public void updateBody() {
+        if(body == null) {
+            x_pos += velAng;
+            y_pos += velMag;
+        }
+
+        else {
+            x_pos = body.getPosition().x;
+            y_pos = body.getPosition().y;
+        }
+    }
+
     public Entity() {
+        body = null;
         scale = new myPair(1.0f, 1.0f);
-        shade = 0.5f;
         x_pos = 0.0f;
         y_pos = 0.0f;
         angle = 0.0f;
@@ -58,16 +68,6 @@ public class Entity {
             if(comp.type == type)
                 comp.update(this);
         }
-
-
-        float center = World.get().getNumPixels()/2;
-
-        float dist = myMath.mag(center, center, x_pos, y_pos);
-
-        shade = ((dist - 1500) / 1500.0f);
-
-        shade = myMath.clamp(shade, 0.0f, 1.0f);
-
     }
 
     public Component getComponent(String type) {
@@ -100,6 +100,8 @@ public class Entity {
     public void deleteComponent(Component component) {
         components.remove(component);
     }
+
+
 
     /*
     public float getXVelocity() {

@@ -39,16 +39,16 @@ public class Collision {
             Engine.get().getFileSystem().update();
             //System.out.println("file thing");
 
-            World.get().setEdge();
+            myWorld.get().setEdge();
             //System.out.println("edge");
 
-            World.get().cleanUp();
+            myWorld.get().cleanUp();
             //System.out.println("clean up");
 
-            World.get().loadEntities();
+            myWorld.get().loadEntities();
             //System.out.println("loaded up");
 
-            World.get().update();
+            myWorld.get().update();
             //System.out.println("updated");
             /*
 

@@ -1,8 +1,7 @@
 package gameCode.Menus;
 
 import com.mygdx.game.Engine;
-import com.mygdx.game.InputAL;
-import gameCode.Infrastructure.World;
+import gameCode.Infrastructure.myWorld;
 import gameCode.Utilities.Timer;
 
 public class TextInput {
@@ -63,7 +62,7 @@ public class TextInput {
         }
 
         //blinker
-        timer.update(World.get().getDeltaTime());
+        timer.update(myWorld.get().getDeltaTime());
         if(timer.getTime("blinker") > blinkTime) {
             timer.resetTimer("blinker");
             blinkState = !blinkState;

@@ -23,9 +23,9 @@ public class LoadGame extends Component {
         public String name;
         public listItem() {}
         public void delete() {
-            World.get().entitiesToBeDeleted.add(menu.getEnt(list));
-            World.get().entitiesToBeDeleted.add(menu.getEnt(play));
-            World.get().entitiesToBeDeleted.add(menu.getEnt(delete));
+            myWorld.get().entitiesToBeDeleted.add(menu.getEnt(list));
+            myWorld.get().entitiesToBeDeleted.add(menu.getEnt(play));
+            myWorld.get().entitiesToBeDeleted.add(menu.getEnt(delete));
         }
     }
 
@@ -114,7 +114,7 @@ public class LoadGame extends Component {
         ent.drawMode = "hud";
         ent.deleteRange = -2;
         ent.addComponent(new DeleteGameMenu(directory, this));
-        World.get().entitiesToBeAdded.add(ent);
+        myWorld.get().entitiesToBeAdded.add(ent);
         paused = true;
     }
 

@@ -2,7 +2,7 @@ package gameCode.Terrain;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Engine;
-import gameCode.Infrastructure.World;
+import gameCode.Infrastructure.myWorld;
 import gameCode.Utilities.*;
 
 import java.util.ArrayList;
@@ -36,22 +36,22 @@ public class MakeWorld {
 
             ArrayList< ArrayList<Vector2> > chunkGrid = new ArrayList< ArrayList<Vector2> >();
 
-            for (int x = 0; x < World.get().getNumChunks() * World.get().getNumChunks(); x++)
+            for (int x = 0; x < myWorld.get().getNumChunks() * myWorld.get().getNumChunks(); x++)
                 chunkGrid.add(   new ArrayList<Vector2>()   );
 
             for (Vector2 coord : rim.getValue()) {
 
-                int xChunk = (int)((coord.x * World.get().getNumChunks()) / World.get().getNumPixels());
-                int yChunk = (int)((coord.y * World.get().getNumChunks()) / World.get().getNumPixels());
+                int xChunk = (int)((coord.x * myWorld.get().getNumChunks()) / myWorld.get().getNumPixels());
+                int yChunk = (int)((coord.y * myWorld.get().getNumChunks()) / myWorld.get().getNumPixels());
 
-                int index = (yChunk * World.get().getNumChunks()) + xChunk;
+                int index = (yChunk * myWorld.get().getNumChunks()) + xChunk;
                 index = myMath.clamp(index, 0, chunkGrid.size() - 1);
                 chunkGrid.get(index).add(coord);
             }
 
             //GET RID OF RIM COORDINATES THAT REPRESENT EMPTY SPACE ========================================
-            for (int yChunk = 0; yChunk < World.get().getNumChunks(); yChunk++) {
-            for (int xChunk = 0; xChunk < World.get().getNumChunks(); xChunk++) {
+            for (int yChunk = 0; yChunk < myWorld.get().getNumChunks(); yChunk++) {
+            for (int xChunk = 0; xChunk < myWorld.get().getNumChunks(); xChunk++) {
 
                 myString data = new myString("");
                 myString fileName = new myString("[type: terrain][xChunk: ][yChunk: ]");
@@ -60,23 +60,23 @@ public class MakeWorld {
                 Engine.get().getFileSystem().getFile(new myString(fileName.data), data);
                 String[] tiles = data.data.split("\n");
 
-                int index = (yChunk * World.get().getNumChunks()) + xChunk;
+                int index = (yChunk * myWorld.get().getNumChunks()) + xChunk;
                 index = myMath.clamp(index, 0, chunkGrid.size() - 1);
 
                 for(Vector2 i: chunkGrid.get(index)) {
 
-                    int xTile = (int)((i.x / World.get().tileSize) % World.get().tilesPerChunk);
-                    int yTile = (int)((i.y / World.get().tileSize) % World.get().tilesPerChunk);
+                    int xTile = (int)((i.x / myWorld.get().tileSize) % myWorld.get().tilesPerChunk);
+                    int yTile = (int)((i.y / myWorld.get().tileSize) % myWorld.get().tilesPerChunk);
 
-                    int tileIndex = (yTile * World.get().tilesPerChunk) + xTile;
+                    int tileIndex = (yTile * myWorld.get().tilesPerChunk) + xTile;
                     tileIndex = myMath.clamp(tileIndex, 0, tiles.length - 1);
 
                     if (tiles[tileIndex].length() == 1 && tiles[tileIndex].charAt(0) != emptyChar) continue;
 
-                    int pixelX = (int)(i.x % World.get().tileSize);
-                    int pixelY = (int)(i.y % World.get().tileSize);
+                    int pixelX = (int)(i.x % myWorld.get().tileSize);
+                    int pixelY = (int)(i.y % myWorld.get().tileSize);
 
-                    int pixIndex = (pixelY * World.get().tileSize) + pixelX;
+                    int pixIndex = (pixelY * myWorld.get().tileSize) + pixelX;
                     pixIndex = myMath.clamp(pixIndex, 0, tiles[tileIndex].length() - 1);
 
                     if (rim.getValue().size() == 0) break;
@@ -170,11 +170,11 @@ public class MakeWorld {
 
         if(rimName != "") rims.put(rimName, new ArrayList<Vector2>());
 
-        int centerX = World.get().getNumPixels()/2;
-        int centerY = World.get().getNumPixels()/2;
+        int centerX = myWorld.get().getNumPixels()/2;
+        int centerY = myWorld.get().getNumPixels()/2;
 
-        for(int yChunk = 0; yChunk < World.get().getNumChunks(); yChunk++) {
-        for(int xChunk = 0; xChunk < World.get().getNumChunks(); xChunk++) {
+        for(int yChunk = 0; yChunk < myWorld.get().getNumChunks(); yChunk++) {
+        for(int xChunk = 0; xChunk < myWorld.get().getNumChunks(); xChunk++) {
 
             myString data = new myString("");
             myString fileName = new myString("[type: chunk][xChunk: ][yChunk: ]");
@@ -184,18 +184,18 @@ public class MakeWorld {
 
             ArrayList<myString> tiles = myString.getBeforeChar(data.data, '\n');
 
-            for(int yTile = 0; yTile < World.get().tilesPerChunk; yTile++) {
-            for(int xTile = 0; xTile < World.get().tilesPerChunk; xTile++) {
+            for(int yTile = 0; yTile < myWorld.get().tilesPerChunk; yTile++) {
+            for(int xTile = 0; xTile < myWorld.get().tilesPerChunk; xTile++) {
 
-                int yPos = (yChunk * World.get().tilesPerChunk * World.get().tileSize) + (yTile * World.get().tileSize);
-                int xPos = (xChunk * World.get().tilesPerChunk * World.get().tileSize) + (xTile * World.get().tileSize);
+                int yPos = (yChunk * myWorld.get().tilesPerChunk * myWorld.get().tileSize) + (yTile * myWorld.get().tileSize);
+                int xPos = (xChunk * myWorld.get().tilesPerChunk * myWorld.get().tileSize) + (xTile * myWorld.get().tileSize);
 
                 int mTL = (int) myMath.mag(centerX, centerY, xPos, yPos);
-                int mTR = (int) myMath.mag(centerX, centerY, xPos + World.get().tileSize, yPos);
-                int mBL = (int) myMath.mag(centerX, centerY, xPos, yPos + World.get().tileSize);
-                int mBR = (int) myMath.mag(centerX, centerY, xPos + World.get().tileSize, yPos + World.get().tileSize);
+                int mTR = (int) myMath.mag(centerX, centerY, xPos + myWorld.get().tileSize, yPos);
+                int mBL = (int) myMath.mag(centerX, centerY, xPos, yPos + myWorld.get().tileSize);
+                int mBR = (int) myMath.mag(centerX, centerY, xPos + myWorld.get().tileSize, yPos + myWorld.get().tileSize);
 
-                int tileIndex = (yTile * World.get().tilesPerChunk) + xTile;
+                int tileIndex = (yTile * myWorld.get().tilesPerChunk) + xTile;
                 tileIndex = myMath.clamp(tileIndex, 0, tiles.size() - 1);
 
                 int highestPoint = lowestPoint + stretch;
@@ -206,13 +206,13 @@ public class MakeWorld {
                 if( (mTL <= highestPoint && mTL >= chunkPoint) || (mTR <= highestPoint && mTR >= chunkPoint) ||
                          (mBL <= highestPoint && mBL >= chunkPoint) || (mBR <= highestPoint && mBR >= chunkPoint)) {
 
-                    for(int yPixel = 0; yPixel < World.get().tileSize; yPixel++) {
-                    for(int xPixel = 0; xPixel < World.get().tileSize; xPixel++) {
+                    for(int yPixel = 0; yPixel < myWorld.get().tileSize; yPixel++) {
+                    for(int xPixel = 0; xPixel < myWorld.get().tileSize; xPixel++) {
 
 
-                        int yPix = (yChunk * World.get().tilesPerChunk * World.get().tileSize) + (yTile * World.get().tileSize) + yPixel;
-                        int xPix = (xChunk * World.get().tilesPerChunk * World.get().tileSize) + (xTile * World.get().tileSize) + xPixel;
-                        int pixelIndex = ((59 - yPixel ) * World.get().tileSize) + xPixel;
+                        int yPix = (yChunk * myWorld.get().tilesPerChunk * myWorld.get().tileSize) + (yTile * myWorld.get().tileSize) + yPixel;
+                        int xPix = (xChunk * myWorld.get().tilesPerChunk * myWorld.get().tileSize) + (xTile * myWorld.get().tileSize) + xPixel;
+                        int pixelIndex = ((59 - yPixel ) * myWorld.get().tileSize) + xPixel;
 
                         int pixMag = (int) myMath.mag(centerX, centerY, xPix, yPix);
                         float angle = myMath.angleBetweenCells(centerX, centerY, xPix, yPix);
@@ -227,7 +227,7 @@ public class MakeWorld {
                         else if( pixMag < newTotal.get(adjX)) pix = terrainType;
                         else {
                             if(tiles.get(tileIndex).data.length() == 1) pix = tiles.get(tileIndex).data.charAt(0);
-                            if(tiles.get(tileIndex).data.length() == World.get().tileSize * World.get().tileSize) pix = tiles.get(tileIndex).data.charAt(pixelIndex);
+                            if(tiles.get(tileIndex).data.length() == myWorld.get().tileSize * myWorld.get().tileSize) pix = tiles.get(tileIndex).data.charAt(pixelIndex);
                         }
 
                         Pixel.insertPixel(tiles.get(tileIndex), xPixel, yPixel, pix);
@@ -255,7 +255,7 @@ public class MakeWorld {
     public void start() {
 
         //INITIALIZE WORLD ==========================================
-        World.get().createWorld(numChunks);
+        myWorld.get().createWorld(numChunks);
         Engine.get().getFileSystem().createGameDirectory(directory);
         messages.add( new myString("World Initialized"));
 
@@ -276,12 +276,12 @@ public class MakeWorld {
         Engine.get().getFileSystem().setFile(new myString("[type: hero]"), heroData);
         messages.add( new myString("Created Hero"));
 
-        /*
         //MAKE THE SOLID LAYERS =====================================
         makeLayer((int)(worldRadius * 1.00), 400, 10, "dirt", true, "[name: outer]");
-        messages.add( new StringUtils("Dirt Created"));
+        messages.add( new myString("Dirt Created"));
 
 
+        /*
 
         makeLayer((int)(worldRadius * 0.85), 200, 10, "clay", true, "");
         messages.add( new StringUtils("Clay Created"));

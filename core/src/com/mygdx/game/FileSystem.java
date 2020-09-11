@@ -4,7 +4,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.Gdx;
 import gameCode.Infrastructure.Chunk;
 import gameCode.Infrastructure.Entity;
-import gameCode.Infrastructure.World;
+import gameCode.Infrastructure.myWorld;
 import gameCode.Utilities.myString;
 
 import gameCode.Utilities.myMath;
@@ -33,10 +33,10 @@ public class FileSystem {
         centerTop = yIndex;
         centerBottom = centerTop + 1;
 
-        centerLeft = myMath.clamp(centerLeft, 0, World.get().getNumCells() - 1);
-        centerRight = myMath.clamp(centerRight, 0, World.get().getNumCells());
-        centerTop = myMath.clamp(centerTop, 0, World.get().getNumCells() - 1);
-        centerBottom = myMath.clamp(centerBottom, 0, World.get().getNumCells());
+        centerLeft = myMath.clamp(centerLeft, 0, myWorld.get().getNumCells() - 1);
+        centerRight = myMath.clamp(centerRight, 0, myWorld.get().getNumCells());
+        centerTop = myMath.clamp(centerTop, 0, myWorld.get().getNumCells() - 1);
+        centerBottom = myMath.clamp(centerBottom, 0, myWorld.get().getNumCells());
 
         //middle ======================================================================
         middleLeft = centerLeft - 1;
@@ -44,10 +44,10 @@ public class FileSystem {
         middleTop = centerTop - 1;
         middleBottom = centerBottom + 1;
 
-        middleLeft = myMath.clamp(middleLeft, 0, World.get().getNumCells() - 3);
-        middleRight = myMath.clamp(middleRight, 3, World.get().getNumCells());
-        middleTop = myMath.clamp(middleTop, 0, World.get().getNumCells() - 3);
-        middleBottom = myMath.clamp(middleBottom, 3, World.get().getNumCells());
+        middleLeft = myMath.clamp(middleLeft, 0, myWorld.get().getNumCells() - 3);
+        middleRight = myMath.clamp(middleRight, 3, myWorld.get().getNumCells());
+        middleTop = myMath.clamp(middleTop, 0, myWorld.get().getNumCells() - 3);
+        middleBottom = myMath.clamp(middleBottom, 3, myWorld.get().getNumCells());
 
         //outer =======================================================================
         outerLeft = centerLeft - 2;
@@ -55,21 +55,21 @@ public class FileSystem {
         outerTop = centerTop - 2;
         outerBottom = centerBottom + 2;
 
-        outerLeft = myMath.clamp(outerLeft, 0, World.get().getNumCells() - 5);
-        outerRight = myMath.clamp(outerRight, 5, World.get().getNumCells());
-        outerTop = myMath.clamp(outerTop, 0, World.get().getNumCells() - 5);
-        outerBottom = myMath.clamp(outerBottom, 5, World.get().getNumCells());
+        outerLeft = myMath.clamp(outerLeft, 0, myWorld.get().getNumCells() - 5);
+        outerRight = myMath.clamp(outerRight, 5, myWorld.get().getNumCells());
+        outerTop = myMath.clamp(outerTop, 0, myWorld.get().getNumCells() - 5);
+        outerBottom = myMath.clamp(outerBottom, 5, myWorld.get().getNumCells());
     }
     private void setUpdate(int x, int y, int select, boolean newVal) {
         if (select == 1) {
             if (chunkUpdate1.size() == 0) return;
-            int index = (y * World.get().getNumChunks()) + x;
+            int index = (y * myWorld.get().getNumChunks()) + x;
             index = myMath.clamp(index, 0, chunkUpdate1.size() - 1);
             chunkUpdate1.set(index, newVal);
         }
         if (select == 2) {
             if (chunkUpdate2.size() == 0) return;
-            int index = (y * World.get().getNumChunks()) + x;
+            int index = (y * myWorld.get().getNumChunks()) + x;
             index = myMath.clamp(index, 0, chunkUpdate2.size() - 1);
             chunkUpdate2.set(index, newVal);
         }
@@ -78,14 +78,14 @@ public class FileSystem {
 
         if (select == 1) {
             if (chunkUpdate1.size() == 0) return false;
-            int index = (y * World.get().getNumChunks()) + x;
+            int index = (y * myWorld.get().getNumChunks()) + x;
             index = myMath.clamp(index, 0, chunkUpdate1.size() - 1);
             return chunkUpdate1.get(index);
         }
 
         if (select == 2) {
             if (chunkUpdate2.size() == 0) return false;
-            int index = (y * World.get().getNumChunks()) + x;
+            int index = (y * myWorld.get().getNumChunks()) + x;
             index = myMath.clamp(index, 0, chunkUpdate2.size() - 1);
             return chunkUpdate2.get(index);
         }
@@ -95,8 +95,8 @@ public class FileSystem {
     private void updateChunks() {
 
         //first set all the first one to false
-        for(int y = 0; y < World.get().getNumChunks(); y++) {
-            for(int x = 0; x < World.get().getNumChunks(); x++)
+        for(int y = 0; y < myWorld.get().getNumChunks(); y++) {
+            for(int x = 0; x < myWorld.get().getNumChunks(); x++)
                 setUpdate(x, y, 1, false);
         }
 
@@ -106,8 +106,8 @@ public class FileSystem {
             }
         }
 
-        for(int y = 0; y < World.get().getNumChunks(); y++) {
-            for(int x = 0; x < World.get().getNumChunks(); x++) {
+        for(int y = 0; y < myWorld.get().getNumChunks(); y++) {
+            for(int x = 0; x < myWorld.get().getNumChunks(); x++) {
 
                 if(getUpdate(x, y, 1) && !getUpdate(x, y, 2)) {
                     setUpdate(x, y, 2, true);
@@ -124,7 +124,7 @@ public class FileSystem {
 
         //create a new key from the xIndex and yIndex
         myPair<Integer, Integer> key = new myPair(xIndex, yIndex);
-        Chunk chunkPtr = World.get().getChunk(key);
+        Chunk chunkPtr = myWorld.get().getChunk(key);
         if(chunkPtr == null) {
             System.out.println("Write chunk failed because chunk " + xIndex + "." + yIndex + " does not exist");
             return;
@@ -156,18 +156,18 @@ public class FileSystem {
 
 
 
-        World.get().deleteChunk(key);
+        myWorld.get().deleteChunk(key);
     }
     private void readChunk(int xIndex, int yIndex) {
 
         //create a new key from the xIndex and yIndex
         myPair<Integer, Integer> key = new myPair(xIndex, yIndex);
 
-        Chunk chunkPtr = World.get().getChunk(key);
+        Chunk chunkPtr = myWorld.get().getChunk(key);
         if(chunkPtr == null) {
             Chunk newChunk = new Chunk(key);
             chunkPtr = newChunk;
-            World.get().insertChunk(key, newChunk);
+            myWorld.get().insertChunk(key, newChunk);
         }
 
 
@@ -283,12 +283,12 @@ public class FileSystem {
         setFile(heroName, new myString("this is hero"));
 
         //populate the chunks and entities folder
-        for (int yChunk = 0; yChunk < World.get().getNumChunks(); yChunk++) {
-            for (int xChunk = 0; xChunk < World.get().getNumChunks(); xChunk++) {
+        for (int yChunk = 0; yChunk < myWorld.get().getNumChunks(); yChunk++) {
+            for (int xChunk = 0; xChunk < myWorld.get().getNumChunks(); xChunk++) {
 
                 myString chunkStr = new myString("");
-                for (int yTile = 0; yTile < World.get().tilesPerChunk; yTile++) {
-                    for (int xTile = 0; xTile < World.get().tilesPerChunk; xTile++) {
+                for (int yTile = 0; yTile < myWorld.get().tilesPerChunk; yTile++) {
+                    for (int xTile = 0; xTile < myWorld.get().tilesPerChunk; xTile++) {
                         chunkStr.data += "\n";
                     }}
 
@@ -382,22 +382,22 @@ public class FileSystem {
         chunkUpdate1.clear();
         chunkUpdate2.clear();
 
-        for (int y = 0; y < World.get().getNumChunks(); y++) {
-            for (int x = 0; x < World.get().getNumChunks(); x++) {
+        for (int y = 0; y < myWorld.get().getNumChunks(); y++) {
+            for (int x = 0; x < myWorld.get().getNumChunks(); x++) {
                 chunkUpdate1.add(false);
                 chunkUpdate2.add(false);
             }}
     }
     public void update() {
 
-        Entity hero = World.get().getCamera();
+        Entity hero = myWorld.get().getCamera();
         if(hero == null) return;
 
-        int xIndex = (int)(hero.x_pos * World.get().getNumChunks()) / World.get().getNumPixels();
-        int yIndex = (int)(hero.y_pos * World.get().getNumChunks()) / World.get().getNumPixels();
+        int xIndex = (int)(hero.x_pos * myWorld.get().getNumChunks()) / myWorld.get().getNumPixels();
+        int yIndex = (int)(hero.y_pos * myWorld.get().getNumChunks()) / myWorld.get().getNumPixels();
 
-        xIndex = myMath.clamp(xIndex, 0, World.get().getNumChunks() - 1);
-        yIndex = myMath.clamp(yIndex, 0, World.get().getNumChunks() - 1);
+        xIndex = myMath.clamp(xIndex, 0, myWorld.get().getNumChunks() - 1);
+        yIndex = myMath.clamp(yIndex, 0, myWorld.get().getNumChunks() - 1);
 
         if(xIndex < middleLeft || xIndex >= middleRight || yIndex < middleTop || yIndex >= middleBottom) {
             center(xIndex, yIndex);

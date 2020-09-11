@@ -2,7 +2,7 @@ package gameCode.Terrain;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Engine;
-import gameCode.Infrastructure.World;
+import gameCode.Infrastructure.myWorld;
 import gameCode.Utilities.myMath;
 import gameCode.Utilities.Pixel;
 import gameCode.Utilities.myString;
@@ -59,7 +59,7 @@ public class ScatterTerrain {
             int outerArea = (int)(lay.upperBound * lay.upperBound * myMath.PI);
             int lowerArea = (int)(lay.lowerBound * lay.lowerBound * myMath.PI);
             int area = outerArea - lowerArea;
-            int chunkArea = (World.get().tilesPerChunk * World.get().tilesPerChunk) * (World.get().tileSize * World.get().tileSize);
+            int chunkArea = (myWorld.get().tilesPerChunk * myWorld.get().tilesPerChunk) * (myWorld.get().tileSize * myWorld.get().tileSize);
             int numSeeds = (int)((area / chunkArea) * lay.seedsPerChunk);
 
             for (int z = 0; z < numSeeds; z++) {
@@ -67,8 +67,8 @@ public class ScatterTerrain {
                 int radius = (int)(lay.lowerBound + (Math.random() * (lay.upperBound - lay.lowerBound)));
                 float angle = (float)((Math.random() * 3650) / 10.0);
 
-                int xPos = (int)((World.get().getNumPixels() / 2) + radius * Math.cos(myMath.toRad(angle)));
-                int yPos = (int)((World.get().getNumPixels() / 2) + radius * Math.sin(myMath.toRad(angle)));
+                int xPos = (int)((myWorld.get().getNumPixels() / 2) + radius * Math.cos(myMath.toRad(angle)));
+                int yPos = (int)((myWorld.get().getNumPixels() / 2) + radius * Math.sin(myMath.toRad(angle)));
                 int newNum = (int) myMath.getGauss(lay.meanPix, lay.stdDevPix);
                 newNum = myMath.clamp(newNum, 1, 500);
 
@@ -100,8 +100,8 @@ public class ScatterTerrain {
                 int newX = s.currentX + (int)((gran / div) * Math.cos(angle));
                 int newY = s.currentY + (int)((gran / div) * Math.sin(angle));
 
-                newX = myMath.clamp(newX, 0, World.get().getNumPixels() - 1);
-                newY = myMath.clamp(newY, 0, World.get().getNumPixels() - 1);
+                newX = myMath.clamp(newX, 0, myWorld.get().getNumPixels() - 1);
+                newY = myMath.clamp(newY, 0, myWorld.get().getNumPixels() - 1);
 
                 s.currentX = newX;
                 s.currentY = newY;
@@ -123,15 +123,15 @@ public class ScatterTerrain {
 
                     int xPos = newX + x;
                     int yPos = newY + y;
-                    xPos = myMath.clamp(xPos, 0, World.get().getNumPixels() - 1);
-                    yPos = myMath.clamp(yPos, 0, World.get().getNumPixels() - 1);
+                    xPos = myMath.clamp(xPos, 0, myWorld.get().getNumPixels() - 1);
+                    yPos = myMath.clamp(yPos, 0, myWorld.get().getNumPixels() - 1);
 
                     if (m <= a.get(index)) {
 
-                        int xIndex = (xPos * World.get().getNumChunks()) / World.get().getNumPixels();
-                        int yIndex = (yPos * World.get().getNumChunks()) / World.get().getNumPixels();
+                        int xIndex = (xPos * myWorld.get().getNumChunks()) / myWorld.get().getNumPixels();
+                        int yIndex = (yPos * myWorld.get().getNumChunks()) / myWorld.get().getNumPixels();
 
-                        int innerIndex = (yIndex * World.get().getNumChunks()) + xIndex;
+                        int innerIndex = (yIndex * myWorld.get().getNumChunks()) + xIndex;
                         innerIndex = myMath.clamp(innerIndex, 0, chunkGrid.size() - 1);
 
                         chunkGrid.get(innerIndex).add( new Vector2(xPos, yPos) );
@@ -145,8 +145,8 @@ public class ScatterTerrain {
         char emptyChar = Pixel.getCharFromType("empty");
 
         //PLACE TERRAIN INTO GAMECHUNKS ===========================
-        for (int yChunk = 0; yChunk < World.get().getNumChunks(); yChunk++) {
-        for (int xChunk = 0; xChunk < World.get().getNumChunks(); xChunk++) {
+        for (int yChunk = 0; yChunk < myWorld.get().getNumChunks(); yChunk++) {
+        for (int xChunk = 0; xChunk < myWorld.get().getNumChunks(); xChunk++) {
 
             myString data = new myString("");
             myString fileName = new myString("[type: chunk][xChunk: ][yChunk: ]");
@@ -156,7 +156,7 @@ public class ScatterTerrain {
 
             ArrayList<myString> tiles = myString.getBeforeChar(data.data, '\n');
 
-            int index = (yChunk * World.get().getNumChunks()) + xChunk;
+            int index = (yChunk * myWorld.get().getNumChunks()) + xChunk;
             index = myMath.clamp(index, 0, chunkGrid.size() - 1);
 
             for (int z = 0; z < chunkGrid.get(index).size(); z++) {
@@ -164,18 +164,18 @@ public class ScatterTerrain {
                 int xPosPixel = (int)chunkGrid.get(index).get(z).x;
                 int yPosPixel = (int)chunkGrid.get(index).get(z).y;
 
-                int xTile = (xPosPixel / World.get().tileSize) % World.get().tilesPerChunk;
-                int yTile = (yPosPixel / World.get().tileSize) % World.get().tilesPerChunk;
+                int xTile = (xPosPixel / myWorld.get().tileSize) % myWorld.get().tilesPerChunk;
+                int yTile = (yPosPixel / myWorld.get().tileSize) % myWorld.get().tilesPerChunk;
 
-                int xPixel = xPosPixel % World.get().tileSize;
-                int yPixel = yPosPixel % World.get().tileSize;
+                int xPixel = xPosPixel % myWorld.get().tileSize;
+                int yPixel = yPosPixel % myWorld.get().tileSize;
 
-                int tileIndex = (yTile * World.get().tilesPerChunk) + xTile;
+                int tileIndex = (yTile * myWorld.get().tilesPerChunk) + xTile;
                 tileIndex = myMath.clamp(tileIndex, 0, tiles.size() - 1);
 
                 if(tiles.get(tileIndex).data.length() > 0) {
 
-                    int pixIndex = (yPixel * World.get().tileSize) + xPixel;
+                    int pixIndex = (yPixel * myWorld.get().tileSize) + xPixel;
 
                     if ((tiles.get(tileIndex).data.length() == 1 && tiles.get(tileIndex).data.charAt(0) != emptyChar))
                         Pixel.insertPixel(tiles.get(tileIndex), xPixel, yPixel, terrainChar);
@@ -196,7 +196,7 @@ public class ScatterTerrain {
         layers = new ArrayList<layer>();
         seeds = new ArrayList<seed>();
         chunkGrid = new ArrayList< ArrayList<Vector2> >();
-        for(int x = 0; x < World.get().getNumChunks() * World.get().getNumChunks(); x++) { chunkGrid.add( new ArrayList<Vector2>() ); }
+        for(int x = 0; x < myWorld.get().getNumChunks() * myWorld.get().getNumChunks(); x++) { chunkGrid.add( new ArrayList<Vector2>() ); }
     }
     public void addLayer(int newLB, int newUB, int newS, float mSeeds, float sdSeeds, float mGran, float sdGran, float mDiv, float sdDiv) {
         layer l = new layer(newLB, newUB, newS, mSeeds, sdSeeds, mGran, sdGran, mDiv, sdDiv);

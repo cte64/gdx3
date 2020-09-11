@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Disposable;
 import gameCode.Infrastructure.*;
 import gameCode.Menus.TextComponent;
@@ -20,6 +22,52 @@ public class Graphics implements Disposable {
     private ShapeRenderer shapeRenderer;
     private SpriteBatch batch;
     private SpriteBatch hudBatch;
+
+
+    //World stuff ==============================================================================================
+    public World b2world;
+    private Box2DDebugRenderer b2debug;
+
+
+    private void initPhysics() {
+        if (b2world != null) {
+            b2world.dispose();
+        }
+        b2world = new World(new Vector2(0, 9.81f), true);
+        b2debug = new Box2DDebugRenderer();
+        // Rocks
+    }
+    
+    public void addBody(Entity ent) {
+
+
+
+
+        BodyDef bodyDef = new BodyDef();
+
+        if(ent.entityName.equals("hero"))
+            bodyDef.type = BodyDef.BodyType.DynamicBody;
+        else
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+
+        bodyDef.position.set(ent.x_pos, ent.y_pos);
+        Body body = b2world.createBody(bodyDef);
+
+
+
+        ent.body = body;
+        PolygonShape polygonShape = new PolygonShape();
+
+        Vector2 origin = new Vector2();
+        origin.x = ent.getWidth() / 2.0f;
+        origin.y = ent.getHeight() / 2.0f;
+        polygonShape.setAsBox(ent.getWidth() / 2.0f, ent.getHeight() / 2.0f, origin, 0);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        body.createFixture(fixtureDef);
+        polygonShape.dispose();
+    }
 
     //this is for sorting them by zPos
     public class sorter implements Comparator<Entity> {
@@ -42,7 +90,7 @@ public class Graphics implements Disposable {
 
 
         //Set up the camera ======================================================================
-        camera = new OrthographicCamera(World.get().getViewPortWidth(), World.get().getViewPortHeight());
+        camera = new OrthographicCamera(myWorld.get().getViewPortWidth(), myWorld.get().getViewPortHeight());
         camera.position.set(0, 0, 0);
         camera.update();
 
@@ -52,13 +100,14 @@ public class Graphics implements Disposable {
 
 
 
+        initPhysics();
 
 
 
     }
 
     private void setCamera1() {
-        Entity hero = World.get().getCamera();
+        Entity hero = myWorld.get().getCamera();
         if(hero == null) return;
         float xPos = hero.x_pos;
         float yPos = hero.y_pos;
@@ -70,10 +119,10 @@ public class Graphics implements Disposable {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
         //center ==============================================================================
-        int cLeft = Engine.get().getFileSystem().centerLeft * World.get().tilesPerChunk * World.get().tileSize;
-        int cRight = Engine.get().getFileSystem().centerRight * World.get().tilesPerChunk * World.get().tileSize;
-        int cTop = Engine.get().getFileSystem().centerTop * World.get().tilesPerChunk * World.get().tileSize;
-        int cBottom = Engine.get().getFileSystem().centerBottom * World.get().tilesPerChunk * World.get().tileSize;
+        int cLeft = Engine.get().getFileSystem().centerLeft * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
+        int cRight = Engine.get().getFileSystem().centerRight * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
+        int cTop = Engine.get().getFileSystem().centerTop * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
+        int cBottom = Engine.get().getFileSystem().centerBottom * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
 
         shapeRenderer.setColor(0, 0, 1, 1);
         shapeRenderer.line(cLeft, cTop, cLeft, cBottom);
@@ -82,10 +131,10 @@ public class Graphics implements Disposable {
         shapeRenderer.line(cLeft, cBottom, cRight, cBottom);
 
 		//middle =================================================================================
-		int mLeft = Engine.get().getFileSystem().middleLeft * World.get().tilesPerChunk * World.get().tileSize;
-		int mRight = Engine.get().getFileSystem().middleRight * World.get().tilesPerChunk * World.get().tileSize;
-		int mTop = Engine.get().getFileSystem().middleTop * World.get().tilesPerChunk * World.get().tileSize;
-		int mBottom = Engine.get().getFileSystem().middleBottom * World.get().tilesPerChunk * World.get().tileSize;
+		int mLeft = Engine.get().getFileSystem().middleLeft * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
+		int mRight = Engine.get().getFileSystem().middleRight * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
+		int mTop = Engine.get().getFileSystem().middleTop * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
+		int mBottom = Engine.get().getFileSystem().middleBottom * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
 
         shapeRenderer.setColor(1, 0, 0.5f, 1);
         shapeRenderer.line(mLeft, mTop, mLeft, mBottom);
@@ -94,10 +143,10 @@ public class Graphics implements Disposable {
         shapeRenderer.line(mLeft, mBottom, mRight, mBottom);
 
         //outer =================================================================================
-        int oLeft = Engine.get().getFileSystem().outerLeft * World.get().tilesPerChunk * World.get().tileSize;
-        int oRight = Engine.get().getFileSystem().outerRight * World.get().tilesPerChunk * World.get().tileSize;
-        int oTop = Engine.get().getFileSystem().outerTop * World.get().tilesPerChunk * World.get().tileSize;
-        int oBottom = Engine.get().getFileSystem().outerBottom * World.get().tilesPerChunk * World.get().tileSize;
+        int oLeft = Engine.get().getFileSystem().outerLeft * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
+        int oRight = Engine.get().getFileSystem().outerRight * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
+        int oTop = Engine.get().getFileSystem().outerTop * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
+        int oBottom = Engine.get().getFileSystem().outerBottom * myWorld.get().tilesPerChunk * myWorld.get().tileSize;
 
         shapeRenderer.setColor(1, 0, 0, 1);
         shapeRenderer.line(oLeft, oTop, oLeft, oBottom);
@@ -119,18 +168,48 @@ public class Graphics implements Disposable {
     public void update(float deltaTime) {
 
         setCamera1();
-        Collections.sort(World.get().getEntByZIndex(), new sorter());
+        Collections.sort(myWorld.get().getEntByZIndex(), new sorter());
         cameraHelper.update(deltaTime);
         cameraHelper.applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
+
+
+
+
+
+        batch.begin();
+            for(Entity ent: myWorld.get().getEntByZIndex()) {
+                if(ent.drawMode == "hud") continue;
+
+                if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName))
+                    batch.draw(Engine.get().getAssets().spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos, ent.getWidth(), ent.getHeight());
+
+                /*
+                ArrayList<Component> textComps = ent.getComponents("text");
+                for(Component comp: textComps) {
+                    TextComponent text = (TextComponent)comp;
+                    if(text != null && text.show) {
+                        int fontSize = text.getFontSize();
+                        if(!Engine.get().getAssets().bmpFonts.containsKey(fontSize)) continue;
+                        Engine.get().getAssets().bmpFonts.get(text.getFontSize()).setColor(text.getR(), text.getG(), text.getB(), text.getA());
+                        Engine.get().getAssets().bmpFonts.get(text.getFontSize()).draw(hudBatch, text.getText(), text.getXPos(), text.getYPos());
+                    }
+                }
+
+                 */
+            }
+
+        batch.end();
+
+
         hudBatch.begin();
-            for(Entity ent: World.get().getEntByZIndex()) {
+            for(Entity ent: myWorld.get().getEntByZIndex()) {
 
                 if(ent.drawMode != "hud") continue;
 
@@ -151,8 +230,10 @@ public class Graphics implements Disposable {
                 }
             }
         hudBatch.end();
-
         drawOutlines();
+
+        b2world.step(myWorld.get().getDeltaTime(), 100, 3);
+        b2debug.render(b2world, camera.combined);
     }
 
     public void resize(int width, int height) {

@@ -33,16 +33,21 @@ public class MakeEntity {
         if(type.equals("hero")) {
             String x_posStr = myString.getField(name, "xPos");
             String y_posStr = myString.getField(name, "yPos");
-            ent.x_pos = World.get().getNumPixels()/2;//StringUtils.stringToInt(x_posStr);
-            ent.y_pos = ent.x_pos;//StringUtils.stringToInt(y_posStr);
+            ent.x_pos = myWorld.get().getNumPixels()/2;//StringUtils.stringToInt(x_posStr);
+            ent.y_pos = ent.x_pos + 4500;//StringUtils.stringToInt(y_posStr);
             ent.spriteName = "tile";
             ent.entityName = "hero";
-            ent.z_pos = 3;
+            ent.z_pos = 20;
+            ent.drawMode = "normal";
             ent.addComponent(new HeroInput());
-            ent.addComponent(new PlaceTerrain());
-            ent.addComponent(new InventoryManager());
-            World.get().setCamera(ent);
-            World.get().addSiftingFrame(ent, 0, 0);
+            ent.width = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).first;
+            ent.height = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).second;
+
+            //ent.addComponent(new PlaceTerrain());
+            //ent.addComponent(new InventoryManager());
+            Engine.get().getGraphics().addBody(ent);
+            myWorld.get().setCamera(ent);
+            myWorld.get().addSiftingFrame(ent, 0, 0);
         }
 
         if(subType.equals("mainMenu")) {

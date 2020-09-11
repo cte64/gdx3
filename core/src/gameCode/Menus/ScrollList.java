@@ -2,7 +2,7 @@ package gameCode.Menus;
 
 import com.mygdx.game.Engine;
 import gameCode.Infrastructure.Entity;
-import gameCode.Infrastructure.World;
+import gameCode.Infrastructure.myWorld;
 import gameCode.Utilities.myMath;
 
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class ScrollList {
     }
 
     public boolean isLeftClicked(String name) {
-        int mouseY = World.get().getViewPortHeight() - Engine.get().getInput().getMouseY();
+        int mouseY = myWorld.get().getViewPortHeight() - Engine.get().getInput().getMouseY();
         if(boundCheck(mouseY) &&
            menuMngr.getEnt(name).drawMode.equals("hud") &&
            menuMngr.isLeftClicked(name))  return true;
@@ -66,7 +66,7 @@ public class ScrollList {
     }
 
     public boolean hover(String name) {
-        int mouseY = World.get().getViewPortHeight() - Engine.get().getInput().getMouseY();
+        int mouseY = myWorld.get().getViewPortHeight() - Engine.get().getInput().getMouseY();
         if(boundCheck(mouseY) && menuMngr.hover(name)) return true;
         else return false;
     }
@@ -86,7 +86,7 @@ public class ScrollList {
             if(listEnt != null) totalPixelsToScroll -= (listEnt.getHeight() + vPadding);
         }
 
-        float fps = 1.0f / World.get().getDeltaTime();
+        float fps = 1.0f / myWorld.get().getDeltaTime();
         float pixThisFrame = scrollPixPerSecond / fps;
         float adjScrollPerFrame = pixThisFrame / totalPixelsToScroll;
 
@@ -109,7 +109,7 @@ public class ScrollList {
                 adjBot += ent.y_pos;
             }
 
-            float mouseY = World.get().getViewPortHeight() - Engine.get().getInput().getMouseY();
+            float mouseY = myWorld.get().getViewPortHeight() - Engine.get().getInput().getMouseY();
             float sbHeight = menuMngr.getEnt(scrollBar).getHeight();
             float totalLength = adjBot - adjTop - sbHeight;
             float sbHeightComp = (sbHeight / 2.0f) / totalLength;

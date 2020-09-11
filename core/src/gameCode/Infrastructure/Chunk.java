@@ -20,15 +20,15 @@ public class Chunk {
         public boolean active;
         public String tileName;
         public Tile(int index) {
-            image = new Pixmap(World.get().tileSize, World.get().tileSize, Pixmap.Format.RGB888);
+            image = new Pixmap(myWorld.get().tileSize, myWorld.get().tileSize, Pixmap.Format.RGB888);
             terrainData = new myString("");
             active = false;
 
             myString newName = new myString("[type: tile][chunkX: ][chunkY: ][tileX: ][tileY: ]");
             newName.setField("chunkX", myString.getField(chunkName, "chunkX"));
             newName.setField("chunkY", myString.getField(chunkName, "chunkY"));
-            newName.setField( "tileX", myString.toString(index % World.get().tilesPerChunk));
-            newName.setField("tileY", myString.toString(index / World.get().tilesPerChunk));
+            newName.setField( "tileX", myString.toString(index % myWorld.get().tilesPerChunk));
+            newName.setField("tileY", myString.toString(index / myWorld.get().tilesPerChunk));
             tileName = newName.data;
         }
     }
@@ -51,7 +51,7 @@ public class Chunk {
         }
     }
     public void setActive(int x, int y, boolean newActive) {
-        int index = (World.get().tilesPerChunk * y) + x;
+        int index = (myWorld.get().tilesPerChunk * y) + x;
         index = myMath.clamp(index, 0, tiles.size() - 1);
         tiles.get(index).active = newActive;
     }
@@ -59,23 +59,23 @@ public class Chunk {
     //Getters =============================================================================================
     public String getChunkName() { return chunkName; }
     public Pixmap getImage(int x, int y) {
-        int index = (World.get().tilesPerChunk * y) + x;
+        int index = (myWorld.get().tilesPerChunk * y) + x;
         index = myMath.clamp(index, 0, tiles.size() - 1);
         return tiles.get(index).image;
     }
     public boolean getActive(int x, int y) {
-        int index = (World.get().tilesPerChunk * y) + x;
+        int index = (myWorld.get().tilesPerChunk * y) + x;
         index = myMath.clamp(index, 0, tiles.size() - 1);
         return tiles.get(index).active;
     }
     public boolean isImageBlank(int xIndex, int yIndex) {
-        int index = (World.get().tilesPerChunk * yIndex) + xIndex;
+        int index = (myWorld.get().tilesPerChunk * yIndex) + xIndex;
         index = myMath.clamp(index, 0, tiles.size() - 1);
         if(tiles.get(index).terrainData.data.length() == 0) return true;
         else return false;
     }
     public String getTileName(int x, int y) {
-        int index = (World.get().tilesPerChunk * y) + x;
+        int index = (myWorld.get().tilesPerChunk * y) + x;
         index = myMath.clamp(index, 0, tiles.size() - 1);
         return tiles.get(index).tileName;
     }
@@ -89,19 +89,19 @@ public class Chunk {
 
     //These are utility functions for mapping coordinates =================================================
     public static myPair<Integer, Integer> makeKeyFromPixel(int x, int y) {
-        int chunkX = x / (World.get().tileSize * World.get().tilesPerChunk);
-        int chunkY = y / (World.get().tileSize * World.get().tilesPerChunk);
+        int chunkX = x / (myWorld.get().tileSize * myWorld.get().tilesPerChunk);
+        int chunkY = y / (myWorld.get().tileSize * myWorld.get().tilesPerChunk);
         return new myPair(chunkX, chunkY);
     }
 
     public void setPixel(int x, int y, String color) {
 
-        int tileX = (x / World.get().tileSize) % World.get().tilesPerChunk;
-        int tileY = (y / World.get().tileSize) % World.get().tilesPerChunk;
-        int pixelX = x % World.get().tileSize;
-        int pixelY = y % World.get().tileSize;
+        int tileX = (x / myWorld.get().tileSize) % myWorld.get().tilesPerChunk;
+        int tileY = (y / myWorld.get().tileSize) % myWorld.get().tilesPerChunk;
+        int pixelX = x % myWorld.get().tileSize;
+        int pixelY = y % myWorld.get().tileSize;
 
-        int index = (tileY * World.get().tilesPerChunk) + tileX;
+        int index = (tileY * myWorld.get().tilesPerChunk) + tileX;
         if(index < 0 || index > tiles.size() - 1) return;
 
         char colorC = Pixel.getCharFromType(color);

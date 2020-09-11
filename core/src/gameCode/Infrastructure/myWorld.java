@@ -12,15 +12,15 @@ import gameCode.Utilities.Coordinates;
 import gameCode.Utilities.myString;
 import gameCode.Utilities.myMath;
 
-public class World {
+public class myWorld {
 
     //Single instance ===============================================================================
-    private static World worldInstance = null;
-    private World() {
+    private static myWorld worldInstance = null;
+    private myWorld() {
     }
-    public static World get() {
+    public static myWorld get() {
         if(worldInstance == null)
-            worldInstance = new World();
+            worldInstance = new myWorld();
         return worldInstance;
     }
 
@@ -330,6 +330,7 @@ public class World {
                         ent.bitMapX = tileXAbs;
                         ent.bitMapY = tileYAbs;
                         ent.deleteRange = -1;
+                        Engine.get().getGraphics().addBody(ent);
                         entitiesToBeAdded.add(ent);
                     }
 

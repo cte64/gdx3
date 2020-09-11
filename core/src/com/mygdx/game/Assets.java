@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
-import gameCode.Infrastructure.World;
+import gameCode.Infrastructure.myWorld;
 import gameCode.Utilities.myString;
 import gameCode.Utilities.myPair;
 
@@ -70,11 +70,11 @@ public class Assets {
         int padding = 1;
         for(int y = 0; y < numTiles; y++) {
         for(int x = 0; x < numTiles; x++) {
-            int xPos = padding + x*(padding + World.get().tileSize);
-            int yPos = padding + y*(padding + World.get().tileSize);
+            int xPos = padding + x*(padding + myWorld.get().tileSize);
+            int yPos = padding + y*(padding + myWorld.get().tileSize);
             String name = "tileId: " + myString.toString(x) + "." + myString.toString(y);
-            Texture newTexture = new Texture(World.get().tileSize, World.get().tileSize, RGB888);
-            tileAtlas.addRegion(name, newTexture, xPos, yPos, World.get().tileSize, World.get().tileSize);
+            Texture newTexture = new Texture(myWorld.get().tileSize, myWorld.get().tileSize, RGB888);
+            tileAtlas.addRegion(name, newTexture, xPos, yPos, myWorld.get().tileSize, myWorld.get().tileSize);
             TextureRegion region = tileAtlas.findRegion(name);
             Sprite sprite = new Sprite(region);
             spriteMap.put(name, sprite);

@@ -4,8 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.mygdx.game.Engine;
 import gameCode.Infrastructure.Chunk;
 import gameCode.Infrastructure.Entity;
-import com.mygdx.game.Graphics;
-import gameCode.Infrastructure.World;
+import gameCode.Infrastructure.myWorld;
 import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
@@ -21,16 +20,16 @@ public class ModifyTerrain {
 
             //update the chunk map =============================================================
             myPair<Integer, Integer> key = Chunk.makeKeyFromPixel(coord.first, coord.second);
-            Chunk chunkPtr = World.get().getChunk(key);
+            Chunk chunkPtr = myWorld.get().getChunk(key);
             if(chunkPtr == null) continue;
 
             chunkPtr.setPixel(coord.first, coord.second, "coal");
-            int tileX = (coord.first / World.get().tileSize) % World.get().tilesPerChunk;
-            int tileY = (coord.second / World.get().tileSize) % World.get().tilesPerChunk;
+            int tileX = (coord.first / myWorld.get().tileSize) % myWorld.get().tilesPerChunk;
+            int tileY = (coord.second / myWorld.get().tileSize) % myWorld.get().tilesPerChunk;
             Pixmap image = chunkPtr.getImage(tileX, tileY);
 
             //update the entities if there are any =============================================
-            for(Entity ent: World.get().getEntByLocation(coord.first, coord.second)) {
+            for(Entity ent: myWorld.get().getEntByLocation(coord.first, coord.second)) {
                 ents.put(ent, image);
             }
         }
