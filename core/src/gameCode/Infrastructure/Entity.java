@@ -14,6 +14,7 @@ public class Entity {
     public String spriteName, drawMode, entityName;
     public myPair<Float, Float> scale;
     public Body body;
+    public myPair<Float, Float> origin;
 
     ArrayList<Component> components;
     public float width;
@@ -59,6 +60,7 @@ public class Entity {
         drawMode = "normal";
         entityName = "";
         components = new ArrayList<Component>();
+        origin = new myPair(0.0f, 0.0f);
     }
 
     public void addComponent(Component newComponent) { components.add(newComponent); }

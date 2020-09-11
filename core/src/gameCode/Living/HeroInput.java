@@ -3,12 +3,13 @@ package gameCode.Living;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
+import com.mygdx.game.Engine;
 import gameCode.Infrastructure.*;
 
 public class HeroInput extends Component {
 
 
-    float deltaX = 1.5f;
+    float deltaX = 3.5f;
     
     private boolean up;
     private boolean down;
@@ -27,6 +28,9 @@ public class HeroInput extends Component {
         if(Gdx.input.isKeyPressed(Input.Keys.W)) { entity.velMag += deltaX; }
         if(Gdx.input.isKeyPressed(Input.Keys.S)) { entity.velMag -= deltaX; }
         if(Gdx.input.isKeyPressed(Input.Keys.P)) { entity.velMag = 0; entity.velAng = 0; }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.U)) { Engine.get().getGraphics().getCameraHelper().addZoom(0.01f); }
+        if(Gdx.input.isKeyPressed(Input.Keys.I)) { Engine.get().getGraphics().getCameraHelper().addZoom(-0.01f); }
 
 
 

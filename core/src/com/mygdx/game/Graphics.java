@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Disposable;
@@ -35,35 +34,30 @@ public class Graphics implements Disposable {
     }
 
     public void init() {
-
-        //Fonts ==================================================================================
         cameraHelper = new CameraHelper();
         shapeRenderer = new ShapeRenderer();
-
-
-        //Set up the camera ======================================================================
         camera = new OrthographicCamera(myWorld.get().getViewPortWidth(), myWorld.get().getViewPortHeight());
         camera.position.set(0, 0, 0);
         camera.update();
-
-        //Set up the sprites =====================================================================
         batch = new SpriteBatch();
         hudBatch = new SpriteBatch();
-
-        //set up the box2d debug renderer ========================================================
         b2debug = new Box2DDebugRenderer();
     }
 
+    public CameraHelper getCameraHelper() { return cameraHelper; }
+
     private void setCamera1() {
-        Entity hero = myWorld.get().getCamera();
-        if(hero == null) return;
-        float xPos = hero.x_pos;
-        float yPos = hero.y_pos;
-        cameraHelper.setPosition(xPos, yPos);
+        //Entity hero = myWorld.get().getCamera();
+        //if(hero == null) return;
+        //float xPos = hero.x_pos;
+       // float yPos = hero.y_pos;
+       // cameraHelper.setPosition(xPos, yPos);
+        //cameraHelper.update();
     }
 
     private void drawOutlines() {
 
+        shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
         //center ==============================================================================
@@ -116,27 +110,27 @@ public class Graphics implements Disposable {
     public void update(float deltaTime) {
 
 
-        setCamera1();
-        Collections.sort(myWorld.get().getEntByZIndex(), new sorter());
-        cameraHelper.update(deltaTime);
-        cameraHelper.applyTo(camera);
-        batch.setProjectionMatrix(camera.combined);
-        shapeRenderer.setProjectionMatrix(camera.combined);
-
+        //Clear the screen to a color =================================================
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
+        //Sort the Entities by z-Index ================================================
+        Collections.sort(myWorld.get().getEntByZIndex(), new sorter());
+
+
+        //Camera Stuff ================================================================
+        cameraHelper.update();
+        cameraHelper.applyTo(camera);
+        batch.setProjectionMatrix(camera.combined);
+
+
+        //Batch Rendering ============================================================
         batch.begin();
             for(Entity ent: myWorld.get().getEntByZIndex()) {
                 if(ent.drawMode == "hud") continue;
 
                 if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName)) {
-
-
-
-
-
 
 
                     batch.draw(Engine.get().getAssets().spriteMap.get(ent.spriteName),
@@ -161,9 +155,7 @@ public class Graphics implements Disposable {
 
                  */
             }
-
         batch.end();
-
 
         hudBatch.begin();
             for(Entity ent: myWorld.get().getEntByZIndex()) {
@@ -187,10 +179,11 @@ public class Graphics implements Disposable {
                 }
             }
         hudBatch.end();
+
+
+        //Draw the outlines of the Box2d collision box and the boundaries of the chunks =============
         drawOutlines();
-
         b2debug.render(Engine.get().getPhysics().getb2World(), camera.combined);
-
     }
 
     public void resize(int width, int height) {
