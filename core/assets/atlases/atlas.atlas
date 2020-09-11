@@ -1,18 +1,5 @@
 
 atlas.png
-size: 2048,2048
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-atlases/atlas6
-  rotate: false
-  xy: 2, 2
-  size: 1024, 1024
-  orig: 1024, 1024
-  offset: 0, 0
-  index: -1
-
-atlas2.png
 size: 128,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -74,7 +61,7 @@ items/watermelon
   offset: 0, 0
   index: -1
 
-atlas3.png
+atlas2.png
 size: 256,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -290,7 +277,7 @@ items/Tools/woodSword
   offset: 0, 0
   index: -1
 
-atlas4.png
+atlas3.png
 size: 1024,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -331,7 +318,7 @@ menus/menuItem
   offset: 0, 0
   index: -1
 
-atlas5.png
+atlas4.png
 size: 128,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -351,7 +338,7 @@ menus/createGame/plus
   offset: 0, 0
   index: -1
 
-atlas7.png
+atlas5.png
 size: 2048,512
 format: RGBA8888
 filter: Nearest,Nearest
@@ -399,7 +386,7 @@ menus/Inventory/inventoryTray
   offset: 0, 0
   index: -1
 
-atlas8.png
+atlas6.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -468,7 +455,7 @@ menus/loadGame/scrollBar
   offset: 0, 0
   index: -1
 
-atlas9.png
+atlas7.png
 size: 1024,64
 format: RGBA8888
 filter: Nearest,Nearest
