@@ -1,5 +1,7 @@
 package gameCode.Infrastructure;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import gameCode.Utilities.myMath;
 import gameCode.Utilities.myPair;
 
@@ -14,6 +16,7 @@ public class Entity {
     public String spriteName, drawMode, entityName;
     public myPair<Float, Float> scale;
     public Body body;
+
     public myPair<Float, Float> origin;
 
     ArrayList<Component> components;

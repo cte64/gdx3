@@ -21,15 +21,19 @@ public class Physics {
 
         if(ent.entityName.equals("hero"))
             bodyDef.type = BodyDef.BodyType.DynamicBody;
-        else
+        else {
             bodyDef.type = BodyDef.BodyType.StaticBody;
 
+        }
+
         bodyDef.position.set(ent.x_pos, ent.y_pos);
+
+
         Body body = b2world.createBody(bodyDef);
 
 
-
         ent.body = body;
+
         PolygonShape polygonShape = new PolygonShape();
 
         Vector2 origin = new Vector2();
@@ -39,8 +43,16 @@ public class Physics {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.3f;
+
         body.createFixture(fixtureDef);
         polygonShape.dispose();
+    }
+
+    public void subtractBody(Entity ent) {
+        if(ent == null || ent.body == null) return;
+        b2world.destroyBody(ent.body);
     }
 
 

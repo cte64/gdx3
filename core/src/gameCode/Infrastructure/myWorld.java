@@ -198,9 +198,16 @@ public class myWorld {
             if( myString.getField(ent.entityName, "type").equals( "tile") ) { Engine.get().getAssets().returnCoord(ent.spriteName); }
             ent.markForDeletion = true;
 
+
+            Engine.get().getPhysics().subtractBody(ent);
+
+
+
+
             entByName.remove(ent.entityName);
             entByZIndex.remove(ent);
             entList.remove(ent);
+
         }
         entitiesToBeDeleted.clear();
 
