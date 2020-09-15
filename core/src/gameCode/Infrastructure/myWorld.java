@@ -37,8 +37,8 @@ public class myWorld {
     private int numCells;
 
     //ViewPort parameters =========================================================================
-    private int viewPortWidth = 1000;
-    private int viewPortHeight = 700;
+    private int viewPortWidth = 800;
+    private int viewPortHeight = 600;
 
     //Time between frame ==========================================================================
     private float deltaTime = 0.0f;
@@ -199,7 +199,7 @@ public class myWorld {
             ent.markForDeletion = true;
 
 
-            Engine.get().getPhysics().subtractBody(ent);
+           // Engine.get().getPhysics().subtractBody(ent);
 
 
 
@@ -337,7 +337,7 @@ public class myWorld {
                         ent.bitMapX = tileXAbs;
                         ent.bitMapY = tileYAbs;
                         ent.deleteRange = -1;
-                        Engine.get().getPhysics().addBody(ent);
+                       // Engine.get().getPhysics().addBody(ent, 0, 0, tileSize, tileSize, "static", false);
                         entitiesToBeAdded.add(ent);
                     }
 

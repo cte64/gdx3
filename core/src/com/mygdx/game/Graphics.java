@@ -183,7 +183,7 @@ public class Graphics implements Disposable {
 
         //Draw the outlines of the Box2d collision box and the boundaries of the chunks =============
         drawOutlines();
-        b2debug.render(Engine.get().getPhysics().getb2World(), camera.combined);
+        //b2debug.render(Engine.get().getPhysics().getb2World(), camera.combined);
     }
 
     public void resize(int width, int height) {

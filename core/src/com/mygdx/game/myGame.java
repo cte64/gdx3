@@ -33,13 +33,28 @@ public class myGame extends ApplicationAdapter {
 		for(Entity ent: myWorld.get().getEntList()) { ent.updateType("input"); }
 		Collision.update();
 
+		for(Entity ent: myWorld.get().getEntList()) {
+			if(ent.markBody) {
+				if(ent.bodies.size() == 1) Engine.get().getPhysics().addGrid(ent);
+				ent.markBody = false;
+			}
+
+			else if(ent.markBody1) {
+				if(ent.bodies.size() != 1) Engine.get().getPhysics().subtractGrid(ent);
+				ent.markBody1 = false;
+			}
+		}
+
+
+
+
+
 		for(Entity ent: myWorld.get().getEntList()) { ent.updateType("logic"); }
 		for(Entity ent: myWorld.get().getEntList()) { ent.updateType("text"); }
 		for(Entity ent: myWorld.get().getEntList()) { ent.updateBody(); }
 
 
 		Engine.get().getPhysics().update();
-
 		Engine.get().getGraphics().update(Gdx.graphics.getDeltaTime());
 
 		fpsCounter(Gdx.graphics.getRawDeltaTime());

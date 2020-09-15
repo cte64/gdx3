@@ -1,8 +1,6 @@
 package gameCode.Infrastructure;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import gameCode.Utilities.myMath;
+import com.mygdx.game.PhysObj;
 import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
@@ -10,60 +8,57 @@ import java.util.ArrayList;
 
 public class Entity {
 
-    public float x_pos, y_pos, angle, scaleW, scaleH, velMag, velAng, lastGoodX, lastGoodY, lastGoodAngle;
-    public int bitMapX, bitMapY, z_pos, deleteRange, spriteOffsetX, spriteOffsetY;// -2 = false; -1 = delete at edge, > 0 =  delete out of range
-    public boolean moveable, drawable, markForDeletion, flip, cameraBound;
+    public float x_pos, y_pos, angle, velMag, velAng;
+    public int bitMapX, bitMapY, z_pos, deleteRange;// -2 = false; -1 = delete at edge, > 0 =  delete out of range
+    public boolean moveable, markForDeletion, flip;
     public String spriteName, drawMode, entityName;
     public myPair<Float, Float> scale;
-    public Body body;
-
+    public ArrayList<Body> bodies;
     public myPair<Float, Float> origin;
-
     ArrayList<Component> components;
     public float width;
     public float height;
+    public boolean markBody;
+    public boolean markBody1;
+
+
+    PhysObj physics;
 
     public void updateBody() {
-        if(body == null) {
+        if(bodies.size() == 0) {
             x_pos += velAng;
             y_pos += velMag;
         }
-
-        else {
-            x_pos = body.getPosition().x;
-            y_pos = body.getPosition().y;
+        else if(bodies.size() == 1) {
+            x_pos = bodies.get(0).getPosition().x;
+            y_pos = bodies.get(0).getPosition().y;
         }
     }
 
     public Entity() {
-        body = null;
+
+        physics = new PhysObj();
+        markBody1 = false;
+        bodies = new ArrayList<Body>();
         scale = new myPair(1.0f, 1.0f);
         x_pos = 0.0f;
         y_pos = 0.0f;
         angle = 0.0f;
-        scaleW = 0.0f;
-        scaleH = 0.0f;
         velMag = 0.0f;
         velAng = 0.0f;
-        lastGoodX = 0.0f;
-        lastGoodY = 0.0f;
-        lastGoodAngle = 0.0f;
         bitMapX = 0;
         bitMapY = 0;
         z_pos = 0;
         deleteRange = 0;
-        spriteOffsetX = 0;
-        spriteOffsetY = 0;
         moveable = false;
-        drawable = false;
         markForDeletion = false;
         flip = false;
-        cameraBound = false;
         spriteName = "";
         drawMode = "normal";
         entityName = "";
         components = new ArrayList<Component>();
         origin = new myPair(0.0f, 0.0f);
+        markBody = false;
     }
 
     public void addComponent(Component newComponent) { components.add(newComponent); }
