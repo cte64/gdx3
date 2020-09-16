@@ -6,13 +6,14 @@ import java.util.ArrayList;
 
 public class PhysObj {
 
+    public boolean setGrid;
+    public boolean gridActive;
 
-    private class bodyStruct {
-        boolean tile;
-    }
     public ArrayList<Body> bodies;
 
     public PhysObj() {
         bodies = new ArrayList<Body>();
+        setGrid = false;
+        gridActive = false;
     }
 }

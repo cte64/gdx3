@@ -20,10 +20,7 @@ public class Entity {
     public float width;
     public float height;
 
-    public boolean stuff;
-
     public Entity() {
-        stuff = false;
         scale = new myPair(1.0f, 1.0f);
         x_pos = 0.0f;
         y_pos = 0.0f;

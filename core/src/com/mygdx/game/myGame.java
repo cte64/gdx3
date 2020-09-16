@@ -30,9 +30,6 @@ public class myGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 
-
-
-
 		for(Entity ent: myWorld.get().getEntList()) { ent.updateType("input"); }
 		Collision.update();
 
@@ -40,14 +37,12 @@ public class myGame extends ApplicationAdapter {
 		for(Entity ent: myWorld.get().getEntList()) { ent.updateType("text"); }
 
 		Engine.get().getPhysics().update();
-		Engine.get().getPhysics().funny();
 
 		fpsCounter(Gdx.graphics.getRawDeltaTime());
 		myWorld.get().setDeltaTime(Gdx.graphics.getRawDeltaTime());
 		Engine.get().getInput().reset();
 
 		Engine.get().getGraphics().update(Gdx.graphics.getDeltaTime());
-
 	}
 
 	@Override

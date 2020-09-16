@@ -15,10 +15,6 @@ public class Physics {
 
     private World b2world;
     HashMap<Entity, PhysObj> entities;
-    //public ArrayList<Entity> toBeAdded;
-    public Map<Entity, Entity> toBeAdded;
-    //public ArrayList<Entity> toBeDeleted;
-    public Map<Entity, Entity> toBeDeleted;
 
     public void addEntity(Entity ent) {
         entities.put(ent, new PhysObj());
@@ -29,13 +25,9 @@ public class Physics {
         b2world = new World(new Vector2(0, 0), true);
         b2world.setContactListener(new Collision1());
         entities = new HashMap<Entity, PhysObj>();
-        //toBeAdded = new ArrayList<Entity>();
-        toBeAdded = new ConcurrentHashMap<>();
-        //toBeDeleted = new ArrayList<Entity>();
-        toBeDeleted = new ConcurrentHashMap<>();
     }
 
-    public void addBody(Entity ent, int x, int y, float w, float h, String type, boolean active) {
+    public void addBody(Entity ent, int x, int y, float w, float h, String type, boolean active, int filter) {
 
         if(ent == null) return;
         w /= 2.0f;
@@ -58,6 +50,7 @@ public class Physics {
         fixtureDef.shape = polygonShape;
         fixtureDef.density = 1.0f;
         fixtureDef.friction = 0.3f;
+        fixtureDef.filter.categoryBits = (short)filter;
         body.createFixture(fixtureDef).setUserData(ent);
 
         if(!active) {
@@ -70,13 +63,11 @@ public class Physics {
     }
 
     public void addGrid(Entity ent) {
-        int width = 20;
+        int width = 10;
         for(int y = 0; y < myWorld.get().tileSize; y += width) {
         for(int x = 0; x < myWorld.get().tileSize; x += width) {
-            addBody(ent, x, y, width, width, "static", true);
+            addBody(ent, x, y, width, width, "static", true, 2);
         }}
-
-        System.out.println( entities.get(ent).bodies.size());
     }
 
     public void subtractGrid(Entity ent) {
@@ -85,7 +76,7 @@ public class Physics {
             b2world.destroyBody( entities.get(ent).bodies.get(x) );
         }
         entities.get(ent).bodies.clear();
-        addBody(ent, 0, 0, myWorld.get().tileSize, myWorld.get().tileSize, "static", false);
+        addBody(ent, -1, -1, myWorld.get().tileSize + 2, myWorld.get().tileSize + 2, "static", false, 1);
     }
 
     public void update() {
@@ -95,7 +86,7 @@ public class Physics {
 
             for(Body body: entities.get(ent).bodies) {
                 body.setLinearVelocity(ent.getXVelocity(), ent.getYVelocity());
-                body.setAngularVelocity(ent.angle);
+                body.setAngularVelocity(0);
 
                 if(ent.entityName.equals("hero")) {
                     ent.x_pos = body.getPosition().x;
@@ -103,6 +94,26 @@ public class Physics {
                 }
             }
         }
+
+
+        for(Entity ent: entities.keySet()) {
+
+            PhysObj obj = entities.get(ent);
+            if(obj.setGrid == obj.gridActive) continue;
+
+            if(obj.setGrid) {
+                obj.gridActive = true;
+                addGrid(ent);
+                System.out.println("On");
+            }
+
+            else {
+                obj.gridActive = false;
+                subtractGrid(ent);
+                System.out.println("Off  --");
+            }
+        }
+
 
         b2world.step(myWorld.get().getDeltaTime(), 8, 3);
 
@@ -113,25 +124,10 @@ public class Physics {
 
     public World getb2World() { return b2world; }
 
-    public void funny() {
-
-        for(Entity ent: toBeDeleted.values()) {
-            if(ent.stuff) {
-                subtractGrid(ent);
-                ent.stuff = false;
-            }
-        }
-        toBeDeleted.clear();
-
-        for(Entity ent: toBeAdded.values()) {
-            if(!ent.stuff) {
-                addGrid(ent);
-                ent.stuff = true;
-            }
-        }
-        toBeAdded.clear();
-
+    public void setGridFlag(Entity ent, boolean flag) {
+        if(!entities.containsKey(ent)) return;
+        if(!entities.get(ent).setGrid && flag) entities.get(ent).setGrid = true;
+        else if(entities.get(ent).setGrid && !flag) entities.get(ent).setGrid = false;
     }
-
 
 }
