@@ -31,6 +31,7 @@ public class HeroInput extends Component {
         if(Gdx.input.isKeyPressed(Input.Keys.U)) { Engine.get().getGraphics().getCameraHelper().addZoom(0.01f); }
         if(Gdx.input.isKeyPressed(Input.Keys.I)) { Engine.get().getGraphics().getCameraHelper().addZoom(-0.01f); }
 
+
         float a = 0.1f;
         if(Gdx.input.isKeyPressed(Input.Keys.N)) { entity.angle += a; }
         if(Gdx.input.isKeyPressed(Input.Keys.M)) { entity.angle -= a; }

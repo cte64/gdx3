@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Disposable;
 import gameCode.Infrastructure.*;
 import gameCode.Menus.TextComponent;
+import gameCode.Utilities.myMath;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -108,22 +109,18 @@ public class Graphics implements Disposable {
     }
 
     public void update(float deltaTime) {
-
-
+        
         //Clear the screen to a color =================================================
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
         //Sort the Entities by z-Index ================================================
         Collections.sort(myWorld.get().getEntByZIndex(), new sorter());
-
 
         //Camera Stuff ================================================================
         cameraHelper.update();
         cameraHelper.applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
-
 
         //Batch Rendering ============================================================
         batch.begin();
@@ -132,12 +129,12 @@ public class Graphics implements Disposable {
 
                 if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName)) {
 
-
-                    batch.draw(Engine.get().getAssets().spriteMap.get(ent.spriteName),
-                               ent.x_pos,
-                               ent.y_pos,
-                               ent.getWidth(),
-                               ent.getHeight());
+                    batch.draw( Engine.get().getAssets().spriteMap.get(ent.spriteName),
+                                ent.x_pos, ent.y_pos,
+                            ent.getWidth()/2, ent.getHeight()/2,
+                                ent.getWidth(), ent.getHeight(),
+                                1.0f, 1.0f,
+                                myMath.toDeg( ent.angle));
 
                 }
 

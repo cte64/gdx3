@@ -88,7 +88,7 @@ public class Entity {
         return (float)(velMag * Math.sin(velAng));
     }
 
-    public void accelerate(float mag, float angle) {
+    public void accelerate(float mag, float ang) {
 
         if(mag == -1.0f) {
             velMag = 0;
@@ -96,13 +96,13 @@ public class Entity {
             return;
         }
 
-        angle = myMath.toRad(angle);
+        ang = myMath.toRad(ang);
 
         float currentX = getXVelocity();
         float currentY = getYVelocity();
 
-        float addX = (float)(mag*Math.cos(angle));
-        float addY = (float)(mag*Math.sin(angle));
+        float addX = (float)(mag*Math.cos(ang));
+        float addY = (float)(mag*Math.sin(ang));
 
         float newX = currentX + addX;
         float newY = currentY + addY;
