@@ -3,8 +3,10 @@ package com.mygdx.game;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import gameCode.Infrastructure.Chunk;
 import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.myWorld;
+import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,7 +68,14 @@ public class Physics {
         int width = 10;
         for(int y = 0; y < myWorld.get().tileSize; y += width) {
         for(int x = 0; x < myWorld.get().tileSize; x += width) {
-            addBody(ent, x, y, width, width, "static", true, 2);
+
+            myPair<Integer, Integer> key = Chunk.makeKeyFromPixel((int)ent.x_pos, (int)ent.y_pos);
+            int xTile = (int)((ent.x_pos / myWorld.get().tileSize) % myWorld.get().tilesPerChunk);
+            int yTile = (int)((ent.y_pos / myWorld.get().tileSize) % myWorld.get().tilesPerChunk);
+
+            if(!myWorld.get().getChunk(key).isRegionEmpty(xTile, yTile, x, y, width, width)) {
+                addBody(ent, x, y, width, width, "static", true, 2);
+            }
         }}
     }
 
@@ -128,6 +137,16 @@ public class Physics {
         if(!entities.containsKey(ent)) return;
         if(!entities.get(ent).setGrid && flag) entities.get(ent).setGrid = true;
         else if(entities.get(ent).setGrid && !flag) entities.get(ent).setGrid = false;
+    }
+
+    public void deleteEnt(Entity ent) {
+        if(!entities.containsKey(ent)) return;
+
+        for(Body body: entities.get(ent).bodies) {
+            b2world.destroyBody(body);
+        }
+
+        entities.remove(ent);
     }
 
 }

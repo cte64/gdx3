@@ -12,8 +12,6 @@ public class Chunk {
 
 
     private String chunkName;
-
-
     private class Tile {
         public Pixmap image;
         public myString terrainData;
@@ -85,6 +83,27 @@ public class Chunk {
             retVal.data += tile.terrainData.data + "\n";
         }
         return retVal;
+    }
+
+    public boolean isRegionEmpty(int xTile, int yTile, int xStart, int yStart, int w, int h) {
+
+        if(isImageBlank(xTile, yTile)) return true;
+
+        int index = (yTile * myWorld.get().tilesPerChunk) + xTile;
+        if(index < 0 || index > tiles.size() - 1) return true;
+
+        char emptyChar = Pixel.getCharFromType("empty");
+        if(tiles.get(index).terrainData.data.length() == 1
+           && tiles.get(index).terrainData.data.charAt(0) == emptyChar) return true;
+
+        for(int y = yStart; y < yStart + h; y++) {
+        for(int x = xStart; x < xStart + w; x++) {
+            int pixIndex = ((myWorld.get().tileSize - 1 - y) * myWorld.get().tileSize) + x;
+            if(tiles.get(index).terrainData.data.charAt(pixIndex) != emptyChar)
+                return false;
+        }}
+
+        return true;
     }
 
     //These are utility functions for mapping coordinates =================================================

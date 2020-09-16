@@ -32,8 +32,5 @@ public class DesktopLauncher {
 		config.foregroundFPS = 60; // Setting to 0 disables foreground fps throttling
 		config.backgroundFPS = 60; // Setting to 0 disables background fps throttling
 		new LwjglApplication(new myGame(), config);
-
-
-
 	}
 }

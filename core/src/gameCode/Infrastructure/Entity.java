@@ -110,7 +110,7 @@ public class Entity {
         float updateMag = (float)Math.sqrt(newX*newX + newY*newY);
         float updateAng = myMath.toRad( myMath.angle1(newX, newY) );
 
-        velMag = myMath.clamp(updateMag, 0.0f, 200.0f);
+        velMag = myMath.clamp(updateMag, 0.0f, 500.0f);
         velAng = updateAng;
     }
 }

@@ -9,7 +9,7 @@ import gameCode.Infrastructure.*;
 public class HeroInput extends Component {
 
 
-    float deltaX = 5.0f;
+    float deltaX = 10.0f;
     
     private boolean up;
     private boolean down;

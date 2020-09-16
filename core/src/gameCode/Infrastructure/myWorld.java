@@ -199,10 +199,7 @@ public class myWorld {
             ent.markForDeletion = true;
 
 
-           // Engine.get().getPhysics().toBeDeleted.put(ent, ent);
-
-
-
+            Engine.get().getPhysics().deleteEnt(ent);
 
             entByName.remove(ent.entityName);
             entByZIndex.remove(ent);
