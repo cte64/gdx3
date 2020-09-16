@@ -42,8 +42,7 @@ public class MakeEntity {
             ent.addComponent(new HeroInput());
             ent.width = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).first;
             ent.height = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).second;
-           // ent.origin.first = ent.width / 2;
-           // ent.origin.second = ent.height / 2;
+
 
             //ent.addComponent(new PlaceTerrain());
             //ent.addComponent(new InventoryManager());

@@ -47,15 +47,6 @@ public class Graphics implements Disposable {
 
     public CameraHelper getCameraHelper() { return cameraHelper; }
 
-    private void setCamera1() {
-        //Entity hero = myWorld.get().getCamera();
-        //if(hero == null) return;
-        //float xPos = hero.x_pos;
-       // float yPos = hero.y_pos;
-       // cameraHelper.setPosition(xPos, yPos);
-        //cameraHelper.update();
-    }
-
     private void drawOutlines() {
 
         shapeRenderer.setProjectionMatrix(camera.combined);
@@ -109,7 +100,7 @@ public class Graphics implements Disposable {
     }
 
     public void update(float deltaTime) {
-        
+
         //Clear the screen to a color =================================================
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -177,7 +168,6 @@ public class Graphics implements Disposable {
             }
         hudBatch.end();
 
-
         //Draw the outlines of the Box2d collision box and the boundaries of the chunks =============
         drawOutlines();
         b2debug.render(Engine.get().getPhysics().getb2World(), camera.combined);
@@ -186,6 +176,10 @@ public class Graphics implements Disposable {
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
+    }
+
+    public Entity getCamera() {
+        return cameraHelper.getTarget();
     }
 
     @Override

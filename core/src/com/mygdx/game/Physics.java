@@ -86,7 +86,6 @@ public class Physics {
             if(!entities.containsKey(ent)) continue;
             for(Body body: entities.get(ent).bodies) {
                 if(body.getType().equals(BodyDef.BodyType.StaticBody)) continue;
-
                 body.setLinearVelocity(ent.getXVelocity(), ent.getYVelocity());
                 body.setTransform(body.getPosition(), ent.angle);
                 ent.x_pos = body.getPosition().x - ent.getWidth()/2;
