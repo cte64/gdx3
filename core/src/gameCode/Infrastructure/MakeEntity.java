@@ -46,7 +46,7 @@ public class MakeEntity {
             //ent.addComponent(new PlaceTerrain());
             //ent.addComponent(new InventoryManager());
             Engine.get().getGraphics().getCameraHelper().setTarget(ent);
-          //  Engine.get().getPhysics().addBody(ent, 0, 0, (int)ent.getWidth(), (int)ent.getHeight(), "dynamic", true);
+            Engine.get().getPhysics().addBody(ent, 0, 0, (int)ent.getWidth(), (int)ent.getHeight(), "dynamic", true);
             myWorld.get().setCamera(ent);
             myWorld.get().addSiftingFrame(ent, 0, 0);
         }

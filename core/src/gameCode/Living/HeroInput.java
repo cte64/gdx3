@@ -9,13 +9,12 @@ import gameCode.Infrastructure.*;
 public class HeroInput extends Component {
 
 
-    float deltaX = 20.5f;
+    float deltaX = 5.0f;
     
     private boolean up;
     private boolean down;
 
     public HeroInput() {
-        
         type = "input";
         up = false;
         down = false;
@@ -23,11 +22,11 @@ public class HeroInput extends Component {
 
     public void update(Entity entity) {
 
-        if(Gdx.input.isKeyPressed(Input.Keys.A)) { entity.velAng -= deltaX; }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)) { entity.velAng += deltaX; }
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) { entity.velMag += deltaX; }
-        if(Gdx.input.isKeyPressed(Input.Keys.S)) { entity.velMag -= deltaX; }
-        if(Gdx.input.isKeyPressed(Input.Keys.P)) { entity.velMag = 0; entity.velAng = 0; }
+        if(Gdx.input.isKeyPressed(Input.Keys.A)) { entity.accelerate(deltaX, 180.0f); }
+        if(Gdx.input.isKeyPressed(Input.Keys.D)) { entity.accelerate(deltaX, 0.0f); }
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) { entity.accelerate(deltaX, 90.0f); }
+        if(Gdx.input.isKeyPressed(Input.Keys.S)) { entity.accelerate(deltaX, 270.0f); }
+        if(Gdx.input.isKeyPressed(Input.Keys.P)) { entity.accelerate(-1.0f, 0); }
 
         if(Gdx.input.isKeyPressed(Input.Keys.U)) { Engine.get().getGraphics().getCameraHelper().addZoom(0.01f); }
         if(Gdx.input.isKeyPressed(Input.Keys.I)) { Engine.get().getGraphics().getCameraHelper().addZoom(-0.01f); }
@@ -35,10 +34,5 @@ public class HeroInput extends Component {
         float a = 0.1f;
         if(Gdx.input.isKeyPressed(Input.Keys.N)) { entity.angle += a; }
         if(Gdx.input.isKeyPressed(Input.Keys.M)) { entity.angle -= a; }
-
-        entity.bodies.get(0).setLinearVelocity(entity.velAng, entity.velMag);
-        entity.bodies.get(0).setAngularVelocity(entity.angle);
-
-
     }
 }

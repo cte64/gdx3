@@ -199,7 +199,7 @@ public class myWorld {
             ent.markForDeletion = true;
 
 
-           // Engine.get().getPhysics().subtractBody(ent);
+            Engine.get().getPhysics().toBeDeleted.put(ent, ent);
 
 
 
@@ -337,7 +337,7 @@ public class myWorld {
                         ent.bitMapX = tileXAbs;
                         ent.bitMapY = tileYAbs;
                         ent.deleteRange = -1;
-                       // Engine.get().getPhysics().addBody(ent, 0, 0, tileSize, tileSize, "static", false);
+                        Engine.get().getPhysics().addBody(ent, 0, 0, tileSize, tileSize, "static", true);
                         entitiesToBeAdded.add(ent);
                     }
 
