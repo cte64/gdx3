@@ -23,6 +23,7 @@ public class Graphics implements Disposable {
     private SpriteBatch batch;
     private SpriteBatch hudBatch;
     private Box2DDebugRenderer b2debug;
+    private int viewPortWidth, viewPortHeight;
 
     //this is for sorting them by zPos
     public class sorter implements Comparator<Entity> {
@@ -43,6 +44,8 @@ public class Graphics implements Disposable {
         batch = new SpriteBatch();
         hudBatch = new SpriteBatch();
         b2debug = new Box2DDebugRenderer();
+        viewPortWidth = 800;
+        viewPortHeight = 600;
     }
 
     public CameraHelper getCameraHelper() { return cameraHelper; }
@@ -180,6 +183,20 @@ public class Graphics implements Disposable {
 
     public Entity getCamera() {
         return cameraHelper.getTarget();
+    }
+
+    public int getVPWidth() {
+        return viewPortWidth;
+    }
+
+    public int getVPHeight() { return viewPortHeight; }
+
+    public void setVPWidth(int w) {
+        viewPortWidth = w;
+    }
+
+    public void setVPHeight(int h) {
+        viewPortHeight = h;
     }
 
     @Override
