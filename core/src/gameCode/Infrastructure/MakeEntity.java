@@ -40,11 +40,11 @@ public class MakeEntity {
             ent.z_pos = 20;
             ent.drawMode = "normal";
             ent.addComponent(new HeroInput());
-            ent.width = 40;
-            ent.height = 56;
+            ent.width = 38;
+            ent.height = 54;
 
 
-            //ent.addComponent(new PlaceTerrain());
+            ent.addComponent(new PlaceTerrain());
             //ent.addComponent(new InventoryManager());
             Engine.get().getGraphics().getCameraHelper().setTarget(ent);
             Engine.get().getPhysics().addBody2(ent, 0, 0, ent.width, ent.height, "dynamic", true, 1);

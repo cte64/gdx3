@@ -45,7 +45,7 @@ public class Physics {
         origin.x = 0;
         origin.y = 0;
 
-        int stepX = 8;
+        int stepX = 9;
         int stepY = 10;
 
         Vector2[] vert = new Vector2[6];
@@ -98,7 +98,7 @@ public class Physics {
     }
 
     private void addGrid(Entity ent) {
-        int width = 3;
+        int width = 2;
         for(int y = 0; y < myWorld.get().tileSize; y += width) {
         for(int x = 0; x < myWorld.get().tileSize; x += width) {
 
@@ -126,7 +126,10 @@ public class Physics {
             if(!entities.containsKey(ent)) continue;
             for(Body body: entities.get(ent).bodies) {
                 if(body.getType().equals(BodyDef.BodyType.StaticBody)) continue;
-                body.setLinearVelocity(ent.getXVelocity(), ent.getYVelocity());
+                body.setLinearVelocity(body.getLinearVelocity().x + ent.getXVelocity(), body.getLinearVelocity().y + ent.getYVelocity());
+
+                ent.accelerate(-1.0f, 0);
+
                 body.setTransform(body.getPosition(), ent.angle);
                 ent.x_pos = body.getPosition().x - ent.getWidth()/2;
                 ent.y_pos = body.getPosition().y - ent.getHeight()/2;
