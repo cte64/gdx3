@@ -45,7 +45,7 @@ public class MakeEntity {
 
 
             ent.addComponent(new PlaceTerrain());
-            //ent.addComponent(new InventoryManager());
+            ent.addComponent(new InventoryManager());
             Engine.get().getGraphics().getCameraHelper().setTarget(ent);
             Engine.get().getPhysics().addBody2(ent, 0, 0, ent.width, ent.height, "dynamic", true, 1);
             myWorld.get().setCamera(ent);

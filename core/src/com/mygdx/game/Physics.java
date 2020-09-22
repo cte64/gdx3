@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import box2dLight.RayHandler;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -15,12 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Physics {
 
-    private World b2world;
+    public World b2world = null;
     HashMap<Entity, PhysObj> entities;
-
-    private void addEntity(Entity ent) {
-        entities.put(ent, new PhysObj());
-    }
 
     public Physics() {
         if (b2world != null) b2world.dispose();
@@ -28,6 +25,12 @@ public class Physics {
         b2world.setContactListener(new Collision1());
         entities = new HashMap<Entity, PhysObj>();
     }
+
+    private void addEntity(Entity ent) {
+        entities.put(ent, new PhysObj());
+    }
+
+
 
     public void addBody2(Entity ent, int x, int y, float w, float h, String type, boolean active, int filter) {
 
@@ -122,6 +125,7 @@ public class Physics {
     }
 
     public void update() {
+
         for(Entity ent: myWorld.get().getEntList()) {
             if(!entities.containsKey(ent)) continue;
             for(Body body: entities.get(ent).bodies) {
@@ -150,7 +154,9 @@ public class Physics {
         b2world.step(myWorld.get().getDeltaTime(), 8, 3);
     }
 
-    public World getb2World() { return b2world; }
+    public World getb2World() {
+        return b2world;
+    }
 
     public void setGridFlag(Entity ent, boolean flag) {
         if(!entities.containsKey(ent)) return;

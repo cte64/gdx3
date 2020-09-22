@@ -6,11 +6,11 @@ public class Engine {
     private static Engine engineInstance = null;
 
     private Engine() {
-        graphics = new Graphics();
+        physics = new Physics();
         input = new InputAL();
         assets = new Assets();
         fileSystem = new FileSystem();
-        physics = new Physics();
+        graphics = new Graphics();
     }
 
     public static Engine get() {
@@ -20,11 +20,11 @@ public class Engine {
     }
 
     //All the components this engine is made out of =============================================
+    Physics physics;
     Graphics graphics;
     InputAL input;
     Assets assets;
     FileSystem fileSystem;
-    Physics physics;
 
     //getters ====================================================================================
     public Graphics getGraphics() { return graphics; }

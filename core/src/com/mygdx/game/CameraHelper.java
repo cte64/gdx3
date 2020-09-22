@@ -10,8 +10,8 @@ import gameCode.Utilities.myMath;
 public class CameraHelper {
     private static final String TAG = CameraHelper.class.getName();
     private final float FOLLOW_SPEED = 4.0f;
-    private final float MAX_ZOOM_IN = 0.25f;
-    private final float MAX_ZOOM_OUT = 7.0f;
+    private final float MAX_ZOOM_IN = 0.20f;
+    private final float MAX_ZOOM_OUT = 7.5f;
     private Vector2 position;
     private float zoom;
     private Entity target;

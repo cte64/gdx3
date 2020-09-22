@@ -35,12 +35,7 @@ public class HeroInput extends Component {
         if(Gdx.input.isKeyPressed(Input.Keys.W)) { entity.accelerate(deltaX, 90.0f); }
         if(Gdx.input.isKeyPressed(Input.Keys.S)) { entity.accelerate(deltaX, 270.0f); }
         if(Gdx.input.isKeyPressed(Input.Keys.P)) { entity.accelerate(-1.0f, 0); }
-        if(Gdx.input.isKeyPressed(Input.Keys.U)) { Engine.get().getGraphics().getCameraHelper().addZoom(0.01f); }
-        if(Gdx.input.isKeyPressed(Input.Keys.I)) { Engine.get().getGraphics().getCameraHelper().addZoom(-0.01f); }
-
-
-        float a = 0.02f;
-        if(Gdx.input.isKeyPressed(Input.Keys.N)) { entity.angle += a; }
-        if(Gdx.input.isKeyPressed(Input.Keys.M)) { entity.angle -= a; }
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT_BRACKET)) { Engine.get().getGraphics().getCameraHelper().addZoom(0.01f); }
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT_BRACKET)) { Engine.get().getGraphics().getCameraHelper().addZoom(-0.01f); }
     }
 }

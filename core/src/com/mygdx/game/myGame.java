@@ -47,7 +47,7 @@ public class myGame extends ApplicationAdapter {
 
 	@Override
 	public void resize(int width, int height) {
-
+		Engine.get().getGraphics().resize(width, height);
 	}
 
 	@Override

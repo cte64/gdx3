@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -37,7 +38,7 @@ public class Graphics implements Disposable {
 
     public void init() {
         viewPortWidth = 900;
-        viewPortHeight = 600;
+        viewPortHeight = 650;
         cameraHelper = new CameraHelper();
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera(viewPortWidth, viewPortHeight);
@@ -100,6 +101,13 @@ public class Graphics implements Disposable {
 
     public Vector3 getMouse() {
         return camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+    }
+
+    public void resize(int w, int h) {
+        viewPortWidth = w;
+        viewPortHeight = h;
+        camera.viewportWidth = w;
+        camera.viewportHeight = h;
     }
 
     public void update(float deltaTime) {
@@ -177,12 +185,7 @@ public class Graphics implements Disposable {
 
         //Draw the outlines of the Box2d collision box and the boundaries of the chunks =============
         drawOutlines();
-        b2debug.render(Engine.get().getPhysics().getb2World(), camera.combined);
-    }
-
-    public void resize(int width, int height) {
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
+        //b2debug.render(Engine.get().getPhysics().getb2World(), camera.combined);
     }
 
     public Entity getCamera() {
