@@ -17,7 +17,6 @@ public class myMath {
         }
         return true;
     }
-
     public static float angle1(float x, float y) {
         float angle = (float)(Math.atan2(y, x)*180.0/PI);
         if(angle < 0) angle += 360.0;

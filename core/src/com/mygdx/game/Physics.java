@@ -29,6 +29,45 @@ public class Physics {
         entities = new HashMap<Entity, PhysObj>();
     }
 
+    public void addBody2(Entity ent, int x, int y, float w, float h, String type, boolean active, int filter) {
+
+        if(ent == null) return;
+
+        BodyDef bodyDef = new BodyDef();
+        if(type.equals("static")) bodyDef.type = BodyDef.BodyType.StaticBody;
+        else if(type.equals("dynamic")) bodyDef.type = BodyDef.BodyType.DynamicBody;
+
+        bodyDef.position.set(w/2 + ent.x_pos + x, h/2 + ent.y_pos + y);
+        Body body = b2world.createBody(bodyDef);
+
+        PolygonShape polygonShape = new PolygonShape();
+        Vector2 origin = new Vector2();
+        origin.x = 0;
+        origin.y = 0;
+
+        int stepX = 8;
+        int stepY = 10;
+
+        Vector2[] vert = new Vector2[6];
+        vert[0] = new Vector2(w/2, h/2);
+        vert[1] = new Vector2(-w/2, h/2);
+        vert[2] = new Vector2(-w/2, -h/2 + stepY);
+        vert[3] = new Vector2(-w/2 + stepX, -h/2);
+        vert[4] = new Vector2(w/2 - stepX, -h/2);
+        vert[5] = new Vector2(w/2, -h/2 + stepY);
+        polygonShape.set(vert);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.filter.categoryBits = (short)filter;
+        body.createFixture(fixtureDef).setUserData(ent);
+        if(!active) { for(Fixture f: body.getFixtureList()) { f.setSensor(true); } }
+        polygonShape.dispose();
+
+        if(!entities.containsKey(ent)) addEntity(ent);
+        entities.get(ent).bodies.add(body);
+    }
+
     public void addBody(Entity ent, int x, int y, float w, float h, String type, boolean active, int filter) {
 
         if(ent == null) return;
@@ -48,6 +87,7 @@ public class Physics {
         polygonShape.setAsBox(w/2, h/2, origin, 0);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
+        fixtureDef.friction = 0.3f;
         fixtureDef.filter.categoryBits = (short)filter;
         body.createFixture(fixtureDef).setUserData(ent);
         if(!active) { for(Fixture f: body.getFixtureList()) { f.setSensor(true); } }
@@ -58,7 +98,7 @@ public class Physics {
     }
 
     private void addGrid(Entity ent) {
-        int width = 10;
+        int width = 3;
         for(int y = 0; y < myWorld.get().tileSize; y += width) {
         for(int x = 0; x < myWorld.get().tileSize; x += width) {
 

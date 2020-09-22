@@ -36,10 +36,6 @@ public class myWorld {
     private int numPixels;
     private int numCells;
 
-    //ViewPort parameters =========================================================================
-    private int viewPortWidth = 800;
-    private int viewPortHeight = 600;
-
     //Time between frame ==========================================================================
     private float deltaTime = 0.0f;
 
@@ -63,8 +59,6 @@ public class myWorld {
     public int getNumPixels() { return numPixels; }
     public int getNumBlocks() { return numBlocks; }
     public int getNumCells() { return numCells; }
-    public int getViewPortWidth() { return viewPortWidth; }
-    public int getViewPortHeight() { return viewPortHeight; }
     public float getDeltaTime() { return deltaTime; }
     public LinkedList<Entity> getEntList() { return entList; }
     public Entity getCamera() { return camera; }
@@ -94,8 +88,6 @@ public class myWorld {
 
     //SETTERS ======================================================================================
     public void setDeltaTime(float newDelta) { deltaTime = newDelta; }
-    public void setViewPortWidth(int newWidth) { viewPortWidth = newWidth; }
-    public void setViewPortHeight(int newHeight) { viewPortHeight = newHeight; }
     public void addSiftingFrame(Entity ent, int newWidth, int newHeight) {
         FrameStruct newFrame = new FrameStruct();
         newFrame.width = newWidth;
@@ -163,8 +155,8 @@ public class myWorld {
 
                 int width, height;
                 if(frame.width == 0 && frame.height == 0) {
-                    width = (int)Math.ceil((viewPortWidth/tileSize)/2.0);
-                    height = (int)Math.ceil((viewPortHeight / tileSize)/2.0);
+                    width = (int)Math.ceil((Engine.get().getGraphics().getVPWidth()/tileSize)/2.0);
+                    height = (int)Math.ceil((Engine.get().getGraphics().getVPHeight() / tileSize)/2.0);
                 }
                 else {
                     width = frame.width;
@@ -196,7 +188,6 @@ public class myWorld {
         for(Entity ent: entitiesToBeDeleted) {
             if(ent == null) continue;
             if( myString.getField(ent.entityName, "type").equals( "tile") ) { Engine.get().getAssets().returnCoord(ent.spriteName); }
-            ent.markForDeletion = true;
 
 
             Engine.get().getPhysics().deleteEnt(ent);
@@ -331,8 +322,6 @@ public class myWorld {
                         ent.y_pos = tileYAbs*tileSize;
                         ent.width = tileSize;
                         ent.height = tileSize;
-                        ent.bitMapX = tileXAbs;
-                        ent.bitMapY = tileYAbs;
                         ent.deleteRange = -1;
                         Engine.get().getPhysics().addBody(ent, -1, -1, tileSize + 2, tileSize + 2, "static", false, (short)1);
                         entitiesToBeAdded.add(ent);

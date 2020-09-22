@@ -58,7 +58,7 @@ public class ScrollList {
     }
 
     public boolean isLeftClicked(String name) {
-        int mouseY = myWorld.get().getViewPortHeight() - Engine.get().getInput().getMouseY();
+        int mouseY = Engine.get().getGraphics().getVPHeight() - Engine.get().getInput().getMouseY();
         if(boundCheck(mouseY) &&
            menuMngr.getEnt(name).drawMode.equals("hud") &&
            menuMngr.isLeftClicked(name))  return true;
@@ -66,7 +66,7 @@ public class ScrollList {
     }
 
     public boolean hover(String name) {
-        int mouseY = myWorld.get().getViewPortHeight() - Engine.get().getInput().getMouseY();
+        int mouseY = Engine.get().getGraphics().getVPHeight() - Engine.get().getInput().getMouseY();
         if(boundCheck(mouseY) && menuMngr.hover(name)) return true;
         else return false;
     }
@@ -109,7 +109,7 @@ public class ScrollList {
                 adjBot += ent.y_pos;
             }
 
-            float mouseY = myWorld.get().getViewPortHeight() - Engine.get().getInput().getMouseY();
+            float mouseY = Engine.get().getGraphics().getVPHeight() - Engine.get().getInput().getMouseY();
             float sbHeight = menuMngr.getEnt(scrollBar).getHeight();
             float totalLength = adjBot - adjTop - sbHeight;
             float sbHeightComp = (sbHeight / 2.0f) / totalLength;

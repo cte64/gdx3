@@ -12,6 +12,8 @@ public class Collision1 implements ContactListener {
 
         Fixture fa = contact.getFixtureA();
         Fixture fb = contact.getFixtureB();
+
+
         if(fa == null || fb == null) return;
         if(fa.getUserData() == null || fb.getUserData() == null) return;
 

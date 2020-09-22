@@ -53,7 +53,7 @@ public class Coordinates {
         float pR = (float)Math.atan2( (-yUn + yMid), (xUn - xMid) );
         if(pR < 0) pR += 2* myMath.PI;
 
-        float pA = -myMath.toRad(ent.angle);
+        float pA = (ent.angle);
         float xN = (float)(xMid + h*Math.cos( pR + pA));
         float yN = (float)(yMid + h*Math.sin( pR + pA));
 

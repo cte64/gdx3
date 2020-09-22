@@ -89,14 +89,14 @@ public class InputAL {
 
     public int getMouseX() {
         int mouseX = Gdx.input.getX();
-        mouseX = myMath.clamp(mouseX, 0, myWorld.get().getViewPortWidth() - 1);
+        mouseX = myMath.clamp(mouseX, 0, Engine.get().getGraphics().getVPWidth() - 1);
         return mouseX;
     }
 
     public int getMouseY() {
         int mouseY = Gdx.input.getY();
-        mouseY = myWorld.get().getViewPortHeight() - mouseY;
-        mouseY = myMath.clamp(mouseY, 0, myWorld.get().getViewPortHeight() - 1);
+        mouseY = Engine.get().getGraphics().getVPHeight() - mouseY;
+        mouseY = myMath.clamp(mouseY, 0, Engine.get().getGraphics().getVPHeight() - 1);
         return mouseY;
     }
 

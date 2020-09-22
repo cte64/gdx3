@@ -36,16 +36,16 @@ public class Graphics implements Disposable {
     }
 
     public void init() {
+        viewPortWidth = 900;
+        viewPortHeight = 600;
         cameraHelper = new CameraHelper();
         shapeRenderer = new ShapeRenderer();
-        camera = new OrthographicCamera(myWorld.get().getViewPortWidth(), myWorld.get().getViewPortHeight());
+        camera = new OrthographicCamera(viewPortWidth, viewPortHeight);
         camera.position.set(0, 0, 0);
         camera.update();
         batch = new SpriteBatch();
         hudBatch = new SpriteBatch();
         b2debug = new Box2DDebugRenderer();
-        viewPortWidth = 800;
-        viewPortHeight = 600;
     }
 
     public CameraHelper getCameraHelper() { return cameraHelper; }
@@ -123,13 +123,18 @@ public class Graphics implements Disposable {
 
                 if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName)) {
 
-                    batch.draw( Engine.get().getAssets().spriteMap.get(ent.spriteName),
+                    TextureRegion reg = Engine.get().getAssets().spriteMap.get(ent.spriteName);
+                    reg.setRegionX(reg.getRegionX() + ent.spriteOffsetX);
+                    reg.setRegionY(reg.getRegionY() + ent.spriteOffsetY);
+                    reg.setRegionWidth((int)ent.width);
+                    reg.setRegionHeight((int)ent.height);
+
+                    batch.draw( reg,
                                 ent.x_pos, ent.y_pos,
                             ent.getWidth()/2, ent.getHeight()/2,
-                                ent.getWidth(), ent.getHeight(),
+                                ent.width, ent.height,
                                 1.0f, 1.0f,
                                 myMath.toDeg( ent.angle));
-
                 }
 
                 /*
@@ -152,7 +157,6 @@ public class Graphics implements Disposable {
             for(Entity ent: myWorld.get().getEntByZIndex()) {
 
                 if(ent.drawMode != "hud") continue;
-
 
                 if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName)) {
                     hudBatch.draw(Engine.get().getAssets().spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos, ent.getWidth(), ent.getHeight());

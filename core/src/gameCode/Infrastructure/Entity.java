@@ -9,16 +9,21 @@ import java.util.ArrayList;
 
 public class Entity {
 
-    public float x_pos, y_pos, angle;
-    private float velMag, velAng;
-    public int bitMapX, bitMapY, z_pos, deleteRange;// -2 = false; -1 = delete at edge, > 0 =  delete out of range
-    public boolean markForDeletion, flip;
-    public String spriteName, drawMode, entityName;
+    public float x_pos, y_pos;
+    public int z_pos;
+    public float angle;
     public myPair<Float, Float> scale;
     public myPair<Float, Float> origin;
-    ArrayList<Component> components;
+    public boolean flipX, flipY;
     public float width;
     public float height;
+    public int spriteOffsetX, spriteOffsetY;
+
+
+    private float velMag, velAng;
+    public int deleteRange;// -2 = false; -1 = delete at edge, > 0 =  delete out of range
+    public String spriteName, drawMode, entityName;
+    ArrayList<Component> components;
 
     public Entity() {
         scale = new myPair(1.0f, 1.0f);
@@ -27,12 +32,12 @@ public class Entity {
         angle = 0.0f;
         velMag = 0.0f;
         velAng = 0.0f;
-        bitMapX = 0;
-        bitMapY = 0;
         z_pos = 0;
         deleteRange = 0;
-        markForDeletion = false;
-        flip = false;
+        spriteOffsetX = 0;
+        spriteOffsetY = 0;
+        flipX = false;
+        flipY = false;
         spriteName = "";
         drawMode = "normal";
         entityName = "";

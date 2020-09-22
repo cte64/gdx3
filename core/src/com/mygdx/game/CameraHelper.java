@@ -3,7 +3,9 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import gameCode.Infrastructure.Entity;
+import gameCode.Utilities.myMath;
 
 public class CameraHelper {
     private static final String TAG = CameraHelper.class.getName();
@@ -13,16 +15,28 @@ public class CameraHelper {
     private Vector2 position;
     private float zoom;
     private Entity target;
+    float angleBefore, amount;
 
     public CameraHelper() {
         position = new Vector2();
         zoom = 1.0f;
+        angleBefore = 0.0f;
+        amount = 0.0f;
     }
 
     public void update() {
         if (!hasTarget()) return;
+
         position.x = target.x_pos + target.origin.first;
         position.y = target.y_pos + target.origin.second;
+
+        if(angleBefore != target.angle) {
+            amount = target.angle - angleBefore;
+            angleBefore = target.angle;
+        }
+        else {
+            amount = 0;
+        }
     }
 
     public void setPosition(float x, float y) {
@@ -64,6 +78,9 @@ public class CameraHelper {
     public void applyTo(OrthographicCamera camera) {
         camera.position.x = position.x;
         camera.position.y = position.y;
+
+
+        camera.rotate(-myMath.toDeg(amount));
         camera.zoom = zoom;
         camera.update();
     }

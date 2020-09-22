@@ -34,8 +34,8 @@ public class MenuManager {
         //get the coordinates of the parent element====================================================
         int parentX = 0;
         int parentY = 0;
-        int parentW = myWorld.get().getViewPortWidth();
-        int parentH = myWorld.get().getViewPortHeight();
+        int parentW = Engine.get().getGraphics().getVPWidth();
+        int parentH = Engine.get().getGraphics().getVPHeight();
 
         Entity parentEnt = null;
         if(item.parent != null) parentEnt = ((MenuItem)item.parent.value).ent;
