@@ -7,6 +7,9 @@ import gameCode.Utilities.myString;
 
 public class Collision1 implements ContactListener {
 
+
+    static int counter = 0;
+
     @Override
     public void beginContact(Contact contact) {
 
@@ -46,10 +49,40 @@ public class Collision1 implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
+
+
+        /*
+        Fixture fa = contact.getFixtureA();
+        Fixture fb = contact.getFixtureB();
+
+        if(fa == null || fb == null) return;
+        if(fa.getUserData() == null || fb.getUserData() == null) return;
+
+        if(isTutorialContact(fa, fb)) {
+            Entity ent = (Entity)fb.getUserData();
+            if(ent.entityName.equals("hero")) {
+                System.out.println(ent.entityName);
+            }
+        }
+
+         */
+
+
+
+
+
+
     }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
+
+
+
+        if(!contact.isTouching()) {
+            System.out.println("for some reason");
+        }
+
     }
 
     private boolean isTutorialContact(Fixture a, Fixture b) {

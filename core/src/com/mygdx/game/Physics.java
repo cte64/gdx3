@@ -30,7 +30,16 @@ public class Physics {
         entities.put(ent, new PhysObj());
     }
 
+    public boolean pollFixture(Entity ent) {
+        if (!entities.containsKey(ent)) return false;
 
+        for(Body body: entities.get(ent).bodies) {
+        for(Fixture fix: body.getFixtureList()) {
+            //if(fix.)
+        }}
+
+        return false;
+    }
 
     public void addBody2(Entity ent, int x, int y, float w, float h, String type, boolean active, int filter) {
 
@@ -101,7 +110,7 @@ public class Physics {
     }
 
     private void addGrid(Entity ent) {
-        int width = 2;
+        int width = 3;
         for(int y = 0; y < myWorld.get().tileSize; y += width) {
         for(int x = 0; x < myWorld.get().tileSize; x += width) {
 
