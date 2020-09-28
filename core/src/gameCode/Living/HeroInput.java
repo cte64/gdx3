@@ -30,6 +30,14 @@ public class HeroInput extends Component {
         entity.angle = -myMath.toRad(angle - 90.0f );
         entity.accelerate(deltaX/4.0f, -angle);
 
+
+        /*
+        if(Engine.get().getPhysics().pollFixture(entity)) {
+            System.out.println("ths is cool stuff");
+        }
+
+         */
+
         if(Gdx.input.isKeyPressed(Input.Keys.A)) { entity.accelerate(deltaX, 180.0f); }
         if(Gdx.input.isKeyPressed(Input.Keys.D)) { entity.accelerate(deltaX, 0.0f); }
         if(Gdx.input.isKeyPressed(Input.Keys.W)) { entity.accelerate(deltaX, 90.0f); }

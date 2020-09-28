@@ -8,6 +8,7 @@ import gameCode.Infrastructure.Chunk;
 import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.myWorld;
 import gameCode.Utilities.myPair;
+import gameCode.Utilities.myString;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,10 +34,27 @@ public class Physics {
     public boolean pollFixture(Entity ent) {
         if (!entities.containsKey(ent)) return false;
 
+
         for(Body body: entities.get(ent).bodies) {
-        for(Fixture fix: body.getFixtureList()) {
-            //if(fix.)
-        }}
+
+            for(Contact con: body.getWorld().getContactList()) {
+
+                Fixture fa = con.getFixtureA();
+                Fixture fb = con.getFixtureB();
+
+                if(fa == null || fb == null) return false;
+                if(fa.getUserData() == null || fb.getUserData() == null) return false;
+
+                if(fa.getUserData() instanceof Entity && fb.getUserData() instanceof Entity) {
+                    Entity entity = (Entity)fb.getUserData();
+                    if(fb.getFilterData().categoryBits == 1 &&
+                    myString.getField(entity.entityName, "type").equals("tile") &&
+                    con.isTouching() ) {
+                        return true;
+                    }
+                }
+            }
+        }
 
         return false;
     }
