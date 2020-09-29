@@ -38,7 +38,7 @@ public class Graphics implements Disposable {
 
     public void init() {
         viewPortWidth = 900;
-        viewPortHeight = 650;
+        viewPortHeight = 700;
         cameraHelper = new CameraHelper();
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera(viewPortWidth, viewPortHeight);
@@ -132,14 +132,19 @@ public class Graphics implements Disposable {
                 if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName)) {
 
                     TextureRegion reg = Engine.get().getAssets().spriteMap.get(ent.spriteName);
-                    reg.setRegionX(reg.getRegionX() + ent.spriteOffsetX);
-                    reg.setRegionY(reg.getRegionY() + ent.spriteOffsetY);
-                    reg.setRegionWidth((int)ent.width);
-                    reg.setRegionHeight((int)ent.height);
+                    TextureRegion newReg = new TextureRegion(reg);
 
-                    batch.draw( reg,
-                                ent.x_pos, ent.y_pos,
-                            ent.getWidth()/2, ent.getHeight()/2,
+                    newReg.setRegionX(newReg.getRegionX() + ent.spriteOffsetX);
+                    newReg.setRegionY(newReg.getRegionY() + ent.spriteOffsetY);
+                    newReg.setRegionWidth((int)ent.width);
+                    newReg.setRegionHeight((int)ent.height);
+                    newReg.flip(ent.flipX, ent.flipY);
+
+                    batch.draw( newReg,
+                                ent.x_pos,
+                                ent.y_pos,
+                         ent.getWidth()/2,
+                         ent.getHeight()/2,
                                 ent.width, ent.height,
                                 1.0f, 1.0f,
                                 myMath.toDeg( ent.angle));

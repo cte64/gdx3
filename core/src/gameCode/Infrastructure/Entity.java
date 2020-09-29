@@ -106,8 +106,8 @@ public class Entity {
         float currentX = getXVelocity();
         float currentY = getYVelocity();
 
-        float addX = (float)(mag*Math.cos(ang));
-        float addY = (float)(mag*Math.sin(ang));
+        float addX = (float)(mag*Math.cos(ang + angle));
+        float addY = (float)(mag*Math.sin(ang + angle));
 
         float newX = currentX + addX;
         float newY = currentY + addY;

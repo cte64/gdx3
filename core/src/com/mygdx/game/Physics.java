@@ -27,13 +27,14 @@ public class Physics {
         entities = new HashMap<Entity, PhysObj>();
     }
 
+    ArrayList<Entity> reSpring = new ArrayList<Entity>();
+
     private void addEntity(Entity ent) {
         entities.put(ent, new PhysObj());
     }
 
     public boolean pollFixture(Entity ent) {
         if (!entities.containsKey(ent)) return false;
-
 
         for(Body body: entities.get(ent).bodies) {
 
@@ -47,7 +48,7 @@ public class Physics {
 
                 if(fa.getUserData() instanceof Entity && fb.getUserData() instanceof Entity) {
                     Entity entity = (Entity)fb.getUserData();
-                    if(fb.getFilterData().categoryBits == 1 &&
+                    if(fb.getFilterData().categoryBits == 2 &&
                     myString.getField(entity.entityName, "type").equals("tile") &&
                     con.isTouching() ) {
                         return true;
@@ -178,6 +179,21 @@ public class Physics {
                 subtractGrid(ent);
             }
         }
+
+
+        for(Entity ent: reSpring) {
+            //subtractGrid(ent);
+            //addGrid(ent);
+            PhysObj obj = entities.get(ent);
+
+            subtractGrid(ent);
+            addGrid(ent);
+            obj.gridActive = true;
+            obj.setGrid = true;
+        }
+
+        reSpring.clear();
+
         b2world.step(myWorld.get().getDeltaTime(), 8, 3);
     }
 
@@ -191,6 +207,13 @@ public class Physics {
         else if(entities.get(ent).setGrid && !flag) entities.get(ent).setGrid = false;
     }
 
+    public void resetGrid(Entity ent) {
+        if(!entities.containsKey(ent)) return;
+        if(entities.get(ent).setGrid) {
+            subtractGrid(ent);
+        }
+    }
+
     public void deleteEnt(Entity ent) {
         if(!entities.containsKey(ent)) return;
 
@@ -201,3 +224,4 @@ public class Physics {
         entities.remove(ent);
     }
 }
+

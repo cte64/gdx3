@@ -1,4 +1,5 @@
 package com.mygdx.game.desktop;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
@@ -26,8 +27,8 @@ public class DesktopLauncher {
 		}
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 800;
-		config.height = 650;
+		config.width = 900;
+		config.height = 700;
 		config.vSyncEnabled = true; // Setting to false disables vertical sync
 		config.foregroundFPS = 60; // Setting to 0 disables foreground fps throttling
 		config.backgroundFPS = 60; // Setting to 0 disables background fps throttling

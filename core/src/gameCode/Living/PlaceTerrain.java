@@ -1,8 +1,11 @@
 package gameCode.Living;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.Engine;
 import gameCode.Infrastructure.*;
+import gameCode.Terrain.ModifyTerrain;
 import gameCode.Utilities.Timer;
+import gameCode.Utilities.myMath;
 import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
@@ -33,14 +36,9 @@ public class PlaceTerrain extends Component {
 
 
 
-
-
-
-                /*
-
                 for(int y = -width; y < width; y++) {
                 for(int x = -width; x < width; x++) {
-                    float mag = MathUtils.mag(x, y, 0, 0);
+                    float mag = myMath.mag(x, y, 0, 0);
                     if(mag < width) {
                         int xPos = val.first + x;
                         int yPos = val.second + y;
@@ -50,7 +48,7 @@ public class PlaceTerrain extends Component {
 
                 ModifyTerrain.addPixels(pixels);
 
-                 */
+
             }
         }
 

@@ -69,10 +69,10 @@ public class InputAL {
         keys = new HashMap<String, Integer>();
 
         //Add all the alphabetical keys here =============
-        keys.put("w", Input.Keys.W);
-        keys.put("i", Input.Keys.I);
+        for(int i = 0; i < 26; i++) { keys.put("" + (char)(i + 97), i + 29); }
 
-        //Add all the numerical keys here ================
+        //Numbers ========================================
+        for(int i = 0; i < 10; i++) { keys.put("" + (char)(i + 48), i + 7); }
 
         //Add all the special keys here ==================
         keys.put("left", Input.Keys.LEFT);
@@ -83,6 +83,9 @@ public class InputAL {
         keys.put("esc", Input.Keys.ESCAPE);
         keys.put("plus", Input.Keys.PLUS);
         keys.put("minus", Input.Keys.MINUS);
+        keys.put("[", Input.Keys.LEFT_BRACKET);
+        keys.put("]", Input.Keys.RIGHT_BRACKET);
+        keys.put("space", Input.Keys.SPACE);
 
         //Add all the mouse buttons here =================
         keys.put("mouse left", Input.Buttons.LEFT);
