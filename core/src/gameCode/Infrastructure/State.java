@@ -1,6 +1,7 @@
 package gameCode.Infrastructure;
 
 import com.mygdx.game.Engine;
+import gameCode.Factory.EntityFactory;
 import gameCode.Menus.MenuScreens.LoadGame;
 import gameCode.Utilities.myString;
 
@@ -8,11 +9,8 @@ public class State {
 
     public static void loadGame() {
         deleteType("type", "menu");
-        Entity hud = new Entity();
-        hud.entityName = "[type: menu][name: loadGame]";
-        hud.drawMode = "hud";
-        hud.addComponent(new LoadGame());
-        myWorld.get().entitiesToBeAdded.add(hud);
+        Entity ent = EntityFactory.createEntity("[type: menu][subType: loadGame]");
+        myWorld.get().entitiesToBeAdded.add(ent);
         state = "loadGame";
     }
 
@@ -38,31 +36,24 @@ public class State {
         //Hero ==============================================================================
         myString heroData = new myString("");
         Engine.get().getFileSystem().getFile(new myString("[type: hero]"), heroData);
-        Entity hero = MakeEntity.getEntity(heroData.data);
+        Entity hero = EntityFactory.createEntity(heroData.data);
         myWorld.get().entitiesToBeAdded.add(hero);
 
         //Add the pause item ================================================================
-        Entity pause = MakeEntity.getEntity("[type: menu][subType: pause]");
+        Entity pause = EntityFactory.createEntity("[type: menu][subType: pause]");
         myWorld.get().entitiesToBeAdded.add(pause);
     }
 
     public static void mainMenu() {
         myWorld.get().deleteWorld();
-        Entity ent = MakeEntity.getEntity("[type: menu][subType: mainMenu]");
+        Entity ent = EntityFactory.createEntity("[type: menu][subType: mainMenu]");
         myWorld.get().entitiesToBeAdded.add(ent);
         state = "mainMenu";
     }
 
-    public static void newMenuTest() {
-        myWorld.get().deleteWorld();
-        Entity ent = MakeEntity.getEntity("[type: menu][subType: newMenuTest]");
-        myWorld.get().entitiesToBeAdded.add(ent);
-        state = "newMenuTest";
-    }
-
     public static void newGame() {
         deleteType("type", "menu");
-        Entity ent = MakeEntity.getEntity("[type: menu][subType: newGame]");
+        Entity ent = EntityFactory.createEntity("[type: menu][subType: newGame]");
         myWorld.get().entitiesToBeAdded.add(ent);
         state = "newGame";
     }
@@ -70,7 +61,7 @@ public class State {
     public static void creatingGame(String newData) {
         state = newData;
         deleteType("type", "menu");
-        Entity ent = MakeEntity.getEntity("[type: menu][subType: createGameLoadingScreen]");
+        Entity ent = EntityFactory.createEntity("[type: menu][subType: createGameLoadingScreen]");
         myWorld.get().entitiesToBeAdded.add(ent);
     }
 

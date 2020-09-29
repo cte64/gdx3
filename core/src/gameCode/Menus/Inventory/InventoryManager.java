@@ -495,6 +495,8 @@ public class InventoryManager extends Component {
         }
 
 
+
+        /*
         if( !currentItems[selected].item.equals("") ) {
 
 
@@ -505,6 +507,8 @@ public class InventoryManager extends Component {
 
             selectedItem = newEquipped;
         }
+
+         */
 
 
     }

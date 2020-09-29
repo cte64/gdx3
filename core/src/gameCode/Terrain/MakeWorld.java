@@ -272,7 +272,7 @@ public class MakeWorld {
         messages.add( new myString("MetaData File Created"));
 
         //CREATE THE MAIN CHARACTER =================================
-        myString heroData = new myString("[type: hero][subType: testHero][details: ][xPos: 2400][yPos: 2400][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]");
+        myString heroData = new myString("[type: actor][subType: hero][details: ][xPos: 2400][yPos: 2400][inven0.0: woodenAxe.1][inven0.1: wooden Pickaxe.1]");
         Engine.get().getFileSystem().setFile(new myString("[type: hero]"), heroData);
         messages.add( new myString("Created Hero"));
 

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Engine;
+import gameCode.Factory.EntityFactory;
 import gameCode.Utilities.myPair;
 
 import gameCode.Utilities.Coordinates;
@@ -316,7 +317,7 @@ public class myWorld {
 
                     //do the terrain thing ==================================================
                     if(getEntByName(ent_name) == null) {
-                        Entity ent = MakeEntity.getEntity(ent_name, chunkPtr.getImage(tileXRel, tileYRel));
+                        Entity ent = EntityFactory.createEntity(ent_name, chunkPtr.getImage(tileXRel, tileYRel));
                         ent.entityName = ent_name;
                         ent.x_pos = tileXAbs*tileSize;
                         ent.y_pos = tileYAbs*tileSize;

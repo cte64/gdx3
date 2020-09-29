@@ -1,6 +1,7 @@
 package gameCode.Menus;
 
 import com.mygdx.game.Engine;
+import gameCode.Factory.EntityFactory;
 import gameCode.Infrastructure.*;
 import gameCode.Infrastructure.Component;
 import gameCode.Utilities.myMath;
@@ -191,7 +192,7 @@ public class MenuManager {
         newItem.xOffset = x;
         newItem.yOffset = y;
 
-        newItem.ent = MakeEntity.getEntity(id);
+        newItem.ent = EntityFactory.createEntity(id);
         newItem.ent.entityName = id;
         newItem.ent.spriteName = sprNm;
         newItem.ent.drawMode = "hud";
