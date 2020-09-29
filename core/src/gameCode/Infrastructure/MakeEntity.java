@@ -30,6 +30,12 @@ public class MakeEntity {
         Entity ent = new Entity();
         ent.entityName = name;
 
+
+
+        if(subType.equals("silverPickaxe")) {
+            System.out.println("painav");
+        }
+
         if(type.equals("hero")) {
             String x_posStr = myString.getField(name, "xPos");
             String y_posStr = myString.getField(name, "yPos");

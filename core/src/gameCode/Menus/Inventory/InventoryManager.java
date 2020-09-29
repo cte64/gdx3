@@ -16,6 +16,7 @@ public class InventoryManager extends Component {
     private final int itemWidth = 52;
     private final int padding = 1;
     private int maxInvenItems = 56;
+    private int selected;
 
     //important stuff ===============================================================
     MenuManager menu;
@@ -36,6 +37,7 @@ public class InventoryManager extends Component {
     ItemNode craftedItem;
     ArrayList<String> uniqueIds;
     InventoryLookup invenLookup;
+    Entity selectedItem;
 
     public InventoryManager() {
 
@@ -55,6 +57,7 @@ public class InventoryManager extends Component {
         clipboard = new ItemNode();
         craftedItem = new ItemNode();
         uniqueIds = new ArrayList<String>();
+        selectedItem = null;
 
         iToggle = false;
         menu = new MenuManager();
@@ -68,6 +71,7 @@ public class InventoryManager extends Component {
         scrollList.vPadding = 1;
         scrollList.hPadding = 1;
         invenLookup = new InventoryLookup();
+        selected = -1;
 
         //set the clipboard
         clipboard.tile = "[type: inventory][subType: clipboard]";
@@ -147,13 +151,10 @@ public class InventoryManager extends Component {
         craftedItem.tile = "[type: inventory][subType: craftedItem]";
         menu.registerItem(craftedItem.tile, "inventoryTray", foreground, "[vertical: bottom][horizontal: right]", -10, 80, 9);
 
-        addItem("banana", "current", -1, 1);
-        addItem("watermelon", "current", -1, 1);
-        addItem("asparagus", "current", -1, 17);
-        addItem("apple", "inventory", 0, 5);
-        addItem("potato", "inventory", 0, 4);
+
         addItem("lumber", "inventory", 4, 20);
         addItem("stone", "inventory", 5, 20);
+        addItem("silverPickaxe", "current", 0, 1);
 
         //Hide all the items by default ============================================
         menu.updateDrawMode(background, "hidden");
@@ -466,6 +467,49 @@ public class InventoryManager extends Component {
         if(menu.isLeftClicked(craftedItem.tile)) grabCraftedItem();
     }
 
+    private void setSelected() {
+
+        int selectedBefore = selected;
+        if(Engine.get().getInput().isKeyPressed("1")) selected = 0;
+        if(Engine.get().getInput().isKeyPressed("2")) selected = 1;
+        if(Engine.get().getInput().isKeyPressed("3")) selected = 2;
+        if(Engine.get().getInput().isKeyPressed("4")) selected = 3;
+        if(Engine.get().getInput().isKeyPressed("5")) selected = 4;
+        if(Engine.get().getInput().isKeyPressed("6")) selected = 5;
+        if(Engine.get().getInput().isKeyPressed("7")) selected = 6;
+        selected = myMath.clamp(selected, 0, currentNumItems);
+
+        if(selectedBefore == selected) return;
+
+        for(int x = 0; x < currentNumItems; x++) {
+            Entity tileEnt = menu.getEnt( currentItems[x].tile );
+            if(tileEnt == null) continue;
+            if(x == selected) {
+                tileEnt.scale.first = 1.0f;
+                tileEnt.scale.second = 1.03f;
+            }
+            else {
+                tileEnt.scale.first = 1.0f;
+                tileEnt.scale.second = 1.0f;
+            }
+        }
+
+
+        if( !currentItems[selected].item.equals("") ) {
+
+
+            String newName = currentItems[selected].item;
+            myString.setField(newName, "id", "equipped");
+
+            Entity newEquipped = MakeEntity.getEntity(newName);
+
+            selectedItem = newEquipped;
+        }
+
+
+    }
+
+
 
     //Update =======================================================================
     public void update(Entity entity) {
@@ -489,6 +533,8 @@ public class InventoryManager extends Component {
             }
         }
 
+
+        setSelected();
         leftClick(ent.drawMode);
         rightClick(ent.drawMode);
 
