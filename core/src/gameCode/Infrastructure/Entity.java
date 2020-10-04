@@ -23,7 +23,7 @@ public class Entity {
     private float velMag, velAng;
     public int deleteRange;// -2 = false; -1 = delete at edge, > 0 =  delete out of range
     public String spriteName, drawMode, entityName;
-    ArrayList<Component> components;
+    public ArrayList<Component> components;
 
     public Entity() {
         scale = new myPair(1.0f, 1.0f);

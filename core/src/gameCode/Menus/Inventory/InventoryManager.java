@@ -1,5 +1,6 @@
 package gameCode.Menus.Inventory;
 import com.mygdx.game.Engine;
+import gameCode.Factory.EntityFactory;
 import gameCode.Infrastructure.*;
 import gameCode.Menus.MenuManager;
 import gameCode.Menus.ScrollList;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 public class InventoryManager extends Component {
 
     //constants and lucky numbers ===================================================
+    private Entity parent;
     private final int currentNumItems = 7;
     private final int itemWidth = 52;
     private final int padding = 1;
@@ -39,9 +41,11 @@ public class InventoryManager extends Component {
     InventoryLookup invenLookup;
     Entity selectedItem;
 
-    public InventoryManager() {
+    public InventoryManager(Entity parent) {
 
         type = "logic";
+        this.parent = parent;
+
 
         //set up the background and foreGround
         background = "[type: inventory][subType: background]";
@@ -155,6 +159,7 @@ public class InventoryManager extends Component {
         addItem("lumber", "inventory", 4, 20);
         addItem("stone", "inventory", 5, 20);
         addItem("silverPickaxe", "current", 0, 1);
+        addItem("goldShovel", "current", 1, 1);
 
         //Hide all the items by default ============================================
         menu.updateDrawMode(background, "hidden");
@@ -467,6 +472,17 @@ public class InventoryManager extends Component {
         if(menu.isLeftClicked(craftedItem.tile)) grabCraftedItem();
     }
 
+    private void SetCurrentItem(String itemID) {
+
+        Entity ent = EntityFactory.createEntity(itemID);
+
+        //make hero the parent of this object
+        for(Component comp: ent.components) {
+            if(comp instanceof AddEntity)
+                ((AddEntity) comp).addEntity(parent);
+        }
+    }
+
     private void setSelected() {
 
         int selectedBefore = selected;
@@ -494,25 +510,9 @@ public class InventoryManager extends Component {
             }
         }
 
-
-
-        /*
-        if( !currentItems[selected].item.equals("") ) {
-
-
-            String newName = currentItems[selected].item;
-            myString.setField(newName, "id", "equipped");
-
-            Entity newEquipped = MakeEntity.getEntity(newName);
-
-            selectedItem = newEquipped;
-        }
-
-         */
-
-
+        if( !currentItems[selected].item.equals("") )
+            SetCurrentItem(currentItems[selected].item);
     }
-
 
 
     //Update =======================================================================
