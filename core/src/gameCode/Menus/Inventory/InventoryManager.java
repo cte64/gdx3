@@ -156,10 +156,12 @@ public class InventoryManager extends Component {
         menu.registerItem(craftedItem.tile, "inventoryTray", foreground, "[vertical: bottom][horizontal: right]", -10, 80, 9);
 
 
+
         addItem("lumber", "inventory", 4, 20);
         addItem("stone", "inventory", 5, 20);
         addItem("silverPickaxe", "current", 0, 1);
         addItem("goldShovel", "current", 1, 1);
+
 
         //Hide all the items by default ============================================
         menu.updateDrawMode(background, "hidden");
@@ -168,7 +170,7 @@ public class InventoryManager extends Component {
     //Item Modifier ================================================================
     public String createItem(String name) {
 
-        myString newName = new myString("[type: inventoryItem][subType: ][id: ]");
+        myString newName = new myString("[type: tool][subType: ][id: ]");
         newName.setField("subType", name);
         newName.setField("id", uniqueIds.get(0));
         uniqueIds.remove(0);
@@ -474,6 +476,7 @@ public class InventoryManager extends Component {
 
     private void SetCurrentItem(String itemID) {
 
+
         Entity ent = EntityFactory.createEntity(itemID);
 
         //make hero the parent of this object
@@ -481,6 +484,8 @@ public class InventoryManager extends Component {
             if(comp instanceof AddEntity)
                 ((AddEntity) comp).addEntity(parent);
         }
+
+        myWorld.get().entitiesToBeAdded.add(ent);
     }
 
     private void setSelected() {

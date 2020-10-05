@@ -1,5 +1,6 @@
 package gameCode.Factory.Factories;
 
+import com.mygdx.game.Engine;
 import gameCode.Factory.AbstractFactory;
 import gameCode.Infrastructure.Entity;
 import gameCode.Tools.Pickaxe;
@@ -16,8 +17,13 @@ public class ToolFactory extends AbstractFactory {
 
 
         if(subType.equals("silverPickaxe")) {
+            ent.deleteRange = -2;
+            ent.spriteName = "silverPickaxe";
+            ent.width = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).first;
+            ent.height = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).second;
+            ent.origin.first = ent.width/2.0f;
+            ent.origin.second = ent.height/2.0f;
             ent.addComponent(new Pickaxe());
-            System.out.println("siver");
         }
 
 

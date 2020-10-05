@@ -33,19 +33,19 @@ public class PauseGame extends Component {
         
         //Background
         menu.registerItem(background, "mainMenuBack", null, "[vertical: center][horizontal: center]", 0, 0, 4);
-        menu.addText(background, new TextComponent("Paused", 10, "[vertical: top][horizontal: center]", 0, 0));
+        menu.addText(background, new TextComponent("Paused", 26, "[vertical: top][horizontal: center]", 0, 0));
 
         //Save and Quit button
         menu.registerItem(saveAndQuit, "menuItem", background, "[vertical: top][horizontal: center]", 0, start  + 1*height, 4);
-        menu.addText(saveAndQuit, new TextComponent("Save And Quit", 10, "[vertical: center][horizontal: center]", 0, 0));
+        menu.addText(saveAndQuit, new TextComponent("Save And Quit", 18, "[vertical: center][horizontal: center]", 0, 0));
 
         //Options buttons
         menu.registerItem(optionsButton, "menuItem", background, "[vertical: top][horizontal: center]", 0, start  +2*height, 4);
-        menu.addText(optionsButton, new TextComponent("Options", 10, "[vertical: center][horizontal: center]", 0, 0));
+        menu.addText(optionsButton, new TextComponent("Options", 18, "[vertical: center][horizontal: center]", 0, 0));
 
         //bottom buttons
         menu.registerItem(backButton, "menuItem", background, "[vertical: top][horizontal: center]", 0, start  + 3*height, 4);
-        menu.addText(backButton, new TextComponent("Back", 10, "[vertical: center][horizontal: center]", 0, 0));
+        menu.addText(backButton, new TextComponent("Back", 18, "[vertical: center][horizontal: center]", 0, 0));
 
         //escToggle everything to hidden for now
         menu.updateDrawMode(background, "hidden");

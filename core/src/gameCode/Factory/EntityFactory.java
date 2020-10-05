@@ -23,6 +23,11 @@ public class EntityFactory {
         if(type.equals("actor")) factory = new ActorFactory();
 
 
+
+
+
+
+
         //give it some default value just in case
         Entity ent = new Entity();
         if(factory != null) ent = factory.makeEntity(id);

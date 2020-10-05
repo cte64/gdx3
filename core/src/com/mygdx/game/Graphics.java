@@ -143,8 +143,8 @@ public class Graphics implements Disposable {
                     batch.draw( newReg,
                                 ent.x_pos,
                                 ent.y_pos,
-                         ent.getWidth()/2,
-                         ent.getHeight()/2,
+                                ent.origin.first,
+                                ent.origin.second,
                                 ent.width, ent.height,
                                 1.0f, 1.0f,
                                 myMath.toDeg( ent.angle));
