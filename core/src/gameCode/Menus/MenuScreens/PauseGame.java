@@ -53,7 +53,6 @@ public class PauseGame extends Component {
 
     public void update(Entity entity) {
 
-
         Entity ent = menu.getEnt(background);
         if(ent == null) return;
         String currentMode = ent.drawMode;

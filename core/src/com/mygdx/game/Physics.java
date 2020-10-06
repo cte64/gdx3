@@ -162,9 +162,10 @@ public class Physics {
 
                 ent.accelerate(-1.0f, 0);
 
-                body.setTransform(body.getPosition(), ent.angle);
                 ent.x_pos = body.getPosition().x - ent.getWidth()/2;
                 ent.y_pos = body.getPosition().y - ent.getHeight()/2;
+                body.setTransform(body.getPosition(), ent.angle);
+
             }
         }
         for(Entity ent: entities.keySet()) {

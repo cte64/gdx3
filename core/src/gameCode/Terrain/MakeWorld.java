@@ -276,12 +276,12 @@ public class MakeWorld {
         Engine.get().getFileSystem().setFile(new myString("[type: hero]"), heroData);
         messages.add( new myString("Created Hero"));
 
+        /*
         //MAKE THE SOLID LAYERS =====================================
         makeLayer((int)(worldRadius * 1.00), 400, 10, "dirt", true, "[name: outer]");
         messages.add( new myString("Dirt Created"));
 
 
-        /*
 
         makeLayer((int)(worldRadius * 0.85), 200, 10, "clay", true, "");
         messages.add( new StringUtils("Clay Created"));

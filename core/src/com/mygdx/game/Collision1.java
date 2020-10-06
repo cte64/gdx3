@@ -13,9 +13,10 @@ public class Collision1 implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
 
+
+        /*
         Fixture fa = contact.getFixtureA();
         Fixture fb = contact.getFixtureB();
-
 
         if(fa == null || fb == null) return;
         if(fa.getUserData() == null || fb.getUserData() == null) return;
@@ -27,11 +28,15 @@ public class Collision1 implements ContactListener {
                 Engine.get().getPhysics().setGridFlag(ent, true);
             }
         }
+
+         */
     }
 
     @Override
     public void endContact(Contact contact) {
 
+
+        /*
         Fixture fa = contact.getFixtureA();
         Fixture fb = contact.getFixtureB();
 
@@ -45,6 +50,8 @@ public class Collision1 implements ContactListener {
                 Engine.get().getPhysics().setGridFlag(ent, false);
             }
         }
+
+       */
     }
 
     @Override

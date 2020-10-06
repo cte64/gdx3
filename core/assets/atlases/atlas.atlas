@@ -1,9 +1,44 @@
 
 atlas.png
-size: 64,1024
+size: 256,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+Characters/Player_Hair
+  rotate: false
+  xy: 170, 1238
+  size: 40, 782
+  orig: 40, 782
+  offset: 0, 0
+  index: 21
+Characters/Player_Hands
+  rotate: false
+  xy: 86, 902
+  size: 40, 1118
+  orig: 40, 1118
+  offset: 0, 0
+  index: -1
+Characters/Player_Head
+  rotate: false
+  xy: 128, 902
+  size: 40, 1118
+  orig: 40, 1118
+  offset: 0, 0
+  index: -1
+Characters/Skin_Body
+  rotate: false
+  xy: 2, 900
+  size: 40, 1120
+  orig: 40, 1120
+  offset: 0, 0
+  index: -1
+Characters/Skin_Legs
+  rotate: false
+  xy: 44, 900
+  size: 40, 1120
+  orig: 40, 1120
+  offset: 0, 0
+  index: -1
 Characters/miner
   rotate: false
   xy: 2, 2
