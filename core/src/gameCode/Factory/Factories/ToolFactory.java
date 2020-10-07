@@ -23,6 +23,8 @@ public class ToolFactory extends AbstractFactory {
             ent.height = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).second;
             ent.origin.first = ent.width/2;
             ent.origin.second = ent.height/2;
+            ent.z_pos = 21;
+
             ent.addComponent(new Pickaxe());
         }
 

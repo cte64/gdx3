@@ -127,7 +127,7 @@ public class Graphics implements Disposable {
         //Batch Rendering ============================================================
         batch.begin();
             for(Entity ent: myWorld.get().getEntByZIndex()) {
-                if(ent.drawMode == "hud") continue;
+                if(!ent.drawMode.equals("normal")) continue;
 
                 if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName)) {
 
@@ -169,7 +169,7 @@ public class Graphics implements Disposable {
         hudBatch.begin();
             for(Entity ent: myWorld.get().getEntByZIndex()) {
 
-                if(ent.drawMode != "hud") continue;
+                if(!ent.drawMode.equals("hud")) continue;
 
                 if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName)) {
                     hudBatch.draw(Engine.get().getAssets().spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos, ent.getWidth(), ent.getHeight());

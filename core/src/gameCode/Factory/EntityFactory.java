@@ -10,7 +10,6 @@ import gameCode.Utilities.myString;
 
 public class EntityFactory {
 
-
     private EntityFactory() {}
 
     public static Entity createEntity(String id) {
@@ -23,14 +22,10 @@ public class EntityFactory {
         if(type.equals("actor")) factory = new ActorFactory();
 
 
-
-
-
-
-
         //give it some default value just in case
         Entity ent = new Entity();
         if(factory != null) ent = factory.makeEntity(id);
+        ent.entityName = id;
         return ent;
     }
 

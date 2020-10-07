@@ -15,14 +15,16 @@ public class HeroInput extends Component {
     float deltaX;
     float wkSpeed;
     int walkFrame;
+
+    private final int frameStart = 6;
+    private final int frameEnd = 19;
+    private final int frameDefault = 19;
+
     Timer timer;
-
-
     Entity head;
     Entity hair;
     Entity legs;
     Entity body;
-
 
     public HeroInput() {
 
@@ -33,43 +35,6 @@ public class HeroInput extends Component {
         deltaX = 10.0f;
         wkSpeed = 0.1f;
         walkFrame = 0;
-
-
-
-
-        /*
-
-        hair = new Entity();
-        hair.spriteName = "Player_Hair";
-        hair.width = Engine.get().getAssets().getSpriteDimensions(hair.spriteName).first;
-        hair.height = Engine.get().getAssets().getSpriteDimensions(hair.spriteName).second;
-        hair.z_pos = 21;
-        hair.deleteRange = -2;
-        hair.drawMode = "normal";
-        hair.entityName = "hair";
-        myWorld.get().entitiesToBeAdded.add(hair);
-
-        legs = new Entity();
-        legs.spriteName = "Skin_Legs";
-        legs.width = Engine.get().getAssets().getSpriteDimensions(legs.spriteName).first;
-        legs.height = Engine.get().getAssets().getSpriteDimensions(legs.spriteName).second;
-        legs.z_pos = 21;
-        legs.deleteRange = -2;
-        legs.drawMode = "normal";
-        legs.entityName = "legs";
-        myWorld.get().entitiesToBeAdded.add(legs);
-
-        body = new Entity();
-        body.spriteName = "Skin_Body";
-        body.width = Engine.get().getAssets().getSpriteDimensions(body.spriteName).first;
-        body.height = Engine.get().getAssets().getSpriteDimensions(body.spriteName).second;
-        body.z_pos = 21;
-        body.deleteRange = -2;
-        body.drawMode = "normal";
-        body.entityName = "body";
-        myWorld.get().entitiesToBeAdded.add(body);
-
-         */
 
         head = EntityFactory.createEntity("[type: actor][subType: bodyPart][id: head]");
         head.spriteName = "Player_Head";
@@ -89,22 +54,16 @@ public class HeroInput extends Component {
         legs.spriteName = "Skin_Legs";
         legs.z_pos = head.z_pos;
         myWorld.get().entitiesToBeAdded.add(legs);
-        
-        
-
-
 
     }
 
-
-
     private void updateControls(Entity entity) {
-
 
         float center = myWorld.get().getNumPixels() / 2.0f;
         float angle = myMath.angleBetweenCells(center, center, entity.x_pos, entity.y_pos);
 
         entity.angle = -myMath.toRad(angle - 90.0f );
+       // entity.accelerate(deltaX/3.0f, 270.0f);
 
         boolean grounded = Engine.get().getPhysics().pollFixture(entity);
         float walkSpeed = deltaX;
@@ -115,38 +74,32 @@ public class HeroInput extends Component {
         boolean isWalk = false;
 
         if(Engine.get().getInput().isKeyPressed("a") && !Engine.get().getInput().isKeyPressed("d")) {
-            entity.flipX = false;
+            entity.flipX = true;
             entity.accelerate(deltaX, 180.0f);
             isWalk = true;
         }
 
         if(Engine.get().getInput().isKeyPressed("d") && !Engine.get().getInput().isKeyPressed("a")) {
-            entity.flipX = true;
+            entity.flipX = false;
             entity.accelerate(deltaX, 0.0f);
             isWalk = true;
         }
 
-        if( Engine.get().getInput().isKeyPressed("w")) entity.accelerate(deltaX, 90.0f);
-        if( Engine.get().getInput().isKeyPressed("s")) entity.accelerate(deltaX, 270.0f);
+        //if( Engine.get().getInput().isKeyPressed("w")) entity.accelerate(deltaX, 90.0f);
+        //if( Engine.get().getInput().isKeyPressed("s")) entity.accelerate(deltaX, 270.0f);
 
         if(dirBefore == entity.flipX && isWalk) {
              timer.update("walk", myWorld.get().getDeltaTime());
              if(timer.getTime("walk") > wkSpeed) {
                  timer.resetTimer("walk");
                  walkFrame++;
-                 if(walkFrame > 15) walkFrame = 0;
+                 if(walkFrame > frameEnd) walkFrame = frameStart;
              }
         }
         else {
             timer.resetTimer("walk");
-            walkFrame = 0;
+            walkFrame = frameDefault;
         }
-
-
-       //entity.spriteOffsetY = walkFrame * 56;
-
-
-
 
         if(grounded) {
             if(Engine.get().getInput().isKeyPressed("space")) { entity.accelerate(100*deltaX, 90.0f); }
@@ -160,32 +113,37 @@ public class HeroInput extends Component {
 
     }
 
-    public void update(Entity entity) {
+    private void updateBodyPieces(Entity entity) {
 
-
-        updateControls(entity);
-
-
+        int offset = walkFrame * 56;
 
         head.x_pos = entity.x_pos;
         head.y_pos = entity.y_pos;
         head.angle = entity.angle;
+        head.spriteOffsetY = offset;
+        head.flipX = entity.flipX;
 
         hair.x_pos = entity.x_pos;
         hair.y_pos = entity.y_pos;
         hair.angle = entity.angle;
+        hair.flipX = entity.flipX;
+        hair.spriteOffsetY = (walkFrame - frameStart) * 56;
 
         legs.x_pos = entity.x_pos;
         legs.y_pos = entity.y_pos;
         legs.angle = entity.angle;
+        legs.spriteOffsetY = offset;
+        legs.flipX = entity.flipX;
 
         body.x_pos = entity.x_pos;
         body.y_pos = entity.y_pos;
         body.angle = entity.angle;
-
-
-
+        body.spriteOffsetY = offset;
+        body.flipX = entity.flipX;
     }
 
-
+    public void update(Entity entity) {
+        updateControls(entity);
+        updateBodyPieces(entity);
+    }
 }

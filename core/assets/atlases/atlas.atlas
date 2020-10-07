@@ -1,53 +1,52 @@
 
 atlas.png
-size: 256,2048
+size: 64,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Characters/Player_Hair
+Characters/Hair/Player_Hair
   rotate: false
-  xy: 170, 1238
+  xy: 2, 2
   size: 40, 782
   orig: 40, 782
   offset: 0, 0
   index: 21
-Characters/Player_Hands
+
+atlas2.png
+size: 256,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Characters/Skin/Player_Hands
   rotate: false
-  xy: 86, 902
+  xy: 86, 4
   size: 40, 1118
   orig: 40, 1118
   offset: 0, 0
   index: -1
-Characters/Player_Head
+Characters/Skin/Player_Head
   rotate: false
-  xy: 128, 902
+  xy: 128, 4
   size: 40, 1118
   orig: 40, 1118
   offset: 0, 0
   index: -1
-Characters/Skin_Body
-  rotate: false
-  xy: 2, 900
-  size: 40, 1120
-  orig: 40, 1120
-  offset: 0, 0
-  index: -1
-Characters/Skin_Legs
-  rotate: false
-  xy: 44, 900
-  size: 40, 1120
-  orig: 40, 1120
-  offset: 0, 0
-  index: -1
-Characters/miner
+Characters/Skin/Skin_Body
   rotate: false
   xy: 2, 2
-  size: 40, 896
-  orig: 40, 896
+  size: 40, 1120
+  orig: 40, 1120
+  offset: 0, 0
+  index: -1
+Characters/Skin/Skin_Legs
+  rotate: false
+  xy: 44, 2
+  size: 40, 1120
+  orig: 40, 1120
   offset: 0, 0
   index: -1
 
-atlas2.png
+atlas3.png
 size: 128,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -109,7 +108,7 @@ items/watermelon
   offset: 0, 0
   index: -1
 
-atlas3.png
+atlas4.png
 size: 256,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -325,7 +324,7 @@ items/Tools/woodSword
   offset: 0, 0
   index: -1
 
-atlas4.png
+atlas5.png
 size: 1024,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -366,7 +365,7 @@ menus/menuItem
   offset: 0, 0
   index: -1
 
-atlas5.png
+atlas6.png
 size: 128,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -386,7 +385,7 @@ menus/createGame/plus
   offset: 0, 0
   index: -1
 
-atlas6.png
+atlas7.png
 size: 2048,512
 format: RGBA8888
 filter: Nearest,Nearest
@@ -434,7 +433,7 @@ menus/Inventory/inventoryTray
   offset: 0, 0
   index: -1
 
-atlas7.png
+atlas8.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -503,7 +502,7 @@ menus/loadGame/scrollBar
   offset: 0, 0
   index: -1
 
-atlas8.png
+atlas9.png
 size: 1024,64
 format: RGBA8888
 filter: Nearest,Nearest
