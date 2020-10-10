@@ -6,28 +6,36 @@ import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.myWorld;
 import gameCode.Menus.Inventory.AddEntity;
 import gameCode.Utilities.Timer;
+import gameCode.Utilities.myMath;
 
 public class Pickaxe extends Component implements AddEntity {
 
     private Entity parent;
-
-    private Timer timer;
-    private float tickTime = 0.1f;
-    private float tickIncrement = 0.1f;
-
-
+    AnimationSequence animate;
+    AnimationSequence backward;
 
     public void addEntity(Entity entity) {
         parent = entity;
     }
 
-
-
     public Pickaxe() {
-        timer = new Timer();
-        timer.addTimer("pick");
         type = "logic";
         parent = null;
+        animate = new AnimationSequence();
+        backward = new AnimationSequence();
+
+        int offsetAngle = 0;
+
+        float time = 0.15f;
+        animate.addFrame(5, 0, 60 + offsetAngle, time);
+        animate.addFrame(5, 0, 8 + offsetAngle, time);
+        animate.addFrame(2, -1, -40 + offsetAngle, time);
+        animate.addFrame(0, -2, -60 + offsetAngle, time);
+
+        backward.addFrame(5, 0, 60 + offsetAngle, time);
+        backward.addFrame(5, 0, 8 + offsetAngle, time);
+        backward.addFrame(2, -1, -40 + offsetAngle, time);
+        backward.addFrame(0, -2, -60 + offsetAngle, time);
     }
 
 
@@ -35,27 +43,21 @@ public class Pickaxe extends Component implements AddEntity {
 
         if(parent == null) return;
 
-        entity.x_pos = parent.x_pos;
-        entity.y_pos = parent.y_pos;
-
-
         if(Engine.get().getInput().isMousePressed("mouse left")) {
-
-
             entity.drawMode = "normal";
-            timer.update(myWorld.get().getDeltaTime());
-            if(timer.getTime("pick") > tickTime) {
-                timer.resetTimer("pick");
+            animate.update();
+            entity.x_pos = parent.x_pos + parent.width/2.0f + animate.getX(parent.flipX);
+            entity.y_pos = parent.y_pos + parent.height/2.0f + animate.getY(parent.flipX);
+            entity.angle = parent.angle + myMath.toRad( animate.getAngle(parent.flipX) );
 
-                if(parent.flipX) entity.angle += tickIncrement;
-                else entity.angle -= tickIncrement;
+            for(Component comp: parent.components) {
+                if(comp instanceof Animation)
+                    ((Animation) comp).Animate("pickaxe", animate.getIndex(parent.flipX));
             }
         }
-
         else {
-            timer.resetTimer("pick");
             entity.drawMode = "hidden";
-            entity.angle = parent.angle;
+            animate.reset(parent.flipX);
         }
     }
 }

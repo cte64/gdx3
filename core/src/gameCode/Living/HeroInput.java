@@ -6,35 +6,48 @@ import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.Engine;
 import gameCode.Factory.EntityFactory;
 import gameCode.Infrastructure.*;
+import gameCode.Tools.Animation;
 import gameCode.Utilities.Timer;
 import gameCode.Utilities.myMath;
+import gameCode.Utilities.myPair;
 
-public class HeroInput extends Component {
+import java.util.ArrayList;
+
+public class HeroInput extends Component implements Animation {
 
 
     float deltaX;
     float wkSpeed;
     int walkFrame;
+    int legFrame, armFrame, bodyFrame, headFrame;
+
 
     private final int frameStart = 6;
     private final int frameEnd = 19;
     private final int frameDefault = 19;
+    ArrayList<myPair<String, Integer>> events;
 
     Timer timer;
     Entity head;
     Entity hair;
     Entity legs;
     Entity body;
+    Entity hands;
 
     public HeroInput() {
-
 
         type = "input";
         timer = new Timer();
         timer.addTimer("walk");
         deltaX = 10.0f;
-        wkSpeed = 0.1f;
+        wkSpeed = 0.05f;
         walkFrame = 0;
+        events = new ArrayList<>();
+
+        headFrame = frameStart;
+        legFrame = frameStart;
+        armFrame = frameStart;
+        bodyFrame = frameStart;
 
         head = EntityFactory.createEntity("[type: actor][subType: bodyPart][id: head]");
         head.spriteName = "Player_Head";
@@ -55,6 +68,10 @@ public class HeroInput extends Component {
         legs.z_pos = head.z_pos;
         myWorld.get().entitiesToBeAdded.add(legs);
 
+        hands = EntityFactory.createEntity("[type: actor][subType: bodyPart][id: hands]");
+        hands.spriteName = "Player_Hands";
+        hands.z_pos = 22;
+        myWorld.get().entitiesToBeAdded.add(hands);
     }
 
     private void updateControls(Entity entity) {
@@ -111,39 +128,62 @@ public class HeroInput extends Component {
         if(Engine.get().getInput().isKeyPressed("]")) { Engine.get().getGraphics().getCameraHelper().addZoom(-0.01f); }
 
 
+        legFrame = walkFrame;
+        bodyFrame = walkFrame;
+        headFrame = walkFrame;
+        armFrame = walkFrame;
+    }
+
+    public void Animate(String id, int index) {
+        events.add(new myPair(id, index));
+
     }
 
     private void updateBodyPieces(Entity entity) {
 
-        int offset = walkFrame * 56;
-
         head.x_pos = entity.x_pos;
         head.y_pos = entity.y_pos;
         head.angle = entity.angle;
-        head.spriteOffsetY = offset;
+        head.spriteOffsetY = headFrame * 56;
         head.flipX = entity.flipX;
 
         hair.x_pos = entity.x_pos;
         hair.y_pos = entity.y_pos;
         hair.angle = entity.angle;
         hair.flipX = entity.flipX;
-        hair.spriteOffsetY = (walkFrame - frameStart) * 56;
+        hair.spriteOffsetY = (headFrame - frameStart) * 56;
 
         legs.x_pos = entity.x_pos;
         legs.y_pos = entity.y_pos;
         legs.angle = entity.angle;
-        legs.spriteOffsetY = offset;
+        legs.spriteOffsetY = legFrame * 56;
         legs.flipX = entity.flipX;
 
         body.x_pos = entity.x_pos;
         body.y_pos = entity.y_pos;
         body.angle = entity.angle;
-        body.spriteOffsetY = offset;
+        body.spriteOffsetY = bodyFrame * 56;
         body.flipX = entity.flipX;
+
+        hands.x_pos = entity.x_pos;
+        hands.y_pos = entity.y_pos;
+        hands.angle = entity.angle;
+        hands.spriteOffsetY = bodyFrame * 56;
+        hands.flipX = entity.flipX;
+    }
+
+    private void updateAnimation() {
+
+
+        for(myPair<String, Integer> event: events) {
+            if(event.first.equals("pickaxe")) bodyFrame = event.second + 1;
+        }
+        events.clear();
     }
 
     public void update(Entity entity) {
         updateControls(entity);
+        updateAnimation();
         updateBodyPieces(entity);
     }
 }
