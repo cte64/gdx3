@@ -26,16 +26,11 @@ public class Pickaxe extends Component implements AddEntity {
 
         int offsetAngle = 0;
 
-        float time = 0.15f;
-        animate.addFrame(5, 0, 60 + offsetAngle, time);
-        animate.addFrame(5, 0, 8 + offsetAngle, time);
-        animate.addFrame(2, -1, -40 + offsetAngle, time);
-        animate.addFrame(0, -2, -60 + offsetAngle, time);
-
-        backward.addFrame(5, 0, 60 + offsetAngle, time);
-        backward.addFrame(5, 0, 8 + offsetAngle, time);
-        backward.addFrame(2, -1, -40 + offsetAngle, time);
-        backward.addFrame(0, -2, -60 + offsetAngle, time);
+        float time = 0.7f;
+        animate.addFrame(-10, 14, 60 + offsetAngle, time);
+        //animate.addFrame(-6, 2, 8 + offsetAngle, time);
+        //animate.addFrame(-2, -10, -40 + offsetAngle, time);
+       // animate.addFrame(0, -10, -60 + offsetAngle, time);
     }
 
 
@@ -45,10 +40,24 @@ public class Pickaxe extends Component implements AddEntity {
 
         if(Engine.get().getInput().isMousePressed("mouse left")) {
             entity.drawMode = "normal";
+
+
+            /*
+            if(parent.flipX) {
+                animate.setMirrorX(true);
+                entity.flipX = true;
+            }
+            else {
+                animate.setMirrorX(false);
+                entity.flipX = false;
+            }
+
+             */
+
             animate.update();
-            entity.x_pos = parent.x_pos + parent.width/2.0f + animate.getX(parent.flipX);
-            entity.y_pos = parent.y_pos + parent.height/2.0f + animate.getY(parent.flipX);
-            entity.angle = parent.angle + myMath.toRad( animate.getAngle(parent.flipX) );
+            entity.angle = parent.angle + myMath.toRad( animate.getAngle() );
+            entity.x_pos = parent.x_pos + parent.origin.first - entity.origin.first + animate.getX();
+            entity.y_pos = parent.y_pos + parent.origin.second - entity.origin.second + animate.getY();
 
             for(Component comp: parent.components) {
                 if(comp instanceof Animation)

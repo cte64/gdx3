@@ -5,6 +5,7 @@ import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.myWorld;
 import gameCode.Menus.Inventory.AddEntity;
 import gameCode.Utilities.Timer;
+import gameCode.Utilities.myMath;
 
 import java.util.ArrayList;
 
@@ -15,16 +16,20 @@ public class AnimationSequence {
         float angle, time;
     }
 
-    ArrayList<Frame> frames;
-    int currentStep;
-    Timer timer;
+    private ArrayList<Frame> frames;
+    private int currentStep;
+    private Timer timer;
+    private boolean mirrorX;
 
     public AnimationSequence() {
         frames = new ArrayList<>();
         timer = new Timer();
         timer.addTimer("timer");
         currentStep = 0;
+        mirrorX = false;
     }
+
+    public void setMirrorX(boolean newX) { mirrorX = newX; }
 
     public void addFrame(int x, int y, float angle, float time) {
         Frame newFrame = new Frame();
@@ -50,16 +55,20 @@ public class AnimationSequence {
         }
     }
 
-    public int getX(boolean flip) {
-        return frames.get(getIndex(flip)).x;
+    public int getX() {
+        int retVal = frames.get(currentStep).x;
+       // if(mirrorX) retVal *= -1;
+        return retVal;
     }
 
-    public int getY(boolean flip) {
-        return frames.get(getIndex(flip)).y;
+    public int getY() {
+        return frames.get(currentStep).y;
     }
 
-    public float getAngle(boolean flip) {
-        return frames.get(getIndex(flip)).angle;
+    public float getAngle() {
+        float retVal = frames.get(currentStep).angle;
+        if(mirrorX) retVal = 180 - retVal;
+        return retVal;
     }
 
     public void reset(boolean flip) {

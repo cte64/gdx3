@@ -21,8 +21,8 @@ public class ToolFactory extends AbstractFactory {
             ent.spriteName = "silverPickaxe";
             ent.width = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).first;
             ent.height = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).second;
-            ent.origin.first =  -8.0f;
-            ent.origin.second = -8.0f;
+            ent.origin.first =  ent.width / 2.0f;
+            ent.origin.second = ent.height / 2.0f;
             ent.z_pos = 21;
 
             ent.addComponent(new Pickaxe());

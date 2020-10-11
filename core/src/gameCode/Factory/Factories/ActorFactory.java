@@ -29,8 +29,8 @@ public class ActorFactory extends AbstractFactory {
             ent.addComponent(new HeroInput());
             ent.width = 38;
             ent.height = 54;
-            //ent.origin.first = ent.width/2;
-            //ent.origin.second = ent.height/2;
+            ent.origin.first = ent.width/2;
+            ent.origin.second = ent.height/2;
 
             //ent.addComponent(new PlaceTerrain());
             ent.addComponent(new InventoryManager(ent));
