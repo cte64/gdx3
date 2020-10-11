@@ -4,8 +4,10 @@ import gameCode.Infrastructure.Component;
 import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.myWorld;
 import gameCode.Menus.Inventory.AddEntity;
+import gameCode.Utilities.Coordinates;
 import gameCode.Utilities.Timer;
 import gameCode.Utilities.myMath;
+import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
 
@@ -20,6 +22,9 @@ public class AnimationSequence {
     private int currentStep;
     private Timer timer;
     private boolean mirrorX;
+    private float angle;
+    private float offsetAngle;
+
 
     public AnimationSequence() {
         frames = new ArrayList<>();
@@ -27,9 +32,10 @@ public class AnimationSequence {
         timer.addTimer("timer");
         currentStep = 0;
         mirrorX = false;
+        angle = 0.0f;
     }
 
-    public void setMirrorX(boolean newX) { mirrorX = newX; }
+    public void setOffsetAngle(float newAngle) { offsetAngle = newAngle; }
 
     public void addFrame(int x, int y, float angle, float time) {
         Frame newFrame = new Frame();
@@ -40,40 +46,61 @@ public class AnimationSequence {
         frames.add(newFrame);
     }
 
-    public int getIndex(boolean flip) {
-        int retVal = currentStep;
-        if(flip) retVal = frames.size() - 1 - currentStep;
-        return retVal;
-    }
+    public void update(Entity parent, Entity child) {
 
-    public void update() {
+        if(parent == null || child == null) return;
+        this.angle = parent.angle;
+
+        if(parent.flipX) {
+            mirrorX = true;
+            child.flipX = true;
+        }
+        else {
+            mirrorX = false;
+            child.flipX = false;
+        }
+
         timer.update("timer", myWorld.get().getDeltaTime());
         if(timer.getTime("timer") > frames.get(currentStep).time) {
             currentStep++;
             timer.resetTimer("timer");
             if(currentStep >= frames.size()) currentStep = 0;
         }
+
+        child.angle = parent.angle + myMath.toRad( getAngle() );
+        child.x_pos = parent.x_pos + parent.origin.first - child.origin.first + getX();
+        child.y_pos = parent.y_pos + parent.origin.second - child.origin.second + getY();
     }
 
-    public int getX() {
-        int retVal = frames.get(currentStep).x;
-       // if(mirrorX) retVal *= -1;
-        return retVal;
+    public float getX() {
+        float x = frames.get(currentStep).x;
+        if(mirrorX) x = -x;
+        myPair<Float, Float> coord = Coordinates.rotatePoint3(x, frames.get(currentStep).y, 0, 0, angle);
+        return coord.first;
     }
 
-    public int getY() {
-        return frames.get(currentStep).y;
+    public float getY() {
+        float x = frames.get(currentStep).x;
+        if(mirrorX) x = -x;
+        myPair<Float, Float> coord = Coordinates.rotatePoint3(x, frames.get(currentStep).y, 0, 0, angle);
+        return coord.second;
     }
 
     public float getAngle() {
+
+        float newOffset = offsetAngle;
         float retVal = frames.get(currentStep).angle;
-        if(mirrorX) retVal = 180 - retVal;
-        return retVal;
+        if(mirrorX) {
+            retVal = -retVal;
+            newOffset = -offsetAngle;
+        }
+        return newOffset + retVal;
     }
 
     public void reset(boolean flip) {
         timer.resetTimer("timer");
-        if(flip) currentStep = frames.size() - 1;
-        else currentStep = 0;
+        currentStep = 0;
     }
+
+    public int getIndex() { return currentStep; };
 }

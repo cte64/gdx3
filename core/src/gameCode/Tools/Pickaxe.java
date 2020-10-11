@@ -1,12 +1,15 @@
 package gameCode.Tools;
 
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Engine;
 import gameCode.Infrastructure.Component;
 import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.myWorld;
 import gameCode.Menus.Inventory.AddEntity;
+import gameCode.Utilities.Coordinates;
 import gameCode.Utilities.Timer;
 import gameCode.Utilities.myMath;
+import gameCode.Utilities.myPair;
 
 public class Pickaxe extends Component implements AddEntity {
 
@@ -22,15 +25,16 @@ public class Pickaxe extends Component implements AddEntity {
         type = "logic";
         parent = null;
         animate = new AnimationSequence();
-        backward = new AnimationSequence();
+        animate.setOffsetAngle(45.0f);
+
 
         int offsetAngle = 0;
 
-        float time = 0.7f;
-        animate.addFrame(-10, 14, 60 + offsetAngle, time);
-        //animate.addFrame(-6, 2, 8 + offsetAngle, time);
-        //animate.addFrame(-2, -10, -40 + offsetAngle, time);
-       // animate.addFrame(0, -10, -60 + offsetAngle, time);
+        float time = 0.1f;
+        animate.addFrame(-12, 24, 13, time);
+        animate.addFrame(17, 18, -39, time);
+        animate.addFrame(25, -6, -85 + offsetAngle, time);
+        animate.addFrame(23, -13, -90 + offsetAngle, time);
     }
 
 
@@ -41,27 +45,12 @@ public class Pickaxe extends Component implements AddEntity {
         if(Engine.get().getInput().isMousePressed("mouse left")) {
             entity.drawMode = "normal";
 
+            animate.update(parent, entity);
 
-            /*
-            if(parent.flipX) {
-                animate.setMirrorX(true);
-                entity.flipX = true;
-            }
-            else {
-                animate.setMirrorX(false);
-                entity.flipX = false;
-            }
-
-             */
-
-            animate.update();
-            entity.angle = parent.angle + myMath.toRad( animate.getAngle() );
-            entity.x_pos = parent.x_pos + parent.origin.first - entity.origin.first + animate.getX();
-            entity.y_pos = parent.y_pos + parent.origin.second - entity.origin.second + animate.getY();
 
             for(Component comp: parent.components) {
                 if(comp instanceof Animation)
-                    ((Animation) comp).Animate("pickaxe", animate.getIndex(parent.flipX));
+                    ((Animation) comp).Animate("pickaxe", animate.getIndex());
             }
         }
         else {

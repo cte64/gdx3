@@ -176,4 +176,25 @@ public class Coordinates {
 
         return corner_coords;
     }
+
+
+    public static myPair<Float, Float> rotatePoint3(float x, float y, float xFrom, float yFrom, float angle) {
+
+        // this takes in an argument in radians
+
+        myPair<Float, Float> retVal = new myPair(0.0f, 0.0f);
+
+
+        float mag = myMath.mag(x, y, xFrom, yFrom);
+        float angleBet = myMath.angleBetween2Points(xFrom, yFrom, x, y);
+
+
+        float xComp = (float) (mag*Math.cos(angleBet + angle));
+        float yComp = (float) (mag*Math.sin(angleBet + angle));
+
+        retVal.first = xFrom + xComp;
+        retVal.second = yFrom + yComp;
+
+        return retVal;
+    }
 }

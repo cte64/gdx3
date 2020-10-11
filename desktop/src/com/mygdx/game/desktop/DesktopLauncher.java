@@ -5,6 +5,9 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.mygdx.game.myGame;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
+import gameCode.Utilities.Coordinates;
+import gameCode.Utilities.myMath;
+import gameCode.Utilities.myPair;
 import gameCode.Utilities.myString;
 
 
@@ -16,7 +19,11 @@ public class DesktopLauncher {
 
 
 
+
+
 	public static void main(String[] arg) {
+
+
 
 		if(rebuildAtlas) {
 			Settings settings = new Settings();
@@ -33,5 +40,6 @@ public class DesktopLauncher {
 		config.foregroundFPS = 60; // Setting to 0 disables foreground fps throttling
 		config.backgroundFPS = 60; // Setting to 0 disables background fps throttling
 		new LwjglApplication(new myGame(), config);
+
 	}
 }

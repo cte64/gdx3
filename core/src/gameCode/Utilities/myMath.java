@@ -55,4 +55,14 @@ public class myMath {
         if (val.compareTo(max) > 0) val = max;
         return val;
     }
+
+    public static float angleBetween2Points(float xOrig, float yOrig, float x, float y) {
+        // this is in Radians!
+
+         float newX = x - xOrig;
+         float newY = y - yOrig;
+
+         float angle = (float)(Math.atan2(newY, newX));
+         return angle;
+    }
 }

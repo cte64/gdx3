@@ -79,8 +79,8 @@ public class HeroInput extends Component implements Animation {
         float center = myWorld.get().getNumPixels() / 2.0f;
         float angle = myMath.angleBetweenCells(center, center, entity.x_pos, entity.y_pos);
 
-        //entity.angle = -myMath.toRad(angle - 90.0f );
-        //entity.accelerate(deltaX/3.0f, 270.0f);
+        entity.angle = -myMath.toRad(angle - 90.0f );
+        entity.accelerate(deltaX/3.0f, 270.0f);
 
         boolean grounded = Engine.get().getPhysics().pollFixture(entity);
         float walkSpeed = deltaX;
