@@ -122,12 +122,10 @@ public class HeroInput extends Component implements Animation {
             if(Engine.get().getInput().isKeyPressed("space")) { entity.accelerate(100*deltaX, 90.0f); }
         }
 
-
         if(Engine.get().getInput().isKeyPressed("p")) { entity.accelerate(-1.0f, 0); }
         if(Engine.get().getInput().isKeyPressed("[")) { Engine.get().getGraphics().getCameraHelper().addZoom(0.01f); }
         if(Engine.get().getInput().isKeyPressed("]")) { Engine.get().getGraphics().getCameraHelper().addZoom(-0.01f); }
         if(Engine.get().getInput().isKeyPressed("m")) entity.angle += 0.01f;
-
 
         legFrame = walkFrame;
         bodyFrame = walkFrame;

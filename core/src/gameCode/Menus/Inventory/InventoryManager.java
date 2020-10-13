@@ -10,7 +10,7 @@ import gameCode.Utilities.myString;
 import gameCode.Utilities.myPair;
 import java.util.ArrayList;
 
-public class InventoryManager extends Component {
+public class InventoryManager extends Component implements ModifyInventory {
 
     //constants and lucky numbers ===================================================
     private Entity parent;
@@ -188,6 +188,7 @@ public class InventoryManager extends Component {
         return newName.data;
     }
 
+    @Override
     public void addItem(String type, String ps, int psi, int amount) {
 
         /*

@@ -105,11 +105,11 @@ public class InputAL {
         return mouseY;
     }
 
-    public myPair<Integer, Integer> getMouseAbs() {
+    public myPair<Float, Float> getMouseAbs() {
         Vector3 coord = Engine.get().getGraphics().getMouse();
-        int x = (int)coord.x;
-        int y = (int)coord.y;
-        myPair<Integer, Integer> retVal = new myPair(x, y);
+        float x = coord.x;
+        float y = coord.y;
+        myPair<Float, Float> retVal = new myPair(x, y);
         return retVal;
     }
 

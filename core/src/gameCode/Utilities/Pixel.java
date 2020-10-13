@@ -130,4 +130,10 @@ public class Pixel {
 
         return image;
     }
+
+    public static String getTypeFromChar(char c) {
+        int index = (int)c;
+        index = myMath.clamp(index, 0, 255);
+        return colors[index].type;
+    }
 }

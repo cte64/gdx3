@@ -16,6 +16,7 @@ public class AnimationSequence {
     private class Frame {
         int x, y;
         float angle, time;
+        boolean firstTime;
     }
 
     private ArrayList<Frame> frames;
@@ -60,17 +61,23 @@ public class AnimationSequence {
             child.flipX = false;
         }
 
+        frames.get(currentStep).firstTime = false;
+
         timer.update("timer", myWorld.get().getDeltaTime());
         if(timer.getTime("timer") > frames.get(currentStep).time) {
             currentStep++;
             timer.resetTimer("timer");
             if(currentStep >= frames.size()) currentStep = 0;
+            frames.get(currentStep).firstTime = true;
         }
+
 
         child.angle = parent.angle + myMath.toRad( getAngle() );
         child.x_pos = parent.x_pos + parent.origin.first - child.origin.first + getX();
         child.y_pos = parent.y_pos + parent.origin.second - child.origin.second + getY();
     }
+
+    public boolean getFirstTime() { return frames.get(currentStep).firstTime; }
 
     public float getX() {
         float x = frames.get(currentStep).x;
@@ -78,6 +85,8 @@ public class AnimationSequence {
         myPair<Float, Float> coord = Coordinates.rotatePoint3(x, frames.get(currentStep).y, 0, 0, angle);
         return coord.first;
     }
+
+    public float getNumFrames() { return frames.size(); }
 
     public float getY() {
         float x = frames.get(currentStep).x;

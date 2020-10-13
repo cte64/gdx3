@@ -6,16 +6,23 @@ import gameCode.Infrastructure.Component;
 import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.myWorld;
 import gameCode.Menus.Inventory.AddEntity;
+import gameCode.Terrain.ModifyTerrain;
+import gameCode.Terrain.PixelT;
 import gameCode.Utilities.Coordinates;
 import gameCode.Utilities.Timer;
 import gameCode.Utilities.myMath;
 import gameCode.Utilities.myPair;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Pickaxe extends Component implements AddEntity {
 
     private Entity parent;
     AnimationSequence animate;
-    AnimationSequence backward;
+    private int digRadius;
+    private int digRange;
+
 
     public void addEntity(Entity entity) {
         parent = entity;
@@ -24,19 +31,19 @@ public class Pickaxe extends Component implements AddEntity {
     public Pickaxe() {
         type = "logic";
         parent = null;
+        digRadius = 6;
+        digRange = 150;
         animate = new AnimationSequence();
         animate.setOffsetAngle(45.0f);
-
-
-        int offsetAngle = 0;
 
         float time = 0.1f;
         animate.addFrame(-12, 24, 13, time);
         animate.addFrame(17, 18, -39, time);
-        animate.addFrame(25, -6, -85 + offsetAngle, time);
-        animate.addFrame(23, -13, -90 + offsetAngle, time);
+        animate.addFrame(25, -6, -85, time);
+        animate.addFrame(23, -13, -90, time);
     }
 
+    public void setDigRadius(int digRadius) { this.digRadius = digRadius; }
 
     public void update(Entity entity) {
 
@@ -44,9 +51,29 @@ public class Pickaxe extends Component implements AddEntity {
 
         if(Engine.get().getInput().isMousePressed("mouse left")) {
             entity.drawMode = "normal";
-
             animate.update(parent, entity);
 
+            if(animate.getIndex() == animate.getNumFrames() - 1 && animate.getFirstTime()) {
+
+                float xPos = Engine.get().getInput().getMouseAbs().first;
+                float yPos = Engine.get().getInput().getMouseAbs().second;
+
+                float parentCenterX = parent.x_pos + parent.origin.first;
+                float parentCenterY = parent.y_pos + parent.origin.second;
+                float distance = myMath.mag(xPos, yPos, parentCenterX, parentCenterY);
+
+
+                if(distance < digRange) {
+                    HashMap<String, Integer> pixels = ModifyTerrain.addCircle(xPos, yPos, 10, "empty");
+
+                    System.out.println("Start");
+                    for(String key: pixels.keySet()) {
+                        System.out.println(key + " : " + pixels.get(key));
+                    }
+
+                    System.out.println("");
+                }
+            }
 
             for(Component comp: parent.components) {
                 if(comp instanceof Animation)
@@ -56,6 +83,7 @@ public class Pickaxe extends Component implements AddEntity {
         else {
             entity.drawMode = "hidden";
             animate.reset(parent.flipX);
+
         }
     }
 }

@@ -130,6 +130,26 @@ public class Chunk {
         tiles.get(index).image.drawPixel(pixelX, 59 - pixelY, colorI);
     }
 
+    public String getPixel(int x, int y) {
+        int tileX = (x / myWorld.get().tileSize) % myWorld.get().tilesPerChunk;
+        int tileY = (y / myWorld.get().tileSize) % myWorld.get().tilesPerChunk;
+        int pixelX = x % myWorld.get().tileSize;
+        int pixelY = 59 - (y % myWorld.get().tileSize);
+
+        int tileIndex = (tileY * myWorld.get().tilesPerChunk) + tileX;
+        if(tileIndex < 0 || tileIndex > tiles.size() - 1) return "empty";
+
+
+        char colorC;
+        int pixelIndex = (pixelY * myWorld.get().tileSize) + pixelX;
+        pixelIndex = myMath.clamp(pixelIndex, 0, tiles.get(tileIndex).terrainData.data.length() - 1);
+        colorC = tiles.get(tileIndex).terrainData.data.charAt(pixelIndex);
+
+
+        String type = Pixel.getTypeFromChar(colorC);
+        return type;
+    }
+
     /*
 
     private String name;

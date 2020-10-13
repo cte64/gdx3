@@ -5,7 +5,6 @@ import gameCode.Factory.AbstractFactory;
 import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.myWorld;
 import gameCode.Living.HeroInput;
-import gameCode.Living.PlaceTerrain;
 import gameCode.Menus.Inventory.InventoryManager;
 import gameCode.Utilities.myString;
 
