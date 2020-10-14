@@ -213,6 +213,39 @@ public class MenuManager {
         for(Tree tree: treeNode.getTraverseArr()) { positionItem(tree); }
     }
 
+
+    public void registerItem(String id, String parent, String justify, int x, int y, int z) {
+
+        MenuItem newItem = new MenuItem();
+
+        newItem.clickStateL = 0;
+        newItem.clickStateR = 0;
+        newItem.hoverState = 0;
+        newItem.justify = justify;
+        newItem.xOffset = x;
+        newItem.yOffset = y;
+
+        Entity ent = EntityFactory.createEntity(id);
+        ent.drawMode = "hud";
+        ent.z_pos = z;
+        ent.deleteRange = -2;
+        ent.deleteComponents();
+        newItem.ent = ent;
+        myWorld.get().entitiesToBeAdded.add(ent);
+
+        Tree<MenuItem> parentTree = null;
+        if(items.containsKey(parent)) parentTree = items.get(parent);
+
+        Tree<MenuItem> treeNode = new Tree<MenuItem>(newItem, parentTree);
+
+        items.put(id, treeNode);
+
+        //position new item and all its children
+        for(Tree tree: treeNode.getTraverseArr()) { positionItem(tree); }
+    }
+
+
+
     public void addText(String id, Component textComp) {
         if(!items.containsKey(id)) return;
         ((MenuItem)items.get(id).value).ent.addComponent(textComp);

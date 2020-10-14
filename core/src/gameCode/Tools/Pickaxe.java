@@ -6,6 +6,7 @@ import gameCode.Infrastructure.Component;
 import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.myWorld;
 import gameCode.Menus.Inventory.AddEntity;
+import gameCode.Menus.Inventory.ModifyInventory;
 import gameCode.Terrain.ModifyTerrain;
 import gameCode.Terrain.PixelT;
 import gameCode.Utilities.Coordinates;
@@ -62,16 +63,13 @@ public class Pickaxe extends Component implements AddEntity {
                 float parentCenterY = parent.y_pos + parent.origin.second;
                 float distance = myMath.mag(xPos, yPos, parentCenterX, parentCenterY);
 
-
                 if(distance < digRange) {
                     HashMap<String, Integer> pixels = ModifyTerrain.addCircle(xPos, yPos, 10, "empty");
-
-                    System.out.println("Start");
                     for(String key: pixels.keySet()) {
-                        System.out.println(key + " : " + pixels.get(key));
-                    }
-
-                    System.out.println("");
+                    for(Component comp: parent.components) {
+                        if(comp instanceof ModifyInventory)
+                            ((ModifyInventory) comp).addItem(key, "current", -1, pixels.get(key));
+                    }}
                 }
             }
 

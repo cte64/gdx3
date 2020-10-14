@@ -24,7 +24,6 @@ public class ToolFactory extends AbstractFactory {
             ent.origin.first =  ent.width / 2.0f;
             ent.origin.second = ent.height / 2.0f;
             ent.z_pos = 21;
-
             ent.addComponent(new Pickaxe());
         }
 

@@ -25,6 +25,10 @@ public class myWorld {
         return worldInstance;
     }
 
+    //For testing purposes only =====================================================================
+    public boolean testMode = true;
+
+
 
     //Declare constants =============================================================================
     public final int xCell = 10;

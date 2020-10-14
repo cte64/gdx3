@@ -156,11 +156,7 @@ public class InventoryManager extends Component implements ModifyInventory {
         menu.registerItem(craftedItem.tile, "inventoryTray", foreground, "[vertical: bottom][horizontal: right]", -10, 80, 9);
 
 
-
-        addItem("lumber", "inventory", 4, 20);
-        addItem("stone", "inventory", 5, 20);
-        addItem("silverPickaxe", "current", 0, 1);
-        addItem("goldShovel", "current", 1, 1);
+        addItem("[type: tool][subType: silverPickaxe]", "current", 0, 1);
 
 
         //Hide all the items by default ============================================
@@ -170,17 +166,17 @@ public class InventoryManager extends Component implements ModifyInventory {
     //Item Modifier ================================================================
     public String createItem(String name) {
 
-        myString newName = new myString("[type: tool][subType: ][id: ]");
-        newName.setField("subType", name);
+        myString newName = new myString(name);
         newName.setField("id", uniqueIds.get(0));
         uniqueIds.remove(0);
 
+        menu.registerItem(newName.data, null, "[vertical: center][horizontal: center]", 0, 0, 7);
+        Entity ent = menu.getEnt(newName.data);
         //I will find a more elegant solution for this later
-        myPair<Integer, Integer> comp = Engine.get().getAssets().getSpriteDimensions(name);
-        int xComp = -(52 - comp.first) / 2 + 3;
-        int yComp = -(52 - comp.second) / 2 + 3;
+        //myPair<Integer, Integer> comp = Engine.get().getAssets().getSpriteDimensions(name);
+        int xComp = (int)(-(52 - ent.width) / 2 + 3);
+        int yComp = (int)(-(52 - ent.height) / 2 + 3);
 
-        menu.registerItem(newName.data, name, null, "[vertical: center][horizontal: center]", 0, 0, 7);
         TextComponent newComp = new TextComponent("0", 18, "[vertical: bottom][horizontal: left]", xComp, yComp);
         newComp.setColor(0.0f, 0.0f, 0.0f, 1.0f);
         menu.addText(newName.data, newComp);
@@ -189,10 +185,16 @@ public class InventoryManager extends Component implements ModifyInventory {
     }
 
     @Override
-    public void addItem(String type, String ps, int psi, int amount) {
+    public void addItem(String name, String ps, int psi, int amount) {
+
+
+
+        //IMPORTANT!!! STARTING NOW, "TYPE" MUST BE IN myString format!
+        String type = myString.getField(name, "subType");
+
 
         /*
-        type = item type
+        subType = item type
         ps = preferred slot (either "current" or "inventory")
         psi = preferred slot index (can be -1 -1 (take first available spot) or any number 0 and above)
         amount = number of items to add (must be 1 or more)
@@ -221,7 +223,7 @@ public class InventoryManager extends Component implements ModifyInventory {
             if(psi >= 0 && psi < currentNumItems) {
                 String slotType = myString.getField(currentItems[psi].item, "subType");
                 if(slotType.equals("")) {
-                    String newName = createItem(type);
+                    String newName = createItem(name);
                     currentItems[psi].item = newName;
                     setItemCount(currentItems[psi], amount);
                     menu.setParent(newName, currentItems[psi].tile);
@@ -233,7 +235,7 @@ public class InventoryManager extends Component implements ModifyInventory {
                     return;
                 }
                 if(!slotType.equals(type)){
-                    addItem(type, ps, -1, amount);
+                    addItem(name, ps, -1, amount);
                     return;
                 }
             }
@@ -248,14 +250,14 @@ public class InventoryManager extends Component implements ModifyInventory {
                 }
                 for(ItemNode node: currentItems) {
                     if(node.item.equals("")) {
-                        String newName = createItem(type);
+                        String newName = createItem(name);
                         node.item = newName;
                         setItemCount(node, amount);
                         menu.setParent(newName, node.tile);
                         return;
                     }
                 }
-                addItem(type, "inventory", psi, amount);
+                addItem(name, "inventory", psi, amount);
                 return;
             }
         }
@@ -276,7 +278,7 @@ public class InventoryManager extends Component implements ModifyInventory {
             if(psi >= 0 && psi < inventoryItems.size()) {
                 String invenType = myString.getField(inventoryItems.get(psi).item, "subType");
                 if(invenType.equals("")) {
-                    String newName = createItem(type);
+                    String newName = createItem(name);
                     inventoryItems.get(psi).item = newName;
                     setItemCount(inventoryItems.get(psi), amount);
                     menu.setParent(newName, inventoryItems.get(psi).tile);
@@ -288,7 +290,7 @@ public class InventoryManager extends Component implements ModifyInventory {
                     return;
                 }
                 if(!invenType.equals(type)) {
-                    addItem(type, ps, -1, amount);
+                    addItem(name, ps, -1, amount);
                     return;
                 }
             }
@@ -519,7 +521,6 @@ public class InventoryManager extends Component implements ModifyInventory {
         if( !currentItems[selected].item.equals("") )
             SetCurrentItem(currentItems[selected].item);
     }
-
 
     //Update =======================================================================
     public void update(Entity entity) {

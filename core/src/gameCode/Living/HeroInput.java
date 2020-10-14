@@ -180,9 +180,26 @@ public class HeroInput extends Component implements Animation {
         events.clear();
     }
 
+
+    private void testMode(Entity entity) {
+
+        if(Engine.get().getInput().isKeyPressed("w")) entity.accelerate(deltaX, 90.0f);
+        if(Engine.get().getInput().isKeyPressed("a")) entity.accelerate(deltaX, 180.0f);
+        if(Engine.get().getInput().isKeyPressed("s")) entity.accelerate(deltaX, 270.0f);
+        if(Engine.get().getInput().isKeyPressed("d")) entity.accelerate(deltaX, 0.0f);
+
+    }
+
     public void update(Entity entity) {
-        updateControls(entity);
-        updateAnimation();
+
+        if(myWorld.get().testMode)  testMode(entity);
+
+        else {
+            updateControls(entity);
+            updateAnimation();
+        }
+
+
         updateBodyPieces(entity);
     }
 }

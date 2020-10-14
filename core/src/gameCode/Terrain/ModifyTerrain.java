@@ -53,9 +53,13 @@ public class ModifyTerrain {
             Chunk chunkPtr = myWorld.get().getChunk(key);
             if(chunkPtr == null) continue;
 
-            String type = chunkPtr.getPixel(coord.x, coord.y);
-            if(!retVal.containsKey(type)) retVal.put(type, 1);
-            else retVal.put( type, retVal.get(type) + 1);
+            String name = chunkPtr.getPixel(coord.x, coord.y);
+            String newName = "[type: material][subType: " + name + "]";
+
+            if(!name.equals("empty")) {
+                if(!retVal.containsKey(newName)) retVal.put(newName, 1);
+                else retVal.put( newName, retVal.get(newName) + 1);
+            }
         }
 
         return retVal;
