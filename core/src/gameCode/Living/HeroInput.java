@@ -188,6 +188,8 @@ public class HeroInput extends Component implements Animation {
         if(Engine.get().getInput().isKeyPressed("s")) entity.accelerate(deltaX, 270.0f);
         if(Engine.get().getInput().isKeyPressed("d")) entity.accelerate(deltaX, 0.0f);
 
+      //  System.out.println("X. " + entity.x_pos + " Y." + entity.y_pos);
+
     }
 
     public void update(Entity entity) {

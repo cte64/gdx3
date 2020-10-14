@@ -35,6 +35,7 @@ public class ActorFactory extends AbstractFactory {
             ent.addComponent(new InventoryManager(ent));
             Engine.get().getGraphics().getCameraHelper().setTarget(ent);
             Engine.get().getPhysics().addBody2(ent, 0, 0, ent.width, ent.height, "dynamic", true, 1);
+            Engine.get().getPhysics().addLight(ent);
             myWorld.get().setCamera(ent);
             myWorld.get().addSiftingFrame(ent, 0, 0);
         }

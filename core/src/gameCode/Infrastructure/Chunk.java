@@ -69,8 +69,21 @@ public class Chunk {
     public boolean isImageBlank(int xIndex, int yIndex) {
         int index = (myWorld.get().tilesPerChunk * yIndex) + xIndex;
         index = myMath.clamp(index, 0, tiles.size() - 1);
+
+
         if(tiles.get(index).terrainData.data.length() == 0) return true;
-        else return false;
+
+
+        //this shouldn't need to be here
+        char emptyChar = Pixel.getCharFromType("empty");
+        for(int x = 0; x < tiles.get(index).terrainData.data.length(); x++) {
+            char c = tiles.get(index).terrainData.data.charAt(x);
+            if(c != emptyChar) return false;
+
+        }
+
+
+        return true;
     }
     public String getTileName(int x, int y) {
         int index = (myWorld.get().tilesPerChunk * y) + x;

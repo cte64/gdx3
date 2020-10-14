@@ -122,7 +122,20 @@ public class Graphics implements Disposable {
         //Camera Stuff ================================================================
         cameraHelper.update();
         cameraHelper.applyTo(camera);
+
+
+
+        //Ray handler stuff ===========================================================
+
+
+
         batch.setProjectionMatrix(camera.combined);
+
+        //remember to remove this line because it is inefficient
+
+
+
+
 
         //Batch Rendering ============================================================
         batch.begin();
@@ -190,7 +203,16 @@ public class Graphics implements Disposable {
 
         //Draw the outlines of the Box2d collision box and the boundaries of the chunks =============
         drawOutlines();
-       // b2debug.render(Engine.get().getPhysics().getb2World(), camera.combined);
+
+
+
+        Engine.get().getPhysics().rayHandler.setCombinedMatrix(camera);
+        Engine.get().getPhysics().rayHandler.update();
+
+
+
+        b2debug.render(Engine.get().getPhysics().getb2World(), camera.combined);
+        Engine.get().getPhysics().rayHandler.render();
     }
 
     public Entity getCamera() {
