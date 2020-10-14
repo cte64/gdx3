@@ -107,6 +107,7 @@ public class LoadGame extends Component {
 
             listItems.add(newItem);
             scrollList.addItem(newItem.list);
+            scrollList.vPadding = 0;
         }
 
 

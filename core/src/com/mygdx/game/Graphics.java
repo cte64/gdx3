@@ -206,13 +206,13 @@ public class Graphics implements Disposable {
 
 
 
-        Engine.get().getPhysics().rayHandler.setCombinedMatrix(camera);
-        Engine.get().getPhysics().rayHandler.update();
+        //Engine.get().getPhysics().rayHandler.setCombinedMatrix(camera);
+        //Engine.get().getPhysics().rayHandler.update();
 
 
 
         b2debug.render(Engine.get().getPhysics().getb2World(), camera.combined);
-        Engine.get().getPhysics().rayHandler.render();
+        //Engine.get().getPhysics().rayHandler.render();
     }
 
     public Entity getCamera() {

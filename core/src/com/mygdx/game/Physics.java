@@ -25,16 +25,14 @@ public class Physics {
     public RayHandler rayHandler;
 
 
-    boolean dont = false;
-
     public Physics() {
         if (b2world != null) b2world.dispose();
         b2world = new World(new Vector2(0, 0), true);
         b2world.setContactListener(new Collision1());
         entities = new HashMap<Entity, PhysObj>();
 
-        rayHandler = new RayHandler(b2world);
-        rayHandler.setAmbientLight(0.4f);
+        //rayHandler = new RayHandler(b2world);
+        //rayHandler.setAmbientLight(0.4f);
     }
 
     ArrayList<Entity> reSpring = new ArrayList<Entity>();
@@ -110,9 +108,13 @@ public class Physics {
 
 
 
+
+        /*
         PointLight light = new PointLight(rayHandler, 100, Color.WHITE, 1000, 0, 0);
         light.attachToBody( body );
         entities.get(ent).lights.add(light);
+
+         */
 
 
     }
@@ -168,13 +170,6 @@ public class Physics {
         }
         entities.get(ent).bodies.clear();
         addBody(ent, -1, -1, myWorld.get().tileSize + 2, myWorld.get().tileSize + 2, "static", false, 1);
-    }
-
-    public void addLight(Entity ent) {
-        if(!entities.containsKey(ent)) return;
-        PointLight light = new PointLight(rayHandler, 100, Color.WHITE, 6, 0, 0);
-        light.attachToBody( entities.get(ent).bodies.get(0) );
-        entities.get(ent).lights.add(light);
     }
 
     public void update() {
