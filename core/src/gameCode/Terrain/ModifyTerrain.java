@@ -54,7 +54,7 @@ public class ModifyTerrain {
             if(chunkPtr == null) continue;
 
             String name = chunkPtr.getPixel(coord.x, coord.y);
-            String newName = "[type: material][subType: " + name + "]";
+            String newName = "[type: terrainTexture][subType: " + name + "]";
 
             if(!name.equals("empty")) {
                 if(!retVal.containsKey(newName)) retVal.put(newName, 1);

@@ -3,7 +3,7 @@ package gameCode.Factory;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.mygdx.game.Engine;
 import gameCode.Factory.Factories.ActorFactory;
-import gameCode.Factory.Factories.MaterialsFactory;
+import gameCode.Factory.Factories.TerrainTextureFactory;
 import gameCode.Factory.Factories.MenuFactory;
 import gameCode.Factory.Factories.ToolFactory;
 import gameCode.Infrastructure.Entity;
@@ -21,7 +21,7 @@ public class EntityFactory {
         if(type.equals("menu")) factory = new MenuFactory();
         if(type.equals("tool")) factory = new ToolFactory();
         if(type.equals("actor")) factory = new ActorFactory();
-        if(type.equals("material")) factory = new MaterialsFactory();
+        if(type.equals("terrainTexture")) factory = new TerrainTextureFactory();
 
 
         //give it some default value just in case
