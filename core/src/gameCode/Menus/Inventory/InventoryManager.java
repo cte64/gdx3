@@ -156,7 +156,7 @@ public class InventoryManager extends Component implements ModifyInventory {
         menu.registerItem(craftedItem.tile, "inventoryTray", foreground, "[vertical: bottom][horizontal: right]", -10, 80, 9);
 
 
-        addItem("[type: tool][subType: silverPickaxe]", "current", 0, 1);
+        addItem("[type: tool][subType: woodPickaxe]", "current", 0, 1);
 
 
         //Hide all the items by default ============================================

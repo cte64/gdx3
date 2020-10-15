@@ -16,16 +16,41 @@ public class ToolFactory extends AbstractFactory {
         String subType = myString.getField(id, "subType");
 
 
-        if(subType.equals("silverPickaxe")) {
+
+        if(subType.equals("woodPickaxe")) {
             ent.deleteRange = -2;
-            ent.spriteName = "silverPickaxe";
+            ent.spriteName = "woodPickaxe";
             ent.width = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).first;
             ent.height = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).second;
             ent.origin.first =  ent.width / 2.0f;
             ent.origin.second = ent.height / 2.0f;
             ent.z_pos = 21;
-            ent.addComponent(new Pickaxe());
+
+            Pickaxe pick = new Pickaxe();
+            pick.setFilterType("include");
+            pick.addFilterItem("dirt");
+            pick.addFilterItem("stone");
+            ent.addComponent(pick);
         }
+
+
+        if(subType.equals("stonePickaxe")) {
+            ent.deleteRange = -2;
+            ent.spriteName = "stonePickaxe";
+            ent.width = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).first;
+            ent.height = Engine.get().getAssets().getSpriteDimensions(ent.spriteName).second;
+            ent.origin.first =  ent.width / 2.0f;
+            ent.origin.second = ent.height / 2.0f;
+            ent.z_pos = 21;
+
+            Pickaxe pick = new Pickaxe();
+            pick.setFilterType("include");
+            pick.addFilterItem("dirt");
+            pick.addFilterItem("stone");
+            ent.addComponent(pick);
+        }
+
+
 
 
         return ent;

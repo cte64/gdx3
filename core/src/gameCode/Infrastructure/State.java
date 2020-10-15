@@ -8,6 +8,7 @@ import gameCode.Utilities.myString;
 public class State {
 
     public static void loadGame() {
+        System.out.println("Load Game");
         deleteType("type", "menu");
         Entity ent = EntityFactory.createEntity("[type: menu][subType: loadGame]");
         myWorld.get().entitiesToBeAdded.add(ent);
@@ -16,12 +17,14 @@ public class State {
 
     public static void play(String newState) {
 
-        //set the state =====================================================================
-        String directory = myString.getField(newState, "directory");
-        state = "[action: play]";
+        System.out.println("Play");
 
         //delete menu stuff =================================================================
         deleteType("type", "menu");
+
+        //set the state =====================================================================
+        String directory = myString.getField(newState, "directory");
+        state = "[action: play]";
 
         //set Directory =====================================================================
         Engine.get().getFileSystem().setGameSubDirectory(directory);
@@ -45,6 +48,7 @@ public class State {
     }
 
     public static void mainMenu() {
+        System.out.println("Main Menu");
         myWorld.get().deleteWorld();
         Entity ent = EntityFactory.createEntity("[type: menu][subType: mainMenu]");
         myWorld.get().entitiesToBeAdded.add(ent);
@@ -52,6 +56,7 @@ public class State {
     }
 
     public static void newGame() {
+        System.out.println("New Game");
         deleteType("type", "menu");
         Entity ent = EntityFactory.createEntity("[type: menu][subType: newGame]");
         myWorld.get().entitiesToBeAdded.add(ent);
@@ -59,6 +64,7 @@ public class State {
     }
 
     public static void creatingGame(String newData) {
+        System.out.println("Create Game");
         state = newData;
         deleteType("type", "menu");
         Entity ent = EntityFactory.createEntity("[type: menu][subType: createGameLoadingScreen]");

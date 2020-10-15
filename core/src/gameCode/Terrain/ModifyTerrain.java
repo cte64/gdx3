@@ -15,8 +15,6 @@ import java.util.HashMap;
 public class ModifyTerrain {
 
 
-
-
     public static void addPixels(ArrayList<PixelT> pixels) {
         HashMap<Entity, Pixmap> ents = new HashMap<Entity, Pixmap>();
         for(PixelT coord: pixels) {
@@ -43,48 +41,78 @@ public class ModifyTerrain {
         }
     }
 
-    public static HashMap<String, Integer> getPixels(ArrayList<PixelT> pixels) {
+    public static PixelT getTypeAt(int x, int y) {
+
+
+        PixelT retVal = new PixelT(0, 0, "");
+        myPair<Integer, Integer> key = Chunk.makeKeyFromPixel(x, y);
+        Chunk chunkPtr = myWorld.get().getChunk(key);
+        if(chunkPtr == null) return retVal;
+
+        String name = chunkPtr.getPixel(x, y);
+        String newName = "[type: terrainTexture][subType: " + name + "]";
+        retVal.x = x;
+        retVal.y = y;
+        retVal.type = newName;
+
+        return retVal;
+    }
+
+    public static HashMap<String, Integer> getPixelTypeAndCount(ArrayList<PixelT> pixels) {
 
         HashMap<String, Integer> retVal = new HashMap<>();
-        for(PixelT coord: pixels) {
 
-            //update the chunk map =============================================================
-            myPair<Integer, Integer> key = Chunk.makeKeyFromPixel(coord.x, coord.y);
-            Chunk chunkPtr = myWorld.get().getChunk(key);
-            if(chunkPtr == null) continue;
-
-            String name = chunkPtr.getPixel(coord.x, coord.y);
-            String newName = "[type: terrainTexture][subType: " + name + "]";
-
-            if(!name.equals("empty")) {
-                if(!retVal.containsKey(newName)) retVal.put(newName, 1);
-                else retVal.put( newName, retVal.get(newName) + 1);
+        for(PixelT pixel: pixels) {
+            String subType = myString.getField(pixel.type, "subType");
+            if(!subType.equals("empty")) {
+                if(!retVal.containsKey(pixel.type)) retVal.put(pixel.type, 1);
+                else retVal.put(pixel.type, retVal.get(pixel.type) + 1);
             }
         }
 
         return retVal;
     }
 
-    public static HashMap<String, Integer> addCircle(float centerX, float centerY, float radius, String type) {
-
-        ArrayList<PixelT> pixels = new ArrayList<>();
-
+    private static void circlePixels(float cX, float cY, float radius, ArrayList<PixelT> coords) {
         float width = radius + 2;
         for (float y = -width; y < width; y++) {
             for (float x = -width; x < width; x++) {
                 float mag = myMath.mag(0.0f, 0.0f, x, y);
                 if (mag < radius) {
-                    pixels.add(new PixelT((int)(x + centerX), (int)(y + centerY), type));
+                    PixelT coord = getTypeAt((int)(x + cX), (int)(y + cY));
+                    coords.add(coord);
                 }
             }
         }
-
-        HashMap<String, Integer> retVal = getPixels(pixels);
-        addPixels(pixels);
-        return retVal;
     }
 
+    public static void filterPixels(ArrayList<PixelT> coords, String filterType, ArrayList<String> filterList) {
+
+        ArrayList<PixelT> toRemove = new ArrayList<>();
+        for(PixelT coord: coords) {
+
+            String subType = myString.getField(coord.type, "subType");
+
+            if(filterType.equals("include") && !filterList.contains(subType))
+                toRemove.add(coord);
+
+            if(filterType.equals("exclude") && filterList.contains(subType))
+                toRemove.add(coord);
+        }
+
+        coords.removeAll(toRemove);
+    }
+
+    public static HashMap<String, Integer> deleteCircle(float cX, float cY, float radius, String filterType, ArrayList<String> filterList) {
+
+        ArrayList<PixelT> coords = new ArrayList<>();
+        circlePixels(cX, cY, radius, coords);
 
 
+        filterPixels(coords, filterType, filterList);
+        addPixels(coords);
 
+        HashMap<String, Integer> retVal = getPixelTypeAndCount(coords);
+        return retVal;
+    }
 }
