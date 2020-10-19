@@ -1,12 +1,14 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import gameCode.Infrastructure.myWorld;
+import gameCode.Utilities.Pixel;
 import gameCode.Utilities.myString;
 import gameCode.Utilities.myPair;
 
@@ -14,14 +16,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.badlogic.gdx.graphics.Pixmap.Format.RGB888;
+import static com.badlogic.gdx.graphics.Pixmap.Format.fromGdx2DPixmapFormat;
 
 public class Assets {
+
+    private class AssetNode {
+        public Sprite sprite;
+        public Pixmap pixmap;
+    }
 
     public TextureAtlas spriteAtlas;
     public TextureAtlas tileAtlas;
     public ArrayList<String> tileIDs;
-    public HashMap<String, Sprite> spriteMap;
+    public HashMap<String, AssetNode> spriteMap;
     public GlyphLayout layout;
+
 
     //Font stuff here ======================================
     public FreeTypeFontGenerator generator;
@@ -48,10 +57,8 @@ public class Assets {
         tileIDs = new ArrayList<String>();
 
 
-        spriteMap = new HashMap<String, Sprite>();
+        spriteMap = new HashMap<String, AssetNode>();
         tileAtlas = new TextureAtlas();
-
-
 
         //Menus stuff
         for(TextureAtlas.AtlasRegion name: spriteAtlas.getRegions()) {
@@ -61,7 +68,18 @@ public class Assets {
 
             TextureRegion region = spriteAtlas.findRegion(name.name);
             Sprite sprite = new Sprite(region);
-            spriteMap.put(newName, sprite);
+
+            AssetNode node = new AssetNode();
+            node.sprite = sprite;
+
+            sprite.getTexture().getTextureData().prepare();
+
+
+            Pixmap pixmap = new Pixmap(sprite.getRegionWidth(), sprite.getRegionHeight(), Pixmap.Format.RGBA8888);
+            pixmap = sprite.getTexture().getTextureData().consumePixmap();
+            node.pixmap = pixmap;
+
+            spriteMap.put(newName, node);
         }
 
 
@@ -77,7 +95,11 @@ public class Assets {
             tileAtlas.addRegion(name, newTexture, xPos, yPos, myWorld.get().tileSize, myWorld.get().tileSize);
             TextureRegion region = tileAtlas.findRegion(name);
             Sprite sprite = new Sprite(region);
-            spriteMap.put(name, sprite);
+
+            AssetNode node = new AssetNode();
+            node.sprite = sprite;
+
+            spriteMap.put(name, node);
             tileIDs.add(name);
         }}
 
@@ -91,7 +113,12 @@ public class Assets {
         TextureRegion region = tileAtlas.findRegion(name);
 
         region.setTexture(dt);
-        spriteMap.put(name, new Sprite(dt));
+
+        AssetNode node = new AssetNode();
+        node.sprite = new Sprite(dt);
+        node.pixmap = image;
+
+        spriteMap.put(name, node);
     }
 
     public String getCoord() {
@@ -108,8 +135,8 @@ public class Assets {
         myPair<Integer, Integer> retVal = new myPair(0, 0);
 
         if(spriteMap.containsKey(name)) {
-            retVal.first = (int)spriteMap.get(name).getWidth();
-            retVal.second = (int)spriteMap.get(name).getHeight();
+            retVal.first = (int)spriteMap.get(name).sprite.getWidth();
+            retVal.second = (int)spriteMap.get(name).sprite.getHeight();
         }
 
         return retVal;
@@ -120,5 +147,16 @@ public class Assets {
         float width = layout.width;
         float height = layout.height;
         return new Vector2(width, height);
+    }
+
+    public TextureRegion getRegion(String id) {
+        if(!spriteMap.containsKey(id)) return null;
+        else return spriteMap.get(id).sprite;
+    }
+
+    public int getPixel(String id, int x, int y) {
+        if(!spriteMap.containsKey(id)) return 0;
+        if(spriteMap.get(id).pixmap == null) return 0;
+        return spriteMap.get(id).pixmap.getPixel(x, y);
     }
 }

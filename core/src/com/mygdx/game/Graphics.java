@@ -138,13 +138,15 @@ public class Graphics implements Disposable {
 
 
         //Batch Rendering ============================================================
+
+
         batch.begin();
             for(Entity ent: myWorld.get().getEntByZIndex()) {
                 if(!ent.drawMode.equals("normal")) continue;
 
                 if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName)) {
 
-                    TextureRegion reg = Engine.get().getAssets().spriteMap.get(ent.spriteName);
+                    TextureRegion reg = Engine.get().getAssets().getRegion(ent.spriteName);
                     TextureRegion newReg = new TextureRegion(reg);
 
                     newReg.setRegionX(newReg.getRegionX() + ent.spriteOffsetX);
@@ -185,7 +187,7 @@ public class Graphics implements Disposable {
                 if(!ent.drawMode.equals("hud")) continue;
 
                 if(Engine.get().getAssets().spriteMap.containsKey(ent.spriteName)) {
-                    hudBatch.draw(Engine.get().getAssets().spriteMap.get(ent.spriteName), ent.x_pos, ent.y_pos, ent.getWidth(), ent.getHeight());
+                    hudBatch.draw(Engine.get().getAssets().getRegion(ent.spriteName), ent.x_pos, ent.y_pos, ent.getWidth(), ent.getHeight());
                 }
 
                 ArrayList<Component> textComps = ent.getComponents("text");

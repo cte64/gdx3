@@ -2,6 +2,7 @@ package gameCode.Utilities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.mygdx.game.Engine;
 import gameCode.Infrastructure.myWorld;
 
 public class Pixel {
@@ -53,7 +54,6 @@ public class Pixel {
     }
 
     public static int charToColor(char b, int x, int y) {
-
         int index = (int)b;
         index = myMath.clamp(index, 0, 255);
         if(colors[index].image == null) return colors[index].defaultColor;
@@ -61,6 +61,10 @@ public class Pixel {
         x = myMath.clamp(x, 0, colors[index].image.getWidth() - 1);
         y = myMath.clamp(y, 0, colors[index].image.getHeight() - 1);
         return colors[index].image.getPixel(x, y);
+
+
+
+       // return Engine.get().getAssets().getPixel(colors[index].type + "Texture", x, y);
     }
 
     public static char getCharFromType(String type) {
