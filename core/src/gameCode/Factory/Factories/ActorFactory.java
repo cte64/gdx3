@@ -5,6 +5,7 @@ import gameCode.Factory.AbstractFactory;
 import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.myWorld;
 import gameCode.Living.HeroInput;
+import gameCode.Living.SpawnTester;
 import gameCode.Menus.Inventory.InventoryManager;
 import gameCode.Utilities.myString;
 
@@ -33,6 +34,7 @@ public class ActorFactory extends AbstractFactory {
 
             //ent.addComponent(new PlaceTerrain());
             ent.addComponent(new InventoryManager(ent));
+            ent.addComponent(new SpawnTester());
             Engine.get().getGraphics().getCameraHelper().setTarget(ent);
             Engine.get().getPhysics().addBody2(ent, 0, 0, ent.width, ent.height, "dynamic", true, 1);
            // Engine.get().getPhysics().addLight(ent);
