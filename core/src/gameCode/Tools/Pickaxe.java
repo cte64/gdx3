@@ -25,6 +25,7 @@ public class Pickaxe extends Component implements AddEntity {
     private int digRange;
     private ArrayList<String> terrainFilter;
     private String filterType;
+    private int hardness;
 
 
     public void addEntity(Entity entity) {
@@ -40,6 +41,7 @@ public class Pickaxe extends Component implements AddEntity {
         animate.setOffsetAngle(45.0f);
         filterType = "exclude";
         terrainFilter = new ArrayList<>();
+        hardness = 25;
 
         float time = 0.1f;
         animate.addFrame(-12, 24, 13, time);
@@ -57,6 +59,8 @@ public class Pickaxe extends Component implements AddEntity {
     }
 
     public void setDigRadius(int digRadius) { this.digRadius = digRadius; }
+
+    public void setHardness(int hardness) { this.hardness = hardness; }
 
     public void update(Entity entity) {
 
@@ -76,11 +80,8 @@ public class Pickaxe extends Component implements AddEntity {
                 float distance = myMath.mag(xPos, yPos, parentCenterX, parentCenterY);
 
                 if(distance < digRange) {
-
-                    HashMap<String, Integer> pixels = ModifyTerrain.deleteCircle(xPos, yPos, 10, filterType, terrainFilter);
+                    HashMap<String, Integer> pixels = ModifyTerrain.deleteCircle(xPos, yPos, 10, hardness);
                     for(String key: pixels.keySet()) {
-
-                        System.out.println(key + " : " + pixels.get(key));
                     for(Component comp: parent.components) {
                         if(comp instanceof ModifyInventory)
                             ((ModifyInventory) comp).addItem(key, "current", -1, pixels.get(key));

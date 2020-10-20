@@ -5,23 +5,28 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.mygdx.game.Engine;
 import gameCode.Infrastructure.myWorld;
 
+
+
+/*
+
+Material Hardness ranges from 0 to 100 for now
+
+ */
+
+
+
+
 public class Pixel {
 
     private static class Colors {
         public String type;
         public int defaultColor;
-        public Pixmap image;
         public int hardness;
-        Colors(String newType, int newColor, String filename, int hardness) {
+
+        Colors(String newType, int newColor, int hardness) {
             type = newType;
             defaultColor = newColor;
-            image = null;
             this.hardness = hardness; //max hardness is 100 for now
-
-            if(filename == "") return;
-            FileHandle file = Gdx.files.internal("core/assets/terrainTextures/" + filename);
-            if(!file.exists()) { System.out.println("Texture wasn't found: " + filename); }
-            else { image = new Pixmap(file); }
         }
     }
 
@@ -31,20 +36,20 @@ public class Pixel {
 
         //set all of them to empty values first
         colors = new Colors[256];
-        for(int x = 0; x < 256; x++) { colors[x] = new Colors("", 0, "", 0); }
+        for(int x = 0; x < 256; x++) { colors[x] = new Colors("", 0, 0); }
 
         //now add stuff
-        colors[0] = new Colors("empty", 0, "emptyTexture.png", 0);
-        colors[1] = new Colors("dirt", 0, "dirtTexture.png", 0);
-        colors[2] = new Colors("clay", 0, "clayTexture.png", 0);
-        colors[3] = new Colors("coal", 0, "coalTexture.png", 0);
-        colors[4] = new Colors("stone", 0, "stoneTexture.png", 0);
-        colors[5] = new Colors("ruby", 0, "rubyTexture.png", 0);
-        colors[6] = new Colors("emerald", 0, "emeraldTexture.png", 0);
-        colors[7] = new Colors("sulfur", 0, "sulfurTexture.png", 0);
-        colors[8] = new Colors("lava", 0, "lavaTexture.png", 0);
-        colors[9] = new Colors("sand", 0, "sandTexture.png", 0);
-        colors[10] = new Colors("bloodstone", 0, "bloodstoneTexture.png", 0);
+        colors[0] = new Colors("empty", 0, 0);
+        colors[1] = new Colors("dirt", 0, 10);
+        colors[2] = new Colors("clay", 0,  10);
+        colors[3] = new Colors("coal", 0,  10);
+        colors[4] = new Colors("stone", 0,  30);
+        colors[5] = new Colors("ruby", 0,  50);
+        colors[6] = new Colors("emerald", 0, 70);
+        colors[7] = new Colors("sulfur", 0,  40);
+        colors[8] = new Colors("lava", 0,  0);
+        colors[9] = new Colors("sand", 0,  5);
+        colors[10] = new Colors("bloodstone", 0,  45);
     }
 
     public static int charToColor(char b) {
@@ -56,14 +61,10 @@ public class Pixel {
     public static int charToColor(char b, int x, int y) {
         int index = (int)b;
         index = myMath.clamp(index, 0, 255);
-        if(colors[index].image == null) return colors[index].defaultColor;
-
-        x = myMath.clamp(x, 0, colors[index].image.getWidth() - 1);
-        y = myMath.clamp(y, 0, colors[index].image.getHeight() - 1);
-        return colors[index].image.getPixel(x, y);
 
 
 
+        return Engine.get().getAssets().getPixel(colors[index].type + "Texture", x, y);
        // return Engine.get().getAssets().getPixel(colors[index].type + "Texture", x, y);
     }
 
@@ -106,6 +107,7 @@ public class Pixel {
 
         //System.out.println(data.data.length());
 
+        /*
         if(data.data.length() == 0) {
             int color = 16777215;
             for(int y = 0; y < myWorld.get().tileSize; y++) {
@@ -114,7 +116,9 @@ public class Pixel {
             }}
         }
 
-        else if(data.data.length() == 1) {
+         */
+
+        if(data.data.length() == 1) {
 
             for(int y = 0; y < myWorld.get().tileSize; y++) {
             for(int x = 0; x < myWorld.get().tileSize; x++) {
@@ -134,6 +138,14 @@ public class Pixel {
         }
 
         return image;
+    }
+
+    public static int getHardnessByType(String type) {
+        int retVal = 0;
+        for(int x = 0; x < 256; x++) {
+            if(colors[x].type.equals(type)) retVal = colors[x].hardness;
+        }
+        return retVal;
     }
 
     public static String getTypeFromChar(char c) {

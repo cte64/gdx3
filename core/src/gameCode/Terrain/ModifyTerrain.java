@@ -5,6 +5,7 @@ import com.mygdx.game.Engine;
 import gameCode.Infrastructure.Chunk;
 import gameCode.Infrastructure.Entity;
 import gameCode.Infrastructure.myWorld;
+import gameCode.Utilities.Pixel;
 import gameCode.Utilities.myMath;
 import gameCode.Utilities.myPair;
 import gameCode.Utilities.myString;
@@ -103,13 +104,23 @@ public class ModifyTerrain {
         coords.removeAll(toRemove);
     }
 
-    public static HashMap<String, Integer> deleteCircle(float cX, float cY, float radius, String filterType, ArrayList<String> filterList) {
+    public static void filterByHardness(ArrayList<PixelT> coords, int hardness) {
+        ArrayList<PixelT> toRemove = new ArrayList<>();
+        for(PixelT coord: coords) {
+            String subType = myString.getField(coord.type, "subType");
+            if(Pixel.getHardnessByType(subType) > hardness) toRemove.add(coord);
+        }
+
+        coords.removeAll(toRemove);
+    }
+
+    public static HashMap<String, Integer> deleteCircle(float cX, float cY, float radius, int hardness) {
 
         ArrayList<PixelT> coords = new ArrayList<>();
         circlePixels(cX, cY, radius, coords);
 
 
-        filterPixels(coords, filterType, filterList);
+        filterByHardness(coords, hardness);
         addPixels(coords);
 
         HashMap<String, Integer> retVal = getPixelTypeAndCount(coords);

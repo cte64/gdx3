@@ -2,21 +2,23 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Colors;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import gameCode.Infrastructure.myWorld;
 import gameCode.Utilities.Pixel;
+import gameCode.Utilities.myMath;
 import gameCode.Utilities.myString;
 import gameCode.Utilities.myPair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.badlogic.gdx.graphics.Pixmap.Format.RGB888;
-import static com.badlogic.gdx.graphics.Pixmap.Format.fromGdx2DPixmapFormat;
+import static com.badlogic.gdx.graphics.Pixmap.Format.*;
 
 public class Assets {
 
@@ -36,6 +38,28 @@ public class Assets {
     public FreeTypeFontGenerator generator;
     public FreeTypeFontGenerator.FreeTypeFontParameter parameter;
     public HashMap<Integer, BitmapFont> bmpFonts;
+
+    public Pixmap extractPixmapFromTextureRegion(TextureRegion textureRegion) {
+        TextureData textureData = textureRegion.getTexture().getTextureData();
+        if (!textureData.isPrepared()) {
+            textureData.prepare();
+        }
+        Pixmap pixmap = new Pixmap(
+                textureRegion.getRegionWidth(),
+                textureRegion.getRegionHeight(),
+                textureData.getFormat()
+        );
+        pixmap.drawPixmap(
+                textureData.consumePixmap(), // The other Pixmap
+                0, // The target x-coordinate (top left corner)
+                0, // The target y-coordinate (top left corner)
+                textureRegion.getRegionX(), // The source x-coordinate (top left corner)
+                textureRegion.getRegionY(), // The source y-coordinate (top left corner)
+                textureRegion.getRegionWidth(), // The width of the area from the other Pixmap in pixels
+                textureRegion.getRegionHeight() // The height of the area from the other Pixmap in pixels
+        );
+        return pixmap;
+    }
 
     public Assets() {
 
@@ -61,22 +85,24 @@ public class Assets {
         tileAtlas = new TextureAtlas();
 
         //Menus stuff
+
         for(TextureAtlas.AtlasRegion name: spriteAtlas.getRegions()) {
 
             String[] strs = name.name.split("/");
             String newName = strs[strs.length - 1];
 
             TextureRegion region = spriteAtlas.findRegion(name.name);
-            Sprite sprite = new Sprite(region);
 
+
+            Sprite sprite = new Sprite(region);
             AssetNode node = new AssetNode();
             node.sprite = sprite;
 
-            sprite.getTexture().getTextureData().prepare();
-
-
-            Pixmap pixmap = new Pixmap(sprite.getRegionWidth(), sprite.getRegionHeight(), Pixmap.Format.RGBA8888);
-            pixmap = sprite.getTexture().getTextureData().consumePixmap();
+            //Ugh!  I give up, just gonna do it this way for now
+            Pixmap pixmap = new Pixmap(sprite.getRegionWidth(), sprite.getRegionHeight(), RGBA8888);
+            FileHandle file = Gdx.files.internal(name.toString() + ".png");
+            if(file.exists()) pixmap = new Pixmap(file);
+            else System.out.println("Could not load: " + name.name);
             node.pixmap = pixmap;
 
             spriteMap.put(newName, node);
@@ -157,6 +183,13 @@ public class Assets {
     public int getPixel(String id, int x, int y) {
         if(!spriteMap.containsKey(id)) return 0;
         if(spriteMap.get(id).pixmap == null) return 0;
+        if(spriteMap.get(id).pixmap.getHeight() == 0 || spriteMap.get(id).pixmap.getWidth() == 0) return 0;
+
+        x = myMath.clamp(x, 0, spriteMap.get(id).pixmap.getWidth());
+        y = myMath.clamp(y, 0, spriteMap.get(id).pixmap.getHeight());
+
+
+
         return spriteMap.get(id).pixmap.getPixel(x, y);
     }
 }

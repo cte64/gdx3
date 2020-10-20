@@ -25,11 +25,7 @@ public class ToolFactory extends AbstractFactory {
             ent.origin.first =  ent.width / 2.0f;
             ent.origin.second = ent.height / 2.0f;
             ent.z_pos = 21;
-
             Pickaxe pick = new Pickaxe();
-            pick.setFilterType("include");
-            pick.addFilterItem("dirt");
-            pick.addFilterItem("stone");
             ent.addComponent(pick);
         }
 
